@@ -93,7 +93,7 @@ const PuppeteerExtra = require("./lib/PuppeteerExtra");
 
 #### puppeteer.setExtras(extras)
 - `extras` <[Object]> Set of configurable extras. Can have the following fields:
-  - `stealth` <[boolean]> Whether to enable [stealth mode](#stealthmode). Defaults to `false`.
+  - `stealth` <[boolean]> Whether to enable [stealth mode](#stealth-mode). Defaults to `false`.
   - `allowFlash` <[boolean]> Allow [flash content](#flash) to run on all sites without confirmation prompts. Defaults to `false`
   - `keepTemporaryUserDataDir` <[boolean]> Keep the temporary user data directory after the code has finished. Defaults to `false`.
 
