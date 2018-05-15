@@ -92,22 +92,22 @@ const PuppeteerExtra = require('puppeteer-extra');
 
 
 #### puppeteer.setExtras(extras)
-- `extras` <Object> Set of configurable extras. Can have the following fields:
-  - `stealth` <boolean> Whether to enable [stealth mode](#stealth-mode). Defaults to `false`.
-  - `allowFlash` <boolean> Allow [flash content](#flash) to run on all sites without confirmation prompts. Defaults to `false`
-  - `keepTemporaryUserDataDir` <boolean> Keep the temporary user data directory after the code has finished. Defaults to `false`.
+- `extras` <[Object]> Set of configurable extras. Can have the following fields:
+  - `stealth` <[boolean]> Whether to enable [stealth mode](#stealth-mode). Defaults to `false`.
+  - `allowFlash` <[boolean]> Allow [flash content](#flash) to run on all sites without confirmation prompts. Defaults to `false`
+  - `keepTemporaryUserDataDir` <[boolean]> Keep the temporary user data directory after the code has finished. Defaults to `false`.
 
 
 #### puppeteer.setUserPreferences(prefs)
-- `prefs` <Object>
+- `prefs` <[Object]>
 
 Add preferences that will be written to the `Default/Preferences` file in the (temporary) user data directory.
 
 
 
 #### puppeteer.setFlashSettings(path, version)
-- `path` <string>
-- `version` <string> Defaults to `9000` (high enough so chrome won't complain about flash being outdated)
+- `path` <[string]>
+- `version` <[string]> Defaults to `9000` (high enough so chrome won't complain about flash being outdated)
 
 Used in conjunction with `puppeteer.setExtras({allowFlash: true})`. Only required when using (the built-in) Chromium browser, as pepper flash isn't bundled with it. [See here](http://chromium.woolyss.com/#flash) about how to obtain that plugin for various platforms. 
 
