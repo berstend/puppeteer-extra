@@ -36,7 +36,7 @@ const PuppeteerExtra = require('puppeteer-extra');
 ```es6
 // puppeteer-extra lists puppeteer as peerDependency,
 // which means it'll use the version you've installed yourself
-const PuppeteerExtra = require("./lib/PuppeteerExtra");
+const PuppeteerExtra = require('puppeteer-extra');
 
 (async () => {
   // Instantiate puppeteer-extra
