@@ -1,4 +1,7 @@
-# puppeteer-extra
+# puppeteer-extra 
+
+![npm](https://img.shields.io/npm/v/puppeteer-extra.svg)
+
 
 
 ![](https://i.imgur.com/2ZjXBe5.jpg)
