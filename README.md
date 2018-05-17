@@ -1,10 +1,11 @@
 # puppeteer-extra 
+[![npm](https://img.shields.io/npm/v/puppeteer-extra.svg?style=flat-square)](https://www.npmjs.com/package/puppeteer-extra) 
+[![npm](https://img.shields.io/npm/dt/puppeteer-extra.svg?style=flat-square)](https://www.npmjs.com/package/puppeteer-extra) 
+[![npm](https://img.shields.io/npm/l/puppeteer-extra.svg?style=flat-square)](https://www.npmjs.com/package/puppeteer-extra)
+![David](https://img.shields.io/david/berstend/puppeteer-extra.svg?style=flat-square)
 
-![npm](https://img.shields.io/npm/v/puppeteer-extra.svg)
 
-
-
-![](https://i.imgur.com/2ZjXBe5.jpg)
+[![extra](https://i.imgur.com/2ZjXBe5.jpg)](https://github.com/berstend/puppeteer-extra)
 
 > A light-weight wrapper around [`puppeteer`](https://github.com/GoogleChrome/puppeteer) to handle more advanced use-cases, most notably the abillity to set custom user preferences, a stealth mode and to allow flash content without confirmation prompts.
 
@@ -182,14 +183,18 @@ Note: When using the bundled chromium browser you need to additionally define th
 Pull requests are welcome, if you have something that could be useful for others and that won't be added to `puppeteer` then this project might a good fit for it. :-)
 
 * Hygiene: Add tests
+* Add more examples for different use-cases
 * Collect more user preference examples
 * Convenience wrappers:
   * disableWebRTC
   * disableGeolocation
   * disableBrowserDialogs
 * Figure out how to enable chrome://flags features
-* Add support for chrome extensions
-
+* Add support for chrome extensions (load unpacked local extension)
+* Add convenience utilities for working with extensions
+* Figure out how to pre-install CWS extensions (e.g. uBlock Origin)
+* Work on dockerized example, using `xfvb-run` and possibly `noVNC`
+* Ensure compatibility with [`Browser Context`](https://github.com/GoogleChrome/puppeteer/pull/2523) once landed
 
 ## Contributors
 
