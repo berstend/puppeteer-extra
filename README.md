@@ -125,6 +125,19 @@ const options = {
 const browser = await puppeteer.launch(options)
 ```
 
+#### puppeteer.addExtensions(paths)
+- `paths` <[string]|[Array]<[string]>> - A single path to an unpacked [Chrome Extension](#extensions) or an array containing multiple extensions
+
+
+### class: Browser
+
+#### browser.getExtensions()
+- returns: <[Promise]<?[Array]>> Promise which resolves to an array of Objects containing information about the currently loaded [Chrome Extensions](#extensions).
+
+As part of an extension object being returned the `.evaluate()` function can be used to run arbitrary code in the context of the extensions background page and to receive the return value.
+
+
+
 
 
 ### class: Page
@@ -176,6 +189,17 @@ Note: `headless: false` is required.
 Note: When using the bundled chromium browser you need to additionally define the flash plugin path.
 
 
+### Extensions
+
+`puppeteer-extra` ships with a couple of convenience functions to make working with (local, unpacked) Chrome Extensions a bit more convenient.
+
+`puppeteer.addExtensions()` can be used to add one or more extensions to the browser, and `browser.getExtensions()` allows enumerating loaded extensions after startup.
+
+As part of an extension object being returned the `.evaluate()` function can be used to run arbitrary code in the context of the extensions background page and to receive the return value.
+
+A full example [can be found here](examples/extensions.js).
+
+
 
 
 ## Todo
@@ -190,12 +214,65 @@ Pull requests are welcome, if you have something that could be useful for others
   * disableGeolocation
   * disableBrowserDialogs
 * Figure out how to enable chrome://flags features
-* Add support for chrome extensions (load unpacked local extension)
-* Add convenience utilities for working with extensions
+* ~~Add support for chrome extensions (load unpacked local extension)~~
+* ~~Add convenience utilities for working with extensions~~
 * Figure out how to pre-install CWS extensions (e.g. uBlock Origin)
 * Work on dockerized example, using `xfvb-run` and possibly `noVNC`
 * Ensure compatibility with [`Browser Context`](https://github.com/GoogleChrome/puppeteer/pull/2523) once landed
 
+
+## Changelog
+* `1.0.2` - Add extensions support
+* `1.0.1` - Initial public release
+
+
+
 ## Contributors
 
 Thanks to @skyiea for [this PR](https://github.com/GoogleChrome/puppeteer/pull/1806)!
+
+
+
+
+
+
+[Array]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array"
+[boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean"
+[Buffer]: https://nodejs.org/api/buffer.html#buffer_class_buffer "Buffer"
+[function]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function "Function"
+[number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "Number"
+[Object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object"
+[Page]: #class-page "Page"
+[Promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise"
+[string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "String"
+[stream.Readable]: https://nodejs.org/api/stream.html#stream_class_stream_readable "stream.Readable"
+[CDPSession]: #class-cdpsession  "CDPSession"
+[BrowserFetcher]: #class-browserfetcher  "BrowserFetcher"
+[Error]: https://nodejs.org/api/errors.html#errors_class_error "Error"
+[Frame]: #class-frame "Frame"
+[ConsoleMessage]: #class-consolemessage "ConsoleMessage"
+[ChildProcess]: https://nodejs.org/api/child_process.html "ChildProcess"
+[Coverage]: #class-coverage "Coverage"
+[iterator]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols "Iterator"
+[Response]: #class-response  "Response"
+[Request]: #class-request  "Request"
+[Browser]: #class-browser  "Browser"
+[Body]: #class-body  "Body"
+[Element]: https://developer.mozilla.org/en-US/docs/Web/API/element "Element"
+[Keyboard]: #class-keyboard "Keyboard"
+[Dialog]: #class-dialog  "Dialog"
+[JSHandle]: #class-jshandle "JSHandle"
+[ExecutionContext]: #class-executioncontext "ExecutionContext"
+[Mouse]: #class-mouse "Mouse"
+[Map]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map "Map"
+[selector]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors "selector"
+[Tracing]: #class-tracing "Tracing"
+[ElementHandle]: #class-elementhandle "ElementHandle"
+[UIEvent.detail]: https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail "UIEvent.detail"
+[Serializable]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#Description "Serializable"
+[Touchscreen]: #class-touchscreen "Touchscreen"
+[Target]: #class-target "Target"
+[USKeyboardLayout]: ../lib/USKeyboardLayout.js "USKeyboardLayout"
+[xpath]: https://developer.mozilla.org/en-US/docs/Web/XPath "xpath"
+[UnixTime]: https://en.wikipedia.org/wiki/Unix_time "Unix Time"
+[SecurityDetails]: #class-securitydetails "SecurityDetails"
