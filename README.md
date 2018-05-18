@@ -222,7 +222,7 @@ Pull requests are welcome, if you have something that could be useful for others
 
 
 ## Changelog
-* `1.0.2` - Add extensions support
+* `1.1.0` - Add extensions support
 * `1.0.1` - Initial public release
 
 
