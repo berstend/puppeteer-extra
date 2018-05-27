@@ -1,44 +1,24 @@
 {
-  "name": "puppeteer-extra",
-  "version": "1.1.0",
-  "description": "A light-weight wrapper around `puppeteer` to handle more advanced use-cases, most notably the abillity to set custom user preferences, a stealth mode and to allow flash content without confirmation prompts.",
-  "main": "./lib/PuppeteerExtra.js",
-  "directories": {
-    "lib": "lib"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/berstend/puppeteer-extra.git"
-  },
-  "keywords": [
-    "puppeteer",
-    "puppeteer-extra",
-    "flash",
-    "stealth",
-    "prefs",
-    "user-preferences",
-    "chrome",
-    "headless",
-    "pupeteer"
-  ],
+  "private": true,
+  "description": "Modular framework to teach Puppeteer new tricks.",
+  "repository": "berstend/puppeteer-extra",
   "author": "berstend",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/berstend/puppeteer-extra/issues"
+  "main": "packages/puppeteer-extra/index.js",
+  "engines": {
+    "node": ">=8"
   },
-  "homepage": "https://github.com/berstend/puppeteer-extra#readme",
-  "dependencies": {
-    "deepmerge": "^2.1.0",
-    "mkdirp-promise": "^5.0.1",
-    "rimraf": "^2.6.2"
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "docs": "lerna run docs && update-markdown-jsdoc",
+    "test": "lerna run test",
+    "prepare": "lerna run prepare"
   },
-  "peerDependencies": {
-    "puppeteer": "1.x"
-  },
+  "workspaces": [
+    "packages/*"
+  ],
   "devDependencies": {
-    "puppeteer": "^1.4.0"
-  }
+    "lerna": "^2.11.0"
+  },
+  "dependencies": {}
 }

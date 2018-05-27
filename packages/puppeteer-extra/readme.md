@@ -1,8 +1,12 @@
 # puppeteer-extra
 
-> Modular framework to teach Puppeteer new tricks.
+## Examples
 
-`WIP`
+```bash
+node examples/foo.js
+# with debug logs
+DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node examples/foo.js
+```
 
 ## API
 
@@ -186,31 +190,3 @@ Type: `function (options): PuppeteerBrowserFetcher`
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** 
 
 * * *
-
-## Lerna
-
-This is a monorepo powered by [Lerna](https://github.com/lerna/lerna).
-
-#### Flow
-
-```bash
-# Bootstrap the packages in the current Lerna repo. 
-# Installs all of their dependencies and links any cross-dependencies.
-yarn bootstrap
-
-# Install debug in all modules
-lerna add debug
-
-# Install fs-extra to puppeteer-extra-plugin-user-data-dir
-lerna add fs-extra --scope=puppeteer-extra-plugin-user-data-dir
-
-# Remove dependency
-# https://github.com/lerna/lerna/issues/833
-lerna exec -- yarn remove fs-extra
-
-# Run test in all packages
-yarn test
-
-# Update JSDoc based documentation in markdown files
-yarn docs
-```
