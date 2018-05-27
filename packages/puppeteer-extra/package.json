@@ -33,7 +33,6 @@
   },
   "dependencies": {
     "debug": "^3.1.0",
-    "deepmerge": "^2.1.0",
-    "puppeteer-extra-plugin-user-preferences": "^2.0.0"
+    "deepmerge": "^2.1.0"
   }
 }
