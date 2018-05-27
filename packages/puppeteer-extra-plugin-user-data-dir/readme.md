@@ -8,7 +8,7 @@
 
 -   [Plugin](#plugin)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/d595e51f001579ac6fd69bb32b2b8344be495638/packages/puppeteer-extra-plugin-user-data-dir/index.js#L19-L105)
+### [Plugin](https://github.com/berstend/puppeteer-extra/blob/826d18ac772c579e8310edf2cee42d17158f36cb/packages/puppeteer-extra-plugin-user-data-dir/index.js#L19-L105)
 
 **Extends: PuppeteerExtraPlugin**
 
