@@ -10,7 +10,7 @@
 
 -   [Plugin](#plugin)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/aef617794c228564231f021105691273a0297b1c/packages/puppeteer-extra-plugin-anonymize-ua/index.js#L24-L52)
+### [Plugin](https://github.com/berstend/puppeteer-extra/blob/e761e92a82a74531ff674962c7e3398be8fc791e/packages/puppeteer-extra-plugin-anonymize-ua/index.js#L24-L52)
 
 **Extends: PuppeteerExtraPlugin**
 

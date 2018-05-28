@@ -30,6 +30,8 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'font-size'
   }
 
+  get requirements () { return new Set(['headful']) }
+
   get dependencies () {
     return new Set(['user-preferences'])
   }
