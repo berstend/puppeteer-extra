@@ -10,7 +10,7 @@
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "docs": "lerna run docs && update-markdown-jsdoc",
+    "docs": "lerna run docs",
     "test": "lerna run test",
     "prepare": "lerna run prepare"
   },

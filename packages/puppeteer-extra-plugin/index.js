@@ -81,7 +81,7 @@ class PuppeteerExtraPlugin {
    *   - In case the plugin prefers to run after the others.
    *     Useful when the plugin needs data from others.
    *
-   * @member {Set=}
+   * @member {Set<string>}
    *
    * @example
    * get requirements () {
@@ -95,7 +95,7 @@ class PuppeteerExtraPlugin {
    *
    * Missing plugins will be required() by puppeteer-extra.
    *
-   * @member {Set=}
+   * @member {Set<string>}
    *
    * @example
    * get dependencies () {

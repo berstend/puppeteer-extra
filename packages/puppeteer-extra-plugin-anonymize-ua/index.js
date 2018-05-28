@@ -49,12 +49,6 @@ class Plugin extends PuppeteerExtraPlugin {
     this.debug('new ua', ua)
     await page.setUserAgent(ua)
   }
-
-  async afterLaunch (browser, options) {
-    this.debug('afterLaunch', options)
-  }
-
-
 }
 
 module.exports = function (pluginConfig) { return new Plugin(pluginConfig) }
