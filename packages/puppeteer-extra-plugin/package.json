@@ -1,7 +1,7 @@
 {
   "name": "puppeteer-extra-plugin",
   "version": "2.0.0",
-  "description": "Abstract base class for puppeteer-extra plugins.",
+  "description": "Base class for puppeteer-extra plugins.",
   "main": "index.js",
   "repository": "berstend/puppeteer-extra",
   "author": "berstend",

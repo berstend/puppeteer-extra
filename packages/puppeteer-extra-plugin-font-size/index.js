@@ -30,18 +30,24 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'font-size'
   }
 
-  get requirements () {
-    return new Set(['headful'])
+  get dependencies () {
+    return new Set(['user-preferences'])
   }
 
-  get userPreferences () {
-    return {
+  get data () {
+    const userPreferences = {
       webkit: {
         webprefs: {
           default_font_size: this._opts.defaultFontSize
         }
       }
     }
+    return [
+      {
+        name: 'userPreferences',
+        value: userPreferences
+      }
+    ]
   }
 }
 

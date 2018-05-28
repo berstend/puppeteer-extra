@@ -18,33 +18,43 @@ DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node examples/foo.js
     -   [use](#use)
     -   [launch](#launch)
     -   [plugins](#plugins)
-    -   [pluginNames](#pluginnames)
-    -   [getPluginsByProp](#getpluginsbyprop)
-    -   [files](#files)
-    -   [callPlugins](#callplugins)
-    -   [callPluginsWithValue](#callpluginswithvalue)
-    -   [bindBrowserEvents](#bindbrowserevents)
+    -   [getPluginData](#getplugindata)
     -   [connect](#connect)
     -   [executablePath](#executablepath)
     -   [defaultArgs](#defaultargs)
     -   [createBrowserFetcher](#createbrowserfetcher)
 
-### [PuppeteerExtra](https://github.com/berstend/puppeteer-extra/blob/826d18ac772c579e8310edf2cee42d17158f36cb/packages/puppeteer-extra/index.js#L31-L316)
+### [PuppeteerExtra](https://github.com/berstend/puppeteer-extra/blob/642c58af88a8b2b8e1410541da02498696625113/packages/puppeteer-extra/index.js#L43-L289)
 
-Modular framework to teach puppeteer new tricks.
+Modular plugin framework to teach `puppeteer` new tricks.
 
-This module acts a drop-in replacement for puppeteer.
+This module acts a drop-in replacement for `puppeteer`.
 
 Allows PuppeteerExtraPlugin's to register themselves and
 to extend puppeteer with additional functionality.
 
 Type: `function ()`
 
+Example:
+
+```javascript
+const puppeteer = require('puppeteer-extra')
+puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
+puppeteer.use(require('puppeteer-extra-plugin-font-size')({defaultFontSize: 18}))
+
+(async () => {
+  const browser = await puppeteer.launch({headless: false})
+  const page = await browser.newPage()
+  await page.goto('http://example.com', {waitUntil: 'domcontentloaded'})
+  await browser.close()
+})()
+```
+
 * * *
 
-#### [use](https://github.com/berstend/puppeteer-extra/blob/826d18ac772c579e8310edf2cee42d17158f36cb/packages/puppeteer-extra/index.js#L52-L61)
+#### [use](https://github.com/berstend/puppeteer-extra/blob/642c58af88a8b2b8e1410541da02498696625113/packages/puppeteer-extra/index.js#L63-L79)
 
-Main outside interface to register plugins.
+Outside interface to register plugins.
 
 Type: `function (plugin): this`
 
@@ -61,17 +71,22 @@ const browser = await puppeteer.launch(...)
 
 * * *
 
-#### [launch](https://github.com/berstend/puppeteer-extra/blob/826d18ac772c579e8310edf2cee42d17158f36cb/packages/puppeteer-extra/index.js#L69-L86)
+#### [launch](https://github.com/berstend/puppeteer-extra/blob/642c58af88a8b2b8e1410541da02498696625113/packages/puppeteer-extra/index.js#L92-L103)
 
-Main launch method kickstarting the extra functionality.
+Main launch method.
 
-Type: `function (options)`
+Augments the original `puppeteer.launch` method with plugin lifecycle methods.
+
+It'll call all loaded plugins that have a `beforeLaunch` method
+in sequence to potentially update the options Object before launch.
+
+Type: `function (options): Puppeteer.Browser`
 
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Regular Puppeteer options (optional, default `{}`)
 
 * * *
 
-#### [plugins](https://github.com/berstend/puppeteer-extra/blob/826d18ac772c579e8310edf2cee42d17158f36cb/packages/puppeteer-extra/index.js#L93-L93)
+#### [plugins](https://github.com/berstend/puppeteer-extra/blob/642c58af88a8b2b8e1410541da02498696625113/packages/puppeteer-extra/index.js#L110-L110)
 
 Get all loaded plugins.
 
@@ -79,83 +94,22 @@ Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global
 
 * * *
 
-#### [pluginNames](https://github.com/berstend/puppeteer-extra/blob/826d18ac772c579e8310edf2cee42d17158f36cb/packages/puppeteer-extra/index.js#L100-L100)
+#### [getPluginData](https://github.com/berstend/puppeteer-extra/blob/642c58af88a8b2b8e1410541da02498696625113/packages/puppeteer-extra/index.js#L131-L136)
 
-Get the names of all loaded plugins.
+Collects the exposed `data` property of all loaded plugins.
+Will be reduced/flattened to a single array.
 
-Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>
+Can be accessed by plugins that listed the `dataFromPlugins` requirement.
 
-* * *
+Implemented mainly for plugins that need data from other plugins (e.g. `user-preferences`).
 
-#### [getPluginsByProp](https://github.com/berstend/puppeteer-extra/blob/826d18ac772c579e8310edf2cee42d17158f36cb/packages/puppeteer-extra/index.js#L111-L113)
+Type: `function (name)`
 
-Get all plugins that feature a given property.
-
-The idea of plugins registering their hooks
-by exposing specific properties is used throughout this module.
-
-Type: `function (prop)`
-
--   `prop` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Filter data by name property (optional, default `null`)
 
 * * *
 
-#### [files](https://github.com/berstend/puppeteer-extra/blob/826d18ac772c579e8310edf2cee42d17158f36cb/packages/puppeteer-extra/index.js#L126-L138)
-
-Generate and return files based on plugin properties and values.
-
-Currently we use this exclusively for userPreferences
-but this could be extended to allow plguins to define
-arbitrary files to be written.
-
-The current main consumer is the 'user-data-dir' plugin.
-
-Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;Objects>
-
-* * *
-
-#### [callPlugins](https://github.com/berstend/puppeteer-extra/blob/826d18ac772c579e8310edf2cee42d17158f36cb/packages/puppeteer-extra/index.js#L186-L190)
-
-Call plugins sequentially with the same value.
-Plugins that expose the supplied property will be called.
-
-Type: `function (prop, value)`
-
--   `prop` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The plugin property to call
--   `value` **any** Any value
-
-* * *
-
-#### [callPluginsWithValue](https://github.com/berstend/puppeteer-extra/blob/826d18ac772c579e8310edf2cee42d17158f36cb/packages/puppeteer-extra/index.js#L203-L209)
-
-Call plugins sequentially and pass on a value (waterfall style).
-Plugins that expose the supplied property will be called.
-
-The plugins can either modify the value or return an updated one.
-Will return the latest, updated value which ran through all plugins.
-
-Type: `function (prop, value)`
-
--   `prop` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The plugin property to call
--   `value` **any** Any value
-
-* * *
-
-#### [bindBrowserEvents](https://github.com/berstend/puppeteer-extra/blob/826d18ac772c579e8310edf2cee42d17158f36cb/packages/puppeteer-extra/index.js#L220-L241)
-
-Register common browser/process events and dispatch
-them to Plugins that expressed interest in them.
-
-Plugins could do this themselves but the idea is to
-avoid boilerplates and make the Plugin code more terse.
-
-Type: `function (browser)`
-
--   `browser`  
-
-* * *
-
-#### [connect](https://github.com/berstend/puppeteer-extra/blob/826d18ac772c579e8310edf2cee42d17158f36cb/packages/puppeteer-extra/index.js#L285-L287)
+#### [connect](https://github.com/berstend/puppeteer-extra/blob/642c58af88a8b2b8e1410541da02498696625113/packages/puppeteer-extra/index.js#L258-L260)
 
 Regular Puppeteer method that is being passed through.
 
@@ -165,7 +119,7 @@ Type: `function (options)`
 
 * * *
 
-#### [executablePath](https://github.com/berstend/puppeteer-extra/blob/826d18ac772c579e8310edf2cee42d17158f36cb/packages/puppeteer-extra/index.js#L294-L296)
+#### [executablePath](https://github.com/berstend/puppeteer-extra/blob/642c58af88a8b2b8e1410541da02498696625113/packages/puppeteer-extra/index.js#L267-L269)
 
 Regular Puppeteer method that is being passed through.
 
@@ -173,7 +127,7 @@ Type: `function (): string`
 
 * * *
 
-#### [defaultArgs](https://github.com/berstend/puppeteer-extra/blob/826d18ac772c579e8310edf2cee42d17158f36cb/packages/puppeteer-extra/index.js#L303-L305)
+#### [defaultArgs](https://github.com/berstend/puppeteer-extra/blob/642c58af88a8b2b8e1410541da02498696625113/packages/puppeteer-extra/index.js#L276-L278)
 
 Regular Puppeteer method that is being passed through.
 
@@ -181,7 +135,7 @@ Type: `function ()`
 
 * * *
 
-#### [createBrowserFetcher](https://github.com/berstend/puppeteer-extra/blob/826d18ac772c579e8310edf2cee42d17158f36cb/packages/puppeteer-extra/index.js#L313-L315)
+#### [createBrowserFetcher](https://github.com/berstend/puppeteer-extra/blob/642c58af88a8b2b8e1410541da02498696625113/packages/puppeteer-extra/index.js#L286-L288)
 
 Regular Puppeteer method that is being passed through.
 

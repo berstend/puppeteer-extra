@@ -1,41 +1,353 @@
 'use strict'
 
+const debug = require('debug')
+
 /**
- * Abstract base class for puppeteer-extra plugins.
+ * Base class for `puppeteer-extra` plugins.
+ *
+ * Provides convenience methods to avoid boilerplate.
+ *
+ * All common `puppeteer` browser events will be bound to
+ * the plugin instance, if a respectively named class member is found.
+ *
+ * Please refer to the [puppeteer API documentation] as well.
+ * [puppeteer API documentation]: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md
+ *
+ * @example
+ * // hello-world-plugin.js
+ * const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
+ *
+ * class Plugin extends PuppeteerExtraPlugin {
+ *   constructor (opts = { }) {
+ *     super(opts)
+ *   }
+ *
+ *   get name () { return 'hello-world' }
+ *
+ *   async onPageCreated (page) {
+ *     this.debug('page created', page.url())
+ *     const ua = await page.browser().userAgent()
+ *     this.debug('user agent', ua)
+ *   }
+ * }
+ *
+ * module.exports = function (pluginConfig) { return new Plugin(pluginConfig) }
+ *
+ *
+ * // foo.js
+ * const puppeteer = require('puppeteer-extra')
+ * puppeteer.use(require('./hello-world-plugin')())
+ *
+ * (async () => {
+ *   const browser = await puppeteer.launch({headless: false})
+ *   const page = await browser.newPage()
+ *   await page.goto('http://example.com', {waitUntil: 'domcontentloaded'})
+ *   await browser.close()
+ * })()
  */
 class PuppeteerExtraPlugin {
   constructor () {
-    this._puppeteer = null
-    this._options = null
-    this._browser = null
+    this._debugBase = debug(`puppeteer-extra-plugin:base:${this.name}`)
+    this._childClassMembers = []
   }
 
   /**
-   * Plugin name.
+   * Plugin name (required).
    *
    * Convention:
-   *   "puppeteer-extra-plugin-anonymize-ua"
-   *      becomes
-   *   "anonymize-ua"
+   * - Package: `puppeteer-extra-plugin-anonymize-ua`
+   * - Name: `anonymize-ua`
    *
    * @member {string}
+   *
+   * @example
+   * get name () { return 'anonymize-ua' }
    */
-  get name () {
-    throw new Error('plugin must override "name"')
+  get name () { throw new Error('Plugin must override "name"') }
+
+  /**
+   * Plugin requirements (optional).
+   *
+   * Signal certain plugin requirements to the base class and the user.
+   *
+   * Currently supported:
+   * - `headful`
+   *   - If the plugin doesn't work in `headless: true` mode,
+   *     will output a warning to the user.
+   * - `dataFromPlugins`
+   *   - In case the plugin requires data from other plugins.
+   *     will enable usage of `this.getDataFromPlugins()`.
+   * - `runLast`
+   *   - In case the plugin prefers to run after the others.
+   *     Useful when the plugin needs data from others.
+   *
+   * @member {Set=}
+   *
+   * @example
+   * get requirements () {
+   *   return new Set(['runLast', 'dataFromPlugins'])
+   * }
+   */
+  get requirements () { return new Set([]) }
+
+  /**
+   * Plugin dependencies (optional).
+   *
+   * Missing plugins will be required() by puppeteer-extra.
+   *
+   * @member {Set=}
+   *
+   * @example
+   * get dependencies () {
+   *   return new Set(['user-preferences'])
+   * }
+   * // Will ensure the 'puppeteer-extra-plugin-user-preferences' plugin is loaded.
+   */
+  get dependencies () { return new Set([]) }
+
+  /**
+   * Plugin data (optional).
+   *
+   * Plugins can expose data (an array of objects), which in turn can be consumed by other plugins,
+   * that list the `dataFromPlugins` requirement (by using `this.getDataFromPlugins()`).
+   *
+   * Convention: `[ {name: 'Any name', value: 'Any value'} ]`
+   *
+   * @member {Array=}
+   * @see getDataFromPlugins
+   *
+   * @example
+   * // plugin1.js
+   * get data () {
+   *   return [
+   *     {
+   *       name: 'userPreferences',
+   *       value: { foo: 'bar' }
+   *     },
+   *     {
+   *       name: 'userPreferences',
+   *       value: { hello: 'world' }
+   *     }
+   *   ]
+   *
+   * // plugin2.js
+   * get requirements () { return new Set(['dataFromPlugins']) }
+   *
+   * async beforeLaunch () {
+   *   const prefs = this.getDataFromPlugins('userPreferences').map(d => d.value)
+   *   this.debug(prefs) // => [ { foo: 'bar' }, { hello: 'world' } ]
+   * }
+   */
+  get data () { return [] }
+
+  /**
+   *  Convenience debug logger based on the [debug] module.
+   *  Will automatically namespace the logging output to the plugin package name.
+   *  [debug]: https://www.npmjs.com/package/debug
+   *
+   *  ```bash
+   *  # toggle output using environment variables
+   *  DEBUG=puppeteer-extra-plugin:<plugin_name> node foo.js
+   *  # to debug all the things:
+   *  DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node foo.js
+   *  ```
+   *
+   * @member {Function}
+   *
+   * @example
+   * this.debug('hello world')
+   * // will output e.g. 'puppeteer-extra-plugin:anonymize-ua hello world'
+   */
+  get debug () { return debug(`puppeteer-extra-plugin:${this.name}`) }
+
+  /**
+   * Can be used to modify the puppeteer launch options by modifying or returning them.
+   *
+   * Plugins using this method will be called in sequence to each
+   * be able to update the launch options.
+   *
+   * @param  {Object} options - Puppeteer launch options
+   * @return {Object=}
+   */
+  async beforeLaunch (options) { }
+
+  /**
+   * After the browser has launched.
+   *
+   * @param  {Puppeteer.Browser} browser - The `puppeteer` browser instance.
+   * @param  {Object=} options - The launch options used.
+   */
+  async afterLaunch (browser, options = {}) { }
+
+  /**
+   * Called when a target is created, for example when a new page is opened by window.open or browser.newPage.
+   *
+   * > NOTE This includes target creations in incognito browser contexts.
+   *
+   * @param  {Puppeteer.Target} target
+   */
+  async onTargetCreated (target) { }
+
+  /**
+   * Same as `onTargetCreated` but prefiltered to only contain Pages, for convenience.
+   *
+   * > NOTE: This includes target creations in incognito browser contexts.
+   *
+   * @param  {Puppeteer.Target} target
+   */
+  async onPageCreated (target) { }
+
+  /**
+   * Called when the url of a target changes.
+   *
+   * > NOTE: This includes target changes in incognito browser contexts.
+   *
+   * @param  {Puppeteer.Target} target
+   */
+  async onTargetChanged (target) { }
+
+  /**
+   * Called when a target is destroyed, for example when a page is closed.
+   *
+   * > NOTE: This includes target destructions in incognito browser contexts.
+   *
+   * @param  {Puppeteer.Target} target
+   */
+  async onTargetDestroyed (target) { }
+
+  /**
+   * Called when Puppeteer gets disconnected from the Chromium instance.
+   * This might happen because of one of the following:
+   * - Chromium is closed or crashed
+   * - The `browser.disconnect` method was called
+   */
+  async onDisconnected () { }
+
+  /**
+   * Sometimes `onDisconnected` is not catching all exit scenarios.
+   * In order for plugins to clean up properly (e.g. deleting temporary files)
+   * the `onClose` method can be used.
+   *
+   * Note: Might be called multiple times on exit.
+   */
+  async onClose () { }
+
+  /**
+   * After the plugin has been registered in `puppeteer-extra`.
+   *
+   * Normally right after `puppeteer.use(plugin)` is called
+   */
+  onPluginRegistered () { }
+
+  /**
+   * Helper method to retrieve `data` objects from other plugins.
+   *
+   * A plugin needs to state the `dataFromPlugins` requirement
+   * in order to use this method. Will be mapped to `puppeteer.getPluginData`.
+   *
+   * @param {string=} name - Filter data by `name` property
+   * @return {Array<Object>}
+   * @see data
+   * @see requirements
+   */
+  getDataFromPlugins (name = null) { return [] }
+
+  /**
+   * Will match plugin dependencies against all currently registered plugins.
+   * Is being called by `puppeteer-extra` and used to require missing dependencies.
+   *
+   * @param  {Array<Object>} plugins
+   * @return {Set} - list of missing plugin names
+   * @private
+   */
+  _getMissingDependencies (plugins) {
+    const pluginNames = new Set(plugins.map(p => p.name))
+    const missing = new Set([...this.dependencies].filter(x => !pluginNames.has(x)))
+    return missing
   }
 
-  get requirements () {
-    return new Set([])
+  /**
+   * Conditionally bind browser/process events to class members.
+   * The idea is to reduce event binding boilerplate in plugins.
+   *
+   * For efficiency we make sure the plugin is using the respective event
+   * by checking the child class members before registering the listener.
+   *
+   * @param  {<Puppeteer.Browser>} browser
+   * @param {Object=} options - Puppeteer options
+   * @param {string=} context - Puppeteer context (launch/connect)
+   * @private
+   */
+  async _bindBrowserEvents (browser, options = {}, context = 'launch') {
+    if (this._hasChildClassMember('onTargetCreated') || this._hasChildClassMember('onPageCreated')) {
+      browser.on('targetcreated', this._onTargetCreated.bind(this))
+    }
+    if (this._hasChildClassMember('onTargetChanged')) {
+      browser.on('targetchanged', this.onTargetChanged.bind(this))
+    }
+    if (this._hasChildClassMember('onTargetDestroyed')) {
+      browser.on('targetdestroyed', this.onTargetDestroyed.bind(this))
+    }
+    if (this._hasChildClassMember('onDisconnected')) {
+      browser.on('disconnected', this.onDisconnected.bind(this))
+    }
+    if (this._hasChildClassMember('onClose')) {
+      browser._process.once('close', this.onClose.bind(this))
+      process.on('exit', this.onClose.bind(this))
+      if (options.handleSIGINT !== false) {
+        process.on('SIGINT', this.onClose.bind(this))
+      }
+      if (options.handleSIGTERM !== false) {
+        process.on('SIGTERM', this.onClose.bind(this))
+      }
+      if (options.handleSIGHUP !== false) {
+        process.on('SIGHUP', this.onClose.bind(this))
+      }
+    }
+    if (context === 'launch') {
+      await this.afterLaunch(browser, options)
+    }
   }
 
-  get puppeteer () { return this._puppeteer }
-  set puppeteer (puppeteer) { this._puppeteer = puppeteer }
+  /**
+   * @private
+   */
+  async _onTargetCreated (target) {
+    await this.onTargetCreated(target)
+    // Pre filter pages for plugin developers convenience
+    if (target.type() === 'page') {
+      await this.onPageCreated(await target.page())
+    }
+  }
 
-  get browser () { return this._browser }
-  set browser (browser) { this._browser = browser }
+  /**
+   * @private
+   */
+  _register (prototype) {
+    this._registerChildClassMembers(prototype)
+    this.onPluginRegistered()
+    return this
+  }
 
-  get options () { return this._options }
-  set options (options) { this._options = options }
+  /**
+   * @private
+   */
+  _registerChildClassMembers (prototype) {
+    this._childClassMembers = Object.getOwnPropertyNames(prototype)
+    return this
+  }
+
+  /**
+   * @private
+   */
+  _hasChildClassMember (name) {
+    return this._childClassMembers.includes(name)
+  }
+
+  /**
+   * @private
+   */
+  get _isPuppeteerExtraPlugin () { return true }
 }
 
 module.exports = PuppeteerExtraPlugin

@@ -2,10 +2,11 @@
 
 const puppeteer = require('puppeteer-extra')
 
-puppeteer.use(require('puppeteer-extra-plugin-font-size')())
 puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')({
   customFn: (ua) => 'MyCoolAgent/' + ua})
 )
+// Will implicitely require 'user-preferences' which will require 'user-data-dir'
+puppeteer.use(require('puppeteer-extra-plugin-font-size')())
 
 ;(async () => {
   const browser = await puppeteer.launch({headless: false})

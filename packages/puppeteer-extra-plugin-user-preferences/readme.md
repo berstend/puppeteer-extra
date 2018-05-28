@@ -10,13 +10,14 @@
 
 -   [Plugin](#plugin)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/826d18ac772c579e8310edf2cee42d17158f36cb/packages/puppeteer-extra-plugin-user-preferences/index.js#L27-L49)
+### [Plugin](https://github.com/berstend/puppeteer-extra/blob/642c58af88a8b2b8e1410541da02498696625113/packages/puppeteer-extra-plugin-user-preferences/index.js#L30-L73)
 
 **Extends: PuppeteerExtraPlugin**
 
 Launch puppeteer with arbitrary user preferences.
 
-The user preferences will be merged with preferences set by other plugins.
+The user defined preferences will be merged with preferences set by other plugins.
+Plugins can add user preferences by exposing a data entry with the name `userPreferences`.
 
 Overview:
 <https://chromium.googlesource.com/chromium/src/+/master/chrome/common/pref_names.cc>
@@ -24,19 +25,19 @@ Overview:
 Type: `function (opts)`
 
 -   `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Options (optional, default `{}`)
-    -   `opts.prefs` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** An object containing the preferences. (optional, default `{}`)
+    -   `opts.userPrefs` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** An object containing the preferences. (optional, default `{}`)
 
 Example:
 
 ```javascript
 const puppeteer = require('puppeteer-extra')
-puppeteer.use(require('puppeteer-extra-plugin-user-preferences')({
+puppeteer.use(require('puppeteer-extra-plugin-user-preferences')({userPrefs: {
   webkit: {
     webprefs: {
       default_font_size: 22
     }
   }
-}))
+}}))
 const browser = await puppeteer.launch()
 ```
 

@@ -21,24 +21,35 @@ const merge = require('deepmerge')
 const debug = require('debug')('puppeteer-extra')
 
 /**
- * Modular framework to teach puppeteer new tricks.
+ * Modular plugin framework to teach `puppeteer` new tricks.
  *
- * This module acts a drop-in replacement for puppeteer.
+ * This module acts a drop-in replacement for `puppeteer`.
  *
  * Allows PuppeteerExtraPlugin's to register themselves and
  * to extend puppeteer with additional functionality.
+ *
+ * @example
+ * const puppeteer = require('puppeteer-extra')
+ * puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
+ * puppeteer.use(require('puppeteer-extra-plugin-font-size')({defaultFontSize: 18}))
+ *
+ * (async () => {
+ *   const browser = await puppeteer.launch({headless: false})
+ *   const page = await browser.newPage()
+ *   await page.goto('http://example.com', {waitUntil: 'domcontentloaded'})
+ *   await browser.close()
+ * })()
  */
 class PuppeteerExtra {
   constructor () {
     this._plugins = []
-    this._browser = null
-    this._options = {
-      args: []
-    }
+
+    // Ensure there are certain properties (e.g. the `options.args` array)
+    this._defaultOptions = { args: [] }
   }
 
   /**
-   * Main outside interface to register plugins.
+   * Outside interface to register plugins.
    *
    * @param  {PuppeteerExtraPlugin} plugin
    * @return {this} - For chaining
@@ -50,39 +61,45 @@ class PuppeteerExtra {
    * const browser = await puppeteer.launch(...)
    */
   use (plugin) {
+    if ((typeof plugin !== 'object') || !plugin._isPuppeteerExtraPlugin) {
+      console.error(`Warning: Plugin is not derived from PuppeteerExtraPlugin, ignoring.`, plugin)
+      return this
+    }
     if (!plugin.name) {
       console.error(`Warning: Plugin with no name registered, ignoring.`, plugin)
       return this
     }
-    plugin.puppeteer = this
+    if (plugin.requirements.has('dataFromPlugins')) {
+      plugin.getDataFromPlugins = this.getPluginData.bind(this)
+    }
+    plugin._register(Object.getPrototypeOf(plugin))
     this._plugins.push(plugin)
     debug('plugin loaded', plugin.name)
     return this
   }
 
   /**
-   * Main launch method kickstarting the extra functionality.
+   * Main launch method.
+   *
+   * Augments the original `puppeteer.launch` method with plugin lifecycle methods.
+   *
+   * It'll call all loaded plugins that have a `beforeLaunch` method
+   * in sequence to potentially update the options Object before launch.
    *
    * @param {Object=} options - Regular Puppeteer options
-   * @return {Promise<Puppeteer.Browser>}
+   * @return {Puppeteer.Browser}
    */
   async launch (options = {}) {
-    debug('launch', {options})
-    // Ensure there are certain properties (e.g. the `options.args` array)
-    this._options = merge(this._options, options)
-    this.checkPluginDependencies()
-    this.checkPluginRequirements()
+    options = merge(this._defaultOptions, options)
+    this.resolvePluginDependencies()
+    this.orderPlugins()
 
-    this._options = await this.beforeLaunch(this._options)
-    this._browser = await Puppeteer.launch(this._options)
+    options = await this.callPluginsWithValue('beforeLaunch', options)
+    this.checkPluginRequirements(options)
+    const browser = await Puppeteer.launch(options)
 
-    for (const plugin of this._plugins) {
-      plugin.browser = this._browser
-      plugin.options = this._options
-    }
-    this.bindBrowserEvents(this._browser)
-    await this.afterLaunch(this._browser)
-    return this._browser
+    await this.callPlugins('_bindBrowserEvents', browser, options)
+    return browser
   }
 
   /**
@@ -96,96 +113,119 @@ class PuppeteerExtra {
    * Get the names of all loaded plugins.
    *
    * @member {Array<string>}
+   * @private
    */
   get pluginNames () { return this._plugins.map(p => p.name) }
 
   /**
-   * Get all plugins that feature a given property.
+   * Collects the exposed `data` property of all loaded plugins.
+   * Will be reduced/flattened to a single array.
    *
-   * The idea of plugins registering their hooks
-   * by exposing specific properties is used throughout this module.
+   * Can be accessed by plugins that listed the `dataFromPlugins` requirement.
+   *
+   * Implemented mainly for plugins that need data from other plugins (e.g. `user-preferences`).
+   *
+   * @param {string=} name - Filter data by name property
+   * @return {Array<Object>}
+   */
+  getPluginData (name = null) {
+    const data = this._plugins
+      .map(p => Array.isArray(p.data) ? p.data : [p.data])
+      .reduce((acc, arr) => [...acc, ...arr], [])
+    return name ? data.filter(d => d.name === name) : data
+  }
+
+  /**
+   * Get all plugins that feature a given property/class method.
    *
    * @param  {string} prop
    * @return {Array<PuppeteerExtraPlugin>}
+   * @private
    */
   getPluginsByProp (prop) {
     return this._plugins.filter(plugin => (prop in plugin))
   }
 
   /**
-   * Generate and return files based on plugin properties and values.
-   *
-   * Currently we use this exclusively for userPreferences
-   * but this could be extended to allow plguins to define
-   * arbitrary files to be written.
-   *
-   * The current main consumer is the 'user-data-dir' plugin.
-   *
-   * @member {Array<Objects>}
+   * @private
    */
-  get files () {
-    const files = []
-    // Deep merge all plugin provided user preferences
-    const userPreferences = merge.all(
-      this.getPluginsByProp('userPreferences').map(p => p.userPreferences)
-    )
-    files.push({
-      target: 'Profile',
-      file: 'Preferences',
-      contents: JSON.stringify(userPreferences, null, 2)
-    })
-    return files
+  resolvePluginDependencies () {
+    const missingPlugins = this._plugins
+      .map(p => p._getMissingDependencies(this._plugins))
+      .reduce((combined, list) => {
+        return new Set([...combined, ...list])
+      }, new Set())
+    if (!missingPlugins.size) {
+      debug('no dependencies are missing')
+      return
+    }
+    debug('dependencies missing', missingPlugins)
+    for (let name of [...missingPlugins]) {
+      name = name.startsWith('puppeteer-extra-plugin') ? name : `puppeteer-extra-plugin-${name}`
+      let dep = null
+      try {
+        dep = require(name)()
+        this.use(dep)
+      } catch (err) {
+        console.warn(`
+          A plugin listed '${name}' as dependency,
+          which is currently missing. Please install it:
+
+          npm i --save ${name}
+
+          Note: You don't need to require the plugin yourself,
+          unless you want to modify it's default settings.
+          `)
+        throw err
+      }
+      // Handle nested dependencies :D
+      if (dep.requirements.size) {
+        this.resolvePluginDependencies()
+      }
+    }
   }
 
-  checkPluginRequirements () {
+  /**
+   * @private
+   */
+  orderPlugins () {
+    debug('orderPlugins:before', this.pluginNames)
+    const runLast = this._plugins
+      .filter(p => p.requirements.has('runLast'))
+      .map(p => p.name)
+    for (const name of runLast) {
+      const index = this._plugins.findIndex(p => p.name === name)
+      this._plugins.push(this._plugins.splice(index, 1)[0])
+    }
+    debug('orderPlugins:after', this.pluginNames)
+    // TODO: If there are multiple plugins defining 'runLast'
+    // sort them depending on who depends on whom. :D
+  }
+
+  /**
+   * @private
+   */
+  checkPluginRequirements (options = {}) {
     for (const plugin of this._plugins) {
       for (const requirement of plugin.requirements) {
-        if ((requirement === 'headful') && this._options.headless) {
+        if ((requirement === 'headful') && options.headless) {
           console.warn(`Warning: Plugin '${plugin.name}' is not supported in headless mode.`)
         }
       }
     }
   }
 
-  checkPluginDependencies () {
-    const requiresUserDataDir = !!this.getPluginsByProp('userPreferences').length
-    debug('requiresUserDataDir', requiresUserDataDir)
-    if (!requiresUserDataDir) { return }
-
-    const hasUserDataDirPlugin = this.pluginNames.includes('user-data-dir')
-    if (hasUserDataDirPlugin) {
-      // Move user-data-dir plugin to last position
-      const index = this._plugins.findIndex(p => p.name === 'user-data-dir')
-      this._plugins.push(this._plugins.splice(index, 1)[0])
-    } else {
-      try {
-        this.use(require('puppeteer-extra-plugin-user-data-dir')())
-      } catch (err) {
-        console.warn(`
-          A plugin requires a custom user data dir,
-          please install this dependency: 'puppeteer-extra-plugin-user-data-dir'.
-
-          npm i --save puppeteer-extra-plugin-user-data-dir
-
-          Note: You don't need to require it yourself,
-          unless you want to deviate from the defaults.
-          `)
-        throw err
-      }
-    }
-  }
-
   /**
-   * Call plugins sequentially with the same value.
+   * Call plugins sequentially with the same values.
    * Plugins that expose the supplied property will be called.
    *
    * @param  {string} prop - The plugin property to call
-   * @param  {*} value - Any value
+   * @param  {...*} values - Any number of values
+   * @private
    */
-
-  async callPlugins (prop, value) {
+  async callPlugins (prop, ...values) {
     for (const plugin of this.getPluginsByProp(prop)) {
-      await plugin[prop](value)
+      await plugin[prop].apply(plugin, values)
     }
   }
 
@@ -199,6 +239,7 @@ class PuppeteerExtra {
    * @param  {string} prop - The plugin property to call
    * @param  {*} value - Any value
    * @return {*} - The new updated value
+   * @private
    */
   async callPluginsWithValue (prop, value) {
     for (const plugin of this.getPluginsByProp(prop)) {
@@ -206,74 +247,6 @@ class PuppeteerExtra {
       if (newValue) { value = newValue }
     }
     return value
-  }
-
-  /**
-   * Register common browser/process events and dispatch
-   * them to Plugins that expressed interest in them.
-   *
-   * Plugins could do this themselves but the idea is to
-   * avoid boilerplates and make the Plugin code more terse.
-   *
-   * @param  {<Puppeteer.Browser>} browser
-   */
-  async bindBrowserEvents (browser) {
-    // Note: This includes incognito browser contexts as wel
-    // https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#event-targetcreated
-    browser.on('targetcreated', this.onTargetCreated.bind(this))
-    browser.on('targetchanged', this.onTargetChanged.bind(this))
-    browser.on('targetdestroyed', this.onTargetDestroyed.bind(this))
-    browser.on('disconnected', this.onDisconnected.bind(this))
-
-    // Expose an additional event to make it easy for plugins to clean up.
-    // This is a bit extreme, but better safe than sorry. :-)
-    browser._process.once('close', this.onClose.bind(this))
-    process.on('exit', this.onClose.bind(this))
-    if (!(this._options.handleSIGINT === false)) {
-      process.on('SIGINT', this.onClose.bind(this))
-    }
-    if (!(this._options.handleSIGTERM === false)) {
-      process.on('SIGTERM', this.onClose.bind(this))
-    }
-    if (!(this._options.handleSIGHUP === false)) {
-      process.on('SIGHUP', this.onClose.bind(this))
-    }
-  }
-
-  async onTargetCreated (target) {
-    // Pre filter for plugin developers convenience
-    if (target.type() === 'page') {
-      await this.onPageCreated(await target.page())
-    }
-    await this.callPlugins('onTargetCreated', target)
-  }
-
-  async onPageCreated (page) {
-    await this.callPlugins('onPageCreated', page)
-  }
-
-  async onTargetChanged (target) {
-    await this.callPlugins('onTargetChanged', target)
-  }
-
-  async onTargetDestroyed (target) {
-    await this.callPlugins('onTargetDestroyed', target)
-  }
-
-  async onDisconnected () {
-    await this.callPlugins('onDisconnected')
-  }
-
-  async onClose () {
-    await this.callPlugins('onClose')
-  }
-
-  async beforeLaunch (options) {
-    return this.callPluginsWithValue('beforeLaunch', options)
-  }
-
-  async afterLaunch (browser) {
-    await this.callPlugins('afterLaunch', browser)
   }
 
   /**

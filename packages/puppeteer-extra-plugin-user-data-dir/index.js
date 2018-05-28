@@ -25,7 +25,8 @@ class Plugin extends PuppeteerExtraPlugin {
 
     const defaults = {
       deleteTemporary: true,
-      deleteExisting: false
+      deleteExisting: false,
+      files: []
     }
     // Follow Puppeteers temporary user data dir naming convention by default
     defaults.folderPath = os.tmpdir()
@@ -37,6 +38,10 @@ class Plugin extends PuppeteerExtraPlugin {
 
   get name () {
     return 'user-data-dir'
+  }
+
+  get requirements () {
+    return new Set(['runLast', 'dataFromPlugins'])
   }
 
   get shouldDeleteDirectory () {
@@ -71,10 +76,14 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   async writeFilesToProfile () {
-    debug('writeFilesToProfile', this.puppeteer.files.length)
-    const files = this.puppeteer.files.filter(f => f.target === 'Profile')
+    const filesFromPlugins = this.getDataFromPlugins('userDataDirFile').map(d => d.value)
+    const files = [].concat(filesFromPlugins, this._opts.files)
     if (!files.length) { return }
     for (const file of files) {
+      if (file.target !== 'Profile') {
+        console.warn(`Warning: Ignoring file with invalid target`, file)
+        continue
+      }
       const filePath = path.join(this.defaultProfilePath, file.file)
       try {
         await fse.outputFile(filePath, file.contents)
@@ -86,12 +95,11 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   async beforeLaunch (options) {
-    debug('beforeLaunch', {options})
     this._userDataDir = options.userDataDir
     if (!this._userDataDir) {
       await this.makeTemporaryDirectory()
       options.userDataDir = this._userDataDir
-      debug('created custom dir', {options})
+      debug('created custom dir', options.userDataDir)
     }
     await this.writeFilesToProfile()
   }

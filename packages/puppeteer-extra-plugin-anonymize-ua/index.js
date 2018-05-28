@@ -33,12 +33,10 @@ class Plugin extends PuppeteerExtraPlugin {
     this._opts = Object.assign(defaults, opts)
   }
 
-  get name () {
-    return 'anonymize-ua'
-  }
+  get name () { return 'anonymize-ua' }
 
   async onPageCreated (page) {
-    let ua = await this._browser.userAgent()
+    let ua = await page.browser().userAgent()
     if (this._opts.stripHeadless) {
       ua = ua.replace('HeadlessChrome/', 'Chrome/')
     }
@@ -48,10 +46,15 @@ class Plugin extends PuppeteerExtraPlugin {
     if (this._opts.customFn) {
       ua = this._opts.customFn(ua)
     }
+    this.debug('new ua', ua)
     await page.setUserAgent(ua)
   }
+
+  async afterLaunch (browser, options) {
+    this.debug('afterLaunch', options)
+  }
+
+
 }
 
-module.exports = function (pluginConfig) {
-  return new Plugin(pluginConfig)
-}
+module.exports = function (pluginConfig) { return new Plugin(pluginConfig) }
