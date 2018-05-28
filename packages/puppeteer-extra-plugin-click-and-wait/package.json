@@ -1,0 +1,34 @@
+{
+  "name": "puppeteer-extra-plugin-click-and-wait",
+  "version": "2.0.0",
+  "description": "Convenience function to wait for navigation to complete after clicking on an element.",
+  "main": "index.js",
+  "repository": "berstend/puppeteer-extra",
+  "author": "berstend",
+  "license": "MIT",
+  "scripts": {
+    "docs": "update-markdown-jsdoc",
+    "test": "standard"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "keywords": [
+    "puppeteer",
+    "puppeteer-extra",
+    "puppeteer-extra-plugin",
+    "clickAndWaitForNavigation",
+    "chrome",
+    "headless",
+    "pupeteer"
+  ],
+  "devDependencies": {
+    "ava": "^0.25.0",
+    "puppeteer": "next",
+    "standard": "^11.0.0",
+    "update-markdown-jsdoc": "^1.0.2"
+  },
+  "dependencies": {
+    "debug": "^3.1.0"
+  }
+}
