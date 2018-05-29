@@ -1,12 +1,80 @@
 # puppeteer-extra
 
-## Examples
+[![npm](https://img.shields.io/npm/v/puppeteer-extra.svg?style=flat-square)](https://www.npmjs.com/package/puppeteer-extra) 
+[![npm](https://img.shields.io/npm/dt/puppeteer-extra.svg?style=flat-square)](https://www.npmjs.com/package/puppeteer-extra) 
+[![npm](https://img.shields.io/npm/l/puppeteer-extra.svg?style=flat-square)](https://www.npmjs.com/package/puppeteer-extra)
+
+`puppeteer-extra` is a drop-in replacement for [`puppeteer`](https://github.com/GoogleChrome/puppeteer) that enables plugins through a clean interface.
+
+It's not a puppeteer fork but augments your existing `puppeteer` module with a modular and lightweight plugin framework.
+
+### Install
 
 ```bash
-node examples/foo.js
-# with debug logs
-DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node examples/foo.js
+yarn add puppeteer-extra
 ```
+
+Puppeteer is a peer dependency of puppeteer-extra,
+which means you can install your own preferred version:
+
+```bash
+# To install the latest stable version:
+yarn add puppeteer
+# To install the latest tip-of-tree version:
+yarn add puppeteer@next
+```
+
+### Usage
+
+```es6
+const puppeteer = require('puppeteer-extra')
+
+// Register plugins through `.use()`
+puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
+puppeteer.use(require('puppeteer-extra-plugin-font-size')({defaultFontSize: 18}))
+
+(async () => {
+  const browser = await puppeteer.launch({headless: false})
+  const page = await browser.newPage()
+  await page.goto('http://example.com', {waitUntil: 'domcontentloaded'})
+  await browser.close()
+})()
+```
+
+## Plugins
+
+#### [`puppeteer-extra-plugin-stealth`](/packages/puppeteer-extra-plugin-stealth)
+
+-   Applies various techniques to make detection of headless puppeteer harder.
+
+#### [`puppeteer-extra-plugin-flash`](/packages/puppeteer-extra-plugin-flash)
+
+-   Allow flash content to run on all sites without user interaction.
+
+#### [`puppeteer-extra-plugin-anonymize-ua`](/packages/puppeteer-extra-plugin-anonymize-ua)
+
+-   Anonymizes the user-agent on all pages.
+-   Supports dynamic replacing, so the browser version stays intact and recent.
+
+#### [`puppeteer-extra-plugin-user-preferences`](/packages/puppeteer-extra-plugin-user-preferences)
+
+-   Allows setting custom Chrome/Chromium user preferences.
+-   Has itself a plugin interface which is used by e.g. [`puppeteer-extra-plugin-font-size`](/packages/puppeteer-extra-plugin-font-size).
+
+> Check out the [packages folder](/packages/) for more plugins.
+
+### Contributing
+
+PRs and new plugins are welcome! The plugin API for `puppeteer-extra` is clean and fun to use. Have a look the [`PuppeteerExtraPlugin`](/packages/puppeteer-extra-plugin) base class documentation to get going and check out the [existing plugins](/packages/) for reference. 
+
+We use a [monorepo](/), the [`standard`](https://standardjs.com/) coding style and [JSDoc](http://usejsdoc.org/about-getting-started.html) heavily to [auto-generate](https://github.com/transitive-bullshit/update-markdown-jsdoc) markdown documentation based on code. :-)
+
+#### Kudos
+
+-   Thanks to [skyiea](https://github.com/skyiea) for [this PR](https://github.com/GoogleChrome/puppeteer/pull/1806) that started the project idea.
+-   Thanks to [transitive-bullshit](https://github.com/transitive-bullshit) for [suggesting](https://github.com/berstend/puppeteer-extra/issues/2) a modular plugin design, which was fun to implement.
+
+* * *
 
 ## API
 
@@ -24,7 +92,7 @@ DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node examples/foo.js
     -   [defaultArgs](#defaultargs)
     -   [createBrowserFetcher](#createbrowserfetcher)
 
-### [PuppeteerExtra](https://github.com/berstend/puppeteer-extra/blob/fecde9acbed91ce2a3edda3f4d12a297fee443a6/packages/puppeteer-extra/index.js#L43-L328)
+### [PuppeteerExtra](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra/index.js#L43-L328)
 
 Modular plugin framework to teach `puppeteer` new tricks.
 
@@ -52,7 +120,7 @@ puppeteer.use(require('puppeteer-extra-plugin-font-size')({defaultFontSize: 18})
 
 * * *
 
-#### [use](https://github.com/berstend/puppeteer-extra/blob/fecde9acbed91ce2a3edda3f4d12a297fee443a6/packages/puppeteer-extra/index.js#L63-L79)
+#### [use](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra/index.js#L63-L79)
 
 Outside interface to register plugins.
 
@@ -71,7 +139,7 @@ const browser = await puppeteer.launch(...)
 
 * * *
 
-#### [launch](https://github.com/berstend/puppeteer-extra/blob/fecde9acbed91ce2a3edda3f4d12a297fee443a6/packages/puppeteer-extra/index.js#L94-L108)
+#### [launch](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra/index.js#L94-L108)
 
 Main launch method.
 
@@ -86,7 +154,7 @@ Type: `function (options): Puppeteer.Browser`
 
 * * *
 
-#### [plugins](https://github.com/berstend/puppeteer-extra/blob/fecde9acbed91ce2a3edda3f4d12a297fee443a6/packages/puppeteer-extra/index.js#L115-L115)
+#### [plugins](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra/index.js#L115-L115)
 
 Get all registered plugins.
 
@@ -94,7 +162,7 @@ Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global
 
 * * *
 
-#### [getPluginData](https://github.com/berstend/puppeteer-extra/blob/fecde9acbed91ce2a3edda3f4d12a297fee443a6/packages/puppeteer-extra/index.js#L137-L142)
+#### [getPluginData](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra/index.js#L137-L142)
 
 -   **See: puppeteer-extra-plugin/data**
 
@@ -111,7 +179,7 @@ Type: `function (name)`
 
 * * *
 
-#### [connect](https://github.com/berstend/puppeteer-extra/blob/fecde9acbed91ce2a3edda3f4d12a297fee443a6/packages/puppeteer-extra/index.js#L297-L299)
+#### [connect](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra/index.js#L297-L299)
 
 Regular Puppeteer method that is being passed through.
 
@@ -121,7 +189,7 @@ Type: `function (options)`
 
 * * *
 
-#### [executablePath](https://github.com/berstend/puppeteer-extra/blob/fecde9acbed91ce2a3edda3f4d12a297fee443a6/packages/puppeteer-extra/index.js#L306-L308)
+#### [executablePath](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra/index.js#L306-L308)
 
 Regular Puppeteer method that is being passed through.
 
@@ -129,7 +197,7 @@ Type: `function (): string`
 
 * * *
 
-#### [defaultArgs](https://github.com/berstend/puppeteer-extra/blob/fecde9acbed91ce2a3edda3f4d12a297fee443a6/packages/puppeteer-extra/index.js#L315-L317)
+#### [defaultArgs](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra/index.js#L315-L317)
 
 Regular Puppeteer method that is being passed through.
 
@@ -137,7 +205,7 @@ Type: `function ()`
 
 * * *
 
-#### [createBrowserFetcher](https://github.com/berstend/puppeteer-extra/blob/fecde9acbed91ce2a3edda3f4d12a297fee443a6/packages/puppeteer-extra/index.js#L325-L327)
+#### [createBrowserFetcher](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra/index.js#L325-L327)
 
 Regular Puppeteer method that is being passed through.
 

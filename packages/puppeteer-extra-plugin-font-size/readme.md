@@ -16,7 +16,7 @@ yarn add puppeteer-extra-plugin-font-size
 
 -   [Plugin](#plugin)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/fecde9acbed91ce2a3edda3f4d12a297fee443a6/packages/puppeteer-extra-plugin-font-size/index.js#L18-L54)
+### [Plugin](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra-plugin-font-size/index.js#L18-L54)
 
 **Extends: PuppeteerExtraPlugin**
 

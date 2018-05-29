@@ -1,5 +1,8 @@
 'use strict'
 
+// to run this with debug logs:
+// DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node examples/simple.js
+
 const puppeteer = require('puppeteer-extra')
 
 puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')({
