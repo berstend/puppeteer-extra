@@ -1,8 +1,8 @@
 # puppeteer-extra
 
-[![npm](https://img.shields.io/npm/v/puppeteer-extra.svg?style=flat-square)](https://www.npmjs.com/package/puppeteer-extra) 
-[![npm](https://img.shields.io/npm/dt/puppeteer-extra.svg?style=flat-square)](https://www.npmjs.com/package/puppeteer-extra) 
-[![npm](https://img.shields.io/npm/l/puppeteer-extra.svg?style=flat-square)](https://www.npmjs.com/package/puppeteer-extra)
+[![npm](https://img.shields.io/npm/v/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra) 
+[![npm](https://img.shields.io/npm/dt/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra) 
+[![npm](https://img.shields.io/npm/l/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra)
 
 `puppeteer-extra` is a drop-in replacement for [`puppeteer`](https://github.com/GoogleChrome/puppeteer) that enables plugins through a clean interface.
 
