@@ -66,7 +66,7 @@ class PuppeteerExtra {
       return this
     }
     if (!plugin.name) {
-      console.error(`Warning: Plugin with no name registered, ignoring.`, plugin)
+      console.error(`Warning: Plugin with no name registering, ignoring.`, plugin)
       return this
     }
     if (plugin.requirements.has('dataFromPlugins')) {
@@ -74,7 +74,7 @@ class PuppeteerExtra {
     }
     plugin._register(Object.getPrototypeOf(plugin))
     this._plugins.push(plugin)
-    debug('plugin loaded', plugin.name)
+    debug('plugin registered', plugin.name)
     return this
   }
 
@@ -83,8 +83,10 @@ class PuppeteerExtra {
    *
    * Augments the original `puppeteer.launch` method with plugin lifecycle methods.
    *
-   * It'll call all loaded plugins that have a `beforeLaunch` method
-   * in sequence to potentially update the options Object before launch.
+   * All registered plugins that have a `beforeLaunch` method will be called
+   * in sequence to potentially update the `options` Object before launching puppeteer.
+   *
+   * @todo Implement support for 'connect' as well.
    *
    * @param {Object=} options - Regular Puppeteer options
    * @return {Puppeteer.Browser}
@@ -94,8 +96,11 @@ class PuppeteerExtra {
     this.resolvePluginDependencies()
     this.orderPlugins()
 
+    // Give plugins the chance to modify the options before launch
     options = await this.callPluginsWithValue('beforeLaunch', options)
+    // Let's check requirements after plugin had the chance to modify the options
     this.checkPluginRequirements(options)
+
     const browser = await Puppeteer.launch(options)
 
     await this.callPlugins('_bindBrowserEvents', browser, options)
@@ -103,14 +108,14 @@ class PuppeteerExtra {
   }
 
   /**
-   * Get all loaded plugins.
+   * Get all registered plugins.
    *
    * @member {Array<PuppeteerExtraPlugin>}
    */
   get plugins () { return this._plugins }
 
   /**
-   * Get the names of all loaded plugins.
+   * Get the names of all registered plugins.
    *
    * @member {Array<string>}
    * @private
@@ -118,13 +123,14 @@ class PuppeteerExtra {
   get pluginNames () { return this._plugins.map(p => p.name) }
 
   /**
-   * Collects the exposed `data` property of all loaded plugins.
+   * Collects the exposed `data` property of all registered plugins.
    * Will be reduced/flattened to a single array.
    *
    * Can be accessed by plugins that listed the `dataFromPlugins` requirement.
    *
    * Implemented mainly for plugins that need data from other plugins (e.g. `user-preferences`).
    *
+   * @see puppeteer-extra-plugin/data
    * @param {string=} name - Filter data by name property
    * @return {Array<Object>}
    */
@@ -147,9 +153,16 @@ class PuppeteerExtra {
   }
 
   /**
+   * Lightweight plugin dependency management to require plugins and code mods on demand.
+   *
+   * This uses the `dependencies` stanza (a `Set`) exposed by `puppeteer-extra` plugins.
+   *
+   * @todo Allow objects as depdencies that contains opts for the requested plugin.
+   *
    * @private
    */
   resolvePluginDependencies () {
+    // Request missing dependencies from all plugins and flatten to a single Set
     const missingPlugins = this._plugins
       .map(p => p._getMissingDependencies(this._plugins))
       .reduce((combined, list) => {
@@ -160,18 +173,31 @@ class PuppeteerExtra {
       return
     }
     debug('dependencies missing', missingPlugins)
+    // Loop through all dependencies declared missing by plugins
     for (let name of [...missingPlugins]) {
+      // Check if the dependency hasn't been registered as plugin already.
+      // This might happen when multiple plugins have nested dependencies.
+      if (this.pluginNames.includes(name)) {
+        debug(`ignoring dependency '${name}', which has been required already.`)
+        continue
+      }
+      // We follow a plugin naming convention, but let's rather enforce it <3
       name = name.startsWith('puppeteer-extra-plugin') ? name : `puppeteer-extra-plugin-${name}`
+      // In case a module sub resource is requested print out the main package name
+      // e.g. puppeteer-extra-plugin-stealth/evasions/console.debug => puppeteer-extra-plugin-stealth
+      const packageName = name.split('/')[0]
       let dep = null
       try {
+        // Try to require and instantiate the stated dependency
         dep = require(name)()
+        // Register it with `puppeteer-extra` as plugin
         this.use(dep)
       } catch (err) {
         console.warn(`
           A plugin listed '${name}' as dependency,
           which is currently missing. Please install it:
 
-          npm i --save ${name}
+          npm i --save ${packageName}
 
           Note: You don't need to require the plugin yourself,
           unless you want to modify it's default settings.
@@ -179,13 +205,20 @@ class PuppeteerExtra {
         throw err
       }
       // Handle nested dependencies :D
-      if (dep.requirements.size) {
+      if (dep.dependencies.size) {
         this.resolvePluginDependencies()
       }
     }
   }
 
   /**
+   * Order plugins that have expressed a special placement requirement.
+   *
+   * This is useful/necessary for e.g. plugins that depend on the data from other plugins.
+   *
+   * @todo Support more than 'runLast'.
+   * @todo If there are multiple plugins defining 'runLast', sort them depending on who depends on whom. :D
+   *
    * @private
    */
   orderPlugins () {
@@ -198,11 +231,15 @@ class PuppeteerExtra {
       this._plugins.push(this._plugins.splice(index, 1)[0])
     }
     debug('orderPlugins:after', this.pluginNames)
-    // TODO: If there are multiple plugins defining 'runLast'
-    // sort them depending on who depends on whom. :D
   }
 
   /**
+   * Lightweight plugin requirement checking.
+   *
+   * The main intent is to notify the user when a plugin won't work as expected.
+   *
+   * @todo This could be improved, e.g. be evaluated by the plugin base class.
+   *
    * @private
    */
   checkPluginRequirements (options = {}) {
@@ -251,6 +288,8 @@ class PuppeteerExtra {
 
   /**
    * Regular Puppeteer method that is being passed through.
+   *
+   * @todo Add `puppeteer-extra` plugin support for `connect` as well.
    *
    * @param {{browserWSEndpoint: string, ignoreHTTPSErrors: boolean}} options
    * @return {Promise<!Puppeteer.Browser>}

@@ -10,7 +10,7 @@
 
 -   [Plugin](#plugin)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/4e9d68d60d08a4dcb71882a583b14702f4433c2a/packages/puppeteer-extra-plugin-flash/index.js#L31-L106)
+### [Plugin](https://github.com/berstend/puppeteer-extra/blob/cdcffa1f3b7cd06d94f6563a849814610d06f4f0/packages/puppeteer-extra-plugin-flash/index.js#L31-L106)
 
 **Extends: PuppeteerExtraPlugin**
 
