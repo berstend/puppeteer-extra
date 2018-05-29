@@ -1,0 +1,39 @@
+{
+  "name": "puppeteer-extra-plugin-stealth",
+  "version": "2.0.0",
+  "description": "Stealth mode: Applies various techniques to make detection of headless puppeteer harder.",
+  "main": "index.js",
+  "repository": "berstend/puppeteer-extra",
+  "author": "berstend",
+  "license": "MIT",
+  "scripts": {
+    "docs": "update-markdown-jsdoc && yarn docs-for-evasions",
+    "docs-for-evasions": "cd ./evasions && loop update-markdown-jsdoc",
+    "test": "standard"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "keywords": [
+    "puppeteer",
+    "puppeteer-extra",
+    "puppeteer-extra-plugin",
+    "stealth",
+    "stealth-mode",
+    "detection-evasion",
+    "crawler",
+    "chrome",
+    "headless",
+    "pupeteer"
+  ],
+  "devDependencies": {
+    "ava": "^0.25.0",
+    "loop": "^3.0.6",
+    "puppeteer": "next",
+    "standard": "^11.0.0",
+    "update-markdown-jsdoc": "^1.0.2"
+  },
+  "dependencies": {
+    "debug": "^3.1.0"
+  }
+}
