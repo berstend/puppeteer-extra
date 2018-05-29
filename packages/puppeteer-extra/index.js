@@ -11,8 +11,8 @@ try {
     Note: puppeteer is a peer dependency of puppeteer-extra,
     which means you can install your own preferred version.
 
-    To get the latest stable verson run: 'npm i --save puppeteer'
-    To get the latest tip-of-tree verson run: 'npm i --save puppeteer@next'
+    To get the latest stable verson run: 'yarn add puppeteer'
+    To get the latest tip-of-tree verson run: 'yarn add puppeteer@next'
   `)
   throw err
 }
