@@ -1,4 +1,4 @@
-# puppeteer-extra-plugin-stealth
+# puppeteer-extra-plugin-stealth/evasions
 
 Various detection evasion plugins for `puppeteer-extra-plugin-stealth`.
 
@@ -8,4 +8,4 @@ You can bypass the main module and require specific evasion plugins yourself, if
 puppeteer.use(require('puppeteer-extra-plugin-stealth/evasions/console.debug')())
 ```
 
-If you want to add a new evasion technique I suggest you look at the [template](./evasions/_template) to kickstart things.
+If you want to add a new evasion technique I suggest you look at the [template](./_template/) to kickstart things.
