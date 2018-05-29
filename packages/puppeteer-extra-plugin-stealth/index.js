@@ -73,10 +73,6 @@ const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
  *
  */
 class Plugin extends PuppeteerExtraPlugin {
-
-  /**
-   * Fooo constructor
-   */
   constructor (opts = { }) {
     super(opts)
 
