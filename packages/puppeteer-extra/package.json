@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "docs": "update-markdown-jsdoc",
-    "test": "standard"
+    "test": "ava -v && standard"
   },
   "engines": {
     "node": ">=8"
