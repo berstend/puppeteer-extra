@@ -9,14 +9,11 @@ This is the monorepo for [`puppeteer-extra`](./packages/puppeteer-extra), a modu
 In case you're interested in the available plugins, check out the [packages folder](./packages/).
 
 
-
-
 ## Contributing
 
-PRs and new plugins are welcome! The plugin API for `puppeteer-extra` is clean and fun to use. Have a look the [`PuppeteerExtraPlugin`](./packages/puppeteer-extra-plugin) base class documentation to get going and check out the [existing plugins](./packages/) for reference. 
+PRs and new plugins are welcome! :tada: The plugin API for `puppeteer-extra` is clean and fun to use. Have a look the [`PuppeteerExtraPlugin`](./packages/puppeteer-extra-plugin) base class documentation to get going and check out the [existing plugins](./packages/) (minimal example is the [anonymize-ua](./packages/puppeteer-extra-plugin-anonymize-ua/index.js) plugin) for reference. 
 
-We use the [`standard`](https://standardjs.com/) style for linting and [JSDoc](http://usejsdoc.org/about-getting-started.html) heavily to [auto-generate](https://github.com/transitive-bullshit/update-markdown-jsdoc) markdown documentation based on code. :-)
-
+We use a [monorepo](https://github.com/berstend/puppeteer-extra) powered by [Lerna](https://github.com/lerna/lerna#--use-workspaces) (and yarn workspaces), [ava](https://github.com/avajs/ava) for testing, the [standard](https://standardjs.com/) style for linting and [JSDoc](http://usejsdoc.org/about-getting-started.html) heavily to [auto-generate](https://github.com/transitive-bullshit/update-markdown-jsdoc) markdown [documentation](https://github.com/documentationjs/documentation) based on code. :-)
 
 
 ## Lerna
@@ -30,7 +27,7 @@ This is monorepo is powered by [Lerna](https://github.com/lerna/lerna) and yarn 
 # Installs all of their dependencies and links any cross-dependencies.
 yarn bootstrap
 
-# Install debug in all modules
+# Install debug in all packages
 lerna add debug
 
 # Install fs-extra to puppeteer-extra-plugin-user-data-dir
