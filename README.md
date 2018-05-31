@@ -43,6 +43,10 @@ lerna exec -- yarn remove fs-extra
 # Run test in all packages
 yarn test
 
+# Run end-to-end/integration tests
+# Note: This will launch browsers, etc.
+yarn end-to-end-tests
+
 # Update JSDoc based documentation in markdown files
 yarn docs
 ```

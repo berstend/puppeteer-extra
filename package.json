@@ -12,12 +12,14 @@
     "bootstrap": "lerna bootstrap",
     "docs": "lerna run docs",
     "test": "lerna run test",
+    "end-to-end-tests": "ava -v --serial --fail-fast ./end-to-end-tests",
     "prepare": "lerna run prepare"
   },
   "workspaces": [
     "packages/*"
   ],
   "devDependencies": {
+    "ava": "^0.25.0",
     "lerna": "^2.11.0"
   },
   "dependencies": {}
