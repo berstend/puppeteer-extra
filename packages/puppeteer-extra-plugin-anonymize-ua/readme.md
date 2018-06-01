@@ -16,7 +16,7 @@ yarn add puppeteer-extra-plugin-anonymize-ua
 
 -   [Plugin](#plugin)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/28977a3c14b1781778aba08311a2840cadbb4403/packages/puppeteer-extra-plugin-anonymize-ua/index.js#L24-L52)
+### [Plugin](https://github.com/berstend/puppeteer-extra/blob/c67690ac843ae2a230366c2d124c9fcbd3aa8294/packages/puppeteer-extra-plugin-anonymize-ua/index.js#L24-L52)
 
 **Extends: PuppeteerExtraPlugin**
 
