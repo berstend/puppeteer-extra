@@ -4,11 +4,12 @@
 [![npm](https://img.shields.io/npm/dt/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra) 
 [![npm](https://img.shields.io/npm/l/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra)
 
-`puppeteer-extra` is a drop-in replacement for [`puppeteer`](https://github.com/GoogleChrome/puppeteer) that enables plugins through a clean interface.
+[![extra](https://i.imgur.com/2ZjXBe5.jpg)](https://github.com/berstend/puppeteer-extra)
 
-It's not a puppeteer fork but augments your existing `puppeteer` module with a modular and lightweight plugin framework.
+> A light-weight wrapper around [`puppeteer`](https://github.com/GoogleChrome/puppeteer) that enables [plugins](#plugins) through a clean interface.
 
-### Install
+
+## Installation
 
 ```bash
 yarn add puppeteer-extra
@@ -24,7 +25,7 @@ yarn add puppeteer
 yarn add puppeteer@next
 ```
 
-### Usage
+## Quickstart
 
 ```es6
 const puppeteer = require('puppeteer-extra')
@@ -63,13 +64,14 @@ puppeteer.use(require('puppeteer-extra-plugin-font-size')({defaultFontSize: 18})
 
 > Check out the [packages folder](/packages/) for more plugins.
 
-### Contributing
+## Contributing
 
-PRs and new plugins are welcome! The plugin API for `puppeteer-extra` is clean and fun to use. Have a look the [`PuppeteerExtraPlugin`](/packages/puppeteer-extra-plugin) base class documentation to get going and check out the [existing plugins](/packages/) for reference. 
+PRs and new plugins are welcome! :tada: The plugin API for `puppeteer-extra` is clean and fun to use. Have a look the [PuppeteerExtraPlugin](/packages/puppeteer-extra-plugin) base class documentation to get going and check out the [existing plugins](./packages/) (minimal example is the [anonymize-ua](/packages/puppeteer-extra-plugin-anonymize-ua/index.js) plugin) for reference. 
 
-We use a [monorepo](/), the [`standard`](https://standardjs.com/) coding style and [JSDoc](http://usejsdoc.org/about-getting-started.html) heavily to [auto-generate](https://github.com/transitive-bullshit/update-markdown-jsdoc) markdown documentation based on code. :-)
+We use a [monorepo](/) powered by [Lerna](https://github.com/lerna/lerna#--use-workspaces) (and yarn workspaces), [ava](https://github.com/avajs/ava) for testing, the [standard](https://standardjs.com/) style for linting and [JSDoc](http://usejsdoc.org/about-getting-started.html) heavily to [auto-generate](https://github.com/transitive-bullshit/update-markdown-jsdoc) markdown [documentation](https://github.com/documentationjs/documentation) based on code. :-)
 
-#### Kudos
+
+### Kudos
 
 -   Thanks to [skyiea](https://github.com/skyiea) for [this PR](https://github.com/GoogleChrome/puppeteer/pull/1806) that started the project idea.
 -   Thanks to [transitive-bullshit](https://github.com/transitive-bullshit) for [suggesting](https://github.com/berstend/puppeteer-extra/issues/2) a modular plugin design, which was fun to implement.
