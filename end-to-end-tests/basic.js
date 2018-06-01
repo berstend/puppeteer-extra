@@ -2,10 +2,14 @@
 
 const { test } = require('ava')
 
-const puppeteer = require('puppeteer-extra')
-const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
+test.beforeEach(t => {
+  // Make sure we work with pristine modules
+  delete require.cache[require.resolve('puppeteer-extra')]
+  delete require.cache[require.resolve('puppeteer-extra-plugin')]
+})
 
 test('will launch the browser normally', async (t) => {
+  const puppeteer = require('puppeteer-extra')
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
   await page.goto('http://example.com', {waitUntil: 'domcontentloaded'})
@@ -14,6 +18,8 @@ test('will launch the browser normally', async (t) => {
 })
 
 test('will launch puppeteer with plugin support', async (t) => {
+  const puppeteer = require('puppeteer-extra')
+  const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
   const pluginData = [ { name: 'foo', value: 'bar' } ]
   class Plugin extends PuppeteerExtraPlugin {

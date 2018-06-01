@@ -43,3 +43,24 @@ test('will use a custom fn to modify the user-agent', async (t) => {
   await browser.close()
   t.true(true)
 })
+
+test('will not modify the user-agent when disabled', async (t) => {
+  const puppeteer = require('puppeteer-extra')
+  puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')({
+    stripHeadless: false,
+    makeWindows: false,
+    customFn: null
+  }))
+
+  const browser = await puppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+  await page.goto('https://httpbin.org/headers', {waitUntil: 'domcontentloaded'})
+
+  const content = await page.content()
+  t.true(content.includes('HeadlessChrome'))
+  t.true(!content.includes('MyCoolAgent/Mozilla'))
+  t.true(!content.includes('Beer/'))
+
+  await browser.close()
+  t.true(true)
+})
