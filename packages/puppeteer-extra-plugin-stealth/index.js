@@ -73,10 +73,12 @@ const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
  *
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = { }) {
-    super(opts)
+  constructor (opts = { }) { super(opts) }
 
-    this._availableEvasions = new Set([
+  get name () { return 'stealth' }
+
+  get defaults () {
+    const availableEvasions = new Set([
       'chrome.runtime',
       'console.debug',
       'navigator.languages',
@@ -86,16 +88,12 @@ class Plugin extends PuppeteerExtraPlugin {
       'iframe.contentWindow',
       'user-agent'
     ])
-
-    const defaults = {
+    return {
+      availableEvasions,
       // Enable all available evasions by default
-      enabledEvasions: new Set(this._availableEvasions)
+      enabledEvasions: new Set([...availableEvasions])
     }
-
-    this._opts = Object.assign(defaults, opts)
   }
-
-  get name () { return 'stealth' }
 
   /**
    * Requires evasion techniques dynamically based on configuration.
@@ -103,7 +101,7 @@ class Plugin extends PuppeteerExtraPlugin {
    * @private
    */
   get dependencies () {
-    return new Set([...this._opts.enabledEvasions]
+    return new Set([...this.opts.enabledEvasions]
       .map(e => `${this.name}/evasions/${e}`)
     )
   }
@@ -120,7 +118,7 @@ class Plugin extends PuppeteerExtraPlugin {
    * console.log(pluginStealth.availableEvasions) // => Set { 'user-agent', 'console.debug' }
    * puppeteer.use(pluginStealth)
    */
-  get availableEvasions () { return this._availableEvasions }
+  get availableEvasions () { return this.defaults.availableEvasions }
 
   /**
    * Get all enabled evasions.
@@ -135,12 +133,12 @@ class Plugin extends PuppeteerExtraPlugin {
    * pluginStealth.enabledEvasions.delete('console.debug')
    * puppeteer.use(pluginStealth)
    */
-  get enabledEvasions () { return this._opts.enabledEvasions }
+  get enabledEvasions () { return this.opts.enabledEvasions }
 
   /**
    * @private
    */
-  set enabledEvasions (evasions) { this._opts.enabledEvasions = evasions }
+  set enabledEvasions (evasions) { this.opts.enabledEvasions = evasions }
 }
 
 module.exports = function (pluginConfig) { return new Plugin(pluginConfig) }

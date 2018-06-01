@@ -16,31 +16,21 @@ const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
  * const browser = await puppeteer.launch()
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = { }) {
-    super(opts)
+  constructor (opts = { }) { super(opts) }
 
-    const defaults = {
-      defaultFontSize: 20
-    }
+  get name () { return 'font-size' }
 
-    this._opts = Object.assign(defaults, opts)
-  }
-
-  get name () {
-    return 'font-size'
-  }
+  get defaults () { return { defaultFontSize: 20 } }
 
   get requirements () { return new Set(['headful']) }
 
-  get dependencies () {
-    return new Set(['user-preferences'])
-  }
+  get dependencies () { return new Set(['user-preferences']) }
 
   get data () {
     const userPreferences = {
       webkit: {
         webprefs: {
-          default_font_size: this._opts.defaultFontSize
+          default_font_size: this.opts.defaultFontSize
         }
       }
     }

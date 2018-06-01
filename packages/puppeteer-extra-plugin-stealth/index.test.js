@@ -23,20 +23,21 @@ test('should have the public child class members', async (t) => {
 
   t.true(childClassMembers.includes('constructor'))
   t.true(childClassMembers.includes('name'))
-  t.true(childClassMembers.includes('dependencies'))
+  t.true(childClassMembers.includes('name'))
+  t.true(childClassMembers.includes('defaults'))
   t.true(childClassMembers.includes('availableEvasions'))
   t.true(childClassMembers.includes('enabledEvasions'))
-  t.true(childClassMembers.length === 5)
+  t.true(childClassMembers.length === 6)
 })
 
 test('should have opts with default values', async (t) => {
   const instance = new Plugin()
-  t.deepEqual(instance._opts.enabledEvasions, instance.availableEvasions)
+  t.deepEqual(instance.opts.enabledEvasions, instance.availableEvasions)
 })
 
 test('should add all dependencies dynamically', async (t) => {
   const instance = new Plugin()
-  const deps = new Set([...instance._opts.enabledEvasions]
+  const deps = new Set([...instance.opts.enabledEvasions]
     .map(e => `${PLUGIN_NAME}/evasions/${e}`)
   )
   t.deepEqual(instance.dependencies, deps)

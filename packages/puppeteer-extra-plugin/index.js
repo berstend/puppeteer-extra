@@ -1,7 +1,7 @@
 'use strict'
 
 const debug = require('debug')
-const merge = require('deepmerge')
+const merge = require('merge-deep')
 
 /**
  * Base class for `puppeteer-extra` plugins.
@@ -215,9 +215,8 @@ class PuppeteerExtraPlugin {
    *
    * @example
    * async beforeLaunch (options) {
-   *   // this._opts would be defined in the plugin constructor
-   *   if (this._opts.flashPluginPath) {
-   *     options.args.push(`--ppapi-flash-path=${this._opts.flashPluginPath}`)
+   *   if (this.opts.flashPluginPath) {
+   *     options.args.push(`--ppapi-flash-path=${this.opts.flashPluginPath}`)
    *   }
    * }
    *
@@ -274,8 +273,8 @@ class PuppeteerExtraPlugin {
    * @example
    * async onPageCreated (page) {
    *   let ua = await page.browser().userAgent()
-   *   // this._opts would be defined in the plugin constructor
-   *   if (this._opts.stripHeadless) {
+   *   // this.opts would be defined in the plugin constructor
+   *   if (this.opts.stripHeadless) {
    *     ua = ua.replace('HeadlessChrome/', 'Chrome/')
    *   }
    *   this.debug('new ua', ua)

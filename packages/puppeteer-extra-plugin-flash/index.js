@@ -29,41 +29,35 @@ const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
  * })()
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = { }) {
-    super(opts)
+  constructor (opts = { }) { super(opts) }
 
-    const defaults = {
+  get name () { return 'flash' }
+
+  get defaults () {
+    return {
       allowFlash: true,
       pluginPath: null,
       pluginVersion: 9000
     }
-
-    this._opts = Object.assign(defaults, opts)
-  }
-
-  get name () {
-    return 'flash'
   }
 
   get requirements () { return new Set(['headful']) }
 
-  get dependencies () {
-    return new Set(['user-preferences'])
-  }
+  get dependencies () { return new Set(['user-preferences']) }
 
   async beforeLaunch (options) {
-    if (this._opts.allowFlash === false) { return }
+    if (this.opts.allowFlash === false) { return }
 
-    if (this._opts.pluginPath) {
-      options.args.push(`--ppapi-flash-path=${this._opts.pluginPath}`)
+    if (this.opts.pluginPath) {
+      options.args.push(`--ppapi-flash-path=${this.opts.pluginPath}`)
     }
-    if (this._opts.pluginVersion) {
-      options.args.push(`--ppapi-flash-version=${this._opts.pluginVersion}`)
+    if (this.opts.pluginVersion) {
+      options.args.push(`--ppapi-flash-version=${this.opts.pluginVersion}`)
     }
   }
 
   get data () {
-    if (this._opts.allowFlash === false) { return }
+    if (this.opts.allowFlash === false) { return }
     const allowFlashPreferences = {
       profile: {
         content_settings: {

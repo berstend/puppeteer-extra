@@ -24,13 +24,14 @@ test('should have the public child class members', async (t) => {
 
   t.true(childClassMembers.includes('constructor'))
   t.true(childClassMembers.includes('name'))
+  t.true(childClassMembers.includes('defaults'))
   t.true(childClassMembers.includes('onPageCreated'))
-  t.true(childClassMembers.length === 3)
+  t.true(childClassMembers.length === 4)
 })
 
 test('should have opts with default values', async (t) => {
   const instance = new Plugin()
-  const opts = instance._opts
+  const opts = instance.opts
 
   t.is(opts.stripHeadless, true)
   t.is(opts.makeWindows, true)
