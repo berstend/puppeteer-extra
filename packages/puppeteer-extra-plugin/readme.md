@@ -29,7 +29,7 @@ yarn add puppeteer-extra-plugin
     -   [onPluginRegistered](#onpluginregistered)
     -   [getDataFromPlugins](#getdatafromplugins)
 
-#### [PuppeteerExtraPlugin](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra-plugin/index.js#L48-L351)
+#### [PuppeteerExtraPlugin](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L48-L391)
 
 Base class for `puppeteer-extra` plugins.
 
@@ -81,7 +81,7 @@ puppeteer.use(require('./hello-world-plugin')())
 
 * * *
 
-##### [name](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra-plugin/index.js#L66-L66)
+##### [name](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L66-L66)
 
 Plugin name (required).
 
@@ -100,7 +100,7 @@ get name () { return 'anonymize-ua' }
 
 * * *
 
-##### [requirements](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra-plugin/index.js#L91-L91)
+##### [requirements](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L91-L91)
 
 Plugin requirements (optional).
 
@@ -130,7 +130,7 @@ get requirements () {
 
 * * *
 
-##### [dependencies](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra-plugin/index.js#L106-L106)
+##### [dependencies](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L106-L106)
 
 Plugin dependencies (optional).
 
@@ -149,7 +149,7 @@ get dependencies () {
 
 * * *
 
-##### [data](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra-plugin/index.js#L141-L141)
+##### [data](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L141-L141)
 
 -   **See: getDataFromPlugins**
 
@@ -189,7 +189,7 @@ async beforeLaunch () {
 
 * * *
 
-##### [debug](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra-plugin/index.js#L161-L161)
+##### [debug](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L161-L161)
 
 Convenience debug logger based on the [debug] module.
  Will automatically namespace the logging output to the plugin package name.
@@ -214,7 +214,7 @@ this.debug('hello world')
 
 * * *
 
-##### [beforeLaunch](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra-plugin/index.js#L172-L172)
+##### [beforeLaunch](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L180-L180)
 
 Can be used to modify the puppeteer launch options by modifying or returning them.
 
@@ -225,24 +225,59 @@ Type: `function (options)`
 
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Puppeteer launch options
 
+Example:
+
+```javascript
+async beforeLaunch (options) {
+  // this._opts would be defined in the plugin constructor
+  if (this._opts.flashPluginPath) {
+    options.args.push(`--ppapi-flash-path=${this._opts.flashPluginPath}`)
+  }
+}
+```
+
 * * *
 
-##### [afterLaunch](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra-plugin/index.js#L180-L180)
+##### [afterLaunch](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L209-L209)
 
 After the browser has launched.
+
+Note: Don't assume that there will only be a single browser instance during the lifecycle of a plugin.
+It's possible that `pupeeteer.launch` will be  called multiple times and more than one browser created.
+In order to make the plugins as stateless as possible don't store a reference to the browser instance
+in the plugin but rather consider alternatives.
+
+E.g. when using `onPageCreated` you can get a browser reference by using `page.browser()`.
+
+Alternatively you could expose a class method that takes a browser instance as a parameter to work with:
+
+```es6
+const fancyPlugin = require('puppeteer-extra-plugin-fancy')()
+puppeteer.use(fancyPlugin)
+const browser = await puppeteer.launch()
+await fancyPlugin.killBrowser(browser)
+```
 
 Type: `function (browser, options)`
 
 -   `browser` **Puppeteer.Browser** The `puppeteer` browser instance.
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** The launch options used. (optional, default `{}`)
 
+Example:
+
+```javascript
+async afterLaunch (browser, options) {
+  this.debug('browser has been launched', options)
+}
+```
+
 * * *
 
-##### [onTargetCreated](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra-plugin/index.js#L189-L189)
+##### [onTargetCreated](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L218-L218)
 
 Called when a target is created, for example when a new page is opened by window.open or browser.newPage.
 
-> NOTE This includes target creations in incognito browser contexts.
+> Note: This includes target creations in incognito browser contexts.
 
 Type: `function (target)`
 
@@ -250,23 +285,37 @@ Type: `function (target)`
 
 * * *
 
-##### [onPageCreated](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra-plugin/index.js#L198-L198)
+##### [onPageCreated](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L238-L238)
 
 Same as `onTargetCreated` but prefiltered to only contain Pages, for convenience.
 
-> NOTE: This includes target creations in incognito browser contexts.
+> Note: This includes target creations in incognito browser contexts.
 
 Type: `function (target)`
 
 -   `target` **Puppeteer.Target** 
 
+Example:
+
+```javascript
+async onPageCreated (page) {
+  let ua = await page.browser().userAgent()
+  // this._opts would be defined in the plugin constructor
+  if (this._opts.stripHeadless) {
+    ua = ua.replace('HeadlessChrome/', 'Chrome/')
+  }
+  this.debug('new ua', ua)
+  await page.setUserAgent(ua)
+}
+```
+
 * * *
 
-##### [onTargetChanged](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra-plugin/index.js#L207-L207)
+##### [onTargetChanged](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L247-L247)
 
 Called when the url of a target changes.
 
-> NOTE: This includes target changes in incognito browser contexts.
+> Note: This includes target changes in incognito browser contexts.
 
 Type: `function (target)`
 
@@ -274,11 +323,11 @@ Type: `function (target)`
 
 * * *
 
-##### [onTargetDestroyed](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra-plugin/index.js#L216-L216)
+##### [onTargetDestroyed](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L256-L256)
 
 Called when a target is destroyed, for example when a page is closed.
 
-> NOTE: This includes target destructions in incognito browser contexts.
+> Note: This includes target destructions in incognito browser contexts.
 
 Type: `function (target)`
 
@@ -286,7 +335,7 @@ Type: `function (target)`
 
 * * *
 
-##### [onDisconnected](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra-plugin/index.js#L224-L224)
+##### [onDisconnected](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L264-L264)
 
 Called when Puppeteer gets disconnected from the Chromium instance.
 This might happen because of one of the following:
@@ -298,7 +347,7 @@ Type: `function ()`
 
 * * *
 
-##### [onClose](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra-plugin/index.js#L233-L233)
+##### [onClose](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L273-L273)
 
 Sometimes `onDisconnected` is not catching all exit scenarios.
 In order for plugins to clean up properly (e.g. deleting temporary files)
@@ -310,7 +359,7 @@ Type: `function ()`
 
 * * *
 
-##### [onPluginRegistered](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra-plugin/index.js#L240-L240)
+##### [onPluginRegistered](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L280-L280)
 
 After the plugin has been registered in `puppeteer-extra`.
 
@@ -320,7 +369,7 @@ Type: `function ()`
 
 * * *
 
-##### [getDataFromPlugins](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra-plugin/index.js#L253-L253)
+##### [getDataFromPlugins](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L293-L293)
 
 -   **See: data**
 -   **See: requirements**

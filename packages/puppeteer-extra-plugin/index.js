@@ -166,6 +166,14 @@ class PuppeteerExtraPlugin {
    * Plugins using this method will be called in sequence to each
    * be able to update the launch options.
    *
+   * @example
+   * async beforeLaunch (options) {
+   *   // this._opts would be defined in the plugin constructor
+   *   if (this._opts.flashPluginPath) {
+   *     options.args.push(`--ppapi-flash-path=${this._opts.flashPluginPath}`)
+   *   }
+   * }
+   *
    * @param  {Object} options - Puppeteer launch options
    * @return {Object=}
    */
@@ -174,15 +182,36 @@ class PuppeteerExtraPlugin {
   /**
    * After the browser has launched.
    *
+   * Note: Don't assume that there will only be a single browser instance during the lifecycle of a plugin.
+   * It's possible that `pupeeteer.launch` will be  called multiple times and more than one browser created.
+   * In order to make the plugins as stateless as possible don't store a reference to the browser instance
+   * in the plugin but rather consider alternatives.
+   *
+   * E.g. when using `onPageCreated` you can get a browser reference by using `page.browser()`.
+   *
+   * Alternatively you could expose a class method that takes a browser instance as a parameter to work with:
+   *
+   * ```es6
+   * const fancyPlugin = require('puppeteer-extra-plugin-fancy')()
+   * puppeteer.use(fancyPlugin)
+   * const browser = await puppeteer.launch()
+   * await fancyPlugin.killBrowser(browser)
+   * ```
+   *
    * @param  {Puppeteer.Browser} browser - The `puppeteer` browser instance.
    * @param  {Object=} options - The launch options used.
+   *
+   * @example
+   * async afterLaunch (browser, options) {
+   *   this.debug('browser has been launched', options)
+   * }
    */
   async afterLaunch (browser, options = {}) { }
 
   /**
    * Called when a target is created, for example when a new page is opened by window.open or browser.newPage.
    *
-   * > NOTE This includes target creations in incognito browser contexts.
+   * > Note: This includes target creations in incognito browser contexts.
    *
    * @param  {Puppeteer.Target} target
    */
@@ -191,16 +220,27 @@ class PuppeteerExtraPlugin {
   /**
    * Same as `onTargetCreated` but prefiltered to only contain Pages, for convenience.
    *
-   * > NOTE: This includes target creations in incognito browser contexts.
+   * > Note: This includes target creations in incognito browser contexts.
    *
    * @param  {Puppeteer.Target} target
+   *
+   * @example
+   * async onPageCreated (page) {
+   *   let ua = await page.browser().userAgent()
+   *   // this._opts would be defined in the plugin constructor
+   *   if (this._opts.stripHeadless) {
+   *     ua = ua.replace('HeadlessChrome/', 'Chrome/')
+   *   }
+   *   this.debug('new ua', ua)
+   *   await page.setUserAgent(ua)
+   * }
    */
   async onPageCreated (target) { }
 
   /**
    * Called when the url of a target changes.
    *
-   * > NOTE: This includes target changes in incognito browser contexts.
+   * > Note: This includes target changes in incognito browser contexts.
    *
    * @param  {Puppeteer.Target} target
    */
@@ -209,7 +249,7 @@ class PuppeteerExtraPlugin {
   /**
    * Called when a target is destroyed, for example when a page is closed.
    *
-   * > NOTE: This includes target destructions in incognito browser contexts.
+   * > Note: This includes target destructions in incognito browser contexts.
    *
    * @param  {Puppeteer.Target} target
    */

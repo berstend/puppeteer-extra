@@ -8,7 +8,6 @@
 
 > A light-weight wrapper around [`puppeteer`](https://github.com/GoogleChrome/puppeteer) that enables [plugins](#plugins) through a clean interface.
 
-
 ## Installation
 
 ```bash
@@ -70,7 +69,6 @@ PRs and new plugins are welcome! :tada: The plugin API for `puppeteer-extra` is 
 
 We use a [monorepo](/) powered by [Lerna](https://github.com/lerna/lerna#--use-workspaces) (and yarn workspaces), [ava](https://github.com/avajs/ava) for testing, the [standard](https://standardjs.com/) style for linting and [JSDoc](http://usejsdoc.org/about-getting-started.html) heavily to [auto-generate](https://github.com/transitive-bullshit/update-markdown-jsdoc) markdown [documentation](https://github.com/documentationjs/documentation) based on code. :-)
 
-
 ### Kudos
 
 -   Thanks to [skyiea](https://github.com/skyiea) for [this PR](https://github.com/GoogleChrome/puppeteer/pull/1806) that started the project idea.
@@ -94,7 +92,7 @@ We use a [monorepo](/) powered by [Lerna](https://github.com/lerna/lerna#--use-w
     -   [defaultArgs](#defaultargs)
     -   [createBrowserFetcher](#createbrowserfetcher)
 
-### [PuppeteerExtra](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra/index.js#L43-L328)
+### [PuppeteerExtra](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra/index.js#L43-L328)
 
 Modular plugin framework to teach `puppeteer` new tricks.
 
@@ -122,7 +120,7 @@ puppeteer.use(require('puppeteer-extra-plugin-font-size')({defaultFontSize: 18})
 
 * * *
 
-#### [use](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra/index.js#L63-L79)
+#### [use](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra/index.js#L63-L79)
 
 Outside interface to register plugins.
 
@@ -141,7 +139,7 @@ const browser = await puppeteer.launch(...)
 
 * * *
 
-#### [launch](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra/index.js#L94-L108)
+#### [launch](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra/index.js#L94-L108)
 
 Main launch method.
 
@@ -156,7 +154,7 @@ Type: `function (options): Puppeteer.Browser`
 
 * * *
 
-#### [plugins](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra/index.js#L115-L115)
+#### [plugins](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra/index.js#L115-L115)
 
 Get all registered plugins.
 
@@ -164,7 +162,7 @@ Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global
 
 * * *
 
-#### [getPluginData](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra/index.js#L137-L142)
+#### [getPluginData](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra/index.js#L137-L142)
 
 -   **See: puppeteer-extra-plugin/data**
 
@@ -181,7 +179,7 @@ Type: `function (name)`
 
 * * *
 
-#### [connect](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra/index.js#L297-L299)
+#### [connect](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra/index.js#L297-L299)
 
 Regular Puppeteer method that is being passed through.
 
@@ -191,7 +189,7 @@ Type: `function (options)`
 
 * * *
 
-#### [executablePath](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra/index.js#L306-L308)
+#### [executablePath](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra/index.js#L306-L308)
 
 Regular Puppeteer method that is being passed through.
 
@@ -199,7 +197,7 @@ Type: `function (): string`
 
 * * *
 
-#### [defaultArgs](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra/index.js#L315-L317)
+#### [defaultArgs](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra/index.js#L315-L317)
 
 Regular Puppeteer method that is being passed through.
 
@@ -207,7 +205,7 @@ Type: `function ()`
 
 * * *
 
-#### [createBrowserFetcher](https://github.com/berstend/puppeteer-extra/blob/39bb3948016ab4afc7e6f31459828035c8e8c65c/packages/puppeteer-extra/index.js#L325-L327)
+#### [createBrowserFetcher](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra/index.js#L325-L327)
 
 Regular Puppeteer method that is being passed through.
 
