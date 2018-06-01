@@ -6,7 +6,7 @@
 
 -   [Plugin](#plugin)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/959522771a8618e8f5f97f8eb7b6193acd3fe039/packages/puppeteer-extra-plugin-stealth/evasions/navigator.languages/index.js#L8-L21)
+### [Plugin](https://github.com/berstend/puppeteer-extra/blob/b1c8db587b16d72a7bcff9ae34b11075e9c0139e/packages/puppeteer-extra-plugin-stealth/evasions/navigator.languages/index.js#L8-L21)
 
 **Extends: PuppeteerExtraPlugin**
 
