@@ -102,9 +102,38 @@ class PuppeteerExtra {
     this.checkPluginRequirements(options)
 
     const browser = await Puppeteer.launch(options)
-
+    browser.newPage = this._delayAsync(10, browser.newPage, browser)
     await this.callPlugins('_bindBrowserEvents', browser, options)
+
     return browser
+  }
+
+  /**
+   * Delays an arbitrary async function to resolve by a specified number of milliseconds.
+   *
+   * Unfortunately we currently need to add a minimal delay to methods that can create
+   * a new target, as there's a small chance that event listeners are not ready
+   * yet when the first target is created. :-/
+   *
+   * Puppeteer issues:
+   * https://github.com/GoogleChrome/puppeteer/issues/386#issuecomment-343059315
+   * https://github.com/GoogleChrome/puppeteer/issues/1378#issue-273733905
+   *
+   * @todo  support browser.createIncognitoBrowserContext() / context.newPage()
+   *
+   * @param  {Number} timeout - Delay in milliseconds
+   * @param  {Function} method - The async method to use
+   * @param  {any} context - the this to use
+   * @return {Promise}
+   * @private
+   */
+  _delayAsync (timeout = 10, method, context = this) {
+    const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+    return async () => {
+      const result = await method.apply(context, arguments)
+      await delay(timeout)
+      return result
+    }
   }
 
   /**
