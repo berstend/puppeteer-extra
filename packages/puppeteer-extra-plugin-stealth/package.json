@@ -34,6 +34,7 @@
     "update-markdown-jsdoc": "^1.0.2"
   },
   "dependencies": {
-    "debug": "^3.1.0"
+    "debug": "^3.1.0",
+    "puppeteer-extra-plugin": "^2.0.2"
   }
 }
