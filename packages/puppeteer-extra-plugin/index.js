@@ -266,14 +266,13 @@ class PuppeteerExtraPlugin {
   /**
    * Same as `onTargetCreated` but prefiltered to only contain Pages, for convenience.
    *
-   * > Note: This includes target creations in incognito browser contexts.
+   * > Note: This includes page creations in incognito browser contexts.
    *
    * @param  {Puppeteer.Target} target
    *
    * @example
    * async onPageCreated (page) {
    *   let ua = await page.browser().userAgent()
-   *   // this.opts would be defined in the plugin constructor
    *   if (this.opts.stripHeadless) {
    *     ua = ua.replace('HeadlessChrome/', 'Chrome/')
    *   }

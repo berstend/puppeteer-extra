@@ -16,7 +16,7 @@ yarn add puppeteer-extra-plugin-flash
 
 -   [Plugin](#plugin)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/c67690ac843ae2a230366c2d124c9fcbd3aa8294/packages/puppeteer-extra-plugin-flash/index.js#L31-L100)
+### [Plugin](https://github.com/berstend/puppeteer-extra/blob/959522771a8618e8f5f97f8eb7b6193acd3fe039/packages/puppeteer-extra-plugin-flash/index.js#L31-L100)
 
 **Extends: PuppeteerExtraPlugin**
 
