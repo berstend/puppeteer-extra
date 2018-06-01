@@ -6,7 +6,7 @@
 
 -   [Plugin](#plugin)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/fca4ed980a273a9ae6da2af6fa9a166cbc7c14bf/packages/puppeteer-extra-plugin-stealth/evasions/navigator.webdriver/index.js#L8-L20)
+### [Plugin](https://github.com/berstend/puppeteer-extra/blob/28977a3c14b1781778aba08311a2840cadbb4403/packages/puppeteer-extra-plugin-stealth/evasions/navigator.webdriver/index.js#L8-L20)
 
 **Extends: PuppeteerExtraPlugin**
 
