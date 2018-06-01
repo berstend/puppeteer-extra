@@ -14,9 +14,11 @@ yarn add puppeteer-extra-plugin
 
 -   [PuppeteerExtraPlugin](#puppeteerextraplugin)
     -   [name](#name)
+    -   [defaults](#defaults)
     -   [requirements](#requirements)
     -   [dependencies](#dependencies)
     -   [data](#data)
+    -   [opts](#opts)
     -   [debug](#debug)
     -   [beforeLaunch](#beforelaunch)
     -   [afterLaunch](#afterlaunch)
@@ -29,7 +31,7 @@ yarn add puppeteer-extra-plugin
     -   [onPluginRegistered](#onpluginregistered)
     -   [getDataFromPlugins](#getdatafromplugins)
 
-#### [PuppeteerExtraPlugin](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L48-L391)
+#### [PuppeteerExtraPlugin](https://github.com/berstend/puppeteer-extra/blob/7aa502ce2d3955c2d011fb1fb8fc15bbbbe23054/packages/puppeteer-extra-plugin/index.js#L47-L439)
 
 Base class for `puppeteer-extra` plugins.
 
@@ -42,7 +44,9 @@ Please refer to the [puppeteer API documentation] as well.
 
 [puppeteer api documentation]: https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md
 
-Type: `function ()`
+Type: `function (opts)`
+
+-   `opts`   (optional, default `{}`)
 
 Example:
 
@@ -51,9 +55,7 @@ Example:
 const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
 
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = { }) {
-    super(opts)
-  }
+  constructor (opts = { }) { super(opts) }
 
   get name () { return 'hello-world' }
 
@@ -81,7 +83,7 @@ puppeteer.use(require('./hello-world-plugin')())
 
 * * *
 
-##### [name](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L66-L66)
+##### [name](https://github.com/berstend/puppeteer-extra/blob/7aa502ce2d3955c2d011fb1fb8fc15bbbbe23054/packages/puppeteer-extra-plugin/index.js#L71-L71)
 
 Plugin name (required).
 
@@ -100,7 +102,36 @@ get name () { return 'anonymize-ua' }
 
 * * *
 
-##### [requirements](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L91-L91)
+##### [defaults](https://github.com/berstend/puppeteer-extra/blob/7aa502ce2d3955c2d011fb1fb8fc15bbbbe23054/packages/puppeteer-extra-plugin/index.js#L95-L95)
+
+-   **See: opts**
+
+Plugin defaults (optional).
+
+If defined will be ([deep-](https://github.com/KyleAMathews/deepmerge))merged with the (optional) user supplied options (supplied during plugin instantiation).
+
+The result of merging defaults with user supplied options can be accessed through `this.opts`.
+
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+Example:
+
+```javascript
+get defaults () {
+  return {
+    stripHeadless: true,
+    makeWindows: true,
+    customFn: null
+  }
+}
+
+// Users can overwrite plugin defaults during instantiation:
+puppeteer.use(require('puppeteer-extra-plugin-foobar')({ makeWindows: false }))
+```
+
+* * *
+
+##### [requirements](https://github.com/berstend/puppeteer-extra/blob/7aa502ce2d3955c2d011fb1fb8fc15bbbbe23054/packages/puppeteer-extra-plugin/index.js#L120-L120)
 
 Plugin requirements (optional).
 
@@ -130,7 +161,7 @@ get requirements () {
 
 * * *
 
-##### [dependencies](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L106-L106)
+##### [dependencies](https://github.com/berstend/puppeteer-extra/blob/7aa502ce2d3955c2d011fb1fb8fc15bbbbe23054/packages/puppeteer-extra-plugin/index.js#L135-L135)
 
 Plugin dependencies (optional).
 
@@ -149,7 +180,7 @@ get dependencies () {
 
 * * *
 
-##### [data](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L141-L141)
+##### [data](https://github.com/berstend/puppeteer-extra/blob/7aa502ce2d3955c2d011fb1fb8fc15bbbbe23054/packages/puppeteer-extra-plugin/index.js#L170-L170)
 
 -   **See: getDataFromPlugins**
 
@@ -189,7 +220,30 @@ async beforeLaunch () {
 
 * * *
 
-##### [debug](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L161-L161)
+##### [opts](https://github.com/berstend/puppeteer-extra/blob/7aa502ce2d3955c2d011fb1fb8fc15bbbbe23054/packages/puppeteer-extra-plugin/index.js#L188-L188)
+
+-   **See: defaults**
+
+Access the plugin options (usually the `defaults` merged with user defined options)
+
+To skip the auto-merging of defaults with user supplied opts don't define a `defaults`
+property and set the `this._opts` Object in your plugin constructor directly.
+
+Type: [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)
+
+Example:
+
+```javascript
+get defaults () { return { foo: "bar" } }
+
+async onPageCreated (page) {
+  this.debug(this.opts.foo) // => bar
+}
+```
+
+* * *
+
+##### [debug](https://github.com/berstend/puppeteer-extra/blob/7aa502ce2d3955c2d011fb1fb8fc15bbbbe23054/packages/puppeteer-extra-plugin/index.js#L208-L208)
 
 Convenience debug logger based on the [debug] module.
  Will automatically namespace the logging output to the plugin package name.
@@ -214,7 +268,7 @@ this.debug('hello world')
 
 * * *
 
-##### [beforeLaunch](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L180-L180)
+##### [beforeLaunch](https://github.com/berstend/puppeteer-extra/blob/7aa502ce2d3955c2d011fb1fb8fc15bbbbe23054/packages/puppeteer-extra-plugin/index.js#L227-L227)
 
 Can be used to modify the puppeteer launch options by modifying or returning them.
 
@@ -238,7 +292,7 @@ async beforeLaunch (options) {
 
 * * *
 
-##### [afterLaunch](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L209-L209)
+##### [afterLaunch](https://github.com/berstend/puppeteer-extra/blob/7aa502ce2d3955c2d011fb1fb8fc15bbbbe23054/packages/puppeteer-extra-plugin/index.js#L256-L256)
 
 After the browser has launched.
 
@@ -273,7 +327,7 @@ async afterLaunch (browser, options) {
 
 * * *
 
-##### [onTargetCreated](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L218-L218)
+##### [onTargetCreated](https://github.com/berstend/puppeteer-extra/blob/7aa502ce2d3955c2d011fb1fb8fc15bbbbe23054/packages/puppeteer-extra-plugin/index.js#L265-L265)
 
 Called when a target is created, for example when a new page is opened by window.open or browser.newPage.
 
@@ -285,7 +339,7 @@ Type: `function (target)`
 
 * * *
 
-##### [onPageCreated](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L238-L238)
+##### [onPageCreated](https://github.com/berstend/puppeteer-extra/blob/7aa502ce2d3955c2d011fb1fb8fc15bbbbe23054/packages/puppeteer-extra-plugin/index.js#L285-L285)
 
 Same as `onTargetCreated` but prefiltered to only contain Pages, for convenience.
 
@@ -311,7 +365,7 @@ async onPageCreated (page) {
 
 * * *
 
-##### [onTargetChanged](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L247-L247)
+##### [onTargetChanged](https://github.com/berstend/puppeteer-extra/blob/7aa502ce2d3955c2d011fb1fb8fc15bbbbe23054/packages/puppeteer-extra-plugin/index.js#L294-L294)
 
 Called when the url of a target changes.
 
@@ -323,7 +377,7 @@ Type: `function (target)`
 
 * * *
 
-##### [onTargetDestroyed](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L256-L256)
+##### [onTargetDestroyed](https://github.com/berstend/puppeteer-extra/blob/7aa502ce2d3955c2d011fb1fb8fc15bbbbe23054/packages/puppeteer-extra-plugin/index.js#L303-L303)
 
 Called when a target is destroyed, for example when a page is closed.
 
@@ -335,7 +389,7 @@ Type: `function (target)`
 
 * * *
 
-##### [onDisconnected](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L264-L264)
+##### [onDisconnected](https://github.com/berstend/puppeteer-extra/blob/7aa502ce2d3955c2d011fb1fb8fc15bbbbe23054/packages/puppeteer-extra-plugin/index.js#L311-L311)
 
 Called when Puppeteer gets disconnected from the Chromium instance.
 This might happen because of one of the following:
@@ -347,7 +401,7 @@ Type: `function ()`
 
 * * *
 
-##### [onClose](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L273-L273)
+##### [onClose](https://github.com/berstend/puppeteer-extra/blob/7aa502ce2d3955c2d011fb1fb8fc15bbbbe23054/packages/puppeteer-extra-plugin/index.js#L320-L320)
 
 Sometimes `onDisconnected` is not catching all exit scenarios.
 In order for plugins to clean up properly (e.g. deleting temporary files)
@@ -359,7 +413,7 @@ Type: `function ()`
 
 * * *
 
-##### [onPluginRegistered](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L280-L280)
+##### [onPluginRegistered](https://github.com/berstend/puppeteer-extra/blob/7aa502ce2d3955c2d011fb1fb8fc15bbbbe23054/packages/puppeteer-extra-plugin/index.js#L327-L327)
 
 After the plugin has been registered in `puppeteer-extra`.
 
@@ -369,7 +423,7 @@ Type: `function ()`
 
 * * *
 
-##### [getDataFromPlugins](https://github.com/berstend/puppeteer-extra/blob/8695f3d8cfbf1cbcdc3cbb0ed429508420457d96/packages/puppeteer-extra-plugin/index.js#L293-L293)
+##### [getDataFromPlugins](https://github.com/berstend/puppeteer-extra/blob/7aa502ce2d3955c2d011fb1fb8fc15bbbbe23054/packages/puppeteer-extra-plugin/index.js#L340-L340)
 
 -   **See: data**
 -   **See: requirements**

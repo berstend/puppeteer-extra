@@ -1,6 +1,7 @@
 'use strict'
 
 const debug = require('debug')
+const merge = require('deepmerge')
 
 /**
  * Base class for `puppeteer-extra` plugins.
@@ -18,9 +19,7 @@ const debug = require('debug')
  * const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
  *
  * class Plugin extends PuppeteerExtraPlugin {
- *   constructor (opts = { }) {
- *     super(opts)
- *   }
+ *   constructor (opts = { }) { super(opts) }
  *
  *   get name () { return 'hello-world' }
  *
@@ -46,9 +45,15 @@ const debug = require('debug')
  * })()
  */
 class PuppeteerExtraPlugin {
-  constructor () {
+  constructor (opts = {}) {
     this._debugBase = debug(`puppeteer-extra-plugin:base:${this.name}`)
     this._childClassMembers = []
+
+    this._opts = {}
+    // Deep merge opts with defaults, if available
+    if (Object.keys(this.defaults).length) {
+      this._opts = merge(this.defaults, opts)
+    }
   }
 
   /**
@@ -64,6 +69,30 @@ class PuppeteerExtraPlugin {
    * get name () { return 'anonymize-ua' }
    */
   get name () { throw new Error('Plugin must override "name"') }
+
+  /**
+   * Plugin defaults (optional).
+   *
+   * If defined will be ([deep-](https://github.com/KyleAMathews/deepmerge))merged with the (optional) user supplied options (supplied during plugin instantiation).
+   *
+   * The result of merging defaults with user supplied options can be accessed through `this.opts`.
+   *
+   * @member {Object}
+   * @see opts
+   *
+   * @example
+   * get defaults () {
+   *   return {
+   *     stripHeadless: true,
+   *     makeWindows: true,
+   *     customFn: null
+   *   }
+   * }
+   *
+   * // Users can overwrite plugin defaults during instantiation:
+   * puppeteer.use(require('puppeteer-extra-plugin-foobar')({ makeWindows: false }))
+   */
+  get defaults () { return { } }
 
   /**
    * Plugin requirements (optional).
@@ -139,6 +168,24 @@ class PuppeteerExtraPlugin {
    * }
    */
   get data () { return [] }
+
+  /**
+   * Access the plugin options (usually the `defaults` merged with user defined options)
+   *
+   * To skip the auto-merging of defaults with user supplied opts don't define a `defaults`
+   * property and set the `this._opts` Object in your plugin constructor directly.
+   *
+   * @member {Object}
+   * @see defaults
+   *
+   * @example
+   * get defaults () { return { foo: "bar" } }
+   *
+   * async onPageCreated (page) {
+   *   this.debug(this.opts.foo) // => bar
+   * }
+   */
+  get opts () { return this._opts }
 
   /**
    *  Convenience debug logger based on the [debug] module.
@@ -356,7 +403,8 @@ class PuppeteerExtraPlugin {
     await this.onTargetCreated(target)
     // Pre filter pages for plugin developers convenience
     if (target.type() === 'page') {
-      await this.onPageCreated(await target.page())
+      const page = await target.page()
+      await this.onPageCreated(page)
     }
   }
 

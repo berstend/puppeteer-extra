@@ -22,29 +22,29 @@ const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
  * const browser = await puppeteer.launch()
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = { }) {
-    super(opts)
+  constructor (opts = { }) { super(opts) }
 
-    const defaults = {
+  get name () { return 'anonymize-ua' }
+
+  get defaults () {
+    return {
       stripHeadless: true,
       makeWindows: true,
       customFn: null
     }
-    this._opts = Object.assign(defaults, opts)
   }
 
-  get name () { return 'anonymize-ua' }
-
   async onPageCreated (page) {
+    this.debug('onPageCreated')
     let ua = await page.browser().userAgent()
-    if (this._opts.stripHeadless) {
+    if (this.opts.stripHeadless) {
       ua = ua.replace('HeadlessChrome/', 'Chrome/')
     }
-    if (this._opts.makeWindows) {
+    if (this.opts.makeWindows) {
       ua = ua.replace(/\(([^)]+)\)/, '(Windows NT 10.0; Win64; x64)')
     }
-    if (this._opts.customFn) {
-      ua = this._opts.customFn(ua)
+    if (this.opts.customFn) {
+      ua = this.opts.customFn(ua)
     }
     this.debug('new ua', ua)
     await page.setUserAgent(ua)
