@@ -226,7 +226,7 @@ class PuppeteerExtra {
           A plugin listed '${name}' as dependency,
           which is currently missing. Please install it:
 
-          npm i --save ${packageName}
+          yarn add ${packageName}
 
           Note: You don't need to require the plugin yourself,
           unless you want to modify it's default settings.
