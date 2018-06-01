@@ -35,7 +35,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   async onPageCreated (page) {
-    this.debug('onPageCreated')
     let ua = await page.browser().userAgent()
     if (this.opts.stripHeadless) {
       ua = ua.replace('HeadlessChrome/', 'Chrome/')

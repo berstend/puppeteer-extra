@@ -6,7 +6,7 @@
 
 -   [Plugin](#plugin)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/b1c8db587b16d72a7bcff9ae34b11075e9c0139e/packages/puppeteer-extra-plugin-stealth/evasions/chrome.runtime/index.js#L10-L22)
+### [Plugin](https://github.com/berstend/puppeteer-extra/blob/139d9ecf97a46dc383adede213e1a4c707160dca/packages/puppeteer-extra-plugin-stealth/evasions/chrome.runtime/index.js#L10-L22)
 
 **Extends: PuppeteerExtraPlugin**
 
