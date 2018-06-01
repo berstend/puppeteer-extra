@@ -1,6 +1,6 @@
 # puppeteer-extra-plugin-stealth
 
-> A plugin in for [puppeteer-extra](https://github.com/berstend/puppeteer-extra).
+> A plugin for [puppeteer-extra](https://github.com/berstend/puppeteer-extra).
 
 ### Install
 
@@ -23,7 +23,7 @@ yarn add puppeteer-extra-plugin-stealth
     -   [availableEvasions](#availableevasions)
     -   [enabledEvasions](#enabledevasions)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/139d9ecf97a46dc383adede213e1a4c707160dca/packages/puppeteer-extra-plugin-stealth/index.js#L75-L142)
+### [Plugin](https://github.com/berstend/puppeteer-extra/blob/ba731a069a64c0e6e65a16a8bf403b51ed6aacba/packages/puppeteer-extra-plugin-stealth/index.js#L75-L142)
 
 **Extends: PuppeteerExtraPlugin**
 
@@ -103,7 +103,7 @@ puppeteer.use(require('puppeteer-extra-plugin-stealth')())
 
 * * *
 
-#### [availableEvasions](https://github.com/berstend/puppeteer-extra/blob/139d9ecf97a46dc383adede213e1a4c707160dca/packages/puppeteer-extra-plugin-stealth/index.js#L121-L121)
+#### [availableEvasions](https://github.com/berstend/puppeteer-extra/blob/ba731a069a64c0e6e65a16a8bf403b51ed6aacba/packages/puppeteer-extra-plugin-stealth/index.js#L121-L121)
 
 Get all available evasions.
 
@@ -121,7 +121,7 @@ puppeteer.use(pluginStealth)
 
 * * *
 
-#### [enabledEvasions](https://github.com/berstend/puppeteer-extra/blob/139d9ecf97a46dc383adede213e1a4c707160dca/packages/puppeteer-extra-plugin-stealth/index.js#L136-L136)
+#### [enabledEvasions](https://github.com/berstend/puppeteer-extra/blob/ba731a069a64c0e6e65a16a8bf403b51ed6aacba/packages/puppeteer-extra-plugin-stealth/index.js#L136-L136)
 
 Get all enabled evasions.
 

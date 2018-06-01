@@ -1,6 +1,6 @@
 # puppeteer-extra-plugin-user-data-dir
 
-> A plugin in for [puppeteer-extra](https://github.com/berstend/puppeteer-extra).
+> A plugin for [puppeteer-extra](https://github.com/berstend/puppeteer-extra).
 
 ### Install
 
@@ -16,7 +16,7 @@ yarn add puppeteer-extra-plugin-user-data-dir
 
 -   [Plugin](#plugin)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/139d9ecf97a46dc383adede213e1a4c707160dca/packages/puppeteer-extra-plugin-user-data-dir/index.js#L19-L113)
+### [Plugin](https://github.com/berstend/puppeteer-extra/blob/ba731a069a64c0e6e65a16a8bf403b51ed6aacba/packages/puppeteer-extra-plugin-user-data-dir/index.js#L19-L113)
 
 **Extends: PuppeteerExtraPlugin**
 
