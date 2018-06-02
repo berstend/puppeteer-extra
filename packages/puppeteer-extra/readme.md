@@ -6,12 +6,16 @@
 
 [![extra](https://i.imgur.com/2ZjXBe5.jpg)](https://github.com/berstend/puppeteer-extra)
 
-> A light-weight wrapper around [`puppeteer`](https://github.com/GoogleChrome/puppeteer) that enables [plugins](#plugins) through a clean interface.
+> A light-weight wrapper around [`puppeteer`](https://github.com/GoogleChrome/puppeteer) to enable [plugins](#plugins) through a clean interface.
+
 
 ## Installation
 
 ```bash
-yarn add puppeteer-extra
+yarn add puppeteer puppeteer-extra
+
+# or to install the latest tip-of-tree version of puppeteer:
+# yarn add puppeteer@next puppeteer-extra
 ```
 
 Puppeteer is a peer dependency of puppeteer-extra,
@@ -44,22 +48,27 @@ puppeteer.use(require('puppeteer-extra-plugin-font-size')({defaultFontSize: 18})
 ## Plugins
 
 #### [`puppeteer-extra-plugin-stealth`](/packages/puppeteer-extra-plugin-stealth)
+- Applies various evasion techniques to make detection of headless puppeteer harder.
 
--   Applies various techniques to make detection of headless puppeteer harder.
+
+#### [`puppeteer-extra-plugin-devtools`](/packages/puppeteer-extra-plugin-devtools)
+- Make puppeteer browser debugging possible from anywhere.
+- Creates a secure tunnel to make the devtools frontend (**incl. screencasting**) accessible from the public internet
+
 
 #### [`puppeteer-extra-plugin-flash`](/packages/puppeteer-extra-plugin-flash)
+- Allow flash content to run on all sites without user interaction.
 
--   Allow flash content to run on all sites without user interaction.
 
 #### [`puppeteer-extra-plugin-anonymize-ua`](/packages/puppeteer-extra-plugin-anonymize-ua)
+- Anonymizes the user-agent on all pages.
+- Supports dynamic replacing, so the browser version stays intact and recent.
 
--   Anonymizes the user-agent on all pages.
--   Supports dynamic replacing, so the browser version stays intact and recent.
 
 #### [`puppeteer-extra-plugin-user-preferences`](/packages/puppeteer-extra-plugin-user-preferences)
+- Allows setting custom Chrome/Chromium user preferences.
+- Has itself a plugin interface which is used by e.g. [`puppeteer-extra-plugin-font-size`](/packages/puppeteer-extra-plugin-font-size).
 
--   Allows setting custom Chrome/Chromium user preferences.
--   Has itself a plugin interface which is used by e.g. [`puppeteer-extra-plugin-font-size`](/packages/puppeteer-extra-plugin-font-size).
 
 > Check out the [packages folder](/packages/) for more plugins.
 
