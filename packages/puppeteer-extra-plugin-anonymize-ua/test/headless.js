@@ -26,6 +26,25 @@ test('will remove headless from the user-agent', async (t) => {
   t.true(true)
 })
 
+test('will remove headless from the user-agent in incognito page', async (t) => {
+  const puppeteer = require('puppeteer-extra')
+  puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
+
+  const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
+
+  // Requires puppeteer@next currrently
+  const context = await browser.createIncognitoBrowserContext()
+  const page = await context.newPage()
+  await page.goto('https://httpbin.org/headers', {waitUntil: 'domcontentloaded'})
+
+  const content = await page.content()
+  t.true(content.includes('Windows NT 10.0'))
+  t.true(!content.includes('HeadlessChrome'))
+
+  await browser.close()
+  t.true(true)
+})
+
 test('will use a custom fn to modify the user-agent', async (t) => {
   const puppeteer = require('puppeteer-extra')
   puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')({
