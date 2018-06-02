@@ -21,12 +21,15 @@ yarn add puppeteer puppeteer-extra
 ## Quickstart
 
 ```es6
+// puppeteer-extra is a drop-in replacement for puppeteer,
+// it augments the installed puppeteer with plugin functionality
 const puppeteer = require('puppeteer-extra')
 
-// Register plugins through `.use()`
+// register plugins through `.use()`
 puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')({ makeWindows: true }))
 puppeteer.use(require('puppeteer-extra-plugin-stealth')())
 
+// usage as normal
 puppeteer.launch().then(async browser => {
   const page = await browser.newPage()
   await page.goto('https://httpbin.org/headers', { waitUntil: 'domcontentloaded' })
