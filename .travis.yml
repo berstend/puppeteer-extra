@@ -26,7 +26,8 @@ env:
   - PUPPETEER_VERSION=1.3.0
 
 script:
-  - yarn
+  - 'if [ "$PUPPETEER_VERSION" = "next" ]; then rm -rf yarn.lock; fi'
+  - yarn bootstrap
   # https://github.com/yarnpkg/yarn/issues/4731
   # - 'if [ "$PUPPETEER_VERSION" = "next" ]; then yarn bootstrap && lerna exec -- yarn remove puppeteer --dev && rm -rf yarn.lock; fi'
   # - 'if [ "$PUPPETEER_VERSION" = "next" ]; then yarn add puppeteer@next --ignore-workspace-root-check; fi'
