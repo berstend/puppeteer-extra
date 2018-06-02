@@ -24,7 +24,7 @@ yarn add puppeteer puppeteer-extra
 const puppeteer = require('puppeteer-extra')
 
 // Register plugins through `.use()`
-puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
+puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')({ makeWindows: true }))
 puppeteer.use(require('puppeteer-extra-plugin-stealth')())
 
 puppeteer.launch().then(async browser => {
