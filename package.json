@@ -12,7 +12,6 @@
     "bootstrap": "lerna bootstrap",
     "docs": "lerna run docs",
     "test": "lerna run test",
-    "end-to-end-tests": "ava -v --fail-fast ./end-to-end-tests",
     "prepare": "lerna run prepare"
   },
   "workspaces": [
