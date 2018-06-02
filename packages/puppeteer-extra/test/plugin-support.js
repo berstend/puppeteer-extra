@@ -2,6 +2,8 @@
 
 const { test } = require('ava')
 
+const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
+
 test.beforeEach(t => {
   // Make sure we work with pristine modules
   delete require.cache[require.resolve('puppeteer-extra')]
@@ -10,7 +12,7 @@ test.beforeEach(t => {
 
 test('will launch the browser normally', async (t) => {
   const puppeteer = require('puppeteer-extra')
-  const browser = await puppeteer.launch({ headless: true })
+  const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
   const page = await browser.newPage()
   await page.goto('http://example.com', {waitUntil: 'domcontentloaded'})
   await browser.close()
@@ -29,7 +31,7 @@ test('will launch puppeteer with plugin support', async (t) => {
   }
   const instance = new Plugin()
   puppeteer.use(instance)
-  const browser = await puppeteer.launch({ headless: true })
+  const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
   const page = await browser.newPage()
 
   t.is(puppeteer.plugins.length, 1)

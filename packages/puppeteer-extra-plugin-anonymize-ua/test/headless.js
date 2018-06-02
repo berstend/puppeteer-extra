@@ -2,6 +2,8 @@
 
 const { test } = require('ava')
 
+const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
+
 test.beforeEach(t => {
   // Make sure we work with pristine modules
   delete require.cache[require.resolve('puppeteer-extra')]
@@ -12,7 +14,7 @@ test('will remove headless from the user-agent', async (t) => {
   const puppeteer = require('puppeteer-extra')
   puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
 
-  const browser = await puppeteer.launch({ headless: true })
+  const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
   const page = await browser.newPage()
   await page.goto('https://httpbin.org/headers', {waitUntil: 'domcontentloaded'})
 
@@ -30,7 +32,7 @@ test('will use a custom fn to modify the user-agent', async (t) => {
     customFn: (ua) => 'MyCoolAgent/' + ua.replace('Chrome', 'Beer')
   }))
 
-  const browser = await puppeteer.launch({ headless: true })
+  const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
   const page = await browser.newPage()
   await page.goto('https://httpbin.org/headers', {waitUntil: 'domcontentloaded'})
 
@@ -52,7 +54,7 @@ test('will not modify the user-agent when disabled', async (t) => {
     customFn: null
   }))
 
-  const browser = await puppeteer.launch({ headless: true })
+  const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
   const page = await browser.newPage()
   await page.goto('https://httpbin.org/headers', {waitUntil: 'domcontentloaded'})
 
