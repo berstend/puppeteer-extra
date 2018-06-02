@@ -102,7 +102,7 @@ class PuppeteerExtra {
     this.checkPluginRequirements(options)
 
     const browser = await Puppeteer.launch(options)
-    browser.newPage = this._delayAsync(50, browser.newPage, browser)
+    this._delayTargetCreationMethods(browser)
     await this.callPlugins('_bindBrowserEvents', browser, options)
 
     return browser
@@ -119,8 +119,6 @@ class PuppeteerExtra {
    * https://github.com/GoogleChrome/puppeteer/issues/386#issuecomment-343059315
    * https://github.com/GoogleChrome/puppeteer/issues/1378#issue-273733905
    *
-   * @todo  support browser.createIncognitoBrowserContext() / context.newPage()
-   *
    * @param  {Number} timeout - Delay in milliseconds
    * @param  {Function} method - The async method to use
    * @param  {any} context - the this to use
@@ -133,6 +131,21 @@ class PuppeteerExtra {
       const result = await method.apply(context, arguments)
       await delay(timeout)
       return result
+    }
+  }
+
+  /**
+   * @see _delayAsync
+   * @private
+   */
+  _delayTargetCreationMethods (browser) {
+    browser.newPage = this._delayAsync(50, browser.newPage, browser)
+
+    browser._createIncognitoBrowserContext = browser.createIncognitoBrowserContext
+    browser.createIncognitoBrowserContext = async () => {
+      const context = await browser._createIncognitoBrowserContext.apply(browser, arguments)
+      context.newPage = this._delayAsync(50, context.newPage, context)
+      return context
     }
   }
 
