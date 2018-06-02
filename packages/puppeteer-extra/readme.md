@@ -47,6 +47,11 @@ puppeteer.launch().then(async browser => {
 - Creates a secure tunnel to make the devtools frontend (**incl. screencasting**) accessible from the public internet
 
 
+#### [`puppeteer-extra-plugin-block-resources`](/packages/puppeteer-extra-plugin-block-resources)
+- Block resources (images, media, css, etc.) in puppeteer.
+- Supports all resource types, blocking can be toggled dynamically.
+
+
 #### [`puppeteer-extra-plugin-flash`](/packages/puppeteer-extra-plugin-flash)
 - Allow flash content to run on all sites without user interaction.
 
