@@ -18,7 +18,7 @@ yarn add puppeteer-extra-plugin-block-resources
     -   [availableTypes](#availabletypes)
     -   [blockedTypes](#blockedtypes)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/4038a963654c11e5c97e32650fe618219c25407b/packages/puppeteer-extra-plugin-block-resources/index.js#L41-L104)
+### [Plugin](https://github.com/berstend/puppeteer-extra/blob/c112368eba0738093e5244452d93b6c24e422b7c/packages/puppeteer-extra-plugin-block-resources/index.js#L41-L104)
 
 **Extends: PuppeteerExtraPlugin**
 
@@ -64,7 +64,7 @@ await page.goto('http://www.youtube.com', {waitUntil: 'domcontentloaded'})
 
 * * *
 
-#### [availableTypes](https://github.com/berstend/puppeteer-extra/blob/4038a963654c11e5c97e32650fe618219c25407b/packages/puppeteer-extra-plugin-block-resources/index.js#L75-L75)
+#### [availableTypes](https://github.com/berstend/puppeteer-extra/blob/c112368eba0738093e5244452d93b6c24e422b7c/packages/puppeteer-extra-plugin-block-resources/index.js#L75-L75)
 
 Get all available resource types.
 
@@ -74,7 +74,7 @@ Type: [Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_O
 
 * * *
 
-#### [blockedTypes](https://github.com/berstend/puppeteer-extra/blob/4038a963654c11e5c97e32650fe618219c25407b/packages/puppeteer-extra-plugin-block-resources/index.js#L84-L84)
+#### [blockedTypes](https://github.com/berstend/puppeteer-extra/blob/c112368eba0738093e5244452d93b6c24e422b7c/packages/puppeteer-extra-plugin-block-resources/index.js#L84-L84)
 
 Get all blocked resource types.
 
