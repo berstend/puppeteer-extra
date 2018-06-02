@@ -102,7 +102,7 @@ class PuppeteerExtra {
     this.checkPluginRequirements(options)
 
     const browser = await Puppeteer.launch(options)
-    browser.newPage = this._delayAsync(10, browser.newPage, browser)
+    browser.newPage = this._delayAsync(50, browser.newPage, browser)
     await this.callPlugins('_bindBrowserEvents', browser, options)
 
     return browser
