@@ -8,7 +8,6 @@
 
 > A light-weight wrapper around [`puppeteer`](https://github.com/GoogleChrome/puppeteer) to enable [plugins](#plugins) through a clean interface.
 
-
 ## Installation
 
 ```bash
@@ -42,32 +41,32 @@ puppeteer.launch().then(async browser => {
 ## Plugins
 
 #### [`puppeteer-extra-plugin-stealth`](/packages/puppeteer-extra-plugin-stealth)
-- Applies various evasion techniques to make detection of headless puppeteer harder.
 
+-   Applies various evasion techniques to make detection of headless puppeteer harder.
 
 #### [`puppeteer-extra-plugin-devtools`](/packages/puppeteer-extra-plugin-devtools)
-- Makes puppeteer browser debugging possible from anywhere.
-- Creates a secure tunnel to make the devtools frontend (**incl. screencasting**) accessible from the public internet
 
+-   Makes puppeteer browser debugging possible from anywhere.
+-   Creates a secure tunnel to make the devtools frontend (**incl. screencasting**) accessible from the public internet
 
 #### [`puppeteer-extra-plugin-block-resources`](/packages/puppeteer-extra-plugin-block-resources)
-- Blocks resources (images, media, css, etc.) in puppeteer.
-- Supports all resource types, blocking can be toggled dynamically.
 
+-   Blocks resources (images, media, css, etc.) in puppeteer.
+-   Supports all resource types, blocking can be toggled dynamically.
 
 #### [`puppeteer-extra-plugin-flash`](/packages/puppeteer-extra-plugin-flash)
-- Allows flash content to run on all sites without user interaction.
 
+-   Allows flash content to run on all sites without user interaction.
 
 #### [`puppeteer-extra-plugin-anonymize-ua`](/packages/puppeteer-extra-plugin-anonymize-ua)
-- Anonymizes the user-agent on all pages.
-- Supports dynamic replacing, so the browser version stays intact and recent.
 
+-   Anonymizes the user-agent on all pages.
+-   Supports dynamic replacing, so the browser version stays intact and recent.
 
 #### [`puppeteer-extra-plugin-user-preferences`](/packages/puppeteer-extra-plugin-user-preferences)
-- Allows setting custom Chrome/Chromium user preferences.
-- Has itself a plugin interface which is used by e.g. [`puppeteer-extra-plugin-font-size`](/packages/puppeteer-extra-plugin-font-size).
 
+-   Allows setting custom Chrome/Chromium user preferences.
+-   Has itself a plugin interface which is used by e.g. [`puppeteer-extra-plugin-font-size`](/packages/puppeteer-extra-plugin-font-size).
 
 > Check out the [packages folder](/packages/) for more plugins.
 
@@ -100,7 +99,7 @@ We use a [monorepo](/) powered by [Lerna](https://github.com/lerna/lerna#--use-w
     -   [defaultArgs](#defaultargs)
     -   [createBrowserFetcher](#createbrowserfetcher)
 
-### [PuppeteerExtra](https://github.com/berstend/puppeteer-extra/blob/2fefa134bd3d12f4a1e9f7ed86f44443b38d1098/packages/puppeteer-extra/index.js#L43-L357)
+### [PuppeteerExtra](https://github.com/berstend/puppeteer-extra/blob/4038a963654c11e5c97e32650fe618219c25407b/packages/puppeteer-extra/index.js#L43-L357)
 
 Modular plugin framework to teach `puppeteer` new tricks.
 
@@ -128,7 +127,7 @@ puppeteer.use(require('puppeteer-extra-plugin-font-size')({defaultFontSize: 18})
 
 * * *
 
-#### [use](https://github.com/berstend/puppeteer-extra/blob/2fefa134bd3d12f4a1e9f7ed86f44443b38d1098/packages/puppeteer-extra/index.js#L63-L79)
+#### [use](https://github.com/berstend/puppeteer-extra/blob/4038a963654c11e5c97e32650fe618219c25407b/packages/puppeteer-extra/index.js#L63-L79)
 
 Outside interface to register plugins.
 
@@ -147,7 +146,7 @@ const browser = await puppeteer.launch(...)
 
 * * *
 
-#### [launch](https://github.com/berstend/puppeteer-extra/blob/2fefa134bd3d12f4a1e9f7ed86f44443b38d1098/packages/puppeteer-extra/index.js#L94-L109)
+#### [launch](https://github.com/berstend/puppeteer-extra/blob/4038a963654c11e5c97e32650fe618219c25407b/packages/puppeteer-extra/index.js#L94-L109)
 
 Main launch method.
 
@@ -162,7 +161,7 @@ Type: `function (options): Puppeteer.Browser`
 
 * * *
 
-#### [plugins](https://github.com/berstend/puppeteer-extra/blob/2fefa134bd3d12f4a1e9f7ed86f44443b38d1098/packages/puppeteer-extra/index.js#L144-L144)
+#### [plugins](https://github.com/berstend/puppeteer-extra/blob/4038a963654c11e5c97e32650fe618219c25407b/packages/puppeteer-extra/index.js#L144-L144)
 
 Get all registered plugins.
 
@@ -170,7 +169,7 @@ Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global
 
 * * *
 
-#### [getPluginData](https://github.com/berstend/puppeteer-extra/blob/2fefa134bd3d12f4a1e9f7ed86f44443b38d1098/packages/puppeteer-extra/index.js#L166-L171)
+#### [getPluginData](https://github.com/berstend/puppeteer-extra/blob/4038a963654c11e5c97e32650fe618219c25407b/packages/puppeteer-extra/index.js#L166-L171)
 
 -   **See: puppeteer-extra-plugin/data**
 
@@ -187,7 +186,7 @@ Type: `function (name)`
 
 * * *
 
-#### [connect](https://github.com/berstend/puppeteer-extra/blob/2fefa134bd3d12f4a1e9f7ed86f44443b38d1098/packages/puppeteer-extra/index.js#L326-L328)
+#### [connect](https://github.com/berstend/puppeteer-extra/blob/4038a963654c11e5c97e32650fe618219c25407b/packages/puppeteer-extra/index.js#L326-L328)
 
 Regular Puppeteer method that is being passed through.
 
@@ -197,7 +196,7 @@ Type: `function (options)`
 
 * * *
 
-#### [executablePath](https://github.com/berstend/puppeteer-extra/blob/2fefa134bd3d12f4a1e9f7ed86f44443b38d1098/packages/puppeteer-extra/index.js#L335-L337)
+#### [executablePath](https://github.com/berstend/puppeteer-extra/blob/4038a963654c11e5c97e32650fe618219c25407b/packages/puppeteer-extra/index.js#L335-L337)
 
 Regular Puppeteer method that is being passed through.
 
@@ -205,7 +204,7 @@ Type: `function (): string`
 
 * * *
 
-#### [defaultArgs](https://github.com/berstend/puppeteer-extra/blob/2fefa134bd3d12f4a1e9f7ed86f44443b38d1098/packages/puppeteer-extra/index.js#L344-L346)
+#### [defaultArgs](https://github.com/berstend/puppeteer-extra/blob/4038a963654c11e5c97e32650fe618219c25407b/packages/puppeteer-extra/index.js#L344-L346)
 
 Regular Puppeteer method that is being passed through.
 
@@ -213,7 +212,7 @@ Type: `function ()`
 
 * * *
 
-#### [createBrowserFetcher](https://github.com/berstend/puppeteer-extra/blob/2fefa134bd3d12f4a1e9f7ed86f44443b38d1098/packages/puppeteer-extra/index.js#L354-L356)
+#### [createBrowserFetcher](https://github.com/berstend/puppeteer-extra/blob/4038a963654c11e5c97e32650fe618219c25407b/packages/puppeteer-extra/index.js#L354-L356)
 
 Regular Puppeteer method that is being passed through.
 

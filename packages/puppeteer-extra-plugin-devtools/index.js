@@ -121,8 +121,8 @@ class Plugin extends PuppeteerExtraPlugin {
   /**
    * Convenience function to get the local devtools frontend URL.
    *
-   * @param  {[type]} browser [description]
-   * @return {[type]}         [description]
+   * @param  {Puppeteer.Browser} browser
+   * @return {string}
    *
    * @example
    * const puppeteer = require('puppeteer-extra')

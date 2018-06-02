@@ -54,7 +54,7 @@ puppeteer.launch().then(async browser => {
     -   [getUrlForPage](#geturlforpage)
     -   [close](#close)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/2fefa134bd3d12f4a1e9f7ed86f44443b38d1098/packages/puppeteer-extra-plugin-devtools/index.js#L34-L168)
+### [Plugin](https://github.com/berstend/puppeteer-extra/blob/4038a963654c11e5c97e32650fe618219c25407b/packages/puppeteer-extra-plugin-devtools/index.js#L34-L168)
 
 **Extends: PuppeteerExtraPlugin**
 
@@ -92,7 +92,7 @@ puppeteer.launch().then(async browser => {
 
 * * *
 
-#### [createTunnel](https://github.com/berstend/puppeteer-extra/blob/2fefa134bd3d12f4a1e9f7ed86f44443b38d1098/packages/puppeteer-extra-plugin-devtools/index.js#L82-L93)
+#### [createTunnel](https://github.com/berstend/puppeteer-extra/blob/4038a963654c11e5c97e32650fe618219c25407b/packages/puppeteer-extra-plugin-devtools/index.js#L82-L93)
 
 Create a new public tunnel.
 
@@ -127,7 +127,7 @@ puppeteer.use(devtools)
 
 * * *
 
-#### [setAuthCredentials](https://github.com/berstend/puppeteer-extra/blob/2fefa134bd3d12f4a1e9f7ed86f44443b38d1098/packages/puppeteer-extra-plugin-devtools/index.js#L113-L119)
+#### [setAuthCredentials](https://github.com/berstend/puppeteer-extra/blob/4038a963654c11e5c97e32650fe618219c25407b/packages/puppeteer-extra-plugin-devtools/index.js#L113-L119)
 
 Set the basic auth credentials for the public tunnel page.
 
@@ -153,13 +153,13 @@ puppeteer.launch().then(async browser => {
 
 * * *
 
-#### [getLocalDevToolsUrl](https://github.com/berstend/puppeteer-extra/blob/2fefa134bd3d12f4a1e9f7ed86f44443b38d1098/packages/puppeteer-extra-plugin-devtools/index.js#L137-L142)
+#### [getLocalDevToolsUrl](https://github.com/berstend/puppeteer-extra/blob/4038a963654c11e5c97e32650fe618219c25407b/packages/puppeteer-extra-plugin-devtools/index.js#L137-L142)
 
 Convenience function to get the local devtools frontend URL.
 
-Type: `function (browser)`
+Type: `function (browser): string`
 
--   `browser` **\[type]** [description]
+-   `browser` **Puppeteer.Browser** 
 
 Example:
 
@@ -176,7 +176,7 @@ puppeteer.launch().then(async browser => {
 
 * * *
 
-### [Tunnel](https://github.com/berstend/puppeteer-extra/blob/2fefa134bd3d12f4a1e9f7ed86f44443b38d1098/packages/puppeteer-extra-plugin-devtools/index.js#L174-L217)
+### [Tunnel](https://github.com/berstend/puppeteer-extra/blob/4038a963654c11e5c97e32650fe618219c25407b/packages/puppeteer-extra-plugin-devtools/index.js#L174-L217)
 
 **Extends: RemoteDevTools.DevToolsTunnel**
 
@@ -189,7 +189,7 @@ Type: `function (wsEndpoint, opts)`
 
 * * *
 
-#### [url](https://github.com/berstend/puppeteer-extra/blob/2fefa134bd3d12f4a1e9f7ed86f44443b38d1098/packages/puppeteer-extra-plugin-devtools/index.js#L187-L187)
+#### [url](https://github.com/berstend/puppeteer-extra/blob/4038a963654c11e5c97e32650fe618219c25407b/packages/puppeteer-extra-plugin-devtools/index.js#L187-L187)
 
 Get the public devtools frontend url.
 
@@ -205,7 +205,7 @@ console.log(tunnel.url)
 
 * * *
 
-#### [getUrlForPage](https://github.com/berstend/puppeteer-extra/blob/2fefa134bd3d12f4a1e9f7ed86f44443b38d1098/packages/puppeteer-extra-plugin-devtools/index.js#L201-L205)
+#### [getUrlForPage](https://github.com/berstend/puppeteer-extra/blob/4038a963654c11e5c97e32650fe618219c25407b/packages/puppeteer-extra-plugin-devtools/index.js#L201-L205)
 
 Get the devtools frontend deep link for a specific page.
 
@@ -224,7 +224,7 @@ console.log(tunnel.getUrlForPage(page))
 
 * * *
 
-#### [close](https://github.com/berstend/puppeteer-extra/blob/2fefa134bd3d12f4a1e9f7ed86f44443b38d1098/packages/puppeteer-extra-plugin-devtools/index.js#L216-L216)
+#### [close](https://github.com/berstend/puppeteer-extra/blob/4038a963654c11e5c97e32650fe618219c25407b/packages/puppeteer-extra-plugin-devtools/index.js#L216-L216)
 
 Close the tunnel.
 
