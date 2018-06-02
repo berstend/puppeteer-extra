@@ -43,7 +43,7 @@ puppeteer.launch().then(async browser => {
 
 
 #### [`puppeteer-extra-plugin-devtools`](/packages/puppeteer-extra-plugin-devtools)
-- Make puppeteer browser debugging possible from anywhere.
+- Makes puppeteer browser debugging possible from anywhere.
 - Creates a secure tunnel to make the devtools frontend (**incl. screencasting**) accessible from the public internet
 
 
