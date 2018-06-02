@@ -82,6 +82,12 @@ We use a [monorepo](/) powered by [Lerna](https://github.com/lerna/lerna#--use-w
 -   Thanks to [skyiea](https://github.com/skyiea) for [this PR](https://github.com/GoogleChrome/puppeteer/pull/1806) that started the project idea.
 -   Thanks to [transitive-bullshit](https://github.com/transitive-bullshit) for [suggesting](https://github.com/berstend/puppeteer-extra/issues/2) a modular plugin design, which was fun to implement.
 
+## Compatibility
+
+`puppeteer-extra` and all plugins are tested against Node v8, v9, v10 and Puppeteer v1.3.0, v1.4.0 and @next, as well as a any combination thereof.
+
+Some plugins won't work in headless mode due to Chrome limitations (e.g. user preferences in the profile folder), look into `xvfb-run` if you still require a headless experience in these circumstances.
+
 * * *
 
 ## API
