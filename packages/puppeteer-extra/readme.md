@@ -18,16 +18,6 @@ yarn add puppeteer puppeteer-extra
 # yarn add puppeteer@next puppeteer-extra
 ```
 
-Puppeteer is a peer dependency of puppeteer-extra,
-which means you can install your own preferred version:
-
-```bash
-# To install the latest stable version:
-yarn add puppeteer
-# To install the latest tip-of-tree version:
-yarn add puppeteer@next
-```
-
 ## Quickstart
 
 ```es6
