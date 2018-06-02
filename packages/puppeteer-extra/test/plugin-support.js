@@ -31,7 +31,7 @@ test('will launch puppeteer with plugin support', async (t) => {
   }
   const instance = new Plugin()
   puppeteer.use(instance)
-  const browser = await puppeteer.launch({ åargs: PUPPETEER_ARGS })
+  const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
   const page = await browser.newPage()
 
   t.is(puppeteer.plugins.length, 1)
