@@ -25,14 +25,15 @@ const puppeteer = require('puppeteer-extra')
 
 // Register plugins through `.use()`
 puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
-puppeteer.use(require('puppeteer-extra-plugin-font-size')({defaultFontSize: 18}))
+puppeteer.use(require('puppeteer-extra-plugin-stealth')())
 
-(async () => {
-  const browser = await puppeteer.launch({headless: false})
+puppeteer.launch().then(async browser => {
   const page = await browser.newPage()
-  await page.goto('http://example.com', {waitUntil: 'domcontentloaded'})
+  await page.goto('https://httpbin.org/headers', { waitUntil: 'domcontentloaded' })
+  const content = await page.content()
+  console.log('content:', content) // => (..) User-Agent: (..) Windows NT 10.0
   await browser.close()
-})()
+})
 ```
 
 ## Plugins
