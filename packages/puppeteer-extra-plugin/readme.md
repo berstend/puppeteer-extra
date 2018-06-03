@@ -73,7 +73,7 @@ module.exports = function (pluginConfig) { return new Plugin(pluginConfig) }
 const puppeteer = require('puppeteer-extra')
 puppeteer.use(require('./hello-world-plugin')())
 
-(async () => {
+;(async () => {
   const browser = await puppeteer.launch({headless: false})
   const page = await browser.newPage()
   await page.goto('http://example.com', {waitUntil: 'domcontentloaded'})
