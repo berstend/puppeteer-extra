@@ -21,11 +21,9 @@ yarn add puppeteer-extra-plugin-repl
 
 -   Inspired by [puppeteer-debug](https://github.com/nswbmw/puppeteer-debug) from [nswbmw](https://github.com/nswbmw), thanks!
 
-
 ## REPL
 
 ![repl](https://i.imgur.com/xeP7hEc.gif)
-
 
 ## Quickstart
 
@@ -77,7 +75,7 @@ In the REPL session (hit `tab` two times to see all available properties):
 -   [Plugin](#plugin)
     -   [repl](#repl)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/38ad1ecc2e4fa63aaee05aa134f4d6bad8697fe9/packages/puppeteer-extra-plugin-repl/index.js#L38-L83)
+### [Plugin](https://github.com/berstend/puppeteer-extra/blob/4ab951dbe6ff6a49e7bc5a23a794eeda76eceafe/packages/puppeteer-extra-plugin-repl/index.js#L38-L83)
 
 **Extends: PuppeteerExtraPlugin**
 
@@ -118,7 +116,7 @@ puppeteer.launch({ headless: true }).then(async browser => {
 
 * * *
 
-#### [repl](https://github.com/berstend/puppeteer-extra/blob/38ad1ecc2e4fa63aaee05aa134f4d6bad8697fe9/packages/puppeteer-extra-plugin-repl/index.js#L70-L70)
+#### [repl](https://github.com/berstend/puppeteer-extra/blob/4ab951dbe6ff6a49e7bc5a23a794eeda76eceafe/packages/puppeteer-extra-plugin-repl/index.js#L70-L70)
 
 Create an interactive REPL for the provided object.
 

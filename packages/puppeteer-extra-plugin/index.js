@@ -100,6 +100,9 @@ class PuppeteerExtraPlugin {
    * Signal certain plugin requirements to the base class and the user.
    *
    * Currently supported:
+   * - `launch`
+   *   - If the plugin only supports locally created browser instances (no `puppeteer.connect()`),
+   *     will output a warning to the user.
    * - `headful`
    *   - If the plugin doesn't work in `headless: true` mode,
    *     will output a warning to the user.
@@ -208,6 +211,8 @@ class PuppeteerExtraPlugin {
   get debug () { return debug(`puppeteer-extra-plugin:${this.name}`) }
 
   /**
+   * Before a new browser instance is created/launched.
+   *
    * Can be used to modify the puppeteer launch options by modifying or returning them.
    *
    * Plugins using this method will be called in sequence to each
@@ -245,19 +250,61 @@ class PuppeteerExtraPlugin {
    * ```
    *
    * @param  {Puppeteer.Browser} browser - The `puppeteer` browser instance.
-   * @param  {Object=} options - The launch options used.
+   * @param  {Object} opts
+   * @param  {Object} opts.options - Puppeteer launch options used.
    *
    * @example
-   * async afterLaunch (browser, options) {
-   *   this.debug('browser has been launched', options)
+   * async afterLaunch (browser, opts) {
+   *   this.debug('browser has been launched', opts.options)
    * }
    */
-  async afterLaunch (browser, options = {}) { }
+  async afterLaunch (browser, opts = {}) { }
+
+  /**
+   * Before connecting to an existing browser instance.
+   *
+   * Can be used to modify the puppeteer connect options by modifying or returning them.
+   *
+   * Plugins using this method will be called in sequence to each
+   * be able to update the launch options.
+   *
+   * @param  {Object} options - Puppeteer connect options
+   * @return {Object=}
+   */
+  async beforeConnect (options) { }
+
+  /**
+   * After connecting to an existing browser instance.
+   *
+   * > Note: Don't assume that there will only be a single browser instance during the lifecycle of a plugin.
+   *
+   * @param  {Puppeteer.Browser} browser - The `puppeteer` browser instance.
+   * @param  {Object} opts
+   * @param  {Object} opts.options - Puppeteer connect options used.
+   *
+   */
+  async afterConnect (browser, opts = {}) { }
+
+  /**
+   * Called when a browser instance is available.
+   *
+   * This applies to both `puppeteer.launch()` and `puppeteer.connect()`.
+   *
+   * Convenience method created for plugins that need access to a browser instance
+   * and don't mind if it has been created through `launch` or `connect`.
+   *
+   * > Note: Don't assume that there will only be a single browser instance during the lifecycle of a plugin.
+   *
+   * @param  {Puppeteer.Browser} browser - The `puppeteer` browser instance.
+   */
+  async onBrowser (browser) { }
 
   /**
    * Called when a target is created, for example when a new page is opened by window.open or browser.newPage.
    *
    * > Note: This includes target creations in incognito browser contexts.
+   *
+   * > Note: This includes browser instances created through `.launch()` as well as `.connect()`.
    *
    * @param  {Puppeteer.Target} target
    */
@@ -267,6 +314,8 @@ class PuppeteerExtraPlugin {
    * Same as `onTargetCreated` but prefiltered to only contain Pages, for convenience.
    *
    * > Note: This includes page creations in incognito browser contexts.
+   *
+   * > Note: This includes browser instances created through `.launch()` as well as `.connect()`.
    *
    * @param  {Puppeteer.Target} target
    *
@@ -287,6 +336,8 @@ class PuppeteerExtraPlugin {
    *
    * > Note: This includes target changes in incognito browser contexts.
    *
+   * > Note: This includes browser instances created through `.launch()` as well as `.connect()`.
+   *
    * @param  {Puppeteer.Target} target
    */
   async onTargetChanged (target) { }
@@ -296,12 +347,15 @@ class PuppeteerExtraPlugin {
    *
    * > Note: This includes target destructions in incognito browser contexts.
    *
+   * > Note: This includes browser instances created through `.launch()` as well as `.connect()`.
+   *
    * @param  {Puppeteer.Target} target
    */
   async onTargetDestroyed (target) { }
 
   /**
    * Called when Puppeteer gets disconnected from the Chromium instance.
+   *
    * This might happen because of one of the following:
    * - Chromium is closed or crashed
    * - The `browser.disconnect` method was called
@@ -313,7 +367,9 @@ class PuppeteerExtraPlugin {
    * In order for plugins to clean up properly (e.g. deleting temporary files)
    * the `onClose` method can be used.
    *
-   * Note: Might be called multiple times on exit.
+   * > Note: Might be called multiple times on exit.
+   *
+   * > Note: This only includes browser instances created through `.launch()`.
    */
   async onClose () { }
 
@@ -359,11 +415,14 @@ class PuppeteerExtraPlugin {
    * by checking the child class members before registering the listener.
    *
    * @param  {<Puppeteer.Browser>} browser
-   * @param {Object=} options - Puppeteer options
-   * @param {string=} context - Puppeteer context (launch/connect)
+   * @param  {Object} opts - Options
+   * @param  {string} opts.context - Puppeteer context (launch/connect)
+   * @param  {Object} [opts.options] - Puppeteer launch or connect options
+   * @param  {Array<string>} [opts.defaultArgs] - The default flags that Chromium will be launched with
+   *
    * @private
    */
-  async _bindBrowserEvents (browser, options = {}, context = 'launch') {
+  async _bindBrowserEvents (browser, opts = {}) {
     if (this._hasChildClassMember('onTargetCreated') || this._hasChildClassMember('onPageCreated')) {
       browser.on('targetcreated', this._onTargetCreated.bind(this))
     }
@@ -376,22 +435,26 @@ class PuppeteerExtraPlugin {
     if (this._hasChildClassMember('onDisconnected')) {
       browser.on('disconnected', this.onDisconnected.bind(this))
     }
-    if (this._hasChildClassMember('onClose')) {
+    if ((opts.context === 'launch') && this._hasChildClassMember('onClose')) {
       browser._process.once('close', this.onClose.bind(this))
       process.on('exit', this.onClose.bind(this))
-      if (options.handleSIGINT !== false) {
+      if (opts.options.handleSIGINT !== false) {
         process.on('SIGINT', this.onClose.bind(this))
       }
-      if (options.handleSIGTERM !== false) {
+      if (opts.options.handleSIGTERM !== false) {
         process.on('SIGTERM', this.onClose.bind(this))
       }
-      if (options.handleSIGHUP !== false) {
+      if (opts.options.handleSIGHUP !== false) {
         process.on('SIGHUP', this.onClose.bind(this))
       }
     }
-    if (context === 'launch') {
-      await this.afterLaunch(browser, options)
+    if (opts.context === 'launch') {
+      await this.afterLaunch(browser, opts)
     }
+    if (opts.context === 'connect') {
+      await this.afterConnect(browser, opts)
+    }
+    await this.onBrowser(browser, opts)
   }
 
   /**

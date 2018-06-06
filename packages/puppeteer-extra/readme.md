@@ -103,14 +103,14 @@ Some plugins won't work in headless mode due to Chrome limitations (e.g. user pr
 -   [PuppeteerExtra](#puppeteerextra)
     -   [use](#use)
     -   [launch](#launch)
+    -   [connect](#connect)
     -   [plugins](#plugins)
     -   [getPluginData](#getplugindata)
-    -   [connect](#connect)
     -   [executablePath](#executablepath)
     -   [defaultArgs](#defaultargs)
     -   [createBrowserFetcher](#createbrowserfetcher)
 
-### [PuppeteerExtra](https://github.com/berstend/puppeteer-extra/blob/c112368eba0738093e5244452d93b6c24e422b7c/packages/puppeteer-extra/index.js#L43-L370)
+### [PuppeteerExtra](https://github.com/berstend/puppeteer-extra/blob/4ab951dbe6ff6a49e7bc5a23a794eeda76eceafe/packages/puppeteer-extra/index.js#L43-L391)
 
 Modular plugin framework to teach `puppeteer` new tricks.
 
@@ -138,7 +138,7 @@ puppeteer.use(require('puppeteer-extra-plugin-font-size')({defaultFontSize: 18})
 
 * * *
 
-#### [use](https://github.com/berstend/puppeteer-extra/blob/c112368eba0738093e5244452d93b6c24e422b7c/packages/puppeteer-extra/index.js#L63-L79)
+#### [use](https://github.com/berstend/puppeteer-extra/blob/4ab951dbe6ff6a49e7bc5a23a794eeda76eceafe/packages/puppeteer-extra/index.js#L63-L79)
 
 Outside interface to register plugins.
 
@@ -157,22 +157,37 @@ const browser = await puppeteer.launch(...)
 
 * * *
 
-#### [launch](https://github.com/berstend/puppeteer-extra/blob/c112368eba0738093e5244452d93b6c24e422b7c/packages/puppeteer-extra/index.js#L94-L109)
+#### [launch](https://github.com/berstend/puppeteer-extra/blob/4ab951dbe6ff6a49e7bc5a23a794eeda76eceafe/packages/puppeteer-extra/index.js#L94-L113)
 
-Main launch method.
+Launch a new browser instance with given arguments.
 
 Augments the original `puppeteer.launch` method with plugin lifecycle methods.
 
 All registered plugins that have a `beforeLaunch` method will be called
-in sequence to potentially update the `options` Object before launching puppeteer.
+in sequence to potentially update the `options` Object before launching the browser.
 
 Type: `function (options): Puppeteer.Browser`
 
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Regular Puppeteer options (optional, default `{}`)
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Regular [Puppeteer launch options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions) (optional, default `{}`)
 
 * * *
 
-#### [plugins](https://github.com/berstend/puppeteer-extra/blob/c112368eba0738093e5244452d93b6c24e422b7c/packages/puppeteer-extra/index.js#L157-L157)
+#### [connect](https://github.com/berstend/puppeteer-extra/blob/4ab951dbe6ff6a49e7bc5a23a794eeda76eceafe/packages/puppeteer-extra/index.js#L126-L144)
+
+Attach Puppeteer to an existing Chromium instance.
+
+Augments the original `puppeteer.connect` method with plugin lifecycle methods.
+
+All registered plugins that have a `beforeConnect` method will be called
+in sequence to potentially update the `options` Object before launching the browser.
+
+Type: `function (options)`
+
+-   `options` **{browserWSEndpoint: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), ignoreHTTPSErrors: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)}**  (optional, default `{}`)
+
+* * *
+
+#### [plugins](https://github.com/berstend/puppeteer-extra/blob/4ab951dbe6ff6a49e7bc5a23a794eeda76eceafe/packages/puppeteer-extra/index.js#L187-L187)
 
 Get all registered plugins.
 
@@ -180,7 +195,7 @@ Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global
 
 * * *
 
-#### [getPluginData](https://github.com/berstend/puppeteer-extra/blob/c112368eba0738093e5244452d93b6c24e422b7c/packages/puppeteer-extra/index.js#L179-L184)
+#### [getPluginData](https://github.com/berstend/puppeteer-extra/blob/4ab951dbe6ff6a49e7bc5a23a794eeda76eceafe/packages/puppeteer-extra/index.js#L209-L214)
 
 -   **See: puppeteer-extra-plugin/data**
 
@@ -197,17 +212,7 @@ Type: `function (name)`
 
 * * *
 
-#### [connect](https://github.com/berstend/puppeteer-extra/blob/c112368eba0738093e5244452d93b6c24e422b7c/packages/puppeteer-extra/index.js#L339-L341)
-
-Regular Puppeteer method that is being passed through.
-
-Type: `function (options)`
-
--   `options` **{browserWSEndpoint: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), ignoreHTTPSErrors: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)}** 
-
-* * *
-
-#### [executablePath](https://github.com/berstend/puppeteer-extra/blob/c112368eba0738093e5244452d93b6c24e422b7c/packages/puppeteer-extra/index.js#L348-L350)
+#### [executablePath](https://github.com/berstend/puppeteer-extra/blob/4ab951dbe6ff6a49e7bc5a23a794eeda76eceafe/packages/puppeteer-extra/index.js#L369-L371)
 
 Regular Puppeteer method that is being passed through.
 
@@ -215,7 +220,7 @@ Type: `function (): string`
 
 * * *
 
-#### [defaultArgs](https://github.com/berstend/puppeteer-extra/blob/c112368eba0738093e5244452d93b6c24e422b7c/packages/puppeteer-extra/index.js#L357-L359)
+#### [defaultArgs](https://github.com/berstend/puppeteer-extra/blob/4ab951dbe6ff6a49e7bc5a23a794eeda76eceafe/packages/puppeteer-extra/index.js#L378-L380)
 
 Regular Puppeteer method that is being passed through.
 
@@ -223,7 +228,7 @@ Type: `function ()`
 
 * * *
 
-#### [createBrowserFetcher](https://github.com/berstend/puppeteer-extra/blob/c112368eba0738093e5244452d93b6c24e422b7c/packages/puppeteer-extra/index.js#L367-L369)
+#### [createBrowserFetcher](https://github.com/berstend/puppeteer-extra/blob/4ab951dbe6ff6a49e7bc5a23a794eeda76eceafe/packages/puppeteer-extra/index.js#L388-L390)
 
 Regular Puppeteer method that is being passed through.
 

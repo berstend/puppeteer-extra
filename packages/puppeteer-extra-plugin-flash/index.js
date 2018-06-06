@@ -41,7 +41,7 @@ class Plugin extends PuppeteerExtraPlugin {
     }
   }
 
-  get requirements () { return new Set(['headful']) }
+  get requirements () { return new Set(['launch', 'headful']) }
 
   get dependencies () { return new Set(['user-preferences']) }
 
