@@ -1,0 +1,43 @@
+{
+  "name": "puppeteer-extra-plugin-repl",
+  "version": "2.0.5",
+  "description": "Start an interactive REPL in your puppeteer code.",
+  "main": "index.js",
+  "repository": "berstend/puppeteer-extra",
+  "author": "nswbmw & berstend",
+  "license": "MIT",
+  "scripts": {
+    "docs": "update-markdown-jsdoc",
+    "test": "ava -v && standard"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "keywords": [
+    "puppeteer",
+    "puppeteer-extra",
+    "puppeteer-extra-plugin",
+    "repl",
+    "debug",
+    "interactive",
+    "puppeteer-debug",
+    "puppeteer-repl",
+    "chrome",
+    "headless",
+    "pupeteer"
+  ],
+  "devDependencies": {
+    "ava": "^0.25.0",
+    "capture-stdout": "^1.0.0",
+    "mock-stdin": "^0.3.1",
+    "puppeteer": "next",
+    "standard": "^11.0.0",
+    "std-mocks": "^1.0.1",
+    "update-markdown-jsdoc": "^1.0.2"
+  },
+  "dependencies": {
+    "debug": "^3.1.0",
+    "ow": "^0.4.0",
+    "puppeteer-extra-plugin": "^2.0.4"
+  }
+}
