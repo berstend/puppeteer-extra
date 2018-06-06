@@ -50,6 +50,10 @@ puppeteer.launch().then(async browser => {
 -   Makes puppeteer browser debugging possible from anywhere.
 -   Creates a secure tunnel to make the devtools frontend (**incl. screencasting**) accessible from the public internet
 
+#### [`puppeteer-extra-plugin-repl`](/packages/puppeteer-extra-plugin-repl)
+
+-   Makes quick puppeteer debugging and exploration fun with an interactive REPL.
+
 #### [`puppeteer-extra-plugin-block-resources`](/packages/puppeteer-extra-plugin-block-resources)
 
 -   Blocks resources (images, media, css, etc.) in puppeteer.
