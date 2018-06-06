@@ -16,7 +16,7 @@ yarn add puppeteer-extra-plugin-user-preferences
 
 -   [Plugin](#plugin)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/c112368eba0738093e5244452d93b6c24e422b7c/packages/puppeteer-extra-plugin-user-preferences/index.js#L30-L73)
+### [Plugin](https://github.com/berstend/puppeteer-extra/blob/4ab951dbe6ff6a49e7bc5a23a794eeda76eceafe/packages/puppeteer-extra-plugin-user-preferences/index.js#L30-L73)
 
 **Extends: PuppeteerExtraPlugin**
 

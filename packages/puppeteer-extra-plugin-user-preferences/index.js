@@ -41,7 +41,7 @@ class Plugin extends PuppeteerExtraPlugin {
 
   get name () { return 'user-preferences' }
 
-  get requirements () { return new Set(['runLast', 'headful', 'dataFromPlugins']) }
+  get requirements () { return new Set(['launch', 'runLast', 'headful', 'dataFromPlugins']) }
 
   get dependencies () { return new Set(['user-data-dir']) }
 

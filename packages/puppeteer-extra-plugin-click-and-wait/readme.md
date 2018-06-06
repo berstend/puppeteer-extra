@@ -16,7 +16,7 @@ yarn add puppeteer-extra-plugin-click-and-wait
 
 -   [Plugin](#plugin)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/c112368eba0738093e5244452d93b6c24e422b7c/packages/puppeteer-extra-plugin-click-and-wait/index.js#L24-L39)
+### [Plugin](https://github.com/berstend/puppeteer-extra/blob/4ab951dbe6ff6a49e7bc5a23a794eeda76eceafe/packages/puppeteer-extra-plugin-click-and-wait/index.js#L24-L39)
 
 **Extends: PuppeteerExtraPlugin**
 

@@ -27,7 +27,7 @@
     "ava": "^0.25.0",
     "puppeteer": "next",
     "standard": "^11.0.0",
-    "update-markdown-jsdoc": "^1.0.2"
+    "update-markdown-jsdoc": "^1.0.6"
   },
   "dependencies": {
     "debug": "^3.1.0",

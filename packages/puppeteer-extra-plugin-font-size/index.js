@@ -22,7 +22,7 @@ class Plugin extends PuppeteerExtraPlugin {
 
   get defaults () { return { defaultFontSize: 20 } }
 
-  get requirements () { return new Set(['headful']) }
+  get requirements () { return new Set(['launch', 'headful']) }
 
   get dependencies () { return new Set(['user-preferences']) }
 

@@ -79,16 +79,16 @@ class PuppeteerExtra {
   }
 
   /**
-   * Main launch method.
+   * Launch a new browser instance with given arguments.
    *
    * Augments the original `puppeteer.launch` method with plugin lifecycle methods.
    *
    * All registered plugins that have a `beforeLaunch` method will be called
-   * in sequence to potentially update the `options` Object before launching puppeteer.
+   * in sequence to potentially update the `options` Object before launching the browser.
    *
-   * @todo Implement support for 'connect' as well.
+   * @todo pass `defaultArgs` to `beforeLaunch` calls to plugins.
    *
-   * @param {Object=} options - Regular Puppeteer options
+   * @param {Object=} options - Regular [Puppeteer launch options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions)
    * @return {Puppeteer.Browser}
    */
   async launch (options = {}) {
@@ -98,12 +98,47 @@ class PuppeteerExtra {
 
     // Give plugins the chance to modify the options before launch
     options = await this.callPluginsWithValue('beforeLaunch', options)
+
+    const opts = { context: 'launch', options, defaultArgs: this.defaultArgs }
+
     // Let's check requirements after plugin had the chance to modify the options
-    this.checkPluginRequirements(options)
+    this.checkPluginRequirements(opts)
 
     const browser = await Puppeteer.launch(options)
     this._patchPageCreationMethods(browser)
-    await this.callPlugins('_bindBrowserEvents', browser, options)
+
+    await this.callPlugins('_bindBrowserEvents', browser, opts)
+
+    return browser
+  }
+
+  /**
+   * Attach Puppeteer to an existing Chromium instance.
+   *
+   * Augments the original `puppeteer.connect` method with plugin lifecycle methods.
+   *
+   * All registered plugins that have a `beforeConnect` method will be called
+   * in sequence to potentially update the `options` Object before launching the browser.
+   *
+   * @param {{browserWSEndpoint: string, ignoreHTTPSErrors: boolean}} options
+   * @return {Promise<!Puppeteer.Browser>}
+   */
+  async connect (options = {}) {
+    this.resolvePluginDependencies()
+    this.orderPlugins()
+
+    // Give plugins the chance to modify the options before connect
+    options = await this.callPluginsWithValue('beforeConnect', options)
+
+    const opts = { context: 'connect', options }
+
+    // Let's check requirements after plugin had the chance to modify the options
+    this.checkPluginRequirements(opts)
+
+    const browser = await Puppeteer.connect(options)
+    this._patchPageCreationMethods(browser)
+
+    await this.callPlugins('_bindBrowserEvents', browser, opts)
 
     return browser
   }
@@ -279,11 +314,14 @@ class PuppeteerExtra {
    *
    * @private
    */
-  checkPluginRequirements (options = {}) {
+  checkPluginRequirements (opts = {}) {
     for (const plugin of this._plugins) {
       for (const requirement of plugin.requirements) {
-        if ((requirement === 'headful') && options.headless) {
+        if ((opts.context === 'launch') && (requirement === 'headful') && opts.options.headless) {
           console.warn(`Warning: Plugin '${plugin.name}' is not supported in headless mode.`)
+        }
+        if ((opts.context === 'connect') && (requirement === 'launch')) {
+          console.warn(`Warning: Plugin '${plugin.name}' doesn't support puppeteer.connect().`)
         }
       }
     }
@@ -321,18 +359,6 @@ class PuppeteerExtra {
       if (newValue) { value = newValue }
     }
     return value
-  }
-
-  /**
-   * Regular Puppeteer method that is being passed through.
-   *
-   * @todo Add `puppeteer-extra` plugin support for `connect` as well.
-   *
-   * @param {{browserWSEndpoint: string, ignoreHTTPSErrors: boolean}} options
-   * @return {Promise<!Puppeteer.Browser>}
-   */
-  connect (options) {
-    return Puppeteer.connect(options)
   }
 
   /**

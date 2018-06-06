@@ -7546,7 +7546,7 @@ upath@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/upath/-/upath-1.1.0.tgz#35256597e46a581db4793d0ce47fa9aebfc9fabd"
 
-update-markdown-jsdoc@^1.0.2:
+update-markdown-jsdoc@^1.0.2, update-markdown-jsdoc@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/update-markdown-jsdoc/-/update-markdown-jsdoc-1.0.6.tgz#9c80dd5cab6809d386206aea0c17a67214cbc77e"
   dependencies:
@@ -7613,8 +7613,8 @@ url-parse-lax@^3.0.0:
     prepend-http "^2.0.0"
 
 url-parse@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.4.0.tgz#6bfdaad60098c7fe06f623e42b22de62de0d3d75"
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.4.1.tgz#4dec9dad3dc8585f862fed461d2e19bbf623df30"
   dependencies:
     querystringify "^2.0.0"
     requires-port "^1.0.0"
