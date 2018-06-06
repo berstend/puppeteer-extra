@@ -28,11 +28,9 @@
   ],
   "devDependencies": {
     "ava": "^0.25.0",
-    "capture-stdout": "^1.0.0",
     "mock-stdin": "^0.3.1",
     "puppeteer": "next",
     "standard": "^11.0.0",
-    "std-mocks": "^1.0.1",
     "update-markdown-jsdoc": "^1.0.2"
   },
   "dependencies": {
