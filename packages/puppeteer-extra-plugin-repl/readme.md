@@ -21,6 +21,12 @@ yarn add puppeteer-extra-plugin-repl
 
 -   Inspired by [puppeteer-debug](https://github.com/nswbmw/puppeteer-debug) from [nswbmw](https://github.com/nswbmw), thanks!
 
+
+## REPL
+
+![repl](https://i.imgur.com/xeP7hEc.gif)
+
+
 ## Quickstart
 
 ```es6
