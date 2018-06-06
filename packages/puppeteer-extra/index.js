@@ -45,7 +45,7 @@ class PuppeteerExtra {
     this._plugins = []
 
     // Ensure there are certain properties (e.g. the `options.args` array)
-    this._defaultOptions = { args: [] }
+    this._defaultLaunchOptions = { args: [] }
   }
 
   /**
@@ -92,7 +92,7 @@ class PuppeteerExtra {
    * @return {Puppeteer.Browser}
    */
   async launch (options = {}) {
-    options = merge(this._defaultOptions, options)
+    options = merge(this._defaultLaunchOptions, options)
     this.resolvePluginDependencies()
     this.orderPlugins()
 
@@ -102,51 +102,46 @@ class PuppeteerExtra {
     this.checkPluginRequirements(options)
 
     const browser = await Puppeteer.launch(options)
-    this._delayTargetCreationMethods(browser)
+    this._patchPageCreationMethods(browser)
     await this.callPlugins('_bindBrowserEvents', browser, options)
 
     return browser
   }
 
   /**
-   * Delays an arbitrary async function to resolve by a specified number of milliseconds.
+   * Patch page creation methods (both regular and incognito contexts).
    *
-   * Unfortunately we currently need to add a minimal delay to methods that can create
-   * a new target, as there's a small chance that event listeners are not ready
-   * yet when the first target is created. :-/
+   * Unfortunately it's possible that the `targetcreated` events are not triggered
+   * early enough for listeners (e.g. plugins using `onPageCreated`) to be able to
+   * modify the page instance (e.g. user-agent) before the browser request occurs.
+   *
+   * This only affects the first request of a newly created page target.
+   *
+   * As a workaround I've noticed that navigating to `about:blank` (again),
+   * right after a page has been created reliably fixes this issue and adds
+   * no noticable delay or side-effects.
+   *
+   * This problem is not specific to `puppeteer-extra` but default Puppeteer behaviour.
+   *
+   * Note: This patch only fixes explicitly created pages, implicitly created ones
+   * (e.g. through `window.open`) are still subject to this issue. I didn't find a
+   * reliable mitigation for implicitly created pages yet.
    *
    * Puppeteer issues:
+   * https://github.com/GoogleChrome/puppeteer/issues/2669
    * https://github.com/GoogleChrome/puppeteer/issues/386#issuecomment-343059315
    * https://github.com/GoogleChrome/puppeteer/issues/1378#issue-273733905
    *
-   * @param  {Number} timeout - Delay in milliseconds
-   * @param  {Function} method - The async method to use
-   * @param  {any} context - the this to use
-   * @return {Promise}
    * @private
    */
-  _delayAsync (timeout = 10, method, context = this) {
-    const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
-    return async () => {
-      const result = await method.apply(context, arguments)
-      await delay(timeout)
-      return result
-    }
-  }
-
-  /**
-   * @see _delayAsync
-   * @private
-   */
-  _delayTargetCreationMethods (browser) {
-    browser.newPage = this._delayAsync(50, browser.newPage, browser)
-
-    browser._createIncognitoBrowserContext = browser.createIncognitoBrowserContext
-    browser.createIncognitoBrowserContext = async () => {
-      const context = await browser._createIncognitoBrowserContext.apply(browser, arguments)
-      context.newPage = this._delayAsync(50, context.newPage, context)
-      return context
-    }
+  _patchPageCreationMethods (browser) {
+    browser._createPageInContext = (function (originalMethod, context) {
+      return async (contextId) => {
+        const page = await originalMethod.apply(context, arguments)
+        await page.goto('about:blank')
+        return page
+      }
+    })(browser._createPageInContext, browser)
   }
 
   /**
