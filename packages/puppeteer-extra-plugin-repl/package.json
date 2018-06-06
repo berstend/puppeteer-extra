@@ -28,6 +28,7 @@
   ],
   "devDependencies": {
     "ava": "^0.25.0",
+    "chalk": "^2.4.1",
     "mock-stdin": "^0.3.1",
     "puppeteer": "next",
     "standard": "^11.0.0",
