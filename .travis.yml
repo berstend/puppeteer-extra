@@ -16,14 +16,17 @@ before_install:
 # test against multiple node versions
 node_js:
 - '10'
-# - '9'
-# - '8'
+- '9'
+- '8'
 
 # test against multiple puppeteer versions
 env:
   - PUPPETEER_VERSION=next
-  # - PUPPETEER_VERSION=1.4.0
-  # - PUPPETEER_VERSION=1.3.0
+  - PUPPETEER_VERSION=1.7.0
+  - PUPPETEER_VERSION=1.6.2
+  - PUPPETEER_VERSION=1.5.0
+  - PUPPETEER_VERSION=1.4.0
+  - PUPPETEER_VERSION=1.3.0
 
 script:
   # Make sure to use latest @next package
@@ -31,8 +34,11 @@ script:
   - 'if [ "$PUPPETEER_VERSION" = "next" ]; then rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && lerna add puppeteer@next && yarn; fi'
 
   # Install older version when required
-  # - 'if [ "$PUPPETEER_VERSION" = "1.4.0" ]; then yarn && yarn add puppeteer@1.4.0 --ignore-workspace-root-check; fi'
-  # - 'if [ "$PUPPETEER_VERSION" = "1.3.0" ]; then yarn && yarn add puppeteer@1.3.0 --ignore-workspace-root-check; fi'
+  - 'if [ "$PUPPETEER_VERSION" = "1.7.0" ]; then yarn && yarn add puppeteer@1.7.0 --ignore-workspace-root-check; fi'
+  - 'if [ "$PUPPETEER_VERSION" = "1.6.2" ]; then yarn && yarn add puppeteer@1.6.2 --ignore-workspace-root-check; fi'
+  - 'if [ "$PUPPETEER_VERSION" = "1.5.0" ]; then yarn && yarn add puppeteer@1.5.0 --ignore-workspace-root-check; fi'
+  - 'if [ "$PUPPETEER_VERSION" = "1.4.0" ]; then yarn && yarn add puppeteer@1.4.0 --ignore-workspace-root-check; fi'
+  - 'if [ "$PUPPETEER_VERSION" = "1.3.0" ]; then yarn && yarn add puppeteer@1.3.0 --ignore-workspace-root-check; fi'
 
   # For debugging
   - yarn list puppeteer
