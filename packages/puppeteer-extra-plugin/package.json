@@ -32,5 +32,8 @@
   "dependencies": {
     "debug": "^3.1.0",
     "merge-deep": "^3.0.1"
+  },
+  "peerDependencies": {
+    "puppeteer-extra": "*"
   }
 }
