@@ -30,8 +30,7 @@ env:
 
 script:
   # Make sure to use latest @next package
-  # https://github.com/yarnpkg/yarn/issues/4731
-  - 'if [ "$PUPPETEER_VERSION" = "next" ]; then rm -rf yarn.lock && yarn bootstrap; fi'
+  - 'if [ "$PUPPETEER_VERSION" = "next" ]; then yarn && yarn add puppeteer@next --ignore-workspace-root-check; fi'
 
   # Install older version when required
   - 'if [ "$PUPPETEER_VERSION" = "1.7.0" ]; then yarn && yarn add puppeteer@1.7.0 --ignore-workspace-root-check; fi'
