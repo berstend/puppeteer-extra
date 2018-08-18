@@ -5,6 +5,6 @@
   ],
   "version": "independent",
   "useWorkspaces": true,
-  "npmClient": "npm",
+  "npmClient": "yarn",
   "registry": "https://registry.npmjs.org/"
 }
