@@ -363,9 +363,12 @@ class PuppeteerExtraPlugin {
   async onDisconnected () { }
 
   /**
-   * Sometimes `onDisconnected` is not catching all exit scenarios.
+   * **Deprecated:** Since puppeteer v1.6.0 `onDisconnected` has been improved
+   * and should be used instead of `onClose`.
+   *
+   * In puppeteer < v1.6.0 `onDisconnected` was not catching all exit scenarios.
    * In order for plugins to clean up properly (e.g. deleting temporary files)
-   * the `onClose` method can be used.
+   * the `onClose` method had been introduced.
    *
    * > Note: Might be called multiple times on exit.
    *
@@ -436,8 +439,10 @@ class PuppeteerExtraPlugin {
       browser.on('disconnected', this.onDisconnected.bind(this))
     }
     if ((opts.context === 'launch') && this._hasChildClassMember('onClose')) {
-      browser._process.once('close', this.onClose.bind(this))
+      // The disconnect event has been improved since puppeteer v1.6.0
+      // onClose is being kept mostly for legacy reasons
       process.on('exit', this.onClose.bind(this))
+      browser.on('disconnected', this.onClose.bind(this))
       if (opts.options.handleSIGINT !== false) {
         process.on('SIGINT', this.onClose.bind(this))
       }
