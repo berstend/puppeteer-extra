@@ -34,5 +34,8 @@
   "dependencies": {
     "debug": "^3.1.0",
     "deepmerge": "^2.1.0"
+  },
+  "peerDependencies": {
+    "puppeteer": "*"
   }
 }
