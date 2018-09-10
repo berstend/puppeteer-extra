@@ -1,9 +1,9 @@
 'use strict'
 
-let Puppeteer, PuppeteerBrowserFetcher
+let Puppeteer
 try {
-  Puppeteer = require('puppeteer/lib/Puppeteer')
-  PuppeteerBrowserFetcher = require('puppeteer/lib/BrowserFetcher')
+  // https://github.com/GoogleChrome/puppeteer/pull/3208
+  Puppeteer = require('puppeteer')
 } catch (err) {
   console.warn(`
     Puppeteer is missing. :-)
@@ -386,7 +386,7 @@ class PuppeteerExtra {
    * @return {PuppeteerBrowserFetcher}
    */
   createBrowserFetcher (options) {
-    return new PuppeteerBrowserFetcher(options)
+    return Puppeteer.createBrowserFetcher(options)
   }
 }
 
