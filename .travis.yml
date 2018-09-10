@@ -22,6 +22,7 @@ node_js:
 # test against multiple puppeteer versions
 env:
   - PUPPETEER_VERSION=next
+  - PUPPETEER_VERSION=1.8.0
   - PUPPETEER_VERSION=1.7.0
   - PUPPETEER_VERSION=1.6.2
   - PUPPETEER_VERSION=1.5.0
@@ -34,6 +35,7 @@ script:
   - 'if [ "$PUPPETEER_VERSION" = "next" ]; then rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && lerna add puppeteer@next && yarn; fi'
 
   # Install older version when required
+  - 'if [ "$PUPPETEER_VERSION" = "1.8.0" ]; then yarn && yarn add puppeteer@1.8.0 --ignore-workspace-root-check; fi'
   - 'if [ "$PUPPETEER_VERSION" = "1.7.0" ]; then yarn && yarn add puppeteer@1.7.0 --ignore-workspace-root-check; fi'
   - 'if [ "$PUPPETEER_VERSION" = "1.6.2" ]; then yarn && yarn add puppeteer@1.6.2 --ignore-workspace-root-check; fi'
   - 'if [ "$PUPPETEER_VERSION" = "1.5.0" ]; then yarn && yarn add puppeteer@1.5.0 --ignore-workspace-root-check; fi'
