@@ -24,4 +24,4 @@ yarn-error.log*
 
 TODO.md
 
-.tgz
+*.tgz*
