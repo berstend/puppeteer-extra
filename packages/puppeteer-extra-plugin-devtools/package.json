@@ -43,5 +43,6 @@
     "puppeteer-extra-plugin": "^2.1.0",
     "randomstring": "^1.1.5",
     "url-parse": "^1.4.0"
-  }
+  },
+  "gitHead": "72fe830c158f1e971c8499fdd5232338dd53c220"
 }

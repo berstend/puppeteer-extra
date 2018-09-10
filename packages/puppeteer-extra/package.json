@@ -37,5 +37,6 @@
   },
   "peerDependencies": {
     "puppeteer": "*"
-  }
+  },
+  "gitHead": "72fe830c158f1e971c8499fdd5232338dd53c220"
 }
