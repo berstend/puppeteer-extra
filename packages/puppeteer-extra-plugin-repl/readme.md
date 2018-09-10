@@ -75,7 +75,7 @@ In the REPL session (hit `tab` two times to see all available properties):
 -   [Plugin](#plugin)
     -   [repl](#repl)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/4af8094dd7bbeeac75dc64cbb383df32af1d4e96/packages/puppeteer-extra-plugin-repl/index.js#L38-L83)
+### [Plugin](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra-plugin-repl/index.js#L38-L83)
 
 **Extends: PuppeteerExtraPlugin**
 
@@ -116,7 +116,7 @@ puppeteer.launch({ headless: true }).then(async browser => {
 
 * * *
 
-#### [repl](https://github.com/berstend/puppeteer-extra/blob/4af8094dd7bbeeac75dc64cbb383df32af1d4e96/packages/puppeteer-extra-plugin-repl/index.js#L70-L70)
+#### [repl](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra-plugin-repl/index.js#L70-L70)
 
 Create an interactive REPL for the provided object.
 
