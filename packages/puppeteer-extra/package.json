@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Teach puppeteer new tricks through plugins.",
   "main": "index.js",
   "repository": "berstend/puppeteer-extra",
