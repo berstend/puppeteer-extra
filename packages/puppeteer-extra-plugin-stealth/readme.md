@@ -23,7 +23,7 @@ yarn add puppeteer-extra-plugin-stealth
     -   [availableEvasions](#availableevasions)
     -   [enabledEvasions](#enabledevasions)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/51b6ec074e942f74a31b823e3df5cdb85358b4fc/packages/puppeteer-extra-plugin-stealth/index.js#L75-L142)
+### [Plugin](https://github.com/berstend/puppeteer-extra/blob/4af8094dd7bbeeac75dc64cbb383df32af1d4e96/packages/puppeteer-extra-plugin-stealth/index.js#L75-L142)
 
 **Extends: PuppeteerExtraPlugin**
 
@@ -103,7 +103,7 @@ puppeteer.use(require('puppeteer-extra-plugin-stealth')())
 
 * * *
 
-#### [availableEvasions](https://github.com/berstend/puppeteer-extra/blob/51b6ec074e942f74a31b823e3df5cdb85358b4fc/packages/puppeteer-extra-plugin-stealth/index.js#L121-L121)
+#### [availableEvasions](https://github.com/berstend/puppeteer-extra/blob/4af8094dd7bbeeac75dc64cbb383df32af1d4e96/packages/puppeteer-extra-plugin-stealth/index.js#L121-L121)
 
 Get all available evasions.
 
@@ -121,7 +121,7 @@ puppeteer.use(pluginStealth)
 
 * * *
 
-#### [enabledEvasions](https://github.com/berstend/puppeteer-extra/blob/51b6ec074e942f74a31b823e3df5cdb85358b4fc/packages/puppeteer-extra-plugin-stealth/index.js#L136-L136)
+#### [enabledEvasions](https://github.com/berstend/puppeteer-extra/blob/4af8094dd7bbeeac75dc64cbb383df32af1d4e96/packages/puppeteer-extra-plugin-stealth/index.js#L136-L136)
 
 Get all enabled evasions.
 
