@@ -12,7 +12,8 @@
     "bootstrap": "lerna bootstrap",
     "docs": "lerna run docs",
     "test": "lerna run test",
-    "prepare": "lerna run prepare"
+    "prepare": "lerna run prepare",
+    "publish": "lerna publish --npm-client npm"
   },
   "workspaces": [
     "packages/*"
