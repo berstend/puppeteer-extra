@@ -25,7 +25,7 @@ Allow flash on all sites without user interaction.
 Note: The flash plugin is not working in headless mode.
 
 Note: When using the default Chromium browser
-`pluginPath` and `pluginVersion` must be specified.
+`pluginPath` and `pluginVersion` must be specified (stated in `chrome://version/`).
 
 Note: Unfortunately this doesn't seem to enable flash on incognito pages,
 see [this gist] for a workaround using management policies.
