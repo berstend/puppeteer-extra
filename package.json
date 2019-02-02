@@ -20,7 +20,8 @@
   ],
   "devDependencies": {
     "ava": "^0.25.0",
-    "lerna": "^3.1.1"
+    "lerna": "^3.1.1",
+    "lerna-update-wizard": "^0.11.1"
   },
   "dependencies": {}
 }
