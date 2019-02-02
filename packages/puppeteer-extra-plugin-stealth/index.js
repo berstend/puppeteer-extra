@@ -86,7 +86,6 @@ class Plugin extends PuppeteerExtraPlugin {
       'navigator.permissions',
       'navigator.webdriver',
       'navigator.plugins',
-      'iframe.contentWindow',
       'window.outerdimensions',
       'webgl.vendor',
       'user-agent'
