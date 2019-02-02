@@ -199,6 +199,7 @@ class DevToolsTunnel extends DevToolsCommon {
     return body
   }
   _createProxyServer (targetHost = 'localhost', targetPort) {
+    // eslint-disable-next-line
     const proxyServer = new httpProxy.createProxyServer({
       // eslint-disable-line
       target: { host: targetHost, port: parseInt(targetPort) }
