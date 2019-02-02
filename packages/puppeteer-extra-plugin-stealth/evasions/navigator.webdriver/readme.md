@@ -6,11 +6,12 @@
 
 -   [Plugin](#plugin)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra-plugin-stealth/evasions/navigator.webdriver/index.js#L8-L20)
+### [Plugin](https://git@github.com/:berstend/puppeteer-extra/blob/ff112879545e8e68d6500d731ceeafc22d187dd3/packages/puppeteer-extra-plugin-stealth/evasions/navigator.webdriver/index.js#L9-L28)
 
 **Extends: PuppeteerExtraPlugin**
 
 Pass the Webdriver Test.
+Will delete `navigator.webdriver` property.
 
 Type: `function (opts)`
 

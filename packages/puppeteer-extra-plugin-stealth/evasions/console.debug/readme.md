@@ -6,7 +6,7 @@
 
 -   [Plugin](#plugin)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra-plugin-stealth/evasions/console.debug/index.js#L8-L18)
+### [Plugin](https://git@github.com/:berstend/puppeteer-extra/blob/ff112879545e8e68d6500d731ceeafc22d187dd3/packages/puppeteer-extra-plugin-stealth/evasions/console.debug/index.js#L8-L18)
 
 **Extends: PuppeteerExtraPlugin**
 

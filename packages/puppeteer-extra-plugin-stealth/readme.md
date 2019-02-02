@@ -1,12 +1,61 @@
 # puppeteer-extra-plugin-stealth
 
-> A plugin for [puppeteer-extra](https://github.com/berstend/puppeteer-extra).
+> A plugin for [puppeteer-extra](https://github.com/berstend/puppeteer-extra) to prevent detection.
 
 ### Install
 
 ```bash
 yarn add puppeteer-extra-plugin-stealth
+# - or -
+npm install puppeteer-extra-plugin-stealth
 ```
+
+### Usage
+
+```js
+const puppeteer = require("puppeteer-extra")
+const pluginStealth = require("puppeteer-extra-plugin-stealth")
+puppeteer.use(pluginStealth())
+```
+
+## Changelog
+
+### `v2.1.2`
+
+-   Improved: `navigator.plugins` - we fully emulate plugins/mimetypes in headless now 🎉
+-   New: `webgl.vendor` - is otherwise set to "Google" in headless
+-   New: `window.outerdimensions` - fix missing window.outerWidth/outerHeight and viewport
+-   Fixed: `navigator.webdriver` now returns undefined instead of false
+
+## Test results (red is bad)
+
+#### Vanilla puppeteer <strong>without stealth 😢</strong>
+
+<table class="image">
+<tr>
+
+  <td><figure class="image"><a href="./stealthtests/_results/headless-chromium-vanilla.js.png"><img src="./stealthtests/_results/_thumbs/headless-chromium-vanilla.js.png"></a><figcaption>Chromium + headless</figcaption></figure></td>
+  <td><figure class="image"><a href="./stealthtests/_results/headful-chromium-vanilla.js.png"><img src="./stealthtests/_results/_thumbs/headful-chromium-vanilla.js.png"></a><figcaption>Chromium + headful</figcaption></figure></td>
+  <td><figure class="image"><a href="./stealthtests/_results/headless-chrome-vanilla.js.png"><img src="./stealthtests/_results/_thumbs/headless-chrome-vanilla.js.png"></a><figcaption>Chrome + headless</figcaption></figure></td>
+  <td><figure class="image"><a href="./stealthtests/_results/headful-chrome-vanilla.js.png"><img src="./stealthtests/_results/_thumbs/headful-chrome-vanilla.js.png"></a><figcaption>Chrome + headful</figcaption></figure></td>
+
+</tr>
+</table>
+
+#### Puppeteer <strong>with stealth plugin 💯</strong>
+
+<table class="image">
+<tr>
+
+  <td><figure class="image"><a href="./stealthtests/_results/headless-chromium-stealth.js.png"><img src="./stealthtests/_results/_thumbs/headless-chromium-stealth.js.png"></a><figcaption>Chromium + headless</figcaption></figure></td>
+  <td><figure class="image"><a href="./stealthtests/_results/headful-chromium-stealth.js.png"><img src="./stealthtests/_results/_thumbs/headful-chromium-stealth.js.png"></a><figcaption>Chromium + headful</figcaption></figure></td>
+  <td><figure class="image"><a href="./stealthtests/_results/headless-chrome-stealth.js.png"><img src="./stealthtests/_results/_thumbs/headless-chrome-stealth.js.png"></a><figcaption>Chrome + headless</figcaption></figure></td>
+  <td><figure class="image"><a href="./stealthtests/_results/headful-chrome-stealth.js.png"><img src="./stealthtests/_results/_thumbs/headful-chrome-stealth.js.png"></a><figcaption>Chrome + headful</figcaption></figure></td>
+
+</tr>
+</table>
+
+Tests have been done using [this test site](https://bot.sannysoft.com/) and [these scripts](./stealthtests/).
 
 ## API
 
@@ -18,12 +67,11 @@ yarn add puppeteer-extra-plugin-stealth
     -   [Purpose](#purpose)
     -   [Modularity](#modularity)
     -   [Contributing](#contributing)
-    -   [Notes](#notes)
     -   [Kudos](#kudos)
     -   [availableEvasions](#availableevasions)
     -   [enabledEvasions](#enabledevasions)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra-plugin-stealth/index.js#L75-L142)
+### [Plugin](https://git@github.com/:berstend/puppeteer-extra/blob/ff112879545e8e68d6500d731ceeafc22d187dd3/packages/puppeteer-extra-plugin-stealth/index.js#L72-L151)
 
 **Extends: PuppeteerExtraPlugin**
 
@@ -59,11 +107,6 @@ puppeteer.use(require('puppeteer-extra-plugin-stealth/evasions/console.debug')()
 PRs are welcome, if you want to add a new evasion technique I suggest you
 look at the [template](./evasions/_template) to kickstart things.
 
-#### Notes
-
-Word of caution: Due to the intrusive nature of these detection mitigation techniques
-they might break functionality on certain sites. Selectively disable techniques if that happens or submit a PR with a fix. :-)
-
 #### Kudos
 
 Thanks to [Evan Sangaline](https://intoli.com/blog/not-possible-to-block-chrome-headless/) and [Paul Irish](https://github.com/paulirish/headless-cat-n-mouse) for kickstarting the discussion!
@@ -79,8 +122,9 @@ Example:
 
 ```javascript
 const puppeteer = require('puppeteer-extra')
-// Enable stealth plugin
+// Enable stealth plugin with all evasions
 puppeteer.use(require('puppeteer-extra-plugin-stealth')())
+
 
 ;(async () => {
   // Launch the browser in headless mode and set up a page.
@@ -103,7 +147,7 @@ puppeteer.use(require('puppeteer-extra-plugin-stealth')())
 
 * * *
 
-#### [availableEvasions](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra-plugin-stealth/index.js#L121-L121)
+#### [availableEvasions](https://git@github.com/:berstend/puppeteer-extra/blob/ff112879545e8e68d6500d731ceeafc22d187dd3/packages/puppeteer-extra-plugin-stealth/index.js#L124-L126)
 
 Get all available evasions.
 
@@ -121,7 +165,7 @@ puppeteer.use(pluginStealth)
 
 * * *
 
-#### [enabledEvasions](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra-plugin-stealth/index.js#L136-L136)
+#### [enabledEvasions](https://git@github.com/:berstend/puppeteer-extra/blob/ff112879545e8e68d6500d731ceeafc22d187dd3/packages/puppeteer-extra-plugin-stealth/index.js#L141-L143)
 
 Get all enabled evasions.
 

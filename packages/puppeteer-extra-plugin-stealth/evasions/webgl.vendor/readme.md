@@ -6,11 +6,11 @@
 
 -   [Plugin](#plugin)
 
-### [Plugin](https://git@github.com/:berstend/puppeteer-extra/blob/ff112879545e8e68d6500d731ceeafc22d187dd3/packages/puppeteer-extra-plugin-stealth/evasions/iframe.contentWindow/index.js#L8-L23)
+### [Plugin](https://git@github.com/:berstend/puppeteer-extra/blob/ff112879545e8e68d6500d731ceeafc22d187dd3/packages/puppeteer-extra-plugin-stealth/evasions/webgl.vendor/index.js#L8-L37)
 
 **Extends: PuppeteerExtraPlugin**
 
-Pass the iframe Test
+Fix WebGL Vendor/Renderer being set to Google in headless mode
 
 Type: `function (opts)`
 

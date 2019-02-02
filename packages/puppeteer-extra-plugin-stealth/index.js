@@ -32,10 +32,6 @@ const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
  * PRs are welcome, if you want to add a new evasion technique I suggest you
  * look at the [template](./evasions/_template) to kickstart things.
  *
- * ### Notes
- * Word of caution: Due to the intrusive nature of these detection mitigation techniques
- * they might break functionality on certain sites. Selectively disable techniques if that happens or submit a PR with a fix. :-)
- *
  * ### Kudos
  * Thanks to [Evan Sangaline](https://intoli.com/blog/not-possible-to-block-chrome-headless/) and [Paul Irish](https://github.com/paulirish/headless-cat-n-mouse) for kickstarting the discussion!
  *
@@ -47,8 +43,9 @@ const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
  *
  * @example
  * const puppeteer = require('puppeteer-extra')
- * // Enable stealth plugin
+ * // Enable stealth plugin with all evasions
  * puppeteer.use(require('puppeteer-extra-plugin-stealth')())
+ *
  *
  * ;(async () => {
  *   // Launch the browser in headless mode and set up a page.
@@ -73,9 +70,13 @@ const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
  *
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = { }) { super(opts) }
+  constructor (opts = {}) {
+    super(opts)
+  }
 
-  get name () { return 'stealth' }
+  get name () {
+    return 'stealth'
+  }
 
   get defaults () {
     const availableEvasions = new Set([
@@ -86,6 +87,8 @@ class Plugin extends PuppeteerExtraPlugin {
       'navigator.webdriver',
       'navigator.plugins',
       'iframe.contentWindow',
+      'window.outerdimensions',
+      'webgl.vendor',
       'user-agent'
     ])
     return {
@@ -101,8 +104,8 @@ class Plugin extends PuppeteerExtraPlugin {
    * @private
    */
   get dependencies () {
-    return new Set([...this.opts.enabledEvasions]
-      .map(e => `${this.name}/evasions/${e}`)
+    return new Set(
+      [...this.opts.enabledEvasions].map(e => `${this.name}/evasions/${e}`)
     )
   }
 
@@ -118,7 +121,9 @@ class Plugin extends PuppeteerExtraPlugin {
    * console.log(pluginStealth.availableEvasions) // => Set { 'user-agent', 'console.debug' }
    * puppeteer.use(pluginStealth)
    */
-  get availableEvasions () { return this.defaults.availableEvasions }
+  get availableEvasions () {
+    return this.defaults.availableEvasions
+  }
 
   /**
    * Get all enabled evasions.
@@ -133,12 +138,18 @@ class Plugin extends PuppeteerExtraPlugin {
    * pluginStealth.enabledEvasions.delete('console.debug')
    * puppeteer.use(pluginStealth)
    */
-  get enabledEvasions () { return this.opts.enabledEvasions }
+  get enabledEvasions () {
+    return this.opts.enabledEvasions
+  }
 
   /**
    * @private
    */
-  set enabledEvasions (evasions) { this.opts.enabledEvasions = evasions }
+  set enabledEvasions (evasions) {
+    this.opts.enabledEvasions = evasions
+  }
 }
 
-module.exports = function (pluginConfig) { return new Plugin(pluginConfig) }
+module.exports = function (pluginConfig) {
+  return new Plugin(pluginConfig)
+}

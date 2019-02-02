@@ -6,11 +6,13 @@
 
 -   [Plugin](#plugin)
 
-### [Plugin](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/index.js#L8-L23)
+### [Plugin](https://git@github.com/:berstend/puppeteer-extra/blob/ff112879545e8e68d6500d731ceeafc22d187dd3/packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/index.js#L10-L216)
 
 **Extends: PuppeteerExtraPlugin**
 
-Pass the Plugins Length Test.
+In headless mode `navigator.mimeTypes` and `navigator.plugins` are empty.
+This plugin quite emulates both of these to match regular headful Chrome.
+We even go so far as to mock functional methods, instance types and `.toString` properties. :D
 
 Type: `function (opts)`
 
