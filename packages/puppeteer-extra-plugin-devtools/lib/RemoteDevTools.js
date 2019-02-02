@@ -20,7 +20,7 @@ const urlParse = require('url-parse')
  * @ignore
  */
 class DevToolsCommon {
-  constructor (webSocketDebuggerUrl, opts = { }) {
+  constructor (webSocketDebuggerUrl, opts = {}) {
     ow(webSocketDebuggerUrl, ow.string)
     ow(webSocketDebuggerUrl, ow.string.includes('ws://'))
     ow(opts, ow.object.plain)
@@ -28,17 +28,24 @@ class DevToolsCommon {
 
     this.wsUrl = webSocketDebuggerUrl
     const wsUrlParts = urlParse(this.wsUrl)
-    this.wsHost = (wsUrlParts.hostname === '127.0.0.1') ? 'localhost' : wsUrlParts.hostname
+    this.wsHost =
+      wsUrlParts.hostname === '127.0.0.1' ? 'localhost' : wsUrlParts.hostname
     this.wsPort = wsUrlParts.port
   }
 
   async fetchVersion () {
-    const { body } = await got(`http://${this.wsHost}:${this.wsPort}/json/version`, { json: true })
+    const { body } = await got(
+      `http://${this.wsHost}:${this.wsPort}/json/version`,
+      { json: true }
+    )
     return body
   }
 
   async fetchList () {
-    const { body } = await got(`http://${this.wsHost}:${this.wsPort}/json/list`, { json: true })
+    const { body } = await got(
+      `http://${this.wsHost}:${this.wsPort}/json/list`,
+      { json: true }
+    )
     return body
   }
 }
@@ -49,14 +56,18 @@ class DevToolsCommon {
  * @ignore
  */
 class DevToolsLocal extends DevToolsCommon {
-  constructor (webSocketDebuggerUrl, opts = { }) {
+  constructor (webSocketDebuggerUrl, opts = {}) {
     super(webSocketDebuggerUrl, opts)
   }
 
-  get url () { return `http://${this.wsHost}:${this.wsPort}` }
+  get url () {
+    return `http://${this.wsHost}:${this.wsPort}`
+  }
 
   getUrlForPageId (pageId) {
-    return `${this.url}/devtools/inspector.html?ws=${this.wsHost}:${this.wsPort}/devtools/page/${pageId}`
+    return `${this.url}/devtools/inspector.html?ws=${this.wsHost}:${
+      this.wsPort
+    }/devtools/page/${pageId}`
   }
 }
 
@@ -75,7 +86,7 @@ class DevToolsLocal extends DevToolsCommon {
  * @ignore
  */
 class DevToolsTunnel extends DevToolsCommon {
-  constructor (webSocketDebuggerUrl, opts = { }) {
+  constructor (webSocketDebuggerUrl, opts = {}) {
     super(webSocketDebuggerUrl, opts)
 
     this.server = null
@@ -93,27 +104,37 @@ class DevToolsTunnel extends DevToolsCommon {
     }
   }
 
-  get url () { return this.tunnel.url }
+  get url () {
+    return this.tunnel.url
+  }
 
   getUrlForPageId (pageId) {
-    return `https://${this.tunnelHost}/devtools/inspector.html?wss=${this.tunnelHost}/devtools/page/${pageId}`
+    return `https://${this.tunnelHost}/devtools/inspector.html?wss=${
+      this.tunnelHost
+    }/devtools/page/${pageId}`
   }
 
   async create () {
-    const subdomain = this.opts.subdomain || this._generateSubdomain(this.opts.prefix)
-    const basicAuth = this.opts.auth.user ? this._createBasicAuth(this.opts.auth.user, this.opts.auth.pass) : null
-    const serverPort = await getPort(9223) // only preference, will return an available one
+    const subdomain =
+      this.opts.subdomain || this._generateSubdomain(this.opts.prefix)
+    const basicAuth = this.opts.auth.user
+      ? this._createBasicAuth(this.opts.auth.user, this.opts.auth.pass)
+      : null
+    const serverPort = await getPort() // only preference, will return an available one
 
     this.proxyServer = this._createProxyServer(this.wsHost, this.wsPort)
     this.server = await this._createServer(serverPort, basicAuth)
     this.tunnel = await this._createTunnel(this.wsHost, serverPort, subdomain)
     this.tunnelHost = urlParse(this.tunnel.url).hostname
 
-    debug('tunnel created.', `
+    debug(
+      'tunnel created.',
+      `
       local:  http://${this.wsHost}:${this.wsPort}
       proxy:  http://localhost:${serverPort}
       tunnel: ${this.tunnel.url}
-    `)
+    `
+    )
     return this
   }
 
@@ -126,7 +147,11 @@ class DevToolsTunnel extends DevToolsCommon {
   }
 
   _generateSubdomain (prefix) {
-    const rand = randomstring.generate({ length: 10, readable: true, capitalization: 'lowercase' })
+    const rand = randomstring.generate({
+      length: 10,
+      readable: true,
+      capitalization: 'lowercase'
+    })
     return `${prefix}-${rand}`
   }
 
@@ -154,14 +179,18 @@ class DevToolsTunnel extends DevToolsCommon {
    * @ignore
    */
   _modifyFetchToIncludeCredentials (body) {
-    if (!body) { return }
+    if (!body) {
+      return
+    }
     body = body.replace(`fetch(url).`, `fetch(url, {credentials: 'include'}).`)
     debug('fetch:after', body)
     return body
   }
 
   _modifyJSONResponse (body) {
-    if (!body) { return }
+    if (!body) {
+      return
+    }
     debug('list body:before', body)
     body = body.replace(new RegExp(this.wsHost, 'g'), `${this.tunnelHost}`)
     body = body.replace(new RegExp('ws=', 'g'), 'wss=')
@@ -170,7 +199,8 @@ class DevToolsTunnel extends DevToolsCommon {
     return body
   }
   _createProxyServer (targetHost = 'localhost', targetPort) {
-    const proxyServer = new httpProxy.createProxyServer({ // eslint-disable-line
+    const proxyServer = new httpProxy.createProxyServer({
+      // eslint-disable-line
       target: { host: targetHost, port: parseInt(targetPort) }
     })
     proxyServer.on('proxyReq', (proxyReq, req, res, options) => {
@@ -182,11 +212,19 @@ class DevToolsTunnel extends DevToolsCommon {
       debug('proxyRes', req.url)
       if (req.url === '/') {
         delete proxyRes.headers['content-length']
-        modifyResponse(res, proxyRes.headers['content-encoding'], this._modifyFetchToIncludeCredentials.bind(this))
+        modifyResponse(
+          res,
+          proxyRes.headers['content-encoding'],
+          this._modifyFetchToIncludeCredentials.bind(this)
+        )
       }
       if (['/json/list', '/json/version'].includes(req.url)) {
         delete proxyRes.headers['content-length']
-        modifyResponse(res, proxyRes.headers['content-encoding'], this._modifyJSONResponse.bind(this))
+        modifyResponse(
+          res,
+          proxyRes.headers['content-encoding'],
+          this._modifyJSONResponse.bind(this)
+        )
       }
     })
     return proxyServer
@@ -206,11 +244,17 @@ class DevToolsTunnel extends DevToolsCommon {
 
   async _createTunnel (host, port, subdomain = null) {
     return new Promise((resolve, reject) => {
-      const tunnel = localtunnel(port, { local_host: host, subdomain }, (err, tunnel) => {
-        if (err) { return reject(err) }
-        debug('tunnel:created', tunnel.url)
-        return resolve(tunnel)
-      })
+      const tunnel = localtunnel(
+        port,
+        { local_host: host, subdomain },
+        (err, tunnel) => {
+          if (err) {
+            return reject(err)
+          }
+          debug('tunnel:created', tunnel.url)
+          return resolve(tunnel)
+        }
+      )
       tunnel.on('close', () => {
         // todo: add keep-alive?
         debug('tunnel:close')
