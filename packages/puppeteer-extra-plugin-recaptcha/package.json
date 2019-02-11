@@ -1,0 +1,74 @@
+{
+  "name": "puppeteer-extra-plugin-recaptcha",
+  "version": "3.0.1",
+  "description": "A puppeteer-extra plugin to solve reCAPTCHAs automatically.",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": "berstend/puppeteer-extra",
+  "homepage": "https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-recaptcha",
+  "author": "berstend",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf dist/*",
+    "tscheck": "tsc --pretty --noEmit",
+    "build": "yarn clean && tsc --module commonjs && rollup -c rollup.config.ts",
+    "docs": "exit 0",
+    "docs2": "rm -rf docs/* && typedoc --module commonjs --readme none --target ES6 --theme markdown --excludeNotExported --excludeExternals --excludePrivate --out docs --mode file src/index.ts",
+    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v src/**.test.ts",
+    "prepublishOnly": "npm run test && npm run docs && npm run build"
+  },
+  "engines": {
+    "node": ">=9.11.2"
+  },
+  "ava": {
+    "compileEnhancements": false,
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": false,
+    "singleQuote": true
+  },
+  "keywords": [
+    "puppeteer",
+    "puppeteer-extra",
+    "puppeteer-extra-plugin",
+    "recaptcha",
+    "captcha",
+    "2captcha"
+  ],
+  "devDependencies": {
+    "@types/debug": "^4.1.0",
+    "@types/node": "^10.12.23",
+    "@types/puppeteer": "^1.12.1",
+    "ava": "^1.2.1",
+    "puppeteer": "next",
+    "ts-node": "^8.0.2",
+    "tslint": "^5.12.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-config-standard": "^8.0.1",
+    "typedoc": "^0.14.2",
+    "typedoc-plugin-markdown": "^1.1.26",
+    "typedoc-plugin-no-inherit": "^1.1.5",
+    "typescript": "^3.3.3"
+  },
+  "dependencies": {
+    "2captcha-api": "^1.0.0",
+    "debug": "^3.1.0",
+    "merge-deep": "^3.0.1",
+    "puppeteer-extra-plugin": "^3.0.1"
+  },
+  "peerDependencies": {
+    "puppeteer-extra": "*"
+  },
+  "gitHead": "72fe830c158f1e971c8499fdd5232338dd53c220"
+}
