@@ -35,7 +35,7 @@ script:
   - 'if [ "$PUPPETEER_VERSION" = "next" ]; then rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && lerna add puppeteer@next && yarn; fi'
 
   # Install older version when required
-  - 'if [ "$PUPPETEER_VERSION" = "1.11.0" ]; then yarn && npm install puppeteer@1.11.0 --ignore-workspace-root-check; fi'
+  - 'if [ "$PUPPETEER_VERSION" = "1.11.0" ]; then rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && lerna add puppeteer@1.11.0 && yarn; fi'
   - 'if [ "$PUPPETEER_VERSION" = "1.10.0" ]; then yarn && npm install puppeteer@1.10.0 --ignore-workspace-root-check; fi'
   - 'if [ "$PUPPETEER_VERSION" = "1.9.0" ]; then yarn && npm install puppeteer@1.9.0 --ignore-workspace-root-check; fi'
   - 'if [ "$PUPPETEER_VERSION" = "1.7.0" ]; then yarn && npm install puppeteer@1.7.0 --ignore-workspace-root-check; fi'
