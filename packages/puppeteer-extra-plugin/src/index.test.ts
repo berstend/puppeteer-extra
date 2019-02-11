@@ -1,28 +1,26 @@
-'use strict'
+import test from 'ava'
 
-const { test } = require('ava')
+import { PuppeteerExtraPlugin } from '.'
 
-const PuppeteerExtraPlugin = require('.')
-
-test('is a function', async (t) => {
+test('is a function', async t => {
   t.is(typeof PuppeteerExtraPlugin, 'function')
 })
 
-test('will throw when not invoked with new', async (t) => {
-  const error = await t.throws(() => PuppeteerExtraPlugin())
-  t.is(error.message, `Class constructor PuppeteerExtraPlugin cannot be invoked without 'new'`)
-})
-
-test('will throw without a name', async (t) => {
-  const error = await t.throws(() => new PuppeteerExtraPlugin())
+test('will throw without a name', async t => {
+  class Derived extends PuppeteerExtraPlugin {}
+  const error = await t.throws(() => new Derived())
   t.is(error.message, `Plugin must override "name"`)
 })
 
-test('should have the basic class members', async (t) => {
+test('should have the basic class members', async t => {
   const pluginName = 'hello-world'
   class Plugin extends PuppeteerExtraPlugin {
-    constructor (opts = { }) { super(opts) }
-    get name () { return pluginName }
+    constructor (opts = {}) {
+      super(opts)
+    }
+    get name () {
+      return pluginName
+    }
   }
   const instance = new Plugin()
 
@@ -37,17 +35,22 @@ test('should have the basic class members', async (t) => {
   t.true(instance._isPuppeteerExtraPlugin)
 })
 
-test('should have the public class members', async (t) => {
+test('should have the public class members', async t => {
   const pluginName = 'hello-world'
   class Plugin extends PuppeteerExtraPlugin {
-    constructor (opts = { }) { super(opts) }
-    get name () { return pluginName }
+    constructor (opts = {}) {
+      super(opts)
+    }
+    get name () {
+      return pluginName
+    }
   }
   const instance = new Plugin()
 
   t.true(instance.beforeLaunch instanceof Function)
   t.true(instance.afterLaunch instanceof Function)
   t.true(instance.onTargetCreated instanceof Function)
+  t.true(instance.onBrowser instanceof Function)
   t.true(instance.onPageCreated instanceof Function)
   t.true(instance.onTargetChanged instanceof Function)
   t.true(instance.onTargetDestroyed instanceof Function)
@@ -57,11 +60,15 @@ test('should have the public class members', async (t) => {
   t.true(instance.getDataFromPlugins instanceof Function)
 })
 
-test('should have the internal class members', async (t) => {
+test('should have the internal class members', async t => {
   const pluginName = 'hello-world'
   class Plugin extends PuppeteerExtraPlugin {
-    constructor (opts = { }) { super(opts) }
-    get name () { return pluginName }
+    constructor (opts = {}) {
+      super(opts)
+    }
+    get name () {
+      return pluginName
+    }
   }
   const instance = new Plugin()
 
@@ -73,20 +80,25 @@ test('should have the internal class members', async (t) => {
   t.true(instance._hasChildClassMember instanceof Function)
 })
 
-test('should merge opts with defaults automatically', async (t) => {
+test('should merge opts with defaults automatically', async t => {
   const pluginName = 'hello-world'
   const pluginDefaults = { foo: 'bar', foo2: 'bar2', extra1: 123 }
   const userOpts = { foo2: 'bob', extra2: 666 }
 
   class Plugin extends PuppeteerExtraPlugin {
-    constructor (opts = { }) { super(opts) }
-    get name () { return pluginName }
-    get defaults () { return pluginDefaults }
+    constructor (opts = {}) {
+      super(opts)
+    }
+    get name () {
+      return pluginName
+    }
+    get defaults () {
+      return pluginDefaults
+    }
   }
   const instance = new Plugin(userOpts)
 
   t.deepEqual(instance.defaults, pluginDefaults)
-  t.deepEqual(instance.opts, instance._opts)
   t.is(instance.opts.foo, pluginDefaults.foo)
   t.is(instance.opts.foo2, userOpts.foo2)
   t.is(instance.opts.extra1, pluginDefaults.extra1)

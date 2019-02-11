@@ -1,17 +1,40 @@
 {
   "name": "puppeteer-extra-plugin",
-  "version": "2.1.1",
+  "version": "3.0.1",
   "description": "Base class for puppeteer-extra plugins.",
-  "main": "index.js",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "repository": "berstend/puppeteer-extra",
+  "homepage": "https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin",
   "author": "berstend",
   "license": "MIT",
   "scripts": {
-    "docs": "update-markdown-jsdoc",
-    "test": "ava -v && standard"
+    "clean": "rm -rf dist/*",
+    "build": "yarn clean && tsc --module commonjs && rollup -c rollup.config.ts",
+    "docs": "typedoc --module commonjs --readme none --excludeExternals --excludePrivate --target ES6 --theme markdown --out docs --mode file src",
+    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v src/**.test.ts",
+    "prepublishOnly": "npm run test && npm run docs && npm run build"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=9.11.2"
+  },
+  "ava": {
+    "compileEnhancements": false,
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": false,
+    "singleQuote": true
   },
   "keywords": [
     "puppeteer",
@@ -24,10 +47,24 @@
     "pupeteer"
   ],
   "devDependencies": {
-    "ava": "^0.25.0",
+    "@types/debug": "^4.1.0",
+    "@types/node": "^10.12.23",
+    "@types/puppeteer": "^1.12.1",
+    "ava": "^1.2.1",
+    "lodash.camelcase": "^4.3.0",
     "puppeteer": "next",
-    "standard": "^11.0.0",
-    "update-markdown-jsdoc": "^1.0.6"
+    "rollup": "^1.1.2",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-typescript2": "^0.19.2",
+    "ts-node": "^8.0.2",
+    "tslint": "^5.12.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-config-standard": "^8.0.1",
+    "typedoc": "^0.14.2",
+    "typedoc-plugin-markdown": "^1.1.26",
+    "typescript": "^3.3.3"
   },
   "dependencies": {
     "debug": "^3.1.0",
