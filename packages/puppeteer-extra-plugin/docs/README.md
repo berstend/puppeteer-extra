@@ -27,7 +27,7 @@
 
 **Ƭ PluginDependencies**: *`Set`<`string`>*
 
-*Defined in plugin.ts:19*
+*Defined in [index.ts:19](https://github.com/berstend/puppeteer-extra/blob/d56b0bf/packages/puppeteer-extra-plugin/src/index.ts#L19)*
 
 ___
 <a id="pluginrequirements"></a>
@@ -36,7 +36,7 @@ ___
 
 **Ƭ PluginRequirements**: *`Set`<"launch" \| "headful" \| "dataFromPlugins" \| "runLast">*
 
-*Defined in plugin.ts:20*
+*Defined in [index.ts:20](https://github.com/berstend/puppeteer-extra/blob/d56b0bf/packages/puppeteer-extra-plugin/src/index.ts#L20)*
 
 ___
 
