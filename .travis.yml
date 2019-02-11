@@ -46,4 +46,4 @@ script:
   - yarn list puppeteer
 
   # Run tests
-  - yarn test
+  - yarn test-ci

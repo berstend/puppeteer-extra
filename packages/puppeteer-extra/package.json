@@ -30,7 +30,8 @@
     "puppeteer": "next",
     "standard": "^11.0.0",
     "update-markdown-jsdoc": "^1.0.2",
-    "update-markdown-usage": "^1.0.1"
+    "update-markdown-usage": "^1.0.1",
+    "puppeteer-extra-plugin": "*"
   },
   "dependencies": {
     "debug": "^3.1.0",

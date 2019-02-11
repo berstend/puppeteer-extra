@@ -6,11 +6,15 @@ const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
 test.beforeEach(t => {
   // Make sure we work with pristine modules
-  delete require.cache[require.resolve('puppeteer-extra')]
-  delete require.cache[require.resolve('puppeteer-extra-plugin')]
+  try {
+    delete require.cache[require.resolve('puppeteer-extra')]
+    delete require.cache[require.resolve('puppeteer-extra-plugin')]
+  } catch (error) {
+    console.log(error)
+  }
 })
 
-test('will remove headless from remote browser', async (t) => {
+test('will remove headless from remote browser', async t => {
   // Launch vanilla puppeteer browser with no plugins
   const puppeteerVanilla = require('puppeteer')
   const browserVanilla = await puppeteerVanilla.launch({ args: PUPPETEER_ARGS })

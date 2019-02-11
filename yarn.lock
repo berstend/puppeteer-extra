@@ -10819,6 +10819,11 @@ typedoc-plugin-markdown@^1.1.26:
   dependencies:
     turndown "^5.0.3"
 
+typedoc-plugin-no-inherit@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.npmjs.org/typedoc-plugin-no-inherit/-/typedoc-plugin-no-inherit-1.1.5.tgz#6dd73de2047d0675fc25790e9820b9c505a52b51"
+  integrity sha512-TrAzYKJ8fHcKT9DsgSPa4eO2Omt7XEazGyX8KpUTheMGxDfU2VGpXRtb007mDGsHhDyPBaU7Tm60liLuonvuEw==
+
 typedoc@^0.14.2:
   version "0.14.2"
   resolved "https://registry.npmjs.org/typedoc/-/typedoc-0.14.2.tgz#769f457f4f9e4bdb8b5f3b177c86b6a31d8c3dc3"
@@ -11064,7 +11069,7 @@ upath@^1.1.0:
   resolved "https://registry.npmjs.org/upath/-/upath-1.1.0.tgz#35256597e46a581db4793d0ce47fa9aebfc9fabd"
   integrity sha512-bzpH/oBhoS/QI/YtbkqCg6VEiPYjSZtrHQM6/QnJS6OL9pKUFLqb3aFh4Scvwm45+7iAgiMkLhSbaZxUqmrprw==
 
-update-markdown-jsdoc@^1.0.2, update-markdown-jsdoc@^1.0.6:
+update-markdown-jsdoc@^1.0.2:
   version "1.0.6"
   resolved "https://registry.npmjs.org/update-markdown-jsdoc/-/update-markdown-jsdoc-1.0.6.tgz#9c80dd5cab6809d386206aea0c17a67214cbc77e"
   integrity sha1-nIDdXKtoCdOGIGrqDBemchTLx34=

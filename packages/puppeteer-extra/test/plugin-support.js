@@ -6,8 +6,12 @@ const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
 test.beforeEach(t => {
   // Make sure we work with pristine modules
-  delete require.cache[require.resolve('puppeteer-extra')]
-  delete require.cache[require.resolve('puppeteer-extra-plugin')]
+  try {
+    delete require.cache[require.resolve('puppeteer-extra')]
+    delete require.cache[require.resolve('puppeteer-extra-plugin')]
+  } catch (error) {
+    console.log(error)
+  }
 })
 
 test('will launch the browser normally', async t => {
