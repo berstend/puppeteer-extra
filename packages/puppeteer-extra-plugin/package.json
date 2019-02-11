@@ -16,7 +16,7 @@
     "clean": "rm -rf dist/*",
     "build": "yarn clean && tsc --module commonjs && rollup -c rollup.config.ts",
     "docs": "typedoc --module commonjs --readme none --excludeExternals --excludePrivate --target ES6 --theme markdown --out docs --mode file src",
-    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v src/**.test.ts",
+    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v src/*.test.ts",
     "prepublishOnly": "npm run test && npm run docs && npm run build"
   },
   "engines": {
