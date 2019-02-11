@@ -36,11 +36,11 @@ script:
 
   # Install older version when required
   - 'if [ "$PUPPETEER_VERSION" = "1.11.0" ]; then rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && lerna add puppeteer@1.11.0 && yarn; fi'
-  - 'if [ "$PUPPETEER_VERSION" = "1.10.0" ]; then yarn && npm install puppeteer@1.10.0 --ignore-workspace-root-check; fi'
-  - 'if [ "$PUPPETEER_VERSION" = "1.9.0" ]; then yarn && npm install puppeteer@1.9.0 --ignore-workspace-root-check; fi'
-  - 'if [ "$PUPPETEER_VERSION" = "1.7.0" ]; then yarn && npm install puppeteer@1.7.0 --ignore-workspace-root-check; fi'
-  - 'if [ "$PUPPETEER_VERSION" = "1.6.2" ]; then yarn && npm install puppeteer@1.6.2 --ignore-workspace-root-check; fi'
-  - 'if [ "$PUPPETEER_VERSION" = "1.4.0" ]; then yarn && npm install puppeteer@1.4.0 --ignore-workspace-root-check; fi'
+  - 'if [ "$PUPPETEER_VERSION" = "1.11.0" ]; then rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && lerna add puppeteer@1.10.0 && yarn; fi'
+  - 'if [ "$PUPPETEER_VERSION" = "1.11.0" ]; then rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && lerna add puppeteer@1.9.0 && yarn; fi'
+  - 'if [ "$PUPPETEER_VERSION" = "1.11.0" ]; then rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && lerna add puppeteer@1.7.0 && yarn; fi'
+  - 'if [ "$PUPPETEER_VERSION" = "1.11.0" ]; then rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && lerna add puppeteer@1.6.2 && yarn; fi'
+  - 'if [ "$PUPPETEER_VERSION" = "1.11.0" ]; then rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && lerna add puppeteer@1.4.0 && yarn; fi'
 
   # For debugging
   - yarn list puppeteer
