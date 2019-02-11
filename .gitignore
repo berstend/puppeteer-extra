@@ -24,5 +24,7 @@ yarn-debug.log*
 yarn-error.log*
 
 TODO.md
+packages/testing/
 
 *.tgz*
+
