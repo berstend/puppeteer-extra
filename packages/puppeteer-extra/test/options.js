@@ -10,27 +10,38 @@ test.beforeEach(t => {
   delete require.cache[require.resolve('puppeteer-extra-plugin')]
 })
 
-test('will modify puppeteer launch options through plugins', async (t) => {
+test('will modify puppeteer launch options through plugins', async t => {
   let FINAL_OPTIONS = null
 
   const puppeteer = require('puppeteer-extra')
-  const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
+  const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
-  const pluginData = [ { name: 'foo', value: 'bar' } ]
+  const pluginData = [{ name: 'foo', value: 'bar' }]
   class Plugin extends PuppeteerExtraPlugin {
-    constructor (opts = { }) { super(opts) }
-    get name () { return pluginName }
-    get data () { return pluginData }
+    constructor (opts = {}) {
+      super(opts)
+    }
+    get name () {
+      return pluginName
+    }
+    get data () {
+      return pluginData
+    }
     beforeLaunch (options) {
       options.args.push('--foobar=true')
       options.timeout = 60 * 1000
       options.headless = true
     }
-    afterLaunch (browser, opts) { FINAL_OPTIONS = opts.options }
+    afterLaunch (browser, opts) {
+      FINAL_OPTIONS = opts.options
+    }
   }
   const instance = new Plugin()
   puppeteer.use(instance)
-  const browser = await puppeteer.launch({ args: PUPPETEER_ARGS, headless: false })
+  const browser = await puppeteer.launch({
+    args: PUPPETEER_ARGS,
+    headless: false
+  })
 
   t.deepEqual(FINAL_OPTIONS, {
     headless: true,
@@ -42,7 +53,7 @@ test('will modify puppeteer launch options through plugins', async (t) => {
   t.true(true)
 })
 
-test('will modify puppeteer connect options through plugins', async (t) => {
+test('will modify puppeteer connect options through plugins', async t => {
   let FINAL_OPTIONS = null
 
   // Launch vanilla puppeteer browser with no plugins
@@ -51,18 +62,26 @@ test('will modify puppeteer connect options through plugins', async (t) => {
   const browserWSEndpoint = browserVanilla.wsEndpoint()
 
   const puppeteer = require('puppeteer-extra')
-  const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
+  const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
-  const pluginData = [ { name: 'foo', value: 'bar' } ]
+  const pluginData = [{ name: 'foo', value: 'bar' }]
   class Plugin extends PuppeteerExtraPlugin {
-    constructor (opts = { }) { super(opts) }
-    get name () { return pluginName }
-    get data () { return pluginData }
+    constructor (opts = {}) {
+      super(opts)
+    }
+    get name () {
+      return pluginName
+    }
+    get data () {
+      return pluginData
+    }
     beforeConnect (options) {
       options.foo1 = 60 * 1000
       options.foo2 = true
     }
-    afterConnect (browser, opts) { FINAL_OPTIONS = opts.options }
+    afterConnect (browser, opts) {
+      FINAL_OPTIONS = opts.options
+    }
   }
   const instance = new Plugin()
   puppeteer.use(instance)

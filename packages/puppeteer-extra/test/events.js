@@ -10,28 +10,56 @@ test.beforeEach(t => {
   delete require.cache[require.resolve('puppeteer-extra-plugin')]
 })
 
-test('will bind launched browser events to plugins', async (t) => {
+test('will bind launched browser events to plugins', async t => {
   const PLUGIN_EVENTS = []
 
   const puppeteer = require('puppeteer-extra')
-  const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
+  const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
   class Plugin extends PuppeteerExtraPlugin {
-    constructor (opts = { }) { super(opts) }
-    get name () { return pluginName }
+    constructor (opts = {}) {
+      super(opts)
+    }
+    get name () {
+      return pluginName
+    }
 
-    onPluginRegistered () { PLUGIN_EVENTS.push('onPluginRegistered') }
-    beforeLaunch () { PLUGIN_EVENTS.push('beforeLaunch') }
-    afterLaunch () { PLUGIN_EVENTS.push('afterLaunch') }
-    beforeConnect () { PLUGIN_EVENTS.push('beforeConnect') }
-    afterConnect () { PLUGIN_EVENTS.push('afterConnect') }
-    onBrowser () { PLUGIN_EVENTS.push('onBrowser') }
-    onTargetCreated () { PLUGIN_EVENTS.push('onTargetCreated') }
-    onPageCreated () { PLUGIN_EVENTS.push('onPageCreated') }
-    onTargetChanged () { PLUGIN_EVENTS.push('onTargetChanged') }
-    onTargetDestroyed () { PLUGIN_EVENTS.push('onTargetDestroyed') }
-    onDisconnected () { PLUGIN_EVENTS.push('onDisconnected') }
-    onClose () { PLUGIN_EVENTS.push('onClose') }
+    onPluginRegistered () {
+      PLUGIN_EVENTS.push('onPluginRegistered')
+    }
+    beforeLaunch () {
+      PLUGIN_EVENTS.push('beforeLaunch')
+    }
+    afterLaunch () {
+      PLUGIN_EVENTS.push('afterLaunch')
+    }
+    beforeConnect () {
+      PLUGIN_EVENTS.push('beforeConnect')
+    }
+    afterConnect () {
+      PLUGIN_EVENTS.push('afterConnect')
+    }
+    onBrowser () {
+      PLUGIN_EVENTS.push('onBrowser')
+    }
+    onTargetCreated () {
+      PLUGIN_EVENTS.push('onTargetCreated')
+    }
+    onPageCreated () {
+      PLUGIN_EVENTS.push('onPageCreated')
+    }
+    onTargetChanged () {
+      PLUGIN_EVENTS.push('onTargetChanged')
+    }
+    onTargetDestroyed () {
+      PLUGIN_EVENTS.push('onTargetDestroyed')
+    }
+    onDisconnected () {
+      PLUGIN_EVENTS.push('onDisconnected')
+    }
+    onClose () {
+      PLUGIN_EVENTS.push('onClose')
+    }
   }
 
   const instance = new Plugin()
@@ -55,7 +83,7 @@ test('will bind launched browser events to plugins', async (t) => {
   t.true(PLUGIN_EVENTS.includes('onClose'))
 })
 
-test('will bind connected browser events to plugins', async (t) => {
+test('will bind connected browser events to plugins', async t => {
   const PLUGIN_EVENTS = []
 
   // Launch vanilla puppeteer browser with no plugins
@@ -64,24 +92,52 @@ test('will bind connected browser events to plugins', async (t) => {
   const browserWSEndpoint = browserVanilla.wsEndpoint()
 
   const puppeteer = require('puppeteer-extra')
-  const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
+  const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
   class Plugin extends PuppeteerExtraPlugin {
-    constructor (opts = { }) { super(opts) }
-    get name () { return pluginName }
+    constructor (opts = {}) {
+      super(opts)
+    }
+    get name () {
+      return pluginName
+    }
 
-    onPluginRegistered () { PLUGIN_EVENTS.push('onPluginRegistered') }
-    beforeLaunch () { PLUGIN_EVENTS.push('beforeLaunch') }
-    afterLaunch () { PLUGIN_EVENTS.push('afterLaunch') }
-    beforeConnect () { PLUGIN_EVENTS.push('beforeConnect') }
-    afterConnect () { PLUGIN_EVENTS.push('afterConnect') }
-    onBrowser () { PLUGIN_EVENTS.push('onBrowser') }
-    onTargetCreated () { PLUGIN_EVENTS.push('onTargetCreated') }
-    onPageCreated () { PLUGIN_EVENTS.push('onPageCreated') }
-    onTargetChanged () { PLUGIN_EVENTS.push('onTargetChanged') }
-    onTargetDestroyed () { PLUGIN_EVENTS.push('onTargetDestroyed') }
-    onDisconnected () { PLUGIN_EVENTS.push('onDisconnected') }
-    onClose () { PLUGIN_EVENTS.push('onClose') }
+    onPluginRegistered () {
+      PLUGIN_EVENTS.push('onPluginRegistered')
+    }
+    beforeLaunch () {
+      PLUGIN_EVENTS.push('beforeLaunch')
+    }
+    afterLaunch () {
+      PLUGIN_EVENTS.push('afterLaunch')
+    }
+    beforeConnect () {
+      PLUGIN_EVENTS.push('beforeConnect')
+    }
+    afterConnect () {
+      PLUGIN_EVENTS.push('afterConnect')
+    }
+    onBrowser () {
+      PLUGIN_EVENTS.push('onBrowser')
+    }
+    onTargetCreated () {
+      PLUGIN_EVENTS.push('onTargetCreated')
+    }
+    onPageCreated () {
+      PLUGIN_EVENTS.push('onPageCreated')
+    }
+    onTargetChanged () {
+      PLUGIN_EVENTS.push('onTargetChanged')
+    }
+    onTargetDestroyed () {
+      PLUGIN_EVENTS.push('onTargetDestroyed')
+    }
+    onDisconnected () {
+      PLUGIN_EVENTS.push('onDisconnected')
+    }
+    onClose () {
+      PLUGIN_EVENTS.push('onClose')
+    }
   }
 
   const instance = new Plugin()

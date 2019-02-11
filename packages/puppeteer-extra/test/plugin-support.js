@@ -10,24 +10,30 @@ test.beforeEach(t => {
   delete require.cache[require.resolve('puppeteer-extra-plugin')]
 })
 
-test('will launch the browser normally', async (t) => {
+test('will launch the browser normally', async t => {
   const puppeteer = require('puppeteer-extra')
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
   const page = await browser.newPage()
-  await page.goto('http://example.com', {waitUntil: 'domcontentloaded'})
+  await page.goto('http://example.com', { waitUntil: 'domcontentloaded' })
   await browser.close()
   t.true(true)
 })
 
-test('will launch puppeteer with plugin support', async (t) => {
+test('will launch puppeteer with plugin support', async t => {
   const puppeteer = require('puppeteer-extra')
-  const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
+  const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
-  const pluginData = [ { name: 'foo', value: 'bar' } ]
+  const pluginData = [{ name: 'foo', value: 'bar' }]
   class Plugin extends PuppeteerExtraPlugin {
-    constructor (opts = { }) { super(opts) }
-    get name () { return pluginName }
-    get data () { return pluginData }
+    constructor (opts = {}) {
+      super(opts)
+    }
+    get name () {
+      return pluginName
+    }
+    get data () {
+      return pluginData
+    }
   }
   const instance = new Plugin()
   puppeteer.use(instance)
@@ -43,7 +49,7 @@ test('will launch puppeteer with plugin support', async (t) => {
   t.deepEqual(puppeteer.getPluginData('foo')[0], pluginData[0])
   t.is(puppeteer.getPluginData('not-existing').length, 0)
 
-  await page.goto('http://example.com', {waitUntil: 'domcontentloaded'})
+  await page.goto('http://example.com', { waitUntil: 'domcontentloaded' })
   await browser.close()
   t.true(true)
 })

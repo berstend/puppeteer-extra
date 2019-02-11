@@ -1,6 +1,6 @@
 'use strict'
 
-const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
+const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
 /**
  * Anonymize the User-Agent on all pages.
@@ -22,9 +22,13 @@ const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
  * const browser = await puppeteer.launch()
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = { }) { super(opts) }
+  constructor (opts = {}) {
+    super(opts)
+  }
 
-  get name () { return 'anonymize-ua' }
+  get name () {
+    return 'anonymize-ua'
+  }
 
   get defaults () {
     return {
@@ -50,4 +54,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) { return new Plugin(pluginConfig) }
+module.exports = function (pluginConfig) {
+  return new Plugin(pluginConfig)
+}
