@@ -17,12 +17,12 @@ before_install:
 node_js:
 - '11'
 - '10'
-- '9'
+# - '9'
 
 # test against multiple puppeteer versions
 env:
   - PUPPETEER_VERSION=next
-  - PUPPETEER_VERSION=1.11.0
+  # - PUPPETEER_VERSION=1.11.0
   - PUPPETEER_VERSION=1.10.0
   - PUPPETEER_VERSION=1.9.0
   - PUPPETEER_VERSION=1.7.0
