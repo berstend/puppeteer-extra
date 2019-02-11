@@ -10,7 +10,8 @@
   "scripts": {
     "docs": "update-markdown-jsdoc && yarn docs-for-evasions",
     "docs-for-evasions": "cd ./evasions && loop update-markdown-jsdoc",
-    "test": "ava -v && standard"
+    "test": "ava -v && standard",
+    "test-ci": "yarn test"
   },
   "engines": {
     "node": ">=8"

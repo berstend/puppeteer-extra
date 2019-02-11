@@ -12,6 +12,7 @@
     "bootstrap": "lerna bootstrap",
     "docs": "lerna run docs",
     "test": "lerna run test",
+    "test-ci": "lerna run test-ci",
     "prepare": "lerna run prepare",
     "release": "lerna publish --npm-client npm"
   },

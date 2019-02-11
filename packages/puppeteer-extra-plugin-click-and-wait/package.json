@@ -8,7 +8,8 @@
   "license": "MIT",
   "scripts": {
     "docs": "update-markdown-jsdoc",
-    "test": "standard"
+    "test": "standard",
+    "test-ci": "yarn test"
   },
   "engines": {
     "node": ">=8"
