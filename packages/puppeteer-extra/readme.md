@@ -45,7 +45,11 @@ puppeteer.launch().then(async browser => {
 
 ## Plugins
 
-#### [`puppeteer-extra-plugin-stealth`](/packages/puppeteer-extra-plugin-stealth)
+#### 🆕 [`puppeteer-extra-plugin-recaptcha`](/packages/puppeteer-extra-plugin-recaptcha)
+
+- Solves reCAPTCHAs automatically, using a single line of code: `page.solveRecaptchas()`.
+
+#### 🔥 [`puppeteer-extra-plugin-stealth`](/packages/puppeteer-extra-plugin-stealth)
 
 - Applies various evasion techniques to make detection of headless puppeteer harder.
 
