@@ -1,8 +1,8 @@
 # puppeteer-extra
 
 [![Build Status](https://travis-ci.org/berstend/puppeteer-extra.svg?branch=master)](https://travis-ci.org/berstend/puppeteer-extra)
-[![npm](https://img.shields.io/npm/v/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra) 
-[![npm](https://img.shields.io/npm/dt/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra) 
+[![npm](https://img.shields.io/npm/v/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra)
+[![npm](https://img.shields.io/npm/dt/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra)
 [![npm](https://img.shields.io/npm/l/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra)
 
 [![extra](https://i.imgur.com/2ZjXBe5.jpg)](https://github.com/berstend/puppeteer-extra)
@@ -23,18 +23,22 @@ yarn add puppeteer puppeteer-extra
 ```es6
 // puppeteer-extra is a drop-in replacement for puppeteer,
 // it augments the installed puppeteer with plugin functionality
-const puppeteer = require('puppeteer-extra')
+const puppeteer = require("puppeteer-extra")
 
 // register plugins through `.use()`
-puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')({ makeWindows: true }))
-puppeteer.use(require('puppeteer-extra-plugin-stealth')())
+puppeteer.use(
+  require("puppeteer-extra-plugin-anonymize-ua")({ makeWindows: true })
+)
+puppeteer.use(require("puppeteer-extra-plugin-stealth")())
 
 // usage as normal
 puppeteer.launch().then(async browser => {
   const page = await browser.newPage()
-  await page.goto('https://httpbin.org/headers', { waitUntil: 'domcontentloaded' })
+  await page.goto("https://httpbin.org/headers", {
+    waitUntil: "domcontentloaded"
+  })
   const content = await page.content()
-  console.log('content:', content) // => (..) User-Agent: (..) Windows NT 10.0
+  console.log("content:", content) // => (..) User-Agent: (..) Windows NT 10.0
   await browser.close()
 })
 ```
@@ -43,56 +47,56 @@ puppeteer.launch().then(async browser => {
 
 #### [`puppeteer-extra-plugin-stealth`](/packages/puppeteer-extra-plugin-stealth)
 
--   Applies various evasion techniques to make detection of headless puppeteer harder.
+- Applies various evasion techniques to make detection of headless puppeteer harder.
 
 #### [`puppeteer-extra-plugin-devtools`](/packages/puppeteer-extra-plugin-devtools)
 
--   Makes puppeteer browser debugging possible from anywhere.
--   Creates a secure tunnel to make the devtools frontend (**incl. screencasting**) accessible from the public internet
+- Makes puppeteer browser debugging possible from anywhere.
+- Creates a secure tunnel to make the devtools frontend (**incl. screencasting**) accessible from the public internet
 
 #### [`puppeteer-extra-plugin-repl`](/packages/puppeteer-extra-plugin-repl)
 
--   Makes quick puppeteer debugging and exploration fun with an interactive REPL.
+- Makes quick puppeteer debugging and exploration fun with an interactive REPL.
 
 #### [`puppeteer-extra-plugin-block-resources`](/packages/puppeteer-extra-plugin-block-resources)
 
--   Blocks resources (images, media, css, etc.) in puppeteer.
--   Supports all resource types, blocking can be toggled dynamically.
+- Blocks resources (images, media, css, etc.) in puppeteer.
+- Supports all resource types, blocking can be toggled dynamically.
 
 #### [`puppeteer-extra-plugin-flash`](/packages/puppeteer-extra-plugin-flash)
 
--   Allows flash content to run on all sites without user interaction.
+- Allows flash content to run on all sites without user interaction.
 
 #### [`puppeteer-extra-plugin-anonymize-ua`](/packages/puppeteer-extra-plugin-anonymize-ua)
 
--   Anonymizes the user-agent on all pages.
--   Supports dynamic replacing, so the browser version stays intact and recent.
+- Anonymizes the user-agent on all pages.
+- Supports dynamic replacing, so the browser version stays intact and recent.
 
 #### [`puppeteer-extra-plugin-user-preferences`](/packages/puppeteer-extra-plugin-user-preferences)
 
--   Allows setting custom Chrome/Chromium user preferences.
--   Has itself a plugin interface which is used by e.g. [`puppeteer-extra-plugin-font-size`](/packages/puppeteer-extra-plugin-font-size).
+- Allows setting custom Chrome/Chromium user preferences.
+- Has itself a plugin interface which is used by e.g. [`puppeteer-extra-plugin-font-size`](/packages/puppeteer-extra-plugin-font-size).
 
 > Check out the [packages folder](/packages/) for more plugins.
 
 ## Contributing
 
-PRs and new plugins are welcome! :tada: The plugin API for `puppeteer-extra` is clean and fun to use. Have a look the [PuppeteerExtraPlugin](/packages/puppeteer-extra-plugin) base class documentation to get going and check out the [existing plugins](./packages/) (minimal example is the [anonymize-ua](/packages/puppeteer-extra-plugin-anonymize-ua/index.js) plugin) for reference. 
+PRs and new plugins are welcome! :tada: The plugin API for `puppeteer-extra` is clean and fun to use. Have a look the [PuppeteerExtraPlugin](/packages/puppeteer-extra-plugin) base class documentation to get going and check out the [existing plugins](./packages/) (minimal example is the [anonymize-ua](/packages/puppeteer-extra-plugin-anonymize-ua/index.js) plugin) for reference.
 
 We use a [monorepo](/) powered by [Lerna](https://github.com/lerna/lerna#--use-workspaces) (and yarn workspaces), [ava](https://github.com/avajs/ava) for testing, the [standard](https://standardjs.com/) style for linting and [JSDoc](http://usejsdoc.org/about-getting-started.html) heavily to [auto-generate](https://github.com/transitive-bullshit/update-markdown-jsdoc) markdown [documentation](https://github.com/documentationjs/documentation) based on code. :-)
 
 ### Kudos
 
--   Thanks to [skyiea](https://github.com/skyiea) for [this PR](https://github.com/GoogleChrome/puppeteer/pull/1806) that started the project idea.
--   Thanks to [transitive-bullshit](https://github.com/transitive-bullshit) for [suggesting](https://github.com/berstend/puppeteer-extra/issues/2) a modular plugin design, which was fun to implement.
+- Thanks to [skyiea](https://github.com/skyiea) for [this PR](https://github.com/GoogleChrome/puppeteer/pull/1806) that started the project idea.
+- Thanks to [transitive-bullshit](https://github.com/transitive-bullshit) for [suggesting](https://github.com/berstend/puppeteer-extra/issues/2) a modular plugin design, which was fun to implement.
 
 ## Compatibility
 
-`puppeteer-extra` and all plugins are [tested continously](https://travis-ci.org/berstend/puppeteer-extra) against **Node v8, v9, v10** and **Puppeteer v1.3 to v1.8 and @next**, as well as a any combination thereof.
+`puppeteer-extra` and all plugins are [tested continously](https://travis-ci.org/berstend/puppeteer-extra) against **Node v9, v10** and **Puppeteer v1.4 to v1.9 and @next**, as well as a any combination thereof.
 
 Some plugins won't work in headless mode due to Chrome limitations (e.g. user preferences in the profile folder), look into `xvfb-run` if you still require a headless experience in these circumstances.
 
-* * *
+---
 
 ## API
 
@@ -100,15 +104,15 @@ Some plugins won't work in headless mode due to Chrome limitations (e.g. user pr
 
 #### Table of Contents
 
--   [PuppeteerExtra](#puppeteerextra)
-    -   [use](#use)
-    -   [launch](#launch)
-    -   [connect](#connect)
-    -   [plugins](#plugins)
-    -   [getPluginData](#getplugindata)
-    -   [executablePath](#executablepath)
-    -   [defaultArgs](#defaultargs)
-    -   [createBrowserFetcher](#createbrowserfetcher)
+- [PuppeteerExtra](#puppeteerextra)
+  - [use](#use)
+  - [launch](#launch)
+  - [connect](#connect)
+  - [plugins](#plugins)
+  - [getPluginData](#getplugindata)
+  - [executablePath](#executablepath)
+  - [defaultArgs](#defaultargs)
+  - [createBrowserFetcher](#createbrowserfetcher)
 
 ### [PuppeteerExtra](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra/index.js#L43-L391)
 
@@ -124,19 +128,20 @@ Type: `function ()`
 Example:
 
 ```javascript
-const puppeteer = require('puppeteer-extra')
-puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
-puppeteer.use(require('puppeteer-extra-plugin-font-size')({defaultFontSize: 18}))
-
+const puppeteer = require("puppeteer-extra")
+puppeteer.use(require("puppeteer-extra-plugin-anonymize-ua")())
+puppeteer.use(
+  require("puppeteer-extra-plugin-font-size")({ defaultFontSize: 18 })
+)
 ;(async () => {
-  const browser = await puppeteer.launch({headless: false})
+  const browser = await puppeteer.launch({ headless: false })
   const page = await browser.newPage()
-  await page.goto('http://example.com', {waitUntil: 'domcontentloaded'})
+  await page.goto("http://example.com", { waitUntil: "domcontentloaded" })
   await browser.close()
 })()
 ```
 
-* * *
+---
 
 #### [use](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra/index.js#L63-L79)
 
@@ -144,7 +149,7 @@ Outside interface to register plugins.
 
 Type: `function (plugin): this`
 
--   `plugin` **PuppeteerExtraPlugin** 
+- `plugin` **PuppeteerExtraPlugin**
 
 Example:
 
@@ -155,7 +160,7 @@ puppeteer.use(require('puppeteer-extra-plugin-user-preferences')())
 const browser = await puppeteer.launch(...)
 ```
 
-* * *
+---
 
 #### [launch](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra/index.js#L94-L113)
 
@@ -168,9 +173,9 @@ in sequence to potentially update the `options` Object before launching the brow
 
 Type: `function (options): Puppeteer.Browser`
 
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Regular [Puppeteer launch options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions) (optional, default `{}`)
+- `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Regular [Puppeteer launch options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions) (optional, default `{}`)
 
-* * *
+---
 
 #### [connect](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra/index.js#L126-L144)
 
@@ -183,9 +188,9 @@ in sequence to potentially update the `options` Object before launching the brow
 
 Type: `function (options)`
 
--   `options` **{browserWSEndpoint: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), ignoreHTTPSErrors: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)}**  (optional, default `{}`)
+- `options` **{browserWSEndpoint: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), ignoreHTTPSErrors: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)}** (optional, default `{}`)
 
-* * *
+---
 
 #### [plugins](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra/index.js#L187-L187)
 
@@ -193,11 +198,11 @@ Get all registered plugins.
 
 Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;PuppeteerExtraPlugin>
 
-* * *
+---
 
 #### [getPluginData](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra/index.js#L209-L214)
 
--   **See: puppeteer-extra-plugin/data**
+- **See: puppeteer-extra-plugin/data**
 
 Collects the exposed `data` property of all registered plugins.
 Will be reduced/flattened to a single array.
@@ -208,9 +213,9 @@ Implemented mainly for plugins that need data from other plugins (e.g. `user-pre
 
 Type: `function (name)`
 
--   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Filter data by name property (optional, default `null`)
+- `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Filter data by name property (optional, default `null`)
 
-* * *
+---
 
 #### [executablePath](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra/index.js#L369-L371)
 
@@ -218,7 +223,7 @@ Regular Puppeteer method that is being passed through.
 
 Type: `function (): string`
 
-* * *
+---
 
 #### [defaultArgs](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra/index.js#L378-L380)
 
@@ -226,7 +231,7 @@ Regular Puppeteer method that is being passed through.
 
 Type: `function ()`
 
-* * *
+---
 
 #### [createBrowserFetcher](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra/index.js#L388-L390)
 
@@ -234,6 +239,6 @@ Regular Puppeteer method that is being passed through.
 
 Type: `function (options): PuppeteerBrowserFetcher`
 
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** 
+- `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**
 
-* * *
+---
