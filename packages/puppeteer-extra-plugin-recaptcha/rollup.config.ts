@@ -1,5 +1,5 @@
 import camelCase from 'lodash.camelcase'
-import commonjs from 'rollup-plugin-commonjs'
+// import commonjs from 'rollup-plugin-commonjs'
 import resolve from 'rollup-plugin-node-resolve'
 import sourceMaps from 'rollup-plugin-sourcemaps'
 import typescript from 'rollup-plugin-typescript2'
@@ -15,6 +15,11 @@ const banner = `
  */
 `.trim()
 
+const defaultExportOutro = `
+  module.exports = exports.default || {}
+  Object.entries(exports).forEach(([key, value]) => { module.exports[key] = value })
+`
+
 export default {
   input: `src/${entryFile}.ts`,
   output: [
@@ -22,12 +27,15 @@ export default {
       file: pkg.main,
       format: 'cjs',
       sourcemap: true,
+      exports: 'named',
+      outro: defaultExportOutro,
       banner
     },
     {
       file: pkg.module,
       format: 'es',
       sourcemap: true,
+      exports: 'named',
       banner
     }
   ],
@@ -43,7 +51,7 @@ export default {
     // Compile TypeScript files
     typescript({ useTsconfigDeclarationDir: true }),
     // Allow bundling cjs modules (unlike webpack, rollup doesn't understand cjs)
-    commonjs(),
+    // commonjs(),
     // Allow node_modules resolution, so you can use 'external' to control
     // which external modules to include in the bundle
     // https://github.com/rollup/rollup-plugin-node-resolve#usage
