@@ -23,7 +23,7 @@
 
 **● name**: *`object`*
 
-*Defined in [index.ts:11](https://github.com/berstend/puppeteer-extra/blob/d56b0bf/packages/puppeteer-extra-plugin/src/index.ts#L11)*
+*Defined in [index.ts:11](https://github.com/berstend/puppeteer-extra/blob/7e9c578/packages/puppeteer-extra-plugin/src/index.ts#L11)*
 
 #### Type declaration
 
@@ -36,7 +36,7 @@ ___
 
 **● value**: *`object`*
 
-*Defined in [index.ts:14](https://github.com/berstend/puppeteer-extra/blob/d56b0bf/packages/puppeteer-extra-plugin/src/index.ts#L14)*
+*Defined in [index.ts:14](https://github.com/berstend/puppeteer-extra/blob/7e9c578/packages/puppeteer-extra-plugin/src/index.ts#L14)*
 
 #### Type declaration
 
