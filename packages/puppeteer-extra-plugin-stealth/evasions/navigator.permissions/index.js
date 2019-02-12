@@ -1,14 +1,18 @@
 'use strict'
 
-const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
+const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
 /**
  * Pass the Permissions Test.
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = { }) { super(opts) }
+  constructor (opts = {}) {
+    super(opts)
+  }
 
-  get name () { return 'stealth/evasions/navigator.permissions' }
+  get name () {
+    return 'stealth/evasions/navigator.permissions'
+  }
 
   async onPageCreated (page) {
     await page.evaluateOnNewDocument(() => {
@@ -16,7 +20,7 @@ class Plugin extends PuppeteerExtraPlugin {
       // eslint-disable-next-line
       window.navigator.permissions.__proto__.query = parameters =>
         parameters.name === 'notifications'
-          ? Promise.resolve({state: Notification.permission}) //eslint-disable-line
+          ? Promise.resolve({ state: Notification.permission }) //eslint-disable-line
           : originalQuery(parameters)
 
       // Inspired by: https://github.com/ikarienator/phantomjs_hide_and_seek/blob/master/5.spoofFunctionBind.js
@@ -27,7 +31,10 @@ class Plugin extends PuppeteerExtraPlugin {
       // eslint-disable-next-line
       Function.prototype.call = call
 
-      const nativeToStringFunctionString = Error.toString().replace(/Error/g, 'toString')
+      const nativeToStringFunctionString = Error.toString().replace(
+        /Error/g,
+        'toString'
+      )
       const oldToString = Function.prototype.toString
 
       function functionToString () {
@@ -45,4 +52,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) { return new Plugin(pluginConfig) }
+module.exports = function (pluginConfig) {
+  return new Plugin(pluginConfig)
+}

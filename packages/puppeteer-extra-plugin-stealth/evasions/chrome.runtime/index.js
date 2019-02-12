@@ -1,6 +1,6 @@
 'use strict'
 
-const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
+const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
 /**
  * Pass the Chrome Test.
@@ -8,9 +8,13 @@ const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
  * Could be mocked further.
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = { }) { super(opts) }
+  constructor (opts = {}) {
+    super(opts)
+  }
 
-  get name () { return 'stealth/evasions/chrome.runtime' }
+  get name () {
+    return 'stealth/evasions/chrome.runtime'
+  }
 
   async onPageCreated (page) {
     await page.evaluateOnNewDocument(() => {
@@ -21,4 +25,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) { return new Plugin(pluginConfig) }
+module.exports = function (pluginConfig) {
+  return new Plugin(pluginConfig)
+}

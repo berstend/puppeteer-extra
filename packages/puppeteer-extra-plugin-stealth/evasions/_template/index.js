@@ -1,6 +1,6 @@
 'use strict'
 
-const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
+const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
 /**
  * Minimal stealth plugin template, not being used. :-)
@@ -8,9 +8,13 @@ const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
  * Feel free to copy this folder as the basis for additional detection evasion plugins.
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = { }) { super(opts) }
+  constructor (opts = {}) {
+    super(opts)
+  }
 
-  get name () { return 'stealth/evasions/_template' }
+  get name () {
+    return 'stealth/evasions/_template'
+  }
 
   async onPageCreated (page) {
     await page.evaluateOnNewDocument(() => {
@@ -19,4 +23,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) { return new Plugin(pluginConfig) }
+module.exports = function (pluginConfig) {
+  return new Plugin(pluginConfig)
+}

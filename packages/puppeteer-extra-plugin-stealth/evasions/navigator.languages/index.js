@@ -1,14 +1,18 @@
 'use strict'
 
-const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
+const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
 /**
  * Pass the Languages Test.
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = { }) { super(opts) }
+  constructor (opts = {}) {
+    super(opts)
+  }
 
-  get name () { return 'stealth/evasions/navigator.languages' }
+  get name () {
+    return 'stealth/evasions/navigator.languages'
+  }
 
   async onPageCreated (page) {
     await page.evaluateOnNewDocument(() => {
@@ -20,4 +24,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) { return new Plugin(pluginConfig) }
+module.exports = function (pluginConfig) {
+  return new Plugin(pluginConfig)
+}
