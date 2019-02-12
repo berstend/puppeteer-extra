@@ -20,8 +20,6 @@ yarn add puppeteer puppeteer-extra puppeteer-extra-plugin-recaptcha
 npm install puppeteer puppeteer-extra puppeteer-extra-plugin-recaptcha
 ```
 
-_**Tip:** The recaptcha plugin works really well together with the [stealth plugin](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth)._
-
 ## Usage
 
 The plugin essentially provides a mighty `page.solveRecaptchas()` method that does everything needed automagically.
@@ -57,6 +55,8 @@ puppeteer.launch({ headless: true }).then(async browser => {
   await browser.close()
 })
 ```
+
+_**Tip:** The recaptcha plugin works really well together with the [stealth plugin](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth)._
 
 ## Motivation 🏴
 
