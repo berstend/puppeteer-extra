@@ -37,7 +37,7 @@ const RecaptchaPlugin = require('puppeteer-extra-plugin-recaptcha')
 puppeteer.use(
   RecaptchaPlugin({
     provider: { id: '2captcha', token: 'XXXXXXX' },
-    visualFeedback: true // colorize reCAPTCHAs depending on their status
+    visualFeedback: true // colorize reCAPTCHAs (violet = detected, green = solved)
   })
 )
 
