@@ -44,7 +44,7 @@ puppeteer.launch({ headless: true }).then(async browser => {
   const page = await browser.newPage()
   await page.goto('https://www.google.com/recaptcha/api2/demo')
 
-  // That's it! 🎉
+  // That's it, a single line of code to solve reCAPTCHAs 🎉
   await page.solveRecaptchas()
 
   await Promise.all([
