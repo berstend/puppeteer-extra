@@ -20,7 +20,7 @@ npm install puppeteer puppeteer-extra
 _You can also use a specific puppeteer version (puppeteer-extra works with any):_
 
 ```bash
-# To install the latest tip-of-tree version of puppeteer:
+# To install the latest tip-of-tree (= prerelease) version of puppeteer:
 yarn add puppeteer@next puppeteer-extra
 ```
 
