@@ -2,7 +2,7 @@
 
 > A light-weight wrapper around [`puppeteer`](https://github.com/GoogleChrome/puppeteer) to enable cool [plugins](#plugins) through a clean interface.
 
-<a href="https://github.com/berstend/puppeteer-extra"><img src="https://i.imgur.com/igcckcN.png" width="299px" height="187px" align="right" /></a>
+<a href="https://github.com/berstend/puppeteer-extra"><img src="https://i.imgur.com/qtlnoQL.png" width="279px" height="187px" align="right" /></a>
 
 ## Installation
 
