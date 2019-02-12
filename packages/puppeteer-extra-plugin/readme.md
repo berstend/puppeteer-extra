@@ -1,4 +1,4 @@
-# puppeteer-extra-plugin
+# puppeteer-extra-plugin [![Build Status](https://travis-ci.org/berstend/puppeteer-extra.svg?branch=master)](https://travis-ci.org/berstend/puppeteer-extra) [![npm](https://img.shields.io/npm/v/puppeteer-extra-plugin.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin)
 
 ## Installation
 
@@ -18,7 +18,7 @@ Unfortunately the generated documentation is currently not as nice as the former
 
 ## Changelog
 
-### `v3.1.0`
+### `v3.0.1`
 
 - Now written in TypeScript 🎉
 - **Breaking change:** Now using a named export:
@@ -27,6 +27,6 @@ Unfortunately the generated documentation is currently not as nice as the former
 // Before
 const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
 
-// After (>= v3.1.0)
+// After (>= v3.0.1)
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 ```
