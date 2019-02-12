@@ -1,4 +1,4 @@
-# puppeteer-extra-plugin-stealth
+# puppeteer-extra-plugin-stealth [![Build Status](https://travis-ci.org/berstend/puppeteer-extra.svg?branch=master)](https://travis-ci.org/berstend/puppeteer-extra) [![npm](https://img.shields.io/npm/v/puppeteer-extra-plugin-stealth.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin-stealth)
 
 > A plugin for [puppeteer-extra](https://github.com/berstend/puppeteer-extra) to prevent detection.
 

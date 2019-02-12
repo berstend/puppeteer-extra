@@ -1,4 +1,4 @@
-# puppeteer-extra-plugin-recaptcha
+# puppeteer-extra-plugin-recaptcha [![Build Status](https://travis-ci.org/berstend/puppeteer-extra.svg?branch=master)](https://travis-ci.org/berstend/puppeteer-extra) [![npm](https://img.shields.io/npm/v/puppeteer-extra-plugin-recaptcha.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin-recaptcha)
 
 > A [puppeteer-extra](https://github.com/berstend/puppeteer-extra) plugin to solve reCAPTCHAs automatically.
 
