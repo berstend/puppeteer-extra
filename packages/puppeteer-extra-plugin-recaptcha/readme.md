@@ -34,10 +34,11 @@ const puppeteer = require('puppeteer-extra')
 // add recaptcha plugin and provide it your 2captcha token
 // 2captcha is the builtin solution provider but others work as well.
 const RecaptchaPlugin = require('puppeteer-extra-plugin-recaptcha')
-const recaptchaPlugin = RecaptchaPlugin({
-  provider: { id: '2captcha', token: 'XXXXXXX' }
-})
-puppeteer.use(recaptchaPlugin)
+puppeteer.use(
+  RecaptchaPlugin({
+    provider: { id: '2captcha', token: 'XXXXXXX' }
+  })
+)
 
 // puppeteer usage as normal
 puppeteer.launch({ headless: true }).then(async browser => {
