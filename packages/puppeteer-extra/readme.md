@@ -7,40 +7,71 @@
 
 [![extra](https://i.imgur.com/2ZjXBe5.jpg)](https://github.com/berstend/puppeteer-extra)
 
-> A light-weight wrapper around [`puppeteer`](https://github.com/GoogleChrome/puppeteer) to enable [plugins](#plugins) through a clean interface.
+> A light-weight wrapper around [`puppeteer`](https://github.com/GoogleChrome/puppeteer) to enable cool [plugins](#plugins) through a clean interface.
 
 ## Installation
 
 ```bash
 yarn add puppeteer puppeteer-extra
+# - or -
+npm install puppeteer puppeteer-extra
+```
 
-# or to install the latest tip-of-tree version of puppeteer:
-# yarn add puppeteer@next puppeteer-extra
+_You can also use a specific puppeteer version (puppeteer-extra works with any):_
+
+```bash
+# To install the latest tip-of-tree version of puppeteer:
+yarn add puppeteer@next puppeteer-extra
 ```
 
 ## Quickstart
 
 ```es6
 // puppeteer-extra is a drop-in replacement for puppeteer,
-// it augments the installed puppeteer with plugin functionality
+// it augments the installed puppeteer with plugin functionality.
+// Any number of plugins can be added through `puppeteer.use()`
 const puppeteer = require("puppeteer-extra")
 
-// register plugins through `.use()`
-puppeteer.use(
-  require("puppeteer-extra-plugin-anonymize-ua")({ makeWindows: true })
-)
-puppeteer.use(require("puppeteer-extra-plugin-stealth")())
+// Add stealth plugin and use defaults (all tricks to hide puppeteer usage)
+const StealthPlugin = require("puppeteer-extra-plugin-stealth")
+puppeteer.use(StealthPlugin())
 
-// usage as normal
-puppeteer.launch().then(async browser => {
+// Add plugin to anonymize the User-Agent and signal Windows as platform
+const UserAgentPlugin = require("puppeteer-extra-plugin-anonymize-ua")
+puppeteer.use(UserAgentPlugin({ makeWindows: true }))
+
+// puppeteer usage as normal 😊
+puppeteer.launch({ headless: true }).then(async browser => {
   const page = await browser.newPage()
-  await page.goto("https://httpbin.org/headers", {
-    waitUntil: "domcontentloaded"
-  })
-  const content = await page.content()
-  console.log("content:", content) // => (..) User-Agent: (..) Windows NT 10.0
+  await page.setViewport({ width: 800, height: 600 })
+
+  console.log(`Testing the user agent plugin..`)
+  await page.goto("https://httpbin.org/headers")
+  await page.waitFor(1000)
+  await page.screenshot({ path: "headers.png", fullPage: true })
+
+  console.log(`Testing the stealth plugin..`)
+  await page.goto("https://bot.sannysoft.com")
+  await page.waitFor(5000)
+  await page.screenshot({ path: "stealth.png", fullPage: true })
+
+  console.log(`All done, check the screenshots. ✨`)
   await browser.close()
 })
+```
+
+The above example uses the [`stealth`](/packages/puppeteer-extra-plugin-stealth) and [`anonymize-ua`](/packages/puppeteer-extra-plugin-anonymize-ua) plugin, which need to be installed as well:
+
+```bash
+yarn add puppeteer-extra-plugin-stealth puppeteer-extra-plugin-anonymize-ua
+# - or -
+npm install puppeteer-extra-plugin-stealth puppeteer-extra-plugin-anonymize-ua
+```
+
+If you'd like to see debug output just run your script like so:
+
+```bash
+DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node myscript.js
 ```
 
 ## Plugins
