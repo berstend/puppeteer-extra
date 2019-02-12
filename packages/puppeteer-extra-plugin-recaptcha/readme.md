@@ -105,7 +105,7 @@ You can easily use your own provider as well, by providing the plugin a function
 ### When should I call `page.solveRecaptchas()`?
 
 - reCAPTCHAs will be solved automatically whenever they **are visible** (_aka their "I'm not a robot" iframe in the DOM_). It's your responsibility to do any required actions to trigger the captcha being shown, if needed.
-- If you summon the plugin immediately after navigating to a page it will wait automatically until the reCAPTCHA script (if any) has been loaded and initialized.
+- If you summon the plugin immediately after navigating to a page it's got your back and will wait automatically until the reCAPTCHA script (if any) has been loaded and initialized.
 - If you call `page.solveRecaptchas()` on a page that has no reCAPTCHAs nothing bad will happen (😄) but the promise resolve and the rest of your code executes as normal.
 - After solving the reCAPTCHAs the plugin will automatically detect and trigger their [optional callback](https://developers.google.com/recaptcha/docs/display#render_param). This might result in forms being submitted and page navigations to occur, depending on how the site owner implemented the reCAPTCHA.
 
