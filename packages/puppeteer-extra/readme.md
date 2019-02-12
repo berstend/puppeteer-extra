@@ -124,7 +124,7 @@ We use a [monorepo](/) powered by [Lerna](https://github.com/lerna/lerna#--use-w
 
 `puppeteer-extra` and all plugins are [tested continously](https://travis-ci.org/berstend/puppeteer-extra) against **Node v9, v10** and **Puppeteer v1.4 to v1.9 and @next**, as well as a any combination thereof.
 
-Some plugins won't work in headless mode due to Chrome limitations (e.g. user preferences in the profile folder), look into `xvfb-run` if you still require a headless experience in these circumstances.
+A few plugins won't work in headless mode (it's noted if that's the case) due to Chrome limitations (e.g. the [`user-preferences`](/packages/puppeteer-extra-plugin-user-preferences) plugin), look into `xvfb-run` if you still require a headless experience in these circumstances.
 
 ---
 
