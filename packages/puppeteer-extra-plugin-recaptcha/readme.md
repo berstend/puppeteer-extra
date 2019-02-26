@@ -31,10 +31,11 @@ const puppeteer = require('puppeteer-extra')
 
 // add recaptcha plugin and provide it your 2captcha token
 // 2captcha is the builtin solution provider but others work as well.
+// Funds will need to be added to your 2captcha account in order for the 2captcha provider to work
 const RecaptchaPlugin = require('puppeteer-extra-plugin-recaptcha')
 puppeteer.use(
   RecaptchaPlugin({
-    provider: { id: '2captcha', token: 'XXXXXXX' },
+    provider: { id: '2captcha', apiKey: 'XXXXXXX' },
     visualFeedback: true // colorize reCAPTCHAs (violet = detected, green = solved)
   })
 )
@@ -68,7 +69,9 @@ In any case I strongly feel that captchas in their current form have failed. The
 
 ## Provider
 
-I thought about having the plugin solve captchas directly (e.g. using the [audio challenge](https://github.com/dessant/buster) and speech-to-text APIs), but external solution providers are so cheap and reliable that there is really no benefit in doing that. ¯\\\_(ツ)\_/¯
+I thought about having the plugin solve captchas directly (e.g. using the [audio challenge](https://github.com/dessant/buster) and speech-to-text APIs), but external solution providers are so cheap and reliable that there is really no benefit in doing that.  ¯\\\_(ツ)\_/¯
+
+**This plugin will not work without a valid provider. In the case of 2captcha, funds will need to be added to your 2captcha account before this will work.**
 
 ### 2captcha
 
