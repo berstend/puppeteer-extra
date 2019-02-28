@@ -29,13 +29,13 @@ The plugin essentially provides a mighty `page.solveRecaptchas()` method that do
 // it augments the installed puppeteer with plugin functionality
 const puppeteer = require('puppeteer-extra')
 
-// add recaptcha plugin and provide it your 2captcha token
+// add recaptcha plugin and provide it your 2captcha token (= 2captcha apiKey)
 // 2captcha is the builtin solution provider but others work as well.
 // Funds will need to be added to your 2captcha account in order for the 2captcha provider to work
 const RecaptchaPlugin = require('puppeteer-extra-plugin-recaptcha')
 puppeteer.use(
   RecaptchaPlugin({
-    provider: { id: '2captcha', apiKey: 'XXXXXXX' },
+    provider: { id: '2captcha', token: 'XXXXXXX' },
     visualFeedback: true // colorize reCAPTCHAs (violet = detected, green = solved)
   })
 )
