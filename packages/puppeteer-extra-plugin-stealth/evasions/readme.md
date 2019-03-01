@@ -2,7 +2,7 @@
 
 Various detection evasion plugins for `puppeteer-extra-plugin-stealth`.
 
-You can bypass the main module and require specific evasion plugins yourself, if you whish to do so:
+You can bypass the main module and require specific evasion plugins yourself, if you wish to do so:
 
 ```es6
 puppeteer.use(require('puppeteer-extra-plugin-stealth/evasions/console.debug')())
