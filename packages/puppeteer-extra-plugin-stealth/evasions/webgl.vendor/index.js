@@ -19,7 +19,7 @@ class Plugin extends PuppeteerExtraPlugin {
     await page.evaluateOnNewDocument(() => {
       try {
         /* global WebGLRenderingContext */
-        const getParameter = WebGLRenderingContext.getParameter
+        WebGLRenderingContext.prototype.oldGetParameter = WebGLRenderingContext.prototype.getParameter;
         WebGLRenderingContext.prototype.getParameter = function (parameter) {
           // UNMASKED_VENDOR_WEBGL
           if (parameter === 37445) {
@@ -29,7 +29,7 @@ class Plugin extends PuppeteerExtraPlugin {
           if (parameter === 37446) {
             return 'Intel Iris OpenGL Engine'
           }
-          return getParameter(parameter)
+          return this.oldGetParameter(parameter);
         }
       } catch (err) {}
     })
