@@ -3,7 +3,11 @@
 let Puppeteer
 try {
   // https://github.com/GoogleChrome/puppeteer/pull/3208
-  Puppeteer = require('puppeteer')
+  try {
+    Puppeteer = require('puppeteer')
+  } catch (err) {
+    Puppeteer = require('puppeteer-core')
+  }
 } catch (err) {
   console.warn(`
     Puppeteer is missing. :-)
