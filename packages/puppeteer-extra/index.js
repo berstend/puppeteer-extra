@@ -171,7 +171,7 @@ class PuppeteerExtra {
    */
   _patchPageCreationMethods (browser) {
     browser._createPageInContext = (function (originalMethod, context) {
-      return async (contextId) => {
+      return async function (contextId) {
         const page = await originalMethod.apply(context, arguments)
         await page.goto('about:blank')
         return page
