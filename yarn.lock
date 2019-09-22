@@ -354,6 +354,30 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
+"@cliqz/adblocker-content@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@cliqz/adblocker-content/-/adblocker-content-1.1.0.tgz#c58c0714903c3ba72ae5e09c2a2a9d7f6118be30"
+  integrity sha512-7IJmulZPQUlTd+baAdH+iMs6RGkKPNoHwcxhMVenLahrIbCZE7LcsgP4jV0+AgEQPvl4SY0E67wsbngdM1AxPg==
+
+"@cliqz/adblocker-puppeteer@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@cliqz/adblocker-puppeteer/-/adblocker-puppeteer-1.1.0.tgz#b2437200a14f87151ca146af149f3844a676a7e5"
+  integrity sha512-06HaooYctK56ldAmnVlmsGH5rGWiZxZ/zkcduQFXqTmUOeY9BM+yzisQFWeYeMCYhcGdETxYeuV04hxYfnwFJQ==
+  dependencies:
+    "@cliqz/adblocker" "^1.1.0"
+    "@cliqz/adblocker-content" "^1.1.0"
+    "@types/puppeteer" "^1.12.4"
+    tldts-experimental "^5.3.0"
+
+"@cliqz/adblocker@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@cliqz/adblocker/-/adblocker-1.1.0.tgz#39a61285110af67350d3ed627a28cf8d2980c0dc"
+  integrity sha512-s8MiDqHqr5l9dkPtLHHWTvIQXS53I+hA0PJZjb/CYxDlwpYx5y19FS9gtRCEzTsnxlikwAH3qd2uh/rOiCb8Lw==
+  dependencies:
+    tldts-experimental "^5.3.0"
+    tslib "^1.10.0"
+    tsmaz "^1.3.0"
+
 "@concordance/react@^1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@concordance/react/-/react-1.0.0.tgz#fcf3cad020e5121bfd1c61d05bc3516aac25f734"
@@ -1056,6 +1080,13 @@
   resolved "https://registry.npmjs.org/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
   integrity sha512-ONhaKPIufzzrlNbqtWFFd+jlnemX6lJAgq9ZeiZtS7I1PIf/la7CW4m83rTXRnVnsMbW2k56pGYu7AUFJD9Pow==
 
+"@types/chrome@0.0.88":
+  version "0.0.88"
+  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.88.tgz#0041a101d69f78008910927c5b3299a00d8660db"
+  integrity sha512-JBsIrBZ2adJhlXvJ+1j0xLbcfOfwee/WAg7Lp2NE+Wf3m0vXMJFWv/PPjqNk5ZUXDeY/qDxPHe+PUjxnl8HWFg==
+  dependencies:
+    "@types/filesystem" "*"
+
 "@types/debug@^4.1.0":
   version "4.1.0"
   resolved "https://registry.npmjs.org/@types/debug/-/debug-4.1.0.tgz#f47877eca7cb38bbc94e716c044919bb54075828"
@@ -1070,6 +1101,18 @@
   version "3.0.0"
   resolved "https://registry.npmjs.org/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
   integrity sha512-EaObqwIvayI5a8dCzhFrjKzVwKLxjoG9T6Ppd5CEo07LRKfQ8Yokw54r5+Wq7FaBQ+yXRvQAYPrHwya1/UFt9g==
+
+"@types/filesystem@*":
+  version "0.0.29"
+  resolved "https://registry.yarnpkg.com/@types/filesystem/-/filesystem-0.0.29.tgz#ee3748eb5be140dcf980c3bd35f11aec5f7a3748"
+  integrity sha512-85/1KfRedmfPGsbK8YzeaQUyV1FQAvMPMTuWFQ5EkLd2w7szhNO96bk3Rh/SKmOfd9co2rCLf0Voy4o7ECBOvw==
+  dependencies:
+    "@types/filewriter" "*"
+
+"@types/filewriter@*":
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/@types/filewriter/-/filewriter-0.0.28.tgz#c054e8af4d9dd75db4e63abc76f885168714d4b3"
+  integrity sha1-wFTor02d11205jq8dviFFocU1LM=
 
 "@types/fs-extra@^5.0.3":
   version "5.0.4"
@@ -1112,6 +1155,13 @@
   resolved "https://registry.npmjs.org/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
 
+"@types/node-fetch@^2.5.1":
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-2.5.1.tgz#9e4daffa983eb098d25c2cb410c949678f3aee78"
+  integrity sha512-nYsC20tHanaNa4coFvCDcuIvtdvu8YkQz0XQOoBHL1X1y1QxeNe73dg1PaLGqsJNWiVwK0bjn5Jf+ZQpE6acJg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/node@*", "@types/node@^10.12.23":
   version "10.12.24"
   resolved "https://registry.npmjs.org/@types/node/-/node-10.12.24.tgz#b13564af612a22a20b5d95ca40f1bffb3af315cf"
@@ -1121,6 +1171,13 @@
   version "1.12.1"
   resolved "https://registry.npmjs.org/@types/puppeteer/-/puppeteer-1.12.1.tgz#f61f9e0da45e36cdbbeab3b088995a8a2cad47a4"
   integrity sha512-6qpe7XXM93iWh8quEP8Ay516Vmfc2r+ZAxFH3Mt6fx3vzmZz+4Q+hYxc9PxeEIXJhWLAAPYAgAiM/vLHEUwGpw==
+  dependencies:
+    "@types/node" "*"
+
+"@types/puppeteer@^1.12.4":
+  version "1.19.1"
+  resolved "https://registry.yarnpkg.com/@types/puppeteer/-/puppeteer-1.19.1.tgz#942ca62288953a0f5fbbc25c103b5f2ba28b60ab"
+  integrity sha512-ReWZvoEfMiJIA3AG+eM+nCx5GKrU2ANVYY5TC0nbpeiTCtnJbcqnmBbR8TkXMBTvLBYcuTOAELbTcuX73siDNQ==
   dependencies:
     "@types/node" "*"
 
@@ -7592,6 +7649,11 @@ node-fetch@^2.3.0:
   resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.3.0.tgz#1a1d940bbfb916a1d3e0219f037e89e71f8c5fa5"
   integrity sha512-MOd8pV3fxENbryESLgVIeaGKrdl+uaYhCSSVkjeOb/31/njTpcis5aWfdqgNlHIrKOLRbMnfPINPOML2CIFeXA==
 
+node-fetch@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.0.tgz#e633456386d4aa55863f676a7ab0daa8fdecb0fd"
+  integrity sha512-8dG4H5ujfvFiqDmVu9fQ5bOHUC15JMjMY/Zumv26oOvvVJjM67KF8koCWIabKQ1GJIa9r2mMZscBq/TbdOcmNA==
+
 node-gyp@^3.8.0:
   version "3.8.0"
   resolved "https://registry.npmjs.org/node-gyp/-/node-gyp-3.8.0.tgz#540304261c330e80d0d5edce253a68cb3964218c"
@@ -10556,6 +10618,18 @@ tiny-lr@^1.1.0:
     object-assign "^4.1.0"
     qs "^6.4.0"
 
+tldts-core@^5.4.1:
+  version "5.4.1"
+  resolved "https://registry.yarnpkg.com/tldts-core/-/tldts-core-5.4.1.tgz#81c427337073047cb077bc79a45f5c6186b897ef"
+  integrity sha512-j7Kpe1DIxyirS3xwfoIkNHpeoqbR1CSgCnrnPCeT6DPAwW1+bjqXhC7wdLLX4Wlgkr0r/ZI47HrHv9TNesVrZA==
+
+tldts-experimental@^5.3.0:
+  version "5.4.1"
+  resolved "https://registry.yarnpkg.com/tldts-experimental/-/tldts-experimental-5.4.1.tgz#691ae8c66cd35f7ea1d0c6b31480ccc24dacd867"
+  integrity sha512-LPBzgysXVr09vz65mIxFPI15GRSQfPeLZzlVrDTzk6TuVlddxiMtLCDspo/hphfz2CSWV4dbynAPeduuvClxjA==
+  dependencies:
+    tldts-core "^5.4.1"
+
 tmp@^0.0.33:
   version "0.0.33"
   resolved "https://registry.npmjs.org/tmp/-/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"
@@ -10718,6 +10792,11 @@ tslib@1.9.3, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
   resolved "https://registry.npmjs.org/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
   integrity sha512-4krF8scpejhaOgqzBEcGM7yDIEfi0/8+8zDRZhNZZ2kjmHJ4hv3zCbQWxoJGz1iw5U0Jl0nma13xzHXcncMavQ==
 
+tslib@^1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
+  integrity sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==
+
 tslint-config-prettier@^1.18.0:
   version "1.18.0"
   resolved "https://registry.npmjs.org/tslint-config-prettier/-/tslint-config-prettier-1.18.0.tgz#75f140bde947d35d8f0d238e0ebf809d64592c37"
@@ -10756,6 +10835,11 @@ tslint@^5.12.1:
     semver "^5.3.0"
     tslib "^1.8.0"
     tsutils "^2.27.2"
+
+tsmaz@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/tsmaz/-/tsmaz-1.3.0.tgz#389196d6ac36b641079892e729b9160f4a1dd382"
+  integrity sha512-vcU8dokp/QecvbTldQIE9Y4MD+ObU8VOpkwKCvhwhLv+yVdLMyjq7vTuc/haLLclRFRtMRj2z+qR7IjN+fnpiQ==
 
 tsutils@^2.27.2:
   version "2.29.0"
