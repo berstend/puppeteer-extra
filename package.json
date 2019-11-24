@@ -34,8 +34,5 @@
     "prettier": "^1.19.1",
     "prettier-config-standard": "^1.0.1"
   },
-  "resolutions": {
-    "**/fsevents": "^2.1.2"
-  },
   "dependencies": {}
 }
