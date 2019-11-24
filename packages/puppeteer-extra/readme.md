@@ -25,14 +25,14 @@ yarn add puppeteer@next puppeteer-extra
 // puppeteer-extra is a drop-in replacement for puppeteer,
 // it augments the installed puppeteer with plugin functionality.
 // Any number of plugins can be added through `puppeteer.use()`
-const puppeteer = require("puppeteer-extra")
+const puppeteer = require('puppeteer-extra')
 
 // Add stealth plugin and use defaults (all tricks to hide puppeteer usage)
-const StealthPlugin = require("puppeteer-extra-plugin-stealth")
+const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 puppeteer.use(StealthPlugin())
 
 // Add plugin to anonymize the User-Agent and signal Windows as platform
-const UserAgentPlugin = require("puppeteer-extra-plugin-anonymize-ua")
+const UserAgentPlugin = require('puppeteer-extra-plugin-anonymize-ua')
 puppeteer.use(UserAgentPlugin({ makeWindows: true }))
 
 // That's it, the rest is puppeteer usage as normal 😊
@@ -41,14 +41,14 @@ puppeteer.launch({ headless: true }).then(async browser => {
   await page.setViewport({ width: 800, height: 600 })
 
   console.log(`Testing the user agent plugin..`)
-  await page.goto("https://httpbin.org/headers")
+  await page.goto('https://httpbin.org/headers')
   await page.waitFor(1000)
-  await page.screenshot({ path: "headers.png", fullPage: true })
+  await page.screenshot({ path: 'headers.png', fullPage: true })
 
   console.log(`Testing the stealth plugin..`)
-  await page.goto("https://bot.sannysoft.com")
+  await page.goto('https://bot.sannysoft.com')
   await page.waitFor(5000)
-  await page.screenshot({ path: "stealth.png", fullPage: true })
+  await page.screenshot({ path: 'stealth.png', fullPage: true })
 
   console.log(`All done, check the screenshots. ✨`)
   await browser.close()
@@ -122,7 +122,8 @@ We use a [monorepo](/) powered by [Lerna](https://github.com/lerna/lerna#--use-w
 
 ## Compatibility
 
-`puppeteer-extra` and all plugins are [tested continously](https://travis-ci.org/berstend/puppeteer-extra) against **Node v9, v10** and **Puppeteer v1.4 to v1.9 and @next**, as well as a any combination thereof.
+`puppeteer-extra` and all plugins are [tested continously](https://travis-ci.org/berstend/puppeteer-extra) against all relevant NodeJS (v8-v13) and puppeteer versions.
+We never broke compatibility and still support puppeteer down to version 1.6.2 (Released Aug 1, 2018).
 
 A few plugins won't work in headless mode (it's noted if that's the case) due to Chrome limitations (e.g. the [`user-preferences`](/packages/puppeteer-extra-plugin-user-preferences) plugin), look into `xvfb-run` if you still require a headless experience in these circumstances.
 
@@ -158,15 +159,15 @@ Type: `function ()`
 Example:
 
 ```javascript
-const puppeteer = require("puppeteer-extra")
-puppeteer.use(require("puppeteer-extra-plugin-anonymize-ua")())
+const puppeteer = require('puppeteer-extra')
+puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
 puppeteer.use(
-  require("puppeteer-extra-plugin-font-size")({ defaultFontSize: 18 })
+  require('puppeteer-extra-plugin-font-size')({ defaultFontSize: 18 })
 )
 ;(async () => {
   const browser = await puppeteer.launch({ headless: false })
   const page = await browser.newPage()
-  await page.goto("http://example.com", { waitUntil: "domcontentloaded" })
+  await page.goto('http://example.com', { waitUntil: 'domcontentloaded' })
   await browser.close()
 })()
 ```
