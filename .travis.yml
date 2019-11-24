@@ -28,6 +28,7 @@ env:
   - PUPPETEER_VERSION=1.20.0 # Chromium 78.0.3882.0, Sep 13 2019
   - PUPPETEER_VERSION=1.15.0 # Chromium 75.0.3765.0, Apr 26 2019
   - PUPPETEER_VERSION=1.9.0 # Chromium 71.0.3563.0, Oct 4, 2018
+  - PUPPETEER_VERSION=1.6.2 # Chromium 69.0.3494.0, Aug 1, 2018
 
   # - PUPPETEER_VERSION=next
   # # - PUPPETEER_VERSION=1.11.0
@@ -44,7 +45,8 @@ script:
 
   # Install older version when required
 
-  - 'yarn add lerna && rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && yarn lerna add puppeteer@${PUPPETEER_VERSION} && yarn --ignore-optional'
+  - 'yarn add --ignore-workspace-root-check lerna && rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && yarn lerna add puppeteer@${PUPPETEER_VERSION} && yarn --ignore-optional'
+  # - 'yarn add lerna && rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && yarn lerna add puppeteer@${PUPPETEER_VERSION} && yarn --ignore-optional'
 
   # - 'if [ "$PUPPETEER_VERSION" = "1.11.0" ]; then rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && lerna add puppeteer@1.11.0 && yarn --ignore-optional; fi'
   # - 'if [ "$PUPPETEER_VERSION" = "1.11.0" ]; then rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && lerna add puppeteer@1.10.0 && yarn --ignore-optional; fi'
