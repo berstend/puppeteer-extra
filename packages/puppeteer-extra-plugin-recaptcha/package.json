@@ -49,10 +49,10 @@
   ],
   "devDependencies": {
     "@types/debug": "^4.1.0",
-    "@types/node": "^10.12.23",
+    "@types/node": "^12.12.12",
     "@types/puppeteer": "^1.12.1",
-    "ava": "^1.2.1",
-    "puppeteer": "next",
+    "ava": "~2.4.0",
+    "puppeteer": "^2.0.0",
     "ts-node": "^8.0.2",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.18.0",
@@ -63,8 +63,8 @@
     "typescript": "^3.3.3"
   },
   "dependencies": {
-    "2captcha-api": "^1.0.0",
-    "debug": "^3.1.0",
+    "2captcha-api": "1.0.0",
+    "debug": "^4.1.1",
     "merge-deep": "^3.0.1",
     "puppeteer-extra-plugin": "^3.0.4"
   },

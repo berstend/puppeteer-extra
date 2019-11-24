@@ -17,7 +17,7 @@ const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
  * https://chromium.googlesource.com/chromium/src/+/master/docs/user_data_dir.md
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = { }) {
+  constructor(opts = {}) {
     super(opts)
 
     this._userDataDir = null
@@ -36,35 +36,35 @@ class Plugin extends PuppeteerExtraPlugin {
     debug('initialized', this._opts)
   }
 
-  get name () {
+  get name() {
     return 'user-data-dir'
   }
 
-  get requirements () {
+  get requirements() {
     return new Set(['launch', 'runLast', 'dataFromPlugins'])
   }
 
-  get shouldDeleteDirectory () {
+  get shouldDeleteDirectory() {
     if (this._isTemporary && this._opts.deleteTemporary) {
       return true
     }
     return this._opts.deleteExisting
   }
 
-  get temporaryDirectoryPath () {
+  get temporaryDirectoryPath() {
     return path.join(this._opts.folderPath, this._opts.folderPrefix)
   }
 
-  get defaultProfilePath () {
+  get defaultProfilePath() {
     return path.join(this._userDataDir, 'Default')
   }
 
-  async makeTemporaryDirectory () {
+  async makeTemporaryDirectory() {
     this._userDataDir = await mkdtempAsync(this.temporaryDirectoryPath)
     this._isTemporary = true
   }
 
-  deleteUserDataDir () {
+  deleteUserDataDir() {
     debug('removeUserDataDir')
     try {
       // We're doing it sync to improve chances to cleanup
@@ -75,10 +75,14 @@ class Plugin extends PuppeteerExtraPlugin {
     }
   }
 
-  async writeFilesToProfile () {
-    const filesFromPlugins = this.getDataFromPlugins('userDataDirFile').map(d => d.value)
+  async writeFilesToProfile() {
+    const filesFromPlugins = this.getDataFromPlugins('userDataDirFile').map(
+      d => d.value
+    )
     const files = [].concat(filesFromPlugins, this._opts.files)
-    if (!files.length) { return }
+    if (!files.length) {
+      return
+    }
     for (const file of files) {
       if (file.target !== 'Profile') {
         console.warn(`Warning: Ignoring file with invalid target`, file)
@@ -94,7 +98,7 @@ class Plugin extends PuppeteerExtraPlugin {
     }
   }
 
-  async beforeLaunch (options) {
+  async beforeLaunch(options) {
     this._userDataDir = options.userDataDir
     if (!this._userDataDir) {
       await this.makeTemporaryDirectory()
@@ -104,7 +108,7 @@ class Plugin extends PuppeteerExtraPlugin {
     await this.writeFilesToProfile()
   }
 
-  async onClose () {
+  async onClose() {
     debug('onClose')
     if (this.shouldDeleteDirectory) {
       this.deleteUserDataDir()
@@ -112,6 +116,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) {
+module.exports = function(pluginConfig) {
   return new Plugin(pluginConfig)
 }

@@ -39,11 +39,15 @@ const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
  * await page.goto('http://www.youtube.com', {waitUntil: 'domcontentloaded'})
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = { }) { super(opts) }
+  constructor(opts = {}) {
+    super(opts)
+  }
 
-  get name () { return 'block-resources' }
+  get name() {
+    return 'block-resources'
+  }
 
-  get defaults () {
+  get defaults() {
     return {
       availableTypes: new Set([
         'document',
@@ -72,7 +76,9 @@ class Plugin extends PuppeteerExtraPlugin {
    *
    * @type {Set<string>} - A Set of all available resource types.
    */
-  get availableTypes () { return this.defaults.availableTypes }
+  get availableTypes() {
+    return this.defaults.availableTypes
+  }
 
   /**
    * Get all blocked resource types.
@@ -81,12 +87,14 @@ class Plugin extends PuppeteerExtraPlugin {
    *
    * @type {Set<string>} - A Set of all blocked resource types.
    */
-  get blockedTypes () { return this.opts.blockedTypes }
+  get blockedTypes() {
+    return this.opts.blockedTypes
+  }
 
   /**
    * @private
    */
-  onRequest (request) {
+  onRequest(request) {
     const type = request.resourceType()
     const shouldBlock = this.blockedTypes.has(type)
     this.debug('onRequest', { type, shouldBlock })
@@ -96,11 +104,13 @@ class Plugin extends PuppeteerExtraPlugin {
   /**
    * @private
    */
-  async onPageCreated (page) {
+  async onPageCreated(page) {
     this.debug('onPageCreated', { blockedTypes: this.blockedTypes })
     await page.setRequestInterception(true)
     page.on('request', this.onRequest.bind(this))
   }
 }
 
-module.exports = function (pluginConfig) { return new Plugin(pluginConfig) }
+module.exports = function(pluginConfig) {
+  return new Plugin(pluginConfig)
+}

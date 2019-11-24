@@ -1,6 +1,6 @@
 'use strict'
 
-const { test } = require('ava')
+const test = require('ava')
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
@@ -22,21 +22,21 @@ test('will modify puppeteer launch options through plugins', async t => {
   const pluginName = 'hello-world'
   const pluginData = [{ name: 'foo', value: 'bar' }]
   class Plugin extends PuppeteerExtraPlugin {
-    constructor (opts = {}) {
+    constructor(opts = {}) {
       super(opts)
     }
-    get name () {
+    get name() {
       return pluginName
     }
-    get data () {
+    get data() {
       return pluginData
     }
-    beforeLaunch (options) {
+    beforeLaunch(options) {
       options.args.push('--foobar=true')
       options.timeout = 60 * 1000
       options.headless = true
     }
-    afterLaunch (browser, opts) {
+    afterLaunch(browser, opts) {
       FINAL_OPTIONS = opts.options
     }
   }
@@ -62,7 +62,9 @@ test('will modify puppeteer connect options through plugins', async t => {
 
   // Launch vanilla puppeteer browser with no plugins
   const puppeteerVanilla = require('puppeteer')
-  const browserVanilla = await puppeteerVanilla.launch({ args: PUPPETEER_ARGS })
+  const browserVanilla = await puppeteerVanilla.launch({
+    args: PUPPETEER_ARGS
+  })
   const browserWSEndpoint = browserVanilla.wsEndpoint()
 
   const puppeteer = require('puppeteer-extra')
@@ -70,20 +72,20 @@ test('will modify puppeteer connect options through plugins', async t => {
   const pluginName = 'hello-world'
   const pluginData = [{ name: 'foo', value: 'bar' }]
   class Plugin extends PuppeteerExtraPlugin {
-    constructor (opts = {}) {
+    constructor(opts = {}) {
       super(opts)
     }
-    get name () {
+    get name() {
       return pluginName
     }
-    get data () {
+    get data() {
       return pluginData
     }
-    beforeConnect (options) {
+    beforeConnect(options) {
       options.foo1 = 60 * 1000
       options.foo2 = true
     }
-    afterConnect (browser, opts) {
+    afterConnect(browser, opts) {
       FINAL_OPTIONS = opts.options
     }
   }

@@ -1,10 +1,10 @@
 'use strict'
 
-const { test } = require('ava')
+const test = require('ava')
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
-const waitEvent = function (emitter, eventName) {
+const waitEvent = function(emitter, eventName) {
   return new Promise(resolve => emitter.once(eventName, resolve))
 }
 
@@ -14,14 +14,12 @@ test.beforeEach(t => {
   delete require.cache[require.resolve('puppeteer-extra-plugin-anonymize-ua')]
 })
 
-test('known issue: will not remove headless from implicitly created popup pages', async (t) => {
+test('known issue: will not remove headless from implicitly created popup pages', async t => {
   const puppeteer = require('puppeteer-extra')
   puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
 
-  const pages = await Promise.all(
-    [...Array(10)].map(slot => browser.newPage())
-  )
+  const pages = await Promise.all([...Array(10)].map(slot => browser.newPage()))
   for (const page of pages) {
     // Works
     const ua = await page.evaluate(() => window.navigator.userAgent)

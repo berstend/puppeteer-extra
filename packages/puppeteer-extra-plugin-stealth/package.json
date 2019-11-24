@@ -10,7 +10,7 @@
   "scripts": {
     "docs": "update-markdown-jsdoc && yarn docs-for-evasions",
     "docs-for-evasions": "cd ./evasions && loop update-markdown-jsdoc",
-    "test": "ava -v && standard",
+    "test": "ava -v && eslint --ext .js .",
     "test-ci": "yarn test"
   },
   "engines": {
@@ -29,14 +29,13 @@
     "pupeteer"
   ],
   "devDependencies": {
-    "ava": "^0.25.0",
+    "ava": "~2.4.0",
     "loop": "^3.0.6",
-    "puppeteer": "next",
-    "standard": "^11.0.0",
+    "puppeteer": "^2.0.0",
     "update-markdown-jsdoc": "^1.0.2"
   },
   "dependencies": {
-    "debug": "^3.1.0",
+    "debug": "^4.1.1",
     "puppeteer-extra-plugin": "^3.0.4",
     "puppeteer-extra-plugin-anonymize-ua": "^2.1.4"
   },

@@ -6,15 +6,15 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * Pass toString test, though it breaks console.debug() from working
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = {}) {
+  constructor(opts = {}) {
     super(opts)
   }
 
-  get name () {
+  get name() {
     return 'stealth/evasions/console.debug'
   }
 
-  async onPageCreated (page) {
+  async onPageCreated(page) {
     await page.evaluateOnNewDocument(() => {
       window.console.debug = () => {
         return null
@@ -23,6 +23,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) {
+module.exports = function(pluginConfig) {
   return new Plugin(pluginConfig)
 }

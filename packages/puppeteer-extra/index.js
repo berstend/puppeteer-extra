@@ -41,7 +41,7 @@ const debug = require('debug')('puppeteer-extra')
  * })()
  */
 class PuppeteerExtra {
-  constructor () {
+  constructor() {
     this._plugins = []
 
     // Ensure there are certain properties (e.g. the `options.args` array)
@@ -60,13 +60,19 @@ class PuppeteerExtra {
    * puppeteer.use(require('puppeteer-extra-plugin-user-preferences')())
    * const browser = await puppeteer.launch(...)
    */
-  use (plugin) {
-    if ((typeof plugin !== 'object') || !plugin._isPuppeteerExtraPlugin) {
-      console.error(`Warning: Plugin is not derived from PuppeteerExtraPlugin, ignoring.`, plugin)
+  use(plugin) {
+    if (typeof plugin !== 'object' || !plugin._isPuppeteerExtraPlugin) {
+      console.error(
+        `Warning: Plugin is not derived from PuppeteerExtraPlugin, ignoring.`,
+        plugin
+      )
       return this
     }
     if (!plugin.name) {
-      console.error(`Warning: Plugin with no name registering, ignoring.`, plugin)
+      console.error(
+        `Warning: Plugin with no name registering, ignoring.`,
+        plugin
+      )
       return this
     }
     if (plugin.requirements.has('dataFromPlugins')) {
@@ -91,7 +97,7 @@ class PuppeteerExtra {
    * @param {Object=} options - Regular [Puppeteer launch options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions)
    * @return {Puppeteer.Browser}
    */
-  async launch (options = {}) {
+  async launch(options = {}) {
     options = merge(this._defaultLaunchOptions, options)
     this.resolvePluginDependencies()
     this.orderPlugins()
@@ -123,7 +129,7 @@ class PuppeteerExtra {
    * @param {{browserWSEndpoint: string, ignoreHTTPSErrors: boolean}} options
    * @return {Promise<!Puppeteer.Browser>}
    */
-  async connect (options = {}) {
+  async connect(options = {}) {
     this.resolvePluginDependencies()
     this.orderPlugins()
 
@@ -169,9 +175,9 @@ class PuppeteerExtra {
    *
    * @private
    */
-  _patchPageCreationMethods (browser) {
-    browser._createPageInContext = (function (originalMethod, context) {
-      return async (contextId) => {
+  _patchPageCreationMethods(browser) {
+    browser._createPageInContext = (function(originalMethod, context) {
+      return async contextId => {
         const page = await originalMethod.apply(context, arguments)
         await page.goto('about:blank')
         return page
@@ -184,7 +190,9 @@ class PuppeteerExtra {
    *
    * @member {Array<PuppeteerExtraPlugin>}
    */
-  get plugins () { return this._plugins }
+  get plugins() {
+    return this._plugins
+  }
 
   /**
    * Get the names of all registered plugins.
@@ -192,7 +200,9 @@ class PuppeteerExtra {
    * @member {Array<string>}
    * @private
    */
-  get pluginNames () { return this._plugins.map(p => p.name) }
+  get pluginNames() {
+    return this._plugins.map(p => p.name)
+  }
 
   /**
    * Collects the exposed `data` property of all registered plugins.
@@ -206,9 +216,9 @@ class PuppeteerExtra {
    * @param {string=} name - Filter data by name property
    * @return {Array<Object>}
    */
-  getPluginData (name = null) {
+  getPluginData(name = null) {
     const data = this._plugins
-      .map(p => Array.isArray(p.data) ? p.data : [p.data])
+      .map(p => (Array.isArray(p.data) ? p.data : [p.data]))
       .reduce((acc, arr) => [...acc, ...arr], [])
     return name ? data.filter(d => d.name === name) : data
   }
@@ -220,8 +230,8 @@ class PuppeteerExtra {
    * @return {Array<PuppeteerExtraPlugin>}
    * @private
    */
-  getPluginsByProp (prop) {
-    return this._plugins.filter(plugin => (prop in plugin))
+  getPluginsByProp(prop) {
+    return this._plugins.filter(plugin => prop in plugin)
   }
 
   /**
@@ -233,7 +243,7 @@ class PuppeteerExtra {
    *
    * @private
    */
-  resolvePluginDependencies () {
+  resolvePluginDependencies() {
     // Request missing dependencies from all plugins and flatten to a single Set
     const missingPlugins = this._plugins
       .map(p => p._getMissingDependencies(this._plugins))
@@ -254,7 +264,9 @@ class PuppeteerExtra {
         continue
       }
       // We follow a plugin naming convention, but let's rather enforce it <3
-      name = name.startsWith('puppeteer-extra-plugin') ? name : `puppeteer-extra-plugin-${name}`
+      name = name.startsWith('puppeteer-extra-plugin')
+        ? name
+        : `puppeteer-extra-plugin-${name}`
       // In case a module sub resource is requested print out the main package name
       // e.g. puppeteer-extra-plugin-stealth/evasions/console.debug => puppeteer-extra-plugin-stealth
       const packageName = name.split('/')[0]
@@ -293,7 +305,7 @@ class PuppeteerExtra {
    *
    * @private
    */
-  orderPlugins () {
+  orderPlugins() {
     debug('orderPlugins:before', this.pluginNames)
     const runLast = this._plugins
       .filter(p => p.requirements.has('runLast'))
@@ -314,14 +326,22 @@ class PuppeteerExtra {
    *
    * @private
    */
-  checkPluginRequirements (opts = {}) {
+  checkPluginRequirements(opts = {}) {
     for (const plugin of this._plugins) {
       for (const requirement of plugin.requirements) {
-        if ((opts.context === 'launch') && (requirement === 'headful') && opts.options.headless) {
-          console.warn(`Warning: Plugin '${plugin.name}' is not supported in headless mode.`)
+        if (
+          opts.context === 'launch' &&
+          requirement === 'headful' &&
+          opts.options.headless
+        ) {
+          console.warn(
+            `Warning: Plugin '${plugin.name}' is not supported in headless mode.`
+          )
         }
-        if ((opts.context === 'connect') && (requirement === 'launch')) {
-          console.warn(`Warning: Plugin '${plugin.name}' doesn't support puppeteer.connect().`)
+        if (opts.context === 'connect' && requirement === 'launch') {
+          console.warn(
+            `Warning: Plugin '${plugin.name}' doesn't support puppeteer.connect().`
+          )
         }
       }
     }
@@ -335,7 +355,7 @@ class PuppeteerExtra {
    * @param  {...*} values - Any number of values
    * @private
    */
-  async callPlugins (prop, ...values) {
+  async callPlugins(prop, ...values) {
     for (const plugin of this.getPluginsByProp(prop)) {
       await plugin[prop].apply(plugin, values)
     }
@@ -353,10 +373,12 @@ class PuppeteerExtra {
    * @return {*} - The new updated value
    * @private
    */
-  async callPluginsWithValue (prop, value) {
+  async callPluginsWithValue(prop, value) {
     for (const plugin of this.getPluginsByProp(prop)) {
       const newValue = await plugin[prop](value)
-      if (newValue) { value = newValue }
+      if (newValue) {
+        value = newValue
+      }
     }
     return value
   }
@@ -366,7 +388,7 @@ class PuppeteerExtra {
    *
    * @return {string}
    */
-  executablePath () {
+  executablePath() {
     return Puppeteer.executablePath()
   }
 
@@ -375,7 +397,7 @@ class PuppeteerExtra {
    *
    * @return {Array<string>}
    */
-  defaultArgs () {
+  defaultArgs() {
     return Puppeteer.defaultArgs()
   }
 
@@ -385,7 +407,7 @@ class PuppeteerExtra {
    * @param {Object=} options
    * @return {PuppeteerBrowserFetcher}
    */
-  createBrowserFetcher (options) {
+  createBrowserFetcher(options) {
     return Puppeteer.createBrowserFetcher(options)
   }
 }

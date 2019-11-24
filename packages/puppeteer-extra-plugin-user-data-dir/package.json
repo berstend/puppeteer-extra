@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "docs": "update-markdown-jsdoc",
-    "test": "standard",
+    "test": "eslint --ext .js .",
     "test-ci": "yarn test"
   },
   "engines": {
@@ -26,13 +26,12 @@
     "pupeteer"
   ],
   "devDependencies": {
-    "ava": "^0.25.0",
-    "puppeteer": "next",
-    "standard": "^11.0.0",
+    "ava": "~2.4.0",
+    "puppeteer": "^2.0.0",
     "update-markdown-jsdoc": "^1.0.2"
   },
   "dependencies": {
-    "debug": "^3.1.0",
+    "debug": "^4.1.1",
     "fs-extra": "^6.0.1",
     "puppeteer-extra-plugin": "^2.1.1"
   },

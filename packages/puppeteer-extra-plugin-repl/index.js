@@ -36,18 +36,26 @@ const REPLSession = require('./lib/REPLSession')
  * })
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = { }) { super(opts) }
+  constructor(opts = {}) {
+    super(opts)
+  }
 
-  get name () { return 'repl' }
+  get name() {
+    return 'repl'
+  }
 
-  get defaults () { return { addToPuppeteerClass: true } }
+  get defaults() {
+    return { addToPuppeteerClass: true }
+  }
 
   /**
    * Run last so other plugins can extend e.g. Page :-)
    *
    * @ignore
    */
-  get requirements () { return new Set([ 'runLast' ]) }
+  get requirements() {
+    return new Set(['runLast'])
+  }
 
   /**
    * Create an interactive REPL for the provided object.
@@ -67,19 +75,25 @@ class Plugin extends PuppeteerExtraPlugin {
    * const repl = require('puppeteer-extra-plugin-repl')()
    * await repl.repl(<object or class instance to inspect>)
    */
-  async repl (obj) { return (new REPLSession({ obj })).start() }
+  async repl(obj) {
+    return new REPLSession({ obj }).start()
+  }
 
   /**
    * Conditionally add a .repl() method to `page` and `browser` instances.
    *
    * @ignore
    */
-  async onPageCreated (page) {
-    if (!this.opts.addToPuppeteerClass) { return }
+  async onPageCreated(page) {
+    if (!this.opts.addToPuppeteerClass) {
+      return
+    }
     page.repl = () => this.repl(page)
     const browser = page.browser()
     browser.repl = () => this.repl(browser)
   }
 }
 
-module.exports = function (pluginConfig) { return new Plugin(pluginConfig) }
+module.exports = function(pluginConfig) {
+  return new Plugin(pluginConfig)
+}

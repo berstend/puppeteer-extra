@@ -1,5 +1,6 @@
 {
-  "extends": [
-    "standard"
-  ]
+  "extends": ["prettier-standard"],
+  "rules": {
+    "lines-between-class-members": "off"
+  }
 }

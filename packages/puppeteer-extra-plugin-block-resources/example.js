@@ -19,23 +19,24 @@
 const puppeteer = require('puppeteer-extra')
 const blockResourcesPlugin = require('puppeteer-extra-plugin-block-resources')()
 puppeteer.use(blockResourcesPlugin)
-
 ;(async () => {
   const browser = await puppeteer.launch({ headless: false })
   const page = await browser.newPage()
 
   blockResourcesPlugin.blockedTypes.add('image')
-  await page.goto('http://www.msn.com/', {waitUntil: 'domcontentloaded'})
+  await page.goto('http://www.msn.com/', { waitUntil: 'domcontentloaded' })
 
   blockResourcesPlugin.blockedTypes.add('stylesheet')
   blockResourcesPlugin.blockedTypes.add('other') // e.g. favicon
-  await page.goto('http://news.ycombinator.com', {waitUntil: 'domcontentloaded'})
+  await page.goto('http://news.ycombinator.com', {
+    waitUntil: 'domcontentloaded'
+  })
 
   blockResourcesPlugin.blockedTypes.delete('stylesheet')
   blockResourcesPlugin.blockedTypes.delete('other')
   blockResourcesPlugin.blockedTypes.add('media')
   blockResourcesPlugin.blockedTypes.add('script')
-  await page.goto('http://www.youtube.com', {waitUntil: 'domcontentloaded'})
+  await page.goto('http://www.youtube.com', { waitUntil: 'domcontentloaded' })
 
   console.log('all done')
 })()

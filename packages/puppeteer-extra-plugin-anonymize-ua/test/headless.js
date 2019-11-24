@@ -1,6 +1,6 @@
 'use strict'
 
-const { test } = require('ava')
+const test = require('ava')
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
@@ -10,13 +10,16 @@ test.beforeEach(t => {
   delete require.cache[require.resolve('puppeteer-extra-plugin-anonymize-ua')]
 })
 
-test('will remove headless from the user-agent', async (t) => {
+test('will remove headless from the user-agent', async t => {
   const puppeteer = require('puppeteer-extra')
-  puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
+  const AnonymizeUA = require('puppeteer-extra-plugin-anonymize-ua')()
+  puppeteer.use(AnonymizeUA)
 
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
   const page = await browser.newPage()
-  await page.goto('https://httpbin.org/headers', {waitUntil: 'domcontentloaded'})
+  await page.goto('https://httpbin.org/headers', {
+    waitUntil: 'domcontentloaded'
+  })
 
   const content = await page.content()
   t.true(content.includes('Windows NT 10.0'))
@@ -26,7 +29,7 @@ test('will remove headless from the user-agent', async (t) => {
   t.true(true)
 })
 
-test('will remove headless from the user-agent in incognito page', async (t) => {
+test('will remove headless from the user-agent in incognito page', async t => {
   const puppeteer = require('puppeteer-extra')
   puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
 
@@ -36,7 +39,9 @@ test('will remove headless from the user-agent in incognito page', async (t) => 
   if (browser.createIncognitoBrowserContext) {
     const context = await browser.createIncognitoBrowserContext()
     const page = await context.newPage()
-    await page.goto('https://httpbin.org/headers', {waitUntil: 'domcontentloaded'})
+    await page.goto('https://httpbin.org/headers', {
+      waitUntil: 'domcontentloaded'
+    })
 
     const content = await page.content()
     t.true(content.includes('Windows NT 10.0'))
@@ -47,42 +52,25 @@ test('will remove headless from the user-agent in incognito page', async (t) => 
   t.true(true)
 })
 
-test('will use a custom fn to modify the user-agent', async (t) => {
+test('will use a custom fn to modify the user-agent', async t => {
   const puppeteer = require('puppeteer-extra')
-  puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')({
-    customFn: (ua) => 'MyCoolAgent/' + ua.replace('Chrome', 'Beer')
-  }))
+  puppeteer.use(
+    require('puppeteer-extra-plugin-anonymize-ua')({
+      customFn: ua => 'MyCoolAgent/' + ua.replace('Chrome', 'Beer')
+    })
+  )
 
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
   const page = await browser.newPage()
-  await page.goto('https://httpbin.org/headers', {waitUntil: 'domcontentloaded'})
+  await page.goto('https://httpbin.org/headers', {
+    waitUntil: 'domcontentloaded'
+  })
 
   const content = await page.content()
   t.true(content.includes('Windows NT 10.0'))
   t.true(!content.includes('HeadlessChrome'))
   t.true(content.includes('MyCoolAgent/Mozilla'))
   t.true(content.includes('Beer/'))
-
-  await browser.close()
-  t.true(true)
-})
-
-test('will not modify the user-agent when disabled', async (t) => {
-  const puppeteer = require('puppeteer-extra')
-  puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')({
-    stripHeadless: false,
-    makeWindows: false,
-    customFn: null
-  }))
-
-  const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
-  const page = await browser.newPage()
-  await page.goto('https://httpbin.org/headers', {waitUntil: 'domcontentloaded'})
-
-  const content = await page.content()
-  t.true(content.includes('HeadlessChrome'))
-  t.true(!content.includes('MyCoolAgent/Mozilla'))
-  t.true(!content.includes('Beer/'))
 
   await browser.close()
   t.true(true)

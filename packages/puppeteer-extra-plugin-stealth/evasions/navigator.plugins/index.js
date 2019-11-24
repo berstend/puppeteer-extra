@@ -8,23 +8,23 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * We even go so far as to mock functional methods, instance types and `.toString` properties. :D
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = {}) {
+  constructor(opts = {}) {
     super(opts)
   }
 
-  get name () {
+  get name() {
     return 'stealth/evasions/navigator.plugins'
   }
 
-  async onPageCreated (page) {
+  async onPageCreated(page) {
     await page.evaluateOnNewDocument(() => {
-      function mockPluginsAndMimeTypes () {
+      function mockPluginsAndMimeTypes() {
         /* global MimeType MimeTypeArray PluginArray */
 
         // Disguise custom functions as being native
         const makeFnsNative = (fns = []) => {
           const oldCall = Function.prototype.call
-          function call () {
+          function call() {
             return oldCall.apply(this, arguments)
           }
           // eslint-disable-next-line
@@ -36,7 +36,7 @@ class Plugin extends PuppeteerExtraPlugin {
           )
           const oldToString = Function.prototype.toString
 
-          function functionToString () {
+          function functionToString() {
             for (const fn of fns) {
               if (this === fn.ref) {
                 return `function ${fn.name}() { [native code] }`
@@ -102,7 +102,7 @@ class Plugin extends PuppeteerExtraPlugin {
           fns: {
             namedItem: instanceName => {
               // Returns the Plugin/MimeType with the specified name.
-              const fn = function (name) {
+              const fn = function(name) {
                 if (!arguments.length) {
                   throw new TypeError(
                     `Failed to execute 'namedItem' on '${instanceName}': 1 argument required, but only 0 present.`
@@ -115,7 +115,7 @@ class Plugin extends PuppeteerExtraPlugin {
             },
             item: instanceName => {
               // Returns the Plugin/MimeType at the specified index into the array.
-              const fn = function (index) {
+              const fn = function(index) {
                 if (!arguments.length) {
                   throw new TypeError(
                     `Failed to execute 'namedItem' on '${instanceName}': 1 argument required, but only 0 present.`
@@ -128,7 +128,7 @@ class Plugin extends PuppeteerExtraPlugin {
             },
             refresh: instanceName => {
               // Refreshes all plugins on the current page, optionally reloading documents.
-              const fn = function () {
+              const fn = function() {
                 return undefined
               }
               mockedFns.push({ ref: fn, name: 'refresh' })
@@ -140,7 +140,7 @@ class Plugin extends PuppeteerExtraPlugin {
         const getSubset = (keys, obj) =>
           keys.reduce((a, c) => ({ ...a, [c]: obj[c] }), {})
 
-        function generateMimeTypeArray () {
+        function generateMimeTypeArray() {
           const arr = fakeData.mimeTypes
             .map(obj => getSubset(['type', 'suffixes', 'description'], obj))
             .map(obj => Object.setPrototypeOf(obj, MimeType.prototype))
@@ -160,7 +160,7 @@ class Plugin extends PuppeteerExtraPlugin {
           get: () => mimeTypeArray
         })
 
-        function generatePluginArray () {
+        function generatePluginArray() {
           const arr = fakeData.plugins
             .map(obj => getSubset(['name', 'filename', 'description'], obj))
             .map(obj => {
@@ -215,6 +215,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) {
+module.exports = function(pluginConfig) {
   return new Plugin(pluginConfig)
 }

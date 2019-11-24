@@ -70,15 +70,15 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  *
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = {}) {
+  constructor(opts = {}) {
     super(opts)
   }
 
-  get name () {
+  get name() {
     return 'stealth'
   }
 
-  get defaults () {
+  get defaults() {
     const availableEvasions = new Set([
       'chrome.runtime',
       'console.debug',
@@ -102,7 +102,7 @@ class Plugin extends PuppeteerExtraPlugin {
    *
    * @private
    */
-  get dependencies () {
+  get dependencies() {
     return new Set(
       [...this.opts.enabledEvasions].map(e => `${this.name}/evasions/${e}`)
     )
@@ -120,7 +120,7 @@ class Plugin extends PuppeteerExtraPlugin {
    * console.log(pluginStealth.availableEvasions) // => Set { 'user-agent', 'console.debug' }
    * puppeteer.use(pluginStealth)
    */
-  get availableEvasions () {
+  get availableEvasions() {
     return this.defaults.availableEvasions
   }
 
@@ -137,18 +137,18 @@ class Plugin extends PuppeteerExtraPlugin {
    * pluginStealth.enabledEvasions.delete('console.debug')
    * puppeteer.use(pluginStealth)
    */
-  get enabledEvasions () {
+  get enabledEvasions() {
     return this.opts.enabledEvasions
   }
 
   /**
    * @private
    */
-  set enabledEvasions (evasions) {
+  set enabledEvasions(evasions) {
     this.opts.enabledEvasions = evasions
   }
 }
 
-module.exports = function (pluginConfig) {
+module.exports = function(pluginConfig) {
   return new Plugin(pluginConfig)
 }

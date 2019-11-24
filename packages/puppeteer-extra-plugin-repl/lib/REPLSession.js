@@ -2,7 +2,7 @@ const ow = require('ow')
 const readline = require('./super-readline')
 
 class REPLSession {
-  constructor (opts) {
+  constructor(opts) {
     ow(opts, ow.object.hasKeys('obj'))
     ow(opts.obj, ow.object.hasKeys('constructor'))
 
@@ -10,21 +10,24 @@ class REPLSession {
     this._meta = {
       type: typeof this._obj,
       name: this._obj.constructor.name,
-      members: Object.getOwnPropertyNames(Object.getPrototypeOf(this._obj)) || []
+      members:
+        Object.getOwnPropertyNames(Object.getPrototypeOf(this._obj)) || []
     }
     this._completions = [].concat(this.extraMethods, this._meta.members)
   }
 
-  get extraMethods () { return [ 'inspect', 'exit' ] }
+  get extraMethods() {
+    return ['inspect', 'exit']
+  }
 
-  async start () {
+  async start() {
     this._createInterface()
     this._showIntro()
     this._rl.prompt()
     return this._closePromise
   }
 
-  _createInterface () {
+  _createInterface() {
     this._rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
@@ -36,10 +39,12 @@ class REPLSession {
       }
     })
     this._rl.on('line', this._onLineInput.bind(this))
-    this._closePromise = new Promise(resolve => this._rl.once('close', () => resolve()))
+    this._closePromise = new Promise(resolve =>
+      this._rl.once('close', () => resolve())
+    )
   }
 
-  _showIntro () {
+  _showIntro() {
     console.log(`
       Started puppeteer-extra repl for ${this._meta.type} '${this._meta.name}' with ${this._meta.members.length} properties.
 
@@ -51,16 +56,20 @@ class REPLSession {
     this._rl.showTabCompletions()
   }
 
-  async _onLineInput (line) {
-    if (!line) { return this._rl.prompt() }
-    if (line === 'exit') { return this._rl.close() }
+  async _onLineInput(line) {
+    if (!line) {
+      return this._rl.prompt()
+    }
+    if (line === 'exit') {
+      return this._rl.close()
+    }
 
-    const cmd = (line === 'inspect') ? this._obj : `this._obj.${line}`
+    const cmd = line === 'inspect' ? this._obj : `this._obj.${line}`
     await this._evalAsync(cmd)
     this._rl.prompt()
   }
 
-  async _evalAsync (cmd) {
+  async _evalAsync(cmd) {
     try {
       // eslint-disable-next-line no-eval
       const out = await eval(cmd)

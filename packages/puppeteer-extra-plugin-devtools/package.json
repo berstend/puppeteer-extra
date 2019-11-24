@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "docs": "update-markdown-jsdoc",
-    "test": "ava -v && standard",
+    "test": "ava -v && eslint --ext .js .",
     "test-ci": "yarn test"
   },
   "engines": {
@@ -27,13 +27,12 @@
     "pupeteer"
   ],
   "devDependencies": {
-    "ava": "^0.25.0",
-    "puppeteer": "next",
-    "standard": "^11.0.0",
+    "ava": "~2.4.0",
+    "puppeteer": "^2.0.0",
     "update-markdown-jsdoc": "^1.0.2"
   },
   "dependencies": {
-    "debug": "^3.1.0",
+    "debug": "^4.1.1",
     "get-port": "^3.2.0",
     "got": "^8.3.1",
     "http-auth": "^3.2.3",

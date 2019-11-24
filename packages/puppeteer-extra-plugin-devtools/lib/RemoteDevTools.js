@@ -20,7 +20,7 @@ const urlParse = require('url-parse')
  * @ignore
  */
 class DevToolsCommon {
-  constructor (webSocketDebuggerUrl, opts = {}) {
+  constructor(webSocketDebuggerUrl, opts = {}) {
     ow(webSocketDebuggerUrl, ow.string)
     ow(webSocketDebuggerUrl, ow.string.includes('ws://'))
     ow(opts, ow.object.plain)
@@ -33,15 +33,17 @@ class DevToolsCommon {
     this.wsPort = wsUrlParts.port
   }
 
-  async fetchVersion () {
+  async fetchVersion() {
     const { body } = await got(
       `http://${this.wsHost}:${this.wsPort}/json/version`,
-      { json: true }
+      {
+        json: true
+      }
     )
     return body
   }
 
-  async fetchList () {
+  async fetchList() {
     const { body } = await got(
       `http://${this.wsHost}:${this.wsPort}/json/list`,
       { json: true }
@@ -56,18 +58,16 @@ class DevToolsCommon {
  * @ignore
  */
 class DevToolsLocal extends DevToolsCommon {
-  constructor (webSocketDebuggerUrl, opts = {}) {
+  constructor(webSocketDebuggerUrl, opts = {}) {
     super(webSocketDebuggerUrl, opts)
   }
 
-  get url () {
+  get url() {
     return `http://${this.wsHost}:${this.wsPort}`
   }
 
-  getUrlForPageId (pageId) {
-    return `${this.url}/devtools/inspector.html?ws=${this.wsHost}:${
-      this.wsPort
-    }/devtools/page/${pageId}`
+  getUrlForPageId(pageId) {
+    return `${this.url}/devtools/inspector.html?ws=${this.wsHost}:${this.wsPort}/devtools/page/${pageId}`
   }
 }
 
@@ -86,7 +86,7 @@ class DevToolsLocal extends DevToolsCommon {
  * @ignore
  */
 class DevToolsTunnel extends DevToolsCommon {
-  constructor (webSocketDebuggerUrl, opts = {}) {
+  constructor(webSocketDebuggerUrl, opts = {}) {
     super(webSocketDebuggerUrl, opts)
 
     this.server = null
@@ -96,7 +96,7 @@ class DevToolsTunnel extends DevToolsCommon {
     this.opts = Object.assign(this.defaults, opts)
   }
 
-  get defaults () {
+  get defaults() {
     return {
       prefix: 'devtools-tunnel',
       subdomain: null,
@@ -104,17 +104,15 @@ class DevToolsTunnel extends DevToolsCommon {
     }
   }
 
-  get url () {
+  get url() {
     return this.tunnel.url
   }
 
-  getUrlForPageId (pageId) {
-    return `https://${this.tunnelHost}/devtools/inspector.html?wss=${
-      this.tunnelHost
-    }/devtools/page/${pageId}`
+  getUrlForPageId(pageId) {
+    return `https://${this.tunnelHost}/devtools/inspector.html?wss=${this.tunnelHost}/devtools/page/${pageId}`
   }
 
-  async create () {
+  async create() {
     const subdomain =
       this.opts.subdomain || this._generateSubdomain(this.opts.prefix)
     const basicAuth = this.opts.auth.user
@@ -138,7 +136,7 @@ class DevToolsTunnel extends DevToolsCommon {
     return this
   }
 
-  close () {
+  close() {
     this.tunnel.close()
     this.server.close()
     this.proxyServer.close()
@@ -146,7 +144,7 @@ class DevToolsTunnel extends DevToolsCommon {
     return this
   }
 
-  _generateSubdomain (prefix) {
+  _generateSubdomain(prefix) {
     const rand = randomstring.generate({
       length: 10,
       readable: true,
@@ -155,7 +153,7 @@ class DevToolsTunnel extends DevToolsCommon {
     return `${prefix}-${rand}`
   }
 
-  _createBasicAuth (user, pass) {
+  _createBasicAuth(user, pass) {
     const basicAuth = httpAuth.basic({}, (username, password, callback) => {
       const isValid = username === user && password === pass
       return callback(isValid)
@@ -178,7 +176,7 @@ class DevToolsTunnel extends DevToolsCommon {
    *
    * @ignore
    */
-  _modifyFetchToIncludeCredentials (body) {
+  _modifyFetchToIncludeCredentials(body) {
     if (!body) {
       return
     }
@@ -187,7 +185,7 @@ class DevToolsTunnel extends DevToolsCommon {
     return body
   }
 
-  _modifyJSONResponse (body) {
+  _modifyJSONResponse(body) {
     if (!body) {
       return
     }
@@ -198,7 +196,7 @@ class DevToolsTunnel extends DevToolsCommon {
     debug('list body:after', body)
     return body
   }
-  _createProxyServer (targetHost = 'localhost', targetPort) {
+  _createProxyServer(targetHost = 'localhost', targetPort) {
     // eslint-disable-next-line
     const proxyServer = new httpProxy.createProxyServer({
       // eslint-disable-line
@@ -231,7 +229,7 @@ class DevToolsTunnel extends DevToolsCommon {
     return proxyServer
   }
 
-  async _createServer (port, auth = null) {
+  async _createServer(port, auth = null) {
     const server = http.createServer(auth, (req, res) => {
       this.proxyServer.web(req, res)
     })
@@ -243,7 +241,7 @@ class DevToolsTunnel extends DevToolsCommon {
     return server
   }
 
-  async _createTunnel (host, port, subdomain = null) {
+  async _createTunnel(host, port, subdomain = null) {
     return new Promise((resolve, reject) => {
       const tunnel = localtunnel(
         port,

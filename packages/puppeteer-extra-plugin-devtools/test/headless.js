@@ -1,6 +1,6 @@
 'use strict'
 
-const { test } = require('ava')
+const test = require('ava')
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
@@ -10,7 +10,7 @@ test.beforeEach(t => {
   delete require.cache[require.resolve('puppeteer-extra-plugin-devtools')]
 })
 
-test('will create a tunnel', async (t) => {
+test('will create a tunnel', async t => {
   const puppeteer = require('puppeteer-extra')
   const devtools = require('puppeteer-extra-plugin-devtools')()
   puppeteer.use(devtools)

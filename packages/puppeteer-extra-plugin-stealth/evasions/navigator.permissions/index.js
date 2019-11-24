@@ -6,15 +6,15 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * Pass the Permissions Test.
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = {}) {
+  constructor(opts = {}) {
     super(opts)
   }
 
-  get name () {
+  get name() {
     return 'stealth/evasions/navigator.permissions'
   }
 
-  async onPageCreated (page) {
+  async onPageCreated(page) {
     await page.evaluateOnNewDocument(() => {
       const originalQuery = window.navigator.permissions.query
       // eslint-disable-next-line
@@ -25,7 +25,7 @@ class Plugin extends PuppeteerExtraPlugin {
 
       // Inspired by: https://github.com/ikarienator/phantomjs_hide_and_seek/blob/master/5.spoofFunctionBind.js
       const oldCall = Function.prototype.call
-      function call () {
+      function call() {
         return oldCall.apply(this, arguments)
       }
       // eslint-disable-next-line
@@ -37,7 +37,7 @@ class Plugin extends PuppeteerExtraPlugin {
       )
       const oldToString = Function.prototype.toString
 
-      function functionToString () {
+      function functionToString() {
         if (this === window.navigator.permissions.query) {
           return 'function query() { [native code] }'
         }
@@ -52,6 +52,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) {
+module.exports = function(pluginConfig) {
   return new Plugin(pluginConfig)
 }

@@ -22,20 +22,28 @@ const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
  * ])
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = { }) { super(opts) }
+  constructor(opts = {}) {
+    super(opts)
+  }
 
-  get name () { return 'click-and-wait' }
+  get name() {
+    return 'click-and-wait'
+  }
 
-  async clickAndWaitForNavigation (selector, clickOptions, waitOptions) {
+  async clickAndWaitForNavigation(selector, clickOptions, waitOptions) {
     return Promise.all([
       this.waitForNavigation(waitOptions),
       this.click(selector, clickOptions)
-    ]).then(values => { return values[0] })
+    ]).then(values => {
+      return values[0]
+    })
   }
 
-  async onPageCreated (page) {
+  async onPageCreated(page) {
     page.clickAndWaitForNavigation = this.clickAndWaitForNavigation.bind(page)
   }
 }
 
-module.exports = function (pluginConfig) { return new Plugin(pluginConfig) }
+module.exports = function(pluginConfig) {
+  return new Plugin(pluginConfig)
+}

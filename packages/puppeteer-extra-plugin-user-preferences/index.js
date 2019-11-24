@@ -28,7 +28,7 @@ const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
  * const browser = await puppeteer.launch()
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = { }) {
+  constructor(opts = {}) {
     super(opts)
     this._userPrefsFromPlugins = {}
 
@@ -39,13 +39,19 @@ class Plugin extends PuppeteerExtraPlugin {
     this._opts = Object.assign(defaults, opts)
   }
 
-  get name () { return 'user-preferences' }
+  get name() {
+    return 'user-preferences'
+  }
 
-  get requirements () { return new Set(['launch', 'runLast', 'headful', 'dataFromPlugins']) }
+  get requirements() {
+    return new Set(['launch', 'runLast', 'headful', 'dataFromPlugins'])
+  }
 
-  get dependencies () { return new Set(['user-data-dir']) }
+  get dependencies() {
+    return new Set(['user-data-dir'])
+  }
 
-  get data () {
+  get data() {
     return [
       {
         name: 'userDataDirFile',
@@ -58,13 +64,11 @@ class Plugin extends PuppeteerExtraPlugin {
     ]
   }
 
-  get combinedPrefs () {
-    return merge(
-      this._opts.userPrefs, this._userPrefsFromPlugins
-    )
+  get combinedPrefs() {
+    return merge(this._opts.userPrefs, this._userPrefsFromPlugins)
   }
 
-  async beforeLaunch (options) {
+  async beforeLaunch(options) {
     this._userPrefsFromPlugins = merge.all(
       this.getDataFromPlugins('userPreferences').map(d => d.value)
     )
@@ -72,6 +76,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) {
+module.exports = function(pluginConfig) {
   return new Plugin(pluginConfig)
 }

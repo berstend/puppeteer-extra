@@ -6,15 +6,15 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * Pass the Languages Test.
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = {}) {
+  constructor(opts = {}) {
     super(opts)
   }
 
-  get name () {
+  get name() {
     return 'stealth/evasions/navigator.languages'
   }
 
-  async onPageCreated (page) {
+  async onPageCreated(page) {
     await page.evaluateOnNewDocument(() => {
       // Overwrite the `plugins` property to use a custom getter.
       Object.defineProperty(navigator, 'languages', {
@@ -24,6 +24,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) {
+module.exports = function(pluginConfig) {
   return new Plugin(pluginConfig)
 }
