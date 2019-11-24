@@ -19,6 +19,10 @@ node_js:
 - '8'
 # - '9'
 
+# Fix for: error fsevents@2.1.2: The platform "linux" is incompatible with this module.
+install: skip
+
+
 # test against multiple puppeteer versions
 env:
   - PUPPETEER_VERSION=2.0.0 # Chromium 79.0.3942.0, Oct 24 2019
