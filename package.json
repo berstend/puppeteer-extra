@@ -20,8 +20,11 @@
     "packages/*"
   ],
   "devDependencies": {
-    "lerna": "^3.11.0",
-    "lerna-update-wizard": "^0.11.1"
+    "lerna": "^3.19.0",
+    "lerna-update-wizard": "^0.17.4"
+  },
+  "resolutions": {
+    "**/fsevents": "^1.2.9"
   },
   "dependencies": {}
 }

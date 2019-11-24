@@ -49,6 +49,6 @@ rm -rf yarn.lock
 yarn
 yarn lerna bootstrap
 
-# Update deps within packages (ineractive)
+# Update deps within packages (interactive)
 yarn lernaupdate
 ```
