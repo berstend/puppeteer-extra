@@ -16,7 +16,7 @@ before_install:
 # test against multiple node versions
 node_js:
 - '13'
-- '9'
+- '10'
 
 # Fix for: error fsevents@2.1.2: The platform "linux" is incompatible with this module.
 install: skip
