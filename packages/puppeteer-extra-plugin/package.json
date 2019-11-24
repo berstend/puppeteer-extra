@@ -54,7 +54,7 @@
     "@types/debug": "^4.1.0",
     "@types/node": "^12.12.12",
     "@types/puppeteer": "^1.12.1",
-    "ava": "~2.4.0",
+    "ava": "^2.4.0",
     "lodash.camelcase": "^4.3.0",
     "puppeteer": "^2.0.0",
     "rollup": "^1.1.2",
@@ -68,7 +68,8 @@
     "tslint-config-standard": "^8.0.1",
     "typedoc": "^0.14.2",
     "typedoc-plugin-markdown": "^1.1.26",
-    "typescript": "^3.3.3"
+    "typescript": "^3.3.3",
+    "update-markdown-jsdoc": "^1.0.11"
   },
   "dependencies": {
     "debug": "^4.1.1",
