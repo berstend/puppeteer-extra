@@ -22,7 +22,6 @@ node_js:
 # Fix for: error fsevents@2.1.2: The platform "linux" is incompatible with this module.
 install: skip
 
-
 # test against multiple puppeteer versions
 env:
   - PUPPETEER_VERSION=2.0.0 # Chromium 79.0.3942.0, Oct 24 2019
@@ -45,7 +44,7 @@ script:
 
   # Install older version when required
 
-  - 'rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && lerna add puppeteer@${PUPPETEER_VERSION} && yarn --ignore-optional'
+  - 'yarn add lerna && rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && yarn lerna add puppeteer@${PUPPETEER_VERSION} && yarn --ignore-optional'
 
   # - 'if [ "$PUPPETEER_VERSION" = "1.11.0" ]; then rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && lerna add puppeteer@1.11.0 && yarn --ignore-optional; fi'
   # - 'if [ "$PUPPETEER_VERSION" = "1.11.0" ]; then rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && lerna add puppeteer@1.10.0 && yarn --ignore-optional; fi'
