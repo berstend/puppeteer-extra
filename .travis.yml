@@ -45,7 +45,12 @@ script:
 
   # Install older version when required
 
-  - 'yarn config set ignore-engines true && yarn add --ignore-optional --ignore-workspace-root-check lerna && rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && yarn lerna add puppeteer@${PUPPETEER_VERSION} && yarn --ignore-optional'
+  - yarn config set ignore-engines true
+  - yarn remove --ignore-optional --ignore-workspace-root-check fsevents
+  - yarn --ignore-optional
+  # - yarn && yarn remove --ignore-optional --ignore-workspace-root-check lerna && rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && yarn lerna add puppeteer@${PUPPETEER_VERSION} && yarn --ignore-optional'
+
+  # - 'yarn config set ignore-engines true && yarn add --ignore-optional --ignore-workspace-root-check lerna && rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && yarn lerna add puppeteer@${PUPPETEER_VERSION} && yarn --ignore-optional'
   # - 'yarn add lerna && rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && yarn lerna add puppeteer@${PUPPETEER_VERSION} && yarn --ignore-optional'
 
   # - 'if [ "$PUPPETEER_VERSION" = "1.11.0" ]; then rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && lerna add puppeteer@1.11.0 && yarn --ignore-optional; fi'
