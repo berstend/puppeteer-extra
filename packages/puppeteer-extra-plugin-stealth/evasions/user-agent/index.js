@@ -11,19 +11,19 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * plugin directly and specify your desired options, it won't be required if you already did so.
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = {}) {
+  constructor(opts = {}) {
     super(opts)
   }
 
-  get name () {
+  get name() {
     return 'stealth/evasions/user-agent'
   }
 
-  get dependencies () {
+  get dependencies() {
     return new Set(['anonymize-ua'])
   }
 }
 
-module.exports = function (pluginConfig) {
+module.exports = function(pluginConfig) {
   return new Plugin(pluginConfig)
 }

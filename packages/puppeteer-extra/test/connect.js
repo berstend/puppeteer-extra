@@ -1,6 +1,6 @@
 'use strict'
 
-const { test } = require('ava')
+const test = require('ava')
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
@@ -17,7 +17,9 @@ test.beforeEach(t => {
 test('will remove headless from remote browser', async t => {
   // Launch vanilla puppeteer browser with no plugins
   const puppeteerVanilla = require('puppeteer')
-  const browserVanilla = await puppeteerVanilla.launch({ args: PUPPETEER_ARGS })
+  const browserVanilla = await puppeteerVanilla.launch({
+    args: PUPPETEER_ARGS
+  })
   const browserWSEndpoint = browserVanilla.wsEndpoint()
 
   // Use puppeteer-extra with plugin to conntect to existing browser

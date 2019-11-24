@@ -8,15 +8,15 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * Could be mocked further.
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = {}) {
+  constructor(opts = {}) {
     super(opts)
   }
 
-  get name () {
+  get name() {
     return 'stealth/evasions/chrome.runtime'
   }
 
-  async onPageCreated (page) {
+  async onPageCreated(page) {
     await page.evaluateOnNewDocument(() => {
       window.chrome = {
         runtime: {}
@@ -25,6 +25,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) {
+module.exports = function(pluginConfig) {
   return new Plugin(pluginConfig)
 }

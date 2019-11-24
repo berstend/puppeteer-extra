@@ -6,21 +6,21 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * Fix WebGL Vendor/Renderer being set to Google in headless mode
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = {}) {
+  constructor(opts = {}) {
     super(opts)
   }
 
-  get name () {
+  get name() {
     return 'stealth/evasions/webgl.vendor'
   }
 
-  async onPageCreated (page) {
+  async onPageCreated(page) {
     // Chrome returns undefined, Firefox false
     await page.evaluateOnNewDocument(() => {
       try {
         /* global WebGLRenderingContext */
         const getParameter = WebGLRenderingContext.getParameter
-        WebGLRenderingContext.prototype.getParameter = function (parameter) {
+        WebGLRenderingContext.prototype.getParameter = function(parameter) {
           // UNMASKED_VENDOR_WEBGL
           if (parameter === 37445) {
             return 'Intel Inc.'
@@ -36,6 +36,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) {
+module.exports = function(pluginConfig) {
   return new Plugin(pluginConfig)
 }

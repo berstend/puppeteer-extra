@@ -4,7 +4,7 @@ const screenshotPath = path.join(__dirname, '_results', `${scriptName}.png`)
 
 const puppeteer = require('puppeteer')
 
-async function main () {
+async function main() {
   console.log('start', scriptName)
   const browser = await puppeteer.launch({
     headless: true,

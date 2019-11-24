@@ -7,15 +7,15 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * Will also set the viewport to match window size, unless specified by user
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = {}) {
+  constructor(opts = {}) {
     super(opts)
   }
 
-  get name () {
+  get name() {
     return 'stealth/evasions/window.outerdimensions'
   }
 
-  async onPageCreated (page) {
+  async onPageCreated(page) {
     // Chrome returns undefined, Firefox false
     await page.evaluateOnNewDocument(() => {
       try {
@@ -29,7 +29,7 @@ class Plugin extends PuppeteerExtraPlugin {
     })
   }
 
-  async beforeLaunch (options) {
+  async beforeLaunch(options) {
     // Have viewport match window size, unless specified by user
     // https://github.com/GoogleChrome/puppeteer/issues/3688
     if (!('defaultViewport' in options)) {
@@ -38,6 +38,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) {
+module.exports = function(pluginConfig) {
   return new Plugin(pluginConfig)
 }

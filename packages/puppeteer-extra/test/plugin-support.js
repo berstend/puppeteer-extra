@@ -1,6 +1,6 @@
 'use strict'
 
-const { test } = require('ava')
+const test = require('ava')
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
@@ -29,13 +29,13 @@ test('will launch puppeteer with plugin support', async t => {
   const pluginName = 'hello-world'
   const pluginData = [{ name: 'foo', value: 'bar' }]
   class Plugin extends PuppeteerExtraPlugin {
-    constructor (opts = {}) {
+    constructor(opts = {}) {
       super(opts)
     }
-    get name () {
+    get name() {
       return pluginName
     }
-    get data () {
+    get data() {
       return pluginData
     }
   }

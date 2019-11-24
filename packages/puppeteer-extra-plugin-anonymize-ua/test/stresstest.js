@@ -1,6 +1,6 @@
 'use strict'
 
-const { test } = require('ava')
+const test = require('ava')
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
@@ -10,7 +10,7 @@ test.beforeEach(t => {
   delete require.cache[require.resolve('puppeteer-extra-plugin-anonymize-ua')]
 })
 
-test('will remove headless from the user-agent on multiple browsers', async (t) => {
+test('will remove headless from the user-agent on multiple browsers', async t => {
   const puppeteer = require('puppeteer-extra')
   puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
@@ -29,14 +29,12 @@ test('will remove headless from the user-agent on multiple browsers', async (t) 
   t.true(true)
 })
 
-test('will remove headless from the user-agent on many pages', async (t) => {
+test('will remove headless from the user-agent on many pages', async t => {
   const puppeteer = require('puppeteer-extra')
   puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
 
-  const pages = await Promise.all(
-    [...Array(30)].map(slot => browser.newPage())
-  )
+  const pages = await Promise.all([...Array(30)].map(slot => browser.newPage()))
   for (const page of pages) {
     const ua = await page.evaluate(() => window.navigator.userAgent)
     t.true(ua.includes('Windows NT 10.0'))
@@ -47,7 +45,7 @@ test('will remove headless from the user-agent on many pages', async (t) => {
   t.true(true)
 })
 
-test('will remove headless from the user-agent on many incognito pages', async (t) => {
+test('will remove headless from the user-agent on many incognito pages', async t => {
   const puppeteer = require('puppeteer-extra')
   puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
@@ -69,7 +67,7 @@ test('will remove headless from the user-agent on many incognito pages', async (
   t.true(true)
 })
 
-test('will remove headless from the user-agent on many pages in parallel', async (t) => {
+test('will remove headless from the user-agent on many pages in parallel', async t => {
   const puppeteer = require('puppeteer-extra')
   puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
@@ -80,9 +78,7 @@ test('will remove headless from the user-agent on many pages in parallel', async
     t.true(ua.includes('Windows NT 10.0'))
     t.true(!ua.includes('HeadlessChrome'))
   }
-  await Promise.all(
-    [...Array(30)].map(slot => testCase())
-  )
+  await Promise.all([...Array(30)].map(slot => testCase()))
 
   await browser.close()
   t.true(true)

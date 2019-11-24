@@ -39,27 +39,29 @@ const {
  * rl.prompt()
  */
 class SuperInterface extends Interface {
-  constructor (options) {
+  constructor(options) {
     super(options)
     this._colors = options.colors || {}
     this._writingTabComplete = false
   }
 
-  _tabComplete (lastKeypressWasTab) {
+  _tabComplete(lastKeypressWasTab) {
     this._writingTabComplete = true
     super._tabComplete(lastKeypressWasTab)
     this._writingTabComplete = false
   }
 
-  showTabCompletions () {
+  showTabCompletions() {
     this._tabComplete(true)
   }
 
-  _writeToOutput (stringToWrite) {
+  _writeToOutput(stringToWrite) {
     // colorize prompt itself
     const startsWithPrompt = stringToWrite.startsWith(this._prompt)
     if (this._colors.prompt && startsWithPrompt) {
-      stringToWrite = `${this._colors.prompt(this._prompt)}${stringToWrite.replace(this._prompt, '')}`
+      stringToWrite = `${this._colors.prompt(
+        this._prompt
+      )}${stringToWrite.replace(this._prompt, '')}`
       return super._writeToOutput(stringToWrite)
     }
     // colorize completer output
@@ -71,14 +73,16 @@ class SuperInterface extends Interface {
   }
 }
 
-const createSuperInterface = function (options) { return new SuperInterface(options) }
+const createSuperInterface = function(options) {
+  return new SuperInterface(options)
+}
 
 /**
  * A typical default completer that can be used, for convenience.
  *
  * @ignore
  */
-const defaultCompleter = (completions) => (line) => {
+const defaultCompleter = completions => line => {
   const hits = completions.filter(c => c.startsWith(line))
   // show all completions if none found
   const arr = hits.length ? hits : completions

@@ -7,15 +7,15 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * Will delete `navigator.webdriver` property.
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = {}) {
+  constructor(opts = {}) {
     super(opts)
   }
 
-  get name () {
+  get name() {
     return 'stealth/evasions/navigator.webdriver'
   }
 
-  async onPageCreated (page) {
+  async onPageCreated(page) {
     // Chrome returns undefined, Firefox false
     await page.evaluateOnNewDocument(() => {
       // eslint-disable-next-line
@@ -27,6 +27,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) {
+module.exports = function(pluginConfig) {
   return new Plugin(pluginConfig)
 }

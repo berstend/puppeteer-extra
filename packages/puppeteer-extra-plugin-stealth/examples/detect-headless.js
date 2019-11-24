@@ -4,10 +4,10 @@
 // initial detects from @antoinevastel
 //   http://antoinevastel.github.io/bot%20detection/2018/01/17/detect-chrome-headless-v2.html
 
-module.exports = async function () {
+module.exports = async function() {
   const results = {}
 
-  async function test (name, fn) {
+  async function test(name, fn) {
     const detectionPassed = await fn()
     if (detectionPassed) {
       console.log(`WARNING: Chrome headless detected via ${name}`)
@@ -32,21 +32,32 @@ module.exports = async function () {
   })
 
   await test('permissions API', async _ => {
-    const permissionStatus = await navigator.permissions.query({name: 'notifications'})
+    const permissionStatus = await navigator.permissions.query({
+      name: 'notifications'
+    })
     // eslint-disable-next-line
-    return Notification.permission === 'denied' && permissionStatus.state === 'prompt'
+    return (
+      Notification.permission === 'denied' && // eslint-disable-line no-undef
+      permissionStatus.state === 'prompt'
+    )
   })
 
   await test('permissions API overriden', _ => {
     const permissions = window.navigator.permissions
-    if (permissions.query.toString() !== 'function query() { [native code] }') return true
-    if (permissions.query.toString.toString() !== 'function toString() { [native code] }') return true
+    if (permissions.query.toString() !== 'function query() { [native code] }')
+      return true
     if (
-      permissions.query.toString.hasOwnProperty('[[Handler]]') &&
-      permissions.query.toString.hasOwnProperty('[[Target]]') &&
-      permissions.query.toString.hasOwnProperty('[[IsRevoked]]')
-    ) return true
-    if (permissions.hasOwnProperty('query')) return true
+      permissions.query.toString.toString() !==
+      'function toString() { [native code] }'
+    )
+      return true
+    if (
+      permissions.query.toString.hasOwnProperty('[[Handler]]') && // eslint-disable-line no-prototype-builtins
+      permissions.query.toString.hasOwnProperty('[[Target]]') && // eslint-disable-line no-prototype-builtins
+      permissions.query.toString.hasOwnProperty('[[IsRevoked]]') // eslint-disable-line no-prototype-builtins
+    )
+      return true
+    if (permissions.hasOwnProperty('query')) return true // eslint-disable-line no-prototype-builtins
   })
 
   await test('navigator.plugins empty', _ => {
@@ -74,7 +85,7 @@ module.exports = async function () {
   await test('toString', _ => {
     let gotYou = 0
     const spooky = /./
-    spooky.toString = function () {
+    spooky.toString = function() {
       gotYou++
       return 'spooky'
     }

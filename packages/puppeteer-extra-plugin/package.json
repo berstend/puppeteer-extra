@@ -52,11 +52,11 @@
   ],
   "devDependencies": {
     "@types/debug": "^4.1.0",
-    "@types/node": "^10.12.23",
+    "@types/node": "^12.12.12",
     "@types/puppeteer": "^1.12.1",
-    "ava": "^1.2.1",
+    "ava": "~2.4.0",
     "lodash.camelcase": "^4.3.0",
-    "puppeteer": "next",
+    "puppeteer": "^2.0.0",
     "rollup": "^1.1.2",
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-node-resolve": "^4.0.0",
@@ -71,7 +71,7 @@
     "typescript": "^3.3.3"
   },
   "dependencies": {
-    "debug": "^3.1.0",
+    "debug": "^4.1.1",
     "merge-deep": "^3.0.1"
   },
   "peerDependencies": {

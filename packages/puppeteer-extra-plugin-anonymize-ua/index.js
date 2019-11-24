@@ -22,15 +22,15 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * const browser = await puppeteer.launch()
  */
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = {}) {
+  constructor(opts = {}) {
     super(opts)
   }
 
-  get name () {
+  get name() {
     return 'anonymize-ua'
   }
 
-  get defaults () {
+  get defaults() {
     return {
       stripHeadless: true,
       makeWindows: true,
@@ -38,7 +38,7 @@ class Plugin extends PuppeteerExtraPlugin {
     }
   }
 
-  async onPageCreated (page) {
+  async onPageCreated(page) {
     let ua = await page.browser().userAgent()
     if (this.opts.stripHeadless) {
       ua = ua.replace('HeadlessChrome/', 'Chrome/')
@@ -54,6 +54,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) {
+module.exports = function(pluginConfig) {
   return new Plugin(pluginConfig)
 }
