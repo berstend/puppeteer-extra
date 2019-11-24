@@ -16,7 +16,7 @@ before_install:
 # test against multiple node versions
 node_js:
 - '13'
-- '8'
+- '9'
 
 # Fix for: error fsevents@2.1.2: The platform "linux" is incompatible with this module.
 install: skip
@@ -44,8 +44,8 @@ script:
   # Install older version when required
   - rm -rf ./node_modules/
   - 'yarn; echo 0'
-  - 'rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && yarn lerna add puppeteer@${PUPPETEER_VERSION}; echo 0'
-  - 'yarn; echo 0'
+  - 'rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && yarn lerna add puppeteer@${PUPPETEER_VERSION}'
+  - 'yarn'
 
   # For debugging
   - yarn list puppeteer
