@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-font-size",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "description": "Adjust font sizes in puppeteer.",
   "main": "index.js",
   "repository": "berstend/puppeteer-extra",
