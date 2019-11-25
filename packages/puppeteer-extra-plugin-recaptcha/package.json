@@ -72,5 +72,5 @@
   "peerDependencies": {
     "puppeteer-extra": "*"
   },
-  "gitHead": "72fe830c158f1e971c8499fdd5232338dd53c220"
+  "gitHead": "ed8cad504e38f81d35570e0a6af666539d4a4cc5"
 }

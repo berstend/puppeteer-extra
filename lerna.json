@@ -2,6 +2,5 @@
   "packages": ["packages/*"],
   "version": "independent",
   "useWorkspaces": true,
-  "npmClient": "yarn",
-  "registry": "https://registry.npmjs.org/"
+  "npmClient": "yarn"
 }

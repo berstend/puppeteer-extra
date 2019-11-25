@@ -35,5 +35,5 @@
     "fs-extra": "^6.0.1",
     "puppeteer-extra-plugin": "^2.1.1"
   },
-  "gitHead": "72fe830c158f1e971c8499fdd5232338dd53c220"
+  "gitHead": "ed8cad504e38f81d35570e0a6af666539d4a4cc5"
 }
