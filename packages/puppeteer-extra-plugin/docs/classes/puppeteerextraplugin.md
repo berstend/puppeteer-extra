@@ -87,7 +87,7 @@ puppeteer.use(require('./hello-world-plugin')())
 
 ⊕ **new PuppeteerExtraPlugin**(opts?: *[PluginOptions](../interfaces/pluginoptions.md)*): [PuppeteerExtraPlugin](puppeteerextraplugin.md)
 
-*Defined in [index.ts:74](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L74)*
+*Defined in [index.ts:74](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L74)*
 
 **Parameters:**
 
@@ -107,7 +107,7 @@ ___
 
 **get data**(): [PluginData](../interfaces/plugindata.md)[]
 
-*Defined in [index.ts:213](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L213)*
+*Defined in [index.ts:213](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L213)*
 
 Plugin data (optional).
 
@@ -150,7 +150,7 @@ ___
 
 **get debug**(): `Debugger`
 
-*Defined in [index.ts:256](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L256)*
+*Defined in [index.ts:256](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L256)*
 
 Convenience debug logger based on the \[debug\] module. Will automatically namespace the logging output to the plugin package name. \[debug\]: [https://www.npmjs.com/package/debug](https://www.npmjs.com/package/debug)
 
@@ -176,7 +176,7 @@ ___
 
 **get defaults**(): [PluginOptions](../interfaces/pluginoptions.md)
 
-*Defined in [index.ts:128](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L128)*
+*Defined in [index.ts:128](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L128)*
 
 Plugin defaults (optional).
 
@@ -209,7 +209,7 @@ ___
 
 **get dependencies**(): [PluginDependencies](../#plugindependencies)
 
-*Defined in [index.ts:175](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L175)*
+*Defined in [index.ts:175](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L175)*
 
 Plugin dependencies (optional).
 
@@ -232,7 +232,7 @@ ___
 
 **get name**(): `string`
 
-*Defined in [index.ts:101](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L101)*
+*Defined in [index.ts:101](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L101)*
 
 Plugin name (required).
 
@@ -255,7 +255,7 @@ ___
 
 **get opts**(): [PluginOptions](../interfaces/pluginoptions.md)
 
-*Defined in [index.ts:234](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L234)*
+*Defined in [index.ts:234](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L234)*
 
 Access the plugin options (usually the `defaults` merged with user defined options)
 
@@ -281,7 +281,7 @@ ___
 
 **get requirements**(): [PluginRequirements](../#pluginrequirements)
 
-*Defined in [index.ts:158](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L158)*
+*Defined in [index.ts:158](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L158)*
 
 Plugin requirements (optional).
 
@@ -317,7 +317,7 @@ ___
 
 ▸ **afterConnect**(browser: *`Browser`*, opts?: *`object`*): `Promise`<`void`>
 
-*Defined in [index.ts:344](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L344)*
+*Defined in [index.ts:344](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L344)*
 
 After connecting to an existing browser instance.
 
@@ -339,7 +339,7 @@ ___
 
 ▸ **afterLaunch**(browser: *`Browser`*, opts?: *`object`*): `Promise`<`void`>
 
-*Defined in [index.ts:312](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L312)*
+*Defined in [index.ts:312](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L312)*
 
 After the browser has launched.
 
@@ -384,7 +384,7 @@ ___
 
 ▸ **beforeConnect**(options: *`ConnectOptions`*): `Promise`<`void`>
 
-*Defined in [index.ts:330](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L330)*
+*Defined in [index.ts:330](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L330)*
 
 Before connecting to an existing browser instance.
 
@@ -407,7 +407,7 @@ ___
 
 ▸ **beforeLaunch**(options: *`any`*): `Promise`<`void`>
 
-*Defined in [index.ts:279](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L279)*
+*Defined in [index.ts:279](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L279)*
 
 Before a new browser instance is created/launched.
 
@@ -439,7 +439,7 @@ ___
 
 ▸ **getDataFromPlugins**(name?: *`undefined` \| `string`*): [PluginData](../interfaces/plugindata.md)[]
 
-*Defined in [index.ts:478](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L478)*
+*Defined in [index.ts:478](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L478)*
 
 Helper method to retrieve `data` objects from other plugins.
 
@@ -464,7 +464,7 @@ ___
 
 ▸ **onBrowser**(browser: *`Browser`*, opts: *`any`*): `Promise`<`void`>
 
-*Defined in [index.ts:360](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L360)*
+*Defined in [index.ts:360](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L360)*
 
 Called when a browser instance is available.
 
@@ -490,7 +490,7 @@ ___
 
 ▸ **onClose**(): `Promise`<`void`>
 
-*Defined in [index.ts:454](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L454)*
+*Defined in [index.ts:454](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L454)*
 
 **Deprecated:** Since puppeteer v1.6.0 `onDisconnected` has been improved and should be used instead of `onClose`.
 
@@ -509,7 +509,7 @@ ___
 
 ▸ **onDisconnected**(): `Promise`<`void`>
 
-*Defined in [index.ts:438](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L438)*
+*Defined in [index.ts:438](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L438)*
 
 Called when Puppeteer gets disconnected from the Chromium instance.
 
@@ -527,7 +527,7 @@ ___
 
 ▸ **onPageCreated**(page: *`Page`*): `Promise`<`void`>
 
-*Defined in [index.ts:401](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L401)*
+*Defined in [index.ts:401](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L401)*
 
 Same as `onTargetCreated` but prefiltered to only contain Pages, for convenience.
 
@@ -562,7 +562,7 @@ ___
 
 ▸ **onPluginRegistered**(): `Promise`<`void`>
 
-*Defined in [index.ts:463](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L463)*
+*Defined in [index.ts:463](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L463)*
 
 After the plugin has been registered in `puppeteer-extra`.
 
@@ -577,7 +577,7 @@ ___
 
 ▸ **onTargetChanged**(target: *`Target`*): `Promise`<`void`>
 
-*Defined in [index.ts:414](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L414)*
+*Defined in [index.ts:414](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L414)*
 
 Called when the url of a target changes.
 
@@ -600,7 +600,7 @@ ___
 
 ▸ **onTargetCreated**(target: *`Target`*): `Promise`<`void`>
 
-*Defined in [index.ts:376](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L376)*
+*Defined in [index.ts:376](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L376)*
 
 Called when a target is created, for example when a new page is opened by window.open or browser.newPage.
 
@@ -623,7 +623,7 @@ ___
 
 ▸ **onTargetDestroyed**(target: *`Target`*): `Promise`<`void`>
 
-*Defined in [index.ts:427](https://github.com/berstend/puppeteer-extra/blob/ed8cad5/packages/puppeteer-extra-plugin/src/index.ts#L427)*
+*Defined in [index.ts:427](https://github.com/berstend/puppeteer-extra/blob/21cf62f/packages/puppeteer-extra-plugin/src/index.ts#L427)*
 
 Called when a target is destroyed, for example when a page is closed.
 
