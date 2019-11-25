@@ -26,7 +26,7 @@
     "pupeteer"
   ],
   "devDependencies": {
-    "ava": "^2.4.0",
+    "ava": "2.4.0",
     "puppeteer": "^2.0.0",
     "update-markdown-jsdoc": "^1.0.11"
   },
