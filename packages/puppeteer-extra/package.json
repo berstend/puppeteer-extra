@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "description": "Teach puppeteer new tricks through plugins.",
   "main": "index.js",
   "repository": "berstend/puppeteer-extra",
@@ -29,7 +29,7 @@
     "ava": "2.4.0",
     "eslint-config-standard": "^14.1.0",
     "puppeteer": "next",
-    "puppeteer-extra-plugin": "^3.0.5",
+    "puppeteer-extra-plugin": "^3.0.6",
     "update-markdown-jsdoc": "^1.0.11"
   },
   "dependencies": {
