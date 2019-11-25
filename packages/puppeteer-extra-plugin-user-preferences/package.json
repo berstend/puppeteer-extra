@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "debug": "^4.1.1",
-    "deepmerge": "^2.1.0",
+    "deepmerge": "^4.2.2",
     "puppeteer-extra-plugin": "^2.1.1"
   },
   "gitHead": "72fe830c158f1e971c8499fdd5232338dd53c220"
