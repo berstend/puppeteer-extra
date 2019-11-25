@@ -26,7 +26,7 @@
     "pupeteer"
   ],
   "devDependencies": {
-    "ava": "^2.4.0",
+    "ava": "2.4.0",
     "eslint-config-standard": "^14.1.0",
     "puppeteer": "next",
     "puppeteer-extra-plugin": "^3.0.4",

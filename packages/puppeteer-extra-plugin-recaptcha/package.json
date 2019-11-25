@@ -50,13 +50,13 @@
   "devDependencies": {
     "@types/debug": "^4.1.0",
     "@types/node": "^12.12.12",
-    "@types/puppeteer": "^1.12.1",
-    "ava": "^2.4.0",
+    "@types/puppeteer": "^2.0.0",
+    "ava": "2.4.0",
     "puppeteer": "^2.0.0",
     "ts-node": "^8.0.2",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.18.0",
-    "tslint-config-standard": "^8.0.1",
+    "tslint-config-standard": "^9.0.0",
     "typedoc": "^0.14.2",
     "typedoc-plugin-markdown": "^1.1.26",
     "typedoc-plugin-no-inherit": "^1.1.5",
@@ -64,7 +64,7 @@
     "update-markdown-jsdoc": "^1.0.11"
   },
   "dependencies": {
-    "2captcha-api": "1.0.0",
+    "2captcha-api": "^1.0.0",
     "debug": "^4.1.1",
     "merge-deep": "^3.0.1",
     "puppeteer-extra-plugin": "^3.0.4"
