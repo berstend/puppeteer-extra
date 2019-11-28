@@ -6,8 +6,8 @@ const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
 test.beforeEach(t => {
   // Make sure we work with pristine modules
-  // delete require.cache[require.resolve('puppeteer-extra')]
-  // delete require.cache[require.resolve('puppeteer-extra-plugin-devtools')]
+  delete require.cache[require.resolve('puppeteer-extra')]
+  delete require.cache[require.resolve('puppeteer-extra-plugin-devtools')]
 })
 
 test('will create a tunnel', async t => {
