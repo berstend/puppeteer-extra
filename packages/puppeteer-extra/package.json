@@ -14,7 +14,7 @@
   "scripts": {
     "clean": "rimraf dist/*",
     "build": "yarpm run clean && tsc --module commonjs && rollup -c rollup.config.ts",
-    "docs": "documentation readme --quiet --shallow --github --markdown-toc-max-depth 3 --readme-file readme.md --section API ./src/index.ts",
+    "docs": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API ./src/index.ts",
     "test-ts": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v test/**.ts",
     "test-js": "ava -v --serial --concurrency 1 --fail-fast test/**.js",
     "test": "yarpm run test-js && yarpm run test-ts",
@@ -47,8 +47,9 @@
   "devDependencies": {
     "@types/puppeteer": "^2.0.0",
     "ava": "^2.4.0",
-    "documentation": "^12.1.4",
+    "documentation-markdown-themes": "^12.1.5",
     "puppeteer": "^2.0.0",
+    "puppeteer-extra-plugin": "*",
     "puppeteer-firefox": "^0.5.0",
     "rimraf": "^3.0.0",
     "rollup": "^1.27.5",
@@ -61,8 +62,7 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^9.0.0",
     "typescript": "^3.7.2",
-    "yarpm": "^0.2.1",
-    "puppeteer-extra-plugin": "*"
+    "yarpm": "^0.2.1"
   },
   "peerDependencies": {
     "puppeteer": "*"

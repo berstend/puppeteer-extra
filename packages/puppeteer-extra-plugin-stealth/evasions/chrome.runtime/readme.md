@@ -4,18 +4,16 @@
 
 #### Table of Contents
 
--   [Plugin](#plugin)
+-   [class: Plugin](#class-plugin)
 
-### [Plugin](https://git@github.com/:berstend/puppeteer-extra/blob/ff112879545e8e68d6500d731ceeafc22d187dd3/packages/puppeteer-extra-plugin-stealth/evasions/chrome.runtime/index.js#L10-L22)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin-stealth/evasions/chrome.runtime/index.js#L10-L26)
+
+-   `opts`   (optional, default `{}`)
 
 **Extends: PuppeteerExtraPlugin**
 
 Pass the Chrome Test.
 
 Could be mocked further.
-
-Type: `function (opts)`
-
--   `opts`   (optional, default `{}`)
 
 * * *
