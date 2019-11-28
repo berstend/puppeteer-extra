@@ -34,7 +34,7 @@ yarn lerna add fs-extra --scope=puppeteer-extra-plugin-user-data-dir
 
 # Remove dependency
 # https://github.com/lerna/lerna/issues/833
-yarn lerna exec 'yarn remove fs-extra; echo 0'
+yarn lerna exec --concurrency 1 'yarn remove fs-extra; echo 0'
 
 # Run test in all packages
 yarn test

@@ -1,32 +1,56 @@
-'use strict'
+import * as Puppeteer from './puppeteer'
 
-let Puppeteer
-try {
-  // https://github.com/GoogleChrome/puppeteer/pull/3208
-  Puppeteer = require('puppeteer')
-} catch (err) {
-  console.warn(`
-    Puppeteer is missing. :-)
+import Debug from 'debug'
+const debug = Debug('puppeteer-extra')
 
-    Note: puppeteer is a peer dependency of puppeteer-extra,
-    which means you can install your own preferred version.
+import merge from 'deepmerge'
 
-    To get the latest stable verson run: 'yarn add puppeteer'
-    To get the latest tip-of-tree verson run: 'yarn add puppeteer@next'
-  `)
-  throw err
+/**
+ * Original Puppeteer API
+ * @private
+ */
+export interface VanillaPuppeteer {
+  /** Attaches Puppeteer to an existing Chromium instance */
+  connect(options?: Puppeteer.ConnectOptions): Promise<Puppeteer.Browser>
+  /** The default flags that Chromium will be launched with */
+  defaultArgs(options?: Puppeteer.ChromeArgOptions): string[]
+  /** Path where Puppeteer expects to find bundled Chromium */
+  executablePath(): string
+  /** The method launches a browser instance with given arguments. The browser will be closed when the parent node.js process is closed. */
+  launch(options?: Puppeteer.LaunchOptions): Promise<Puppeteer.Browser>
+  /** This methods attaches Puppeteer to an existing Chromium instance. */
+  createBrowserFetcher(
+    options?: Puppeteer.FetcherOptions
+  ): Puppeteer.BrowserFetcher
 }
 
-const merge = require('deepmerge')
-const debug = require('debug')('puppeteer-extra')
+/**
+ * Minimal plugin interface
+ * @private
+ */
+export interface PuppeteerExtraPlugin {
+  _isPuppeteerExtraPlugin: true
+  [propName: string]: any
+}
+
+/**
+ * We need to hook into non-public APIs in rare occasions to fix puppeteer bugs. :(
+ * @private
+ */
+interface BrowserInternals extends Puppeteer.Browser {
+  _createPageInContext(contextId?: string): Promise<Puppeteer.Page>
+}
 
 /**
  * Modular plugin framework to teach `puppeteer` new tricks.
  *
- * This module acts a drop-in replacement for `puppeteer`.
+ * This module acts as a drop-in replacement for `puppeteer`.
  *
  * Allows PuppeteerExtraPlugin's to register themselves and
  * to extend puppeteer with additional functionality.
+ *
+ * @class PuppeteerExtra
+ * @implements {VanillaPuppeteer}
  *
  * @example
  * const puppeteer = require('puppeteer-extra')
@@ -40,27 +64,20 @@ const debug = require('debug')('puppeteer-extra')
  *   await browser.close()
  * })()
  */
-class PuppeteerExtra {
-  constructor() {
-    this._plugins = []
+export class PuppeteerExtra implements VanillaPuppeteer {
+  private _plugins: PuppeteerExtraPlugin[] = []
 
-    // Ensure there are certain properties (e.g. the `options.args` array)
-    this._defaultLaunchOptions = { args: [] }
-  }
+  constructor(
+    private _pptr?: VanillaPuppeteer,
+    private _requireError?: Error
+  ) {}
 
   /**
-   * Outside interface to register plugins.
+   * The **main interface** to register `puppeteer-extra` plugins.
    *
-   * @param  {PuppeteerExtraPlugin} plugin
-   * @return {this} - For chaining
-   *
-   * @example
-   * const puppeteer = require('puppeteer-extra')
-   * puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
-   * puppeteer.use(require('puppeteer-extra-plugin-user-preferences')())
-   * const browser = await puppeteer.launch(...)
+   * @return The same `PuppeteerExtra` instance (for optional chaining)
    */
-  use(plugin) {
+  use(plugin: PuppeteerExtraPlugin): this {
     if (typeof plugin !== 'object' || !plugin._isPuppeteerExtraPlugin) {
       console.error(
         `Warning: Plugin is not derived from PuppeteerExtraPlugin, ignoring.`,
@@ -85,36 +102,66 @@ class PuppeteerExtra {
   }
 
   /**
-   * Launch a new browser instance with given arguments.
+   * To stay backwards compatible with puppeteer's (and our) default export after adding `addExtra`
+   * we need to defer the check if we have a puppeteer instance to work with.
+   * Otherwise we would throw even if the user intends to use their non-standard puppeteer implementation.
+   *
+   * @private
+   */
+  get pptr(): VanillaPuppeteer {
+    if (this._pptr) {
+      return this._pptr
+    }
+
+    // Whoopsie
+    console.warn(`
+    Puppeteer is missing. :-)
+
+    Note: puppeteer is a peer dependency of puppeteer-extra,
+    which means you can install your own preferred version.
+
+    - To get the latest stable version run: 'yarn add puppeteer' or 'npm i puppeteer'
+
+    Alternatively:
+    - To get puppeteer without the bundled Chromium browser install 'puppeteer-core'
+    - To use puppeteer-firefox install 'puppeteer-firefox' and use the 'addExtra' export
+    `)
+    throw this._requireError || new Error('No puppeteer instance provided.')
+  }
+
+  /**
+   * The method launches a browser instance with given arguments. The browser will be closed when the parent node.js process is closed.
    *
    * Augments the original `puppeteer.launch` method with plugin lifecycle methods.
    *
    * All registered plugins that have a `beforeLaunch` method will be called
    * in sequence to potentially update the `options` Object before launching the browser.
    *
-   * @todo pass `defaultArgs` to `beforeLaunch` calls to plugins.
-   *
-   * @param {Object=} options - Regular [Puppeteer launch options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions)
-   * @return {Puppeteer.Browser}
+   * @param options - See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions).
    */
-  async launch(options = {}) {
-    options = merge(this._defaultLaunchOptions, options)
+  async launch(options?: Puppeteer.LaunchOptions): Promise<Puppeteer.Browser> {
+    // Ensure there are certain properties (e.g. the `options.args` array)
+    const defaultLaunchOptions = { args: [] }
+    options = merge(defaultLaunchOptions, options as any)
     this.resolvePluginDependencies()
     this.orderPlugins()
 
     // Give plugins the chance to modify the options before launch
     options = await this.callPluginsWithValue('beforeLaunch', options)
 
-    const opts = { context: 'launch', options, defaultArgs: this.defaultArgs }
+    const opts = {
+      context: 'launch',
+      options,
+      defaultArgs: this.defaultArgs
+    }
 
     // Let's check requirements after plugin had the chance to modify the options
     this.checkPluginRequirements(opts)
 
-    const browser = await Puppeteer.launch(options)
-    this._patchPageCreationMethods(browser)
+    const browser = await this.pptr.launch(options)
+    this._patchPageCreationMethods(browser as BrowserInternals)
 
     await this.callPlugins('_bindBrowserEvents', browser, opts)
-
     return browser
   }
 
@@ -126,10 +173,11 @@ class PuppeteerExtra {
    * All registered plugins that have a `beforeConnect` method will be called
    * in sequence to potentially update the `options` Object before launching the browser.
    *
-   * @param {{browserWSEndpoint: string, ignoreHTTPSErrors: boolean}} options
-   * @return {Promise<!Puppeteer.Browser>}
+   * @param options - See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerconnectoptions).
    */
-  async connect(options = {}) {
+  async connect(
+    options?: Puppeteer.ConnectOptions
+  ): Promise<Puppeteer.Browser> {
     this.resolvePluginDependencies()
     this.orderPlugins()
 
@@ -141,12 +189,36 @@ class PuppeteerExtra {
     // Let's check requirements after plugin had the chance to modify the options
     this.checkPluginRequirements(opts)
 
-    const browser = await Puppeteer.connect(options)
-    this._patchPageCreationMethods(browser)
+    const browser = await this.pptr.connect(options)
+    this._patchPageCreationMethods(browser as BrowserInternals)
 
     await this.callPlugins('_bindBrowserEvents', browser, opts)
-
     return browser
+  }
+
+  /**
+   * The default flags that Chromium will be launched with.
+   *
+   * @param options - See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerdefaultargsoptions).
+   */
+  defaultArgs(options?: Puppeteer.ChromeArgOptions): string[] {
+    return this.pptr.defaultArgs(options)
+  }
+
+  /** Path where Puppeteer expects to find bundled Chromium. */
+  executablePath(): string {
+    return this.pptr.executablePath()
+  }
+
+  /**
+   * This methods attaches Puppeteer to an existing Chromium instance.
+   *
+   * @param options - See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteercreatebrowserfetcheroptions).
+   */
+  createBrowserFetcher(
+    options?: Puppeteer.FetcherOptions
+  ): Puppeteer.BrowserFetcher {
+    return this.pptr.createBrowserFetcher(options)
   }
 
   /**
@@ -170,15 +242,22 @@ class PuppeteerExtra {
    *
    * Puppeteer issues:
    * https://github.com/GoogleChrome/puppeteer/issues/2669
+   * https://github.com/puppeteer/puppeteer/issues/3667
    * https://github.com/GoogleChrome/puppeteer/issues/386#issuecomment-343059315
    * https://github.com/GoogleChrome/puppeteer/issues/1378#issue-273733905
    *
    * @private
    */
-  _patchPageCreationMethods(browser) {
+  private _patchPageCreationMethods(browser: BrowserInternals) {
+    if (!browser._createPageInContext) {
+      debug(
+        'warning: _patchPageCreationMethods failed (no browser._createPageInContext)'
+      )
+      return
+    }
     browser._createPageInContext = (function(originalMethod, context) {
-      return async function(contextId) {
-        const page = await originalMethod.apply(context, arguments)
+      return async function() {
+        const page = await originalMethod.apply(context, arguments as any)
         await page.goto('about:blank')
         return page
       }
@@ -213,24 +292,23 @@ class PuppeteerExtra {
    * Implemented mainly for plugins that need data from other plugins (e.g. `user-preferences`).
    *
    * @see puppeteer-extra-plugin/data
-   * @param {string=} name - Filter data by name property
-   * @return {Array<Object>}
+   * @param name - Filter data by optional plugin name
+   *
+   * @private
    */
-  getPluginData(name = null) {
+  public getPluginData(name?: string) {
     const data = this._plugins
       .map(p => (Array.isArray(p.data) ? p.data : [p.data]))
       .reduce((acc, arr) => [...acc, ...arr], [])
-    return name ? data.filter(d => d.name === name) : data
+    return name ? data.filter((d: any) => d.name === name) : data
   }
 
   /**
    * Get all plugins that feature a given property/class method.
    *
-   * @param  {string} prop
-   * @return {Array<PuppeteerExtraPlugin>}
    * @private
    */
-  getPluginsByProp(prop) {
+  private getPluginsByProp(prop: string): PuppeteerExtraPlugin[] {
     return this._plugins.filter(plugin => prop in plugin)
   }
 
@@ -243,7 +321,7 @@ class PuppeteerExtra {
    *
    * @private
    */
-  resolvePluginDependencies() {
+  private resolvePluginDependencies() {
     // Request missing dependencies from all plugins and flatten to a single Set
     const missingPlugins = this._plugins
       .map(p => p._getMissingDependencies(this._plugins))
@@ -305,7 +383,7 @@ class PuppeteerExtra {
    *
    * @private
    */
-  orderPlugins() {
+  private orderPlugins() {
     debug('orderPlugins:before', this.pluginNames)
     const runLast = this._plugins
       .filter(p => p.requirements.has('runLast'))
@@ -326,7 +404,7 @@ class PuppeteerExtra {
    *
    * @private
    */
-  checkPluginRequirements(opts = {}) {
+  private checkPluginRequirements(opts = {} as any) {
     for (const plugin of this._plugins) {
       for (const requirement of plugin.requirements) {
         if (
@@ -351,11 +429,11 @@ class PuppeteerExtra {
    * Call plugins sequentially with the same values.
    * Plugins that expose the supplied property will be called.
    *
-   * @param  {string} prop - The plugin property to call
-   * @param  {...*} values - Any number of values
+   * @param prop - The plugin property to call
+   * @param values - Any number of values
    * @private
    */
-  async callPlugins(prop, ...values) {
+  private async callPlugins(prop: string, ...values: any[]) {
     for (const plugin of this.getPluginsByProp(prop)) {
       await plugin[prop].apply(plugin, values)
     }
@@ -368,12 +446,12 @@ class PuppeteerExtra {
    * The plugins can either modify the value or return an updated one.
    * Will return the latest, updated value which ran through all plugins.
    *
-   * @param  {string} prop - The plugin property to call
-   * @param  {*} value - Any value
-   * @return {*} - The new updated value
+   * @param prop - The plugin property to call
+   * @param value - Any value
+   * @return The new updated value
    * @private
    */
-  async callPluginsWithValue(prop, value) {
+  private async callPluginsWithValue(prop: string, value: any) {
     for (const plugin of this.getPluginsByProp(prop)) {
       const newValue = await plugin[prop](value)
       if (newValue) {
@@ -382,34 +460,70 @@ class PuppeteerExtra {
     }
     return value
   }
-
-  /**
-   * Regular Puppeteer method that is being passed through.
-   *
-   * @return {string}
-   */
-  executablePath() {
-    return Puppeteer.executablePath()
-  }
-
-  /**
-   * Regular Puppeteer method that is being passed through.
-   *
-   * @return {Array<string>}
-   */
-  defaultArgs() {
-    return Puppeteer.defaultArgs()
-  }
-
-  /**
-   * Regular Puppeteer method that is being passed through.
-   *
-   * @param {Object=} options
-   * @return {PuppeteerBrowserFetcher}
-   */
-  createBrowserFetcher(options) {
-    return Puppeteer.createBrowserFetcher(options)
-  }
 }
 
-module.exports = new PuppeteerExtra()
+/**
+ * The **default export** will behave exactly the same as the regular puppeteer
+ * (just with extra plugin functionality) and can be used as a drop-in replacement.
+ *
+ * Behind the scenes it will try to require either `puppeteer`
+ * or [`puppeteer-core`](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteer-vs-puppeteer-core)
+ * from the installed dependencies.
+ *
+ * ```js
+ * // javascript import
+ * const puppeteer = require('puppeteer-extra')
+ *
+ * // typescript/es6 module import
+ * import puppeteer from 'puppeteer-extra'
+ *
+ * // Add plugins
+ * puppeteer.use(...)
+ * ```
+ */
+const defaultExport: PuppeteerExtra = (() => {
+  return new PuppeteerExtra(...requireVanillaPuppeteer())
+})()
+
+export default defaultExport
+
+/**
+ * An **alternative way** to use `puppeteer-extra`: Augments the provided puppeteer with extra plugin functionality.
+ *
+ * This is useful in case you need multiple puppeteer instances with different plugins or to add plugins to a non-standard puppeteer package.
+ *
+ * ```js
+ * // js import
+ * const { addExtra } = require('puppeteer-extra')
+ *
+ * // ts/es6 import
+ * import { addExtra } from 'puppeteer-extra'
+ *
+ * // Patch e.g. puppeteer-firefox and add plugins
+ * const puppeteer = addExtra(require('puppeteer-firefox'))
+ * puppeteer.use(...)
+ * ```
+ * @param puppeteer Any puppeteer API-compatible puppeteer implementation or version.
+ */
+export const addExtra = (puppeteer: VanillaPuppeteer) =>
+  new PuppeteerExtra(puppeteer)
+
+/**
+ * Attempt to require puppeteer or puppeteer-core from dependencies.
+ * To stay backwards compatible with the existing default export we have to do some gymnastics here.
+ *
+ * @return Either a Puppeteer instance or an Error, which we'll throw later if need be.
+ * @private
+ */
+function requireVanillaPuppeteer(): [VanillaPuppeteer?, Error?] {
+  try {
+    return [require('puppeteer-core'), undefined]
+  } catch (_) {
+    // noop
+  }
+  try {
+    return [require('puppeteer'), undefined]
+  } catch (err) {
+    return [undefined, err]
+  }
+}

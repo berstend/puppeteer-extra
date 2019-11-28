@@ -3,6 +3,7 @@
 const test = require('ava')
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
+const PAGE_TIMEOUT = 60 * 1000 // 60s
 
 test.beforeEach(t => {
   // Make sure we work with pristine modules
@@ -18,7 +19,10 @@ test('will launch the browser normally', async t => {
   const puppeteer = require('puppeteer-extra')
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
   const page = await browser.newPage()
-  await page.goto('http://example.com', { waitUntil: 'domcontentloaded' })
+  await page.goto('http://example.com', {
+    waitUntil: 'domcontentloaded',
+    timeout: PAGE_TIMEOUT
+  })
   await browser.close()
   t.true(true)
 })
@@ -53,7 +57,10 @@ test('will launch puppeteer with plugin support', async t => {
   t.deepEqual(puppeteer.getPluginData('foo')[0], pluginData[0])
   t.is(puppeteer.getPluginData('not-existing').length, 0)
 
-  await page.goto('http://example.com', { waitUntil: 'domcontentloaded' })
+  await page.goto('http://example.com', {
+    waitUntil: 'domcontentloaded',
+    timeout: PAGE_TIMEOUT
+  })
   await browser.close()
   t.true(true)
 })

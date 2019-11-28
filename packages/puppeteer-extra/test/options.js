@@ -1,10 +1,10 @@
 'use strict'
 
-const test = require('ava')
+import test, { beforeEach } from 'ava'
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
-test.beforeEach(t => {
+beforeEach(t => {
   // Make sure we work with pristine modules
   try {
     delete require.cache[require.resolve('puppeteer-extra')]
