@@ -3,16 +3,18 @@
   "version": "2.2.5",
   "description": "Stealth mode: Applies various techniques to make detection of headless puppeteer harder.",
   "main": "index.js",
+  "typings": "index.d.ts",
   "repository": "berstend/puppeteer-extra",
   "homepage": "https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth#readme",
   "author": "berstend",
   "license": "MIT",
   "scripts": {
-    "docs": "yarn docs-for-plugin && yarn docs-for-evasions",
+    "docs": "yarn docs-for-plugin && yarn docs-for-evasions && yarn types",
     "docs-for-plugin": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API index.js",
     "docs-for-evasions": "cd ./evasions && loop \"documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API index.js\"",
     "test": "ava -v && eslint --ext .js .",
-    "test-ci": "yarn test"
+    "test-ci": "yarn test",
+    "types": "npx --package typescript@3.7 tsc --emitDeclarationOnly --declaration --allowJs index.js"
   },
   "engines": {
     "node": ">=8"
