@@ -6,8 +6,8 @@ const test = require('ava')
 
 test.beforeEach(t => {
   // Make sure we work with pristine modules
-  delete require.cache[require.resolve('puppeteer-extra')]
-  delete require.cache[require.resolve('puppeteer-extra-plugin-repl')]
+  // delete require.cache[require.resolve('puppeteer-extra')]
+  // delete require.cache[require.resolve('puppeteer-extra-plugin-repl')]
 })
 
 test('will create a repl', async t => {

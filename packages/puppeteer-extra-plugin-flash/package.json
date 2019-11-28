@@ -7,7 +7,7 @@
   "author": "berstend",
   "license": "MIT",
   "scripts": {
-    "docs": "update-markdown-jsdoc",
+    "docs": "exit 0",
     "test": "eslint --ext .js .",
     "test-ci": "yarn test"
   },
