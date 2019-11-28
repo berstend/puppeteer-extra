@@ -504,8 +504,9 @@ export default defaultExport
  * puppeteer.use(...)
  * ```
  * @param puppeteer Any puppeteer API-compatible puppeteer implementation or version.
+ * @return A fresh PuppeteerExtra instance using the provided puppeteer
  */
-export const addExtra = (puppeteer: VanillaPuppeteer) =>
+export const addExtra = (puppeteer: VanillaPuppeteer): PuppeteerExtra =>
   new PuppeteerExtra(puppeteer)
 
 /**

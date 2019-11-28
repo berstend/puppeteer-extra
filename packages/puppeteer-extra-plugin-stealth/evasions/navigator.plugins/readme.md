@@ -4,18 +4,16 @@
 
 #### Table of Contents
 
--   [Plugin](#plugin)
+-   [class: Plugin](#class-plugin)
 
-### [Plugin](https://git@github.com/:berstend/puppeteer-extra/blob/ff112879545e8e68d6500d731ceeafc22d187dd3/packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/index.js#L10-L216)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/index.js#L10-L216)
+
+-   `opts`   (optional, default `{}`)
 
 **Extends: PuppeteerExtraPlugin**
 
 In headless mode `navigator.mimeTypes` and `navigator.plugins` are empty.
 This plugin quite emulates both of these to match regular headful Chrome.
 We even go so far as to mock functional methods, instance types and `.toString` properties. :D
-
-Type: `function (opts)`
-
--   `opts`   (optional, default `{}`)
 
 * * *

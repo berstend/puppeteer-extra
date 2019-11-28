@@ -4,9 +4,11 @@
 
 #### Table of Contents
 
--   [Plugin](#plugin)
+-   [class: Plugin](#class-plugin)
 
-### [Plugin](https://git@github.com/:berstend/puppeteer-extra/blob/ff112879545e8e68d6500d731ceeafc22d187dd3/packages/puppeteer-extra-plugin-stealth/evasions/user-agent/index.js#L13-L19)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin-stealth/evasions/user-agent/index.js#L13-L25)
+
+-   `opts`   (optional, default `{}`)
 
 **Extends: PuppeteerExtraPlugin**
 
@@ -16,9 +18,5 @@ Let's make use of `puppeteer-extra`'s modular nature and not re-invent things. :
 
 Note: If you want to customize it's settings just require the above mentioned
 plugin directly and specify your desired options, it won't be required if you already did so.
-
-Type: `function (opts)`
-
--   `opts`   (optional, default `{}`)
 
 * * *

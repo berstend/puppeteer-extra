@@ -8,8 +8,9 @@
   "author": "berstend",
   "license": "MIT",
   "scripts": {
-    "docs": "update-markdown-jsdoc && yarn docs-for-evasions",
-    "docs-for-evasions": "cd ./evasions && loop update-markdown-jsdoc",
+    "docs": "yarn docs-for-plugin && yarn docs-for-evasions",
+    "docs-for-plugin": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API index.js",
+    "docs-for-evasions": "cd ./evasions && loop \"documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API index.js\"",
     "test": "ava -v && eslint --ext .js .",
     "test-ci": "yarn test"
   },
@@ -30,6 +31,7 @@
   ],
   "devDependencies": {
     "ava": "2.4.0",
+    "documentation-markdown-themes": "^12.1.5",
     "loop": "^3.0.6",
     "puppeteer": "^2.0.0"
   },

@@ -4,16 +4,14 @@
 
 #### Table of Contents
 
--   [Plugin](#plugin)
+-   [class: Plugin](#class-plugin)
 
-### [Plugin](https://git@github.com/:berstend/puppeteer-extra/blob/ff112879545e8e68d6500d731ceeafc22d187dd3/packages/puppeteer-extra-plugin-stealth/evasions/webgl.vendor/index.js#L8-L37)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin-stealth/evasions/webgl.vendor/index.js#L8-L37)
+
+-   `opts`   (optional, default `{}`)
 
 **Extends: PuppeteerExtraPlugin**
 
 Fix WebGL Vendor/Renderer being set to Google in headless mode
-
-Type: `function (opts)`
-
--   `opts`   (optional, default `{}`)
 
 * * *
