@@ -551,7 +551,6 @@ export abstract class PuppeteerExtraPlugin {
   _register(prototype: any) {
     this._registerChildClassMembers(prototype)
     if (this.onPluginRegistered) this.onPluginRegistered()
-    return this
   }
 
   /**
@@ -559,7 +558,6 @@ export abstract class PuppeteerExtraPlugin {
    */
   _registerChildClassMembers(prototype: any) {
     this._childClassMembers = Object.getOwnPropertyNames(prototype)
-    return this
   }
 
   /**

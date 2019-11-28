@@ -1,7 +1,8 @@
-'use strict'
-
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
-
+export = defaultExport;
+declare function defaultExport(opts?: {
+    enabledEvasions?: Set<string>;
+}): StealthPlugin;
+declare const StealthPlugin_base: typeof import("puppeteer-extra-plugin").PuppeteerExtraPlugin;
 /**
  * Stealth mode: Applies various techniques to make detection of headless puppeteer harder. 💯
  *
@@ -69,95 +70,41 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * @param {Set<string>} [opts.enabledEvasions] - Specify which evasions to use (by default all)
  *
  */
-class StealthPlugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
-    super(opts)
-  }
-
-  get name() {
-    return 'stealth'
-  }
-
-  get defaults() {
-    const availableEvasions = new Set([
-      'chrome.runtime',
-      'console.debug',
-      'navigator.languages',
-      'navigator.permissions',
-      'navigator.webdriver',
-      'navigator.plugins',
-      'window.outerdimensions',
-      'webgl.vendor',
-      'user-agent'
-    ])
-    return {
-      availableEvasions,
-      // Enable all available evasions by default
-      enabledEvasions: new Set([...availableEvasions])
-    }
-  }
-
-  /**
-   * Requires evasion techniques dynamically based on configuration.
-   *
-   * @private
-   */
-  get dependencies() {
-    return new Set(
-      [...this.opts.enabledEvasions].map(e => `${this.name}/evasions/${e}`)
-    )
-  }
-
-  /**
-   * Get all available evasions.
-   *
-   * Please look into the [evasions directory](./evasions/) for an up to date list.
-   *
-   * @type {Set<string>} - A Set of all available evasions.
-   *
-   * @example
-   * const pluginStealth = require('puppeteer-extra-plugin-stealth')()
-   * console.log(pluginStealth.availableEvasions) // => Set { 'user-agent', 'console.debug' }
-   * puppeteer.use(pluginStealth)
-   */
-  get availableEvasions() {
-    return this.defaults.availableEvasions
-  }
-
-  /**
-   * Get all enabled evasions.
-   *
-   * Enabled evasions can be configured either through `opts` or by modifying this property.
-   *
-   * @type {Set<string>} - A Set of all enabled evasions.
-   *
-   * @example
-   * // Remove specific evasion from enabled ones dynamically
-   * const pluginStealth = require('puppeteer-extra-plugin-stealth')()
-   * pluginStealth.enabledEvasions.delete('console.debug')
-   * puppeteer.use(pluginStealth)
-   */
-  get enabledEvasions() {
-    return this.opts.enabledEvasions
-  }
-
-  /**
-   * @private
-   */
-  set enabledEvasions(evasions) {
-    this.opts.enabledEvasions = evasions
-  }
+declare class StealthPlugin extends StealthPlugin_base {
+    constructor(opts?: {});
+    get defaults(): {
+        availableEvasions: Set<string>;
+        enabledEvasions: Set<any>;
+    };
+    /**
+     * Get all available evasions.
+     *
+     * Please look into the [evasions directory](./evasions/) for an up to date list.
+     *
+     * @type {Set<string>} - A Set of all available evasions.
+     *
+     * @example
+     * const pluginStealth = require('puppeteer-extra-plugin-stealth')()
+     * console.log(pluginStealth.availableEvasions) // => Set { 'user-agent', 'console.debug' }
+     * puppeteer.use(pluginStealth)
+     */
+    get availableEvasions(): Set<string>;
+    /**
+     * @private
+     */
+    set enabledEvasions(arg: Set<string>);
+    /**
+     * Get all enabled evasions.
+     *
+     * Enabled evasions can be configured either through `opts` or by modifying this property.
+     *
+     * @type {Set<string>} - A Set of all enabled evasions.
+     *
+     * @example
+     * // Remove specific evasion from enabled ones dynamically
+     * const pluginStealth = require('puppeteer-extra-plugin-stealth')()
+     * pluginStealth.enabledEvasions.delete('console.debug')
+     * puppeteer.use(pluginStealth)
+     */
+    get enabledEvasions(): Set<string>;
 }
-
-/**
- * Default export, PuppeteerExtraStealthPlugin
- *
- * @param {Object} [opts] - Options
- * @param {Set<string>} [opts.enabledEvasions] - Specify which evasions to use (by default all)
- */
-const defaultExport = opts => new StealthPlugin(opts)
-module.exports = defaultExport
-
-// const moduleExport = defaultExport
-// moduleExport.StealthPlugin = StealthPlugin
-// module.exports = moduleExport

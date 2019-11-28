@@ -196,6 +196,9 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
   }
 }
 
-export default (options?: Partial<types.PluginOptions>) => {
+/** Default export, PuppeteerExtraPluginRecaptcha  */
+const defaultExport = (options?: Partial<types.PluginOptions>) => {
   return new PuppeteerExtraPluginRecaptcha(options || {})
 }
+
+export default defaultExport

@@ -29,7 +29,7 @@ export interface VanillaPuppeteer {
  * @private
  */
 export interface PuppeteerExtraPlugin {
-  _isPuppeteerExtraPlugin: true
+  _isPuppeteerExtraPlugin: boolean
   [propName: string]: any
 }
 
