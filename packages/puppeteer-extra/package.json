@@ -1,18 +1,34 @@
 {
   "name": "puppeteer-extra",
-  "version": "2.1.6",
+  "version": "3.1.0",
   "description": "Teach puppeteer new tricks through plugins.",
-  "main": "index.js",
   "repository": "berstend/puppeteer-extra",
   "author": "berstend",
   "license": "MIT",
+  "typings": "dist/index.d.ts",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "docs": "update-markdown-jsdoc",
-    "test": "ava --serial -v && eslint --ext .js .",
-    "test-ci": "yarn test"
+    "clean": "rimraf dist/*",
+    "build": "yarpm run clean && tsc --module commonjs && rollup -c rollup.config.ts",
+    "docs": "documentation readme --quiet --shallow --github --markdown-toc-max-depth 3 --readme-file readme.md --section API ./src/index.ts",
+    "test-ts": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v test/**.ts",
+    "test-js": "ava -v --serial --concurrency 1 --fail-fast test/**.js",
+    "test": "yarpm run test-js && yarpm run test-ts",
+    "test-ci": "yarpm run test",
+    "prepublish": "yarpm run build && yarpm run docs"
   },
-  "engines": {
-    "node": ">=8"
+  "ava": {
+    "compileEnhancements": false,
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
   },
   "keywords": [
     "puppeteer",
@@ -25,19 +41,35 @@
     "headless",
     "pupeteer"
   ],
-  "devDependencies": {
-    "ava": "2.4.0",
-    "eslint-config-standard": "^14.1.0",
-    "puppeteer": "next",
-    "puppeteer-extra-plugin": "^3.0.7",
-    "update-markdown-jsdoc": "^1.0.11"
+  "engines": {
+    "node": ">=8"
   },
-  "dependencies": {
-    "debug": "^4.1.1",
-    "deepmerge": "^4.2.2"
+  "devDependencies": {
+    "@types/puppeteer": "^2.0.0",
+    "ava": "^2.4.0",
+    "documentation": "^12.1.4",
+    "puppeteer": "^2.0.0",
+    "puppeteer-firefox": "^0.5.0",
+    "rimraf": "^3.0.0",
+    "rollup": "^1.27.5",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-typescript2": "^0.25.2",
+    "ts-node": "^8.5.2",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-config-standard": "^9.0.0",
+    "typescript": "^3.7.2",
+    "yarpm": "^0.2.1",
+    "puppeteer-extra-plugin": "*"
   },
   "peerDependencies": {
-    "puppeteer": "^2.0.0"
+    "puppeteer": "*"
   },
-  "gitHead": "ed8cad504e38f81d35570e0a6af666539d4a4cc5"
+  "dependencies": {
+    "@types/puppeteer": "*",
+    "debug": "^4.1.1",
+    "deepmerge": "^4.2.2"
+  }
 }

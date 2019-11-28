@@ -73,39 +73,39 @@ DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node myscript.js
 
 #### 🆕 [`puppeteer-extra-plugin-recaptcha`](/packages/puppeteer-extra-plugin-recaptcha)
 
-- Solves reCAPTCHAs automatically, using a single line of code: `page.solveRecaptchas()`.
+-   Solves reCAPTCHAs automatically, using a single line of code: `page.solveRecaptchas()`.
 
 #### 🔥 [`puppeteer-extra-plugin-stealth`](/packages/puppeteer-extra-plugin-stealth)
 
-- Applies various evasion techniques to make detection of headless puppeteer harder.
+-   Applies various evasion techniques to make detection of headless puppeteer harder.
 
 #### [`puppeteer-extra-plugin-devtools`](/packages/puppeteer-extra-plugin-devtools)
 
-- Makes puppeteer browser debugging possible from anywhere.
-- Creates a secure tunnel to make the devtools frontend (**incl. screencasting**) accessible from the public internet
+-   Makes puppeteer browser debugging possible from anywhere.
+-   Creates a secure tunnel to make the devtools frontend (**incl. screencasting**) accessible from the public internet
 
 #### [`puppeteer-extra-plugin-repl`](/packages/puppeteer-extra-plugin-repl)
 
-- Makes quick puppeteer debugging and exploration fun with an interactive REPL.
+-   Makes quick puppeteer debugging and exploration fun with an interactive REPL.
 
 #### [`puppeteer-extra-plugin-block-resources`](/packages/puppeteer-extra-plugin-block-resources)
 
-- Blocks resources (images, media, css, etc.) in puppeteer.
-- Supports all resource types, blocking can be toggled dynamically.
+-   Blocks resources (images, media, css, etc.) in puppeteer.
+-   Supports all resource types, blocking can be toggled dynamically.
 
 #### [`puppeteer-extra-plugin-flash`](/packages/puppeteer-extra-plugin-flash)
 
-- Allows flash content to run on all sites without user interaction.
+-   Allows flash content to run on all sites without user interaction.
 
 #### [`puppeteer-extra-plugin-anonymize-ua`](/packages/puppeteer-extra-plugin-anonymize-ua)
 
-- Anonymizes the user-agent on all pages.
-- Supports dynamic replacing, so the browser version stays intact and recent.
+-   Anonymizes the user-agent on all pages.
+-   Supports dynamic replacing, so the browser version stays intact and recent.
 
 #### [`puppeteer-extra-plugin-user-preferences`](/packages/puppeteer-extra-plugin-user-preferences)
 
-- Allows setting custom Chrome/Chromium user preferences.
-- Has itself a plugin interface which is used by e.g. [`puppeteer-extra-plugin-font-size`](/packages/puppeteer-extra-plugin-font-size).
+-   Allows setting custom Chrome/Chromium user preferences.
+-   Has itself a plugin interface which is used by e.g. [`puppeteer-extra-plugin-font-size`](/packages/puppeteer-extra-plugin-font-size).
 
 > Check out the [packages folder](/packages/) for more plugins.
 
@@ -113,12 +113,12 @@ DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node myscript.js
 
 PRs and new plugins are welcome! :tada: The plugin API for `puppeteer-extra` is clean and fun to use. Have a look the [PuppeteerExtraPlugin](/packages/puppeteer-extra-plugin) base class documentation to get going and check out the [existing plugins](./packages/) (minimal example is the [anonymize-ua](/packages/puppeteer-extra-plugin-anonymize-ua/index.js) plugin) for reference.
 
-We use a [monorepo](/) powered by [Lerna](https://github.com/lerna/lerna#--use-workspaces) (and yarn workspaces), [ava](https://github.com/avajs/ava) for testing, the [standard](https://standardjs.com/) style for linting and [JSDoc](http://usejsdoc.org/about-getting-started.html) heavily to [auto-generate](https://github.com/transitive-bullshit/update-markdown-jsdoc) markdown [documentation](https://github.com/documentationjs/documentation) based on code. :-)
+We use a [monorepo](/) powered by [Lerna](https://github.com/lerna/lerna#--use-workspaces) (and yarn workspaces), [ava](https://github.com/avajs/ava) for testing, TypeScript for the core,  the [standard](https://standardjs.com/) style for linting and [JSDoc](http://usejsdoc.org/about-getting-started.html) heavily to auto-generate markdown [documentation](https://github.com/documentationjs/documentation) based on code. :-)
 
 ### Kudos
 
-- Thanks to [skyiea](https://github.com/skyiea) for [this PR](https://github.com/GoogleChrome/puppeteer/pull/1806) that started the project idea.
-- Thanks to [transitive-bullshit](https://github.com/transitive-bullshit) for [suggesting](https://github.com/berstend/puppeteer-extra/issues/2) a modular plugin design, which was fun to implement.
+-   Thanks to [skyiea](https://github.com/skyiea) for [this PR](https://github.com/GoogleChrome/puppeteer/pull/1806) that started the project idea.
+-   Thanks to [transitive-bullshit](https://github.com/transitive-bullshit) for [suggesting](https://github.com/berstend/puppeteer-extra/issues/2) a modular plugin design, which was fun to implement.
 
 ## Compatibility
 
@@ -127,7 +127,18 @@ We never broke compatibility and still support puppeteer down to version 1.6.2 (
 
 A few plugins won't work in headless mode (it's noted if that's the case) due to Chrome limitations (e.g. the [`user-preferences`](/packages/puppeteer-extra-plugin-user-preferences) plugin), look into `xvfb-run` if you still require a headless experience in these circumstances.
 
----
+## Changelog
+
+### `2.1.6` ➠ `3.1.1`
+
+Big refactor, the core is now **written in TypeScript** 🎉
+That means out of the box type safety for fellow TS users and nice auto-completion in VSCode for JS users. Also:
+
+-   A new [`addExtra`](#addextra) export, to **patch any puppeteer compatible library with plugin functionality** (`puppeteer-firefox`, `chrome-aws-lambda`, etc). This also allows for multiple puppeteer instances with different plugins.
+
+The API is backwards compatible, I bumped the major version just in case I missed something. Please report any issues you might find with the new release. :)
+
+* * *
 
 ## API
 
@@ -135,80 +146,78 @@ A few plugins won't work in headless mode (it's noted if that's the case) due to
 
 #### Table of Contents
 
-- [PuppeteerExtra](#puppeteerextra)
-  - [use](#use)
-  - [launch](#launch)
-  - [connect](#connect)
-  - [plugins](#plugins)
-  - [getPluginData](#getplugindata)
-  - [executablePath](#executablepath)
-  - [defaultArgs](#defaultargs)
-  - [createBrowserFetcher](#createbrowserfetcher)
+-   [PuppeteerExtra](#puppeteerextra)
+    -   [Examples](#examples)
+    -   [use](#use)
+    -   [launch](#launch)
+    -   [connect](#connect)
+    -   [defaultArgs](#defaultargs)
+    -   [executablePath](#executablepath)
+    -   [createBrowserFetcher](#createbrowserfetcher)
+    -   [plugins](#plugins)
+    -   [getPluginData](#getplugindata)
+-   [defaultExport](#defaultexport)
+-   [addExtra](#addextra)
+    -   [Parameters](#parameters)
 
-### [PuppeteerExtra](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra/index.js#L43-L391)
+### PuppeteerExtra
+
+[packages/puppeteer-extra/src/index.ts:67-462](https://github.com/berstend/puppeteer-extra/blob/2dd01ace8d0b2ae5be71ae0f7495ef8caa967e11/packages/puppeteer-extra/src/index.ts#L67-L462 "Source code on GitHub")
 
 Modular plugin framework to teach `puppeteer` new tricks.
 
-This module acts a drop-in replacement for `puppeteer`.
+This module acts as a drop-in replacement for `puppeteer`.
 
 Allows PuppeteerExtraPlugin's to register themselves and
 to extend puppeteer with additional functionality.
 
-Type: `function ()`
-
-Example:
+#### Examples
 
 ```javascript
 const puppeteer = require('puppeteer-extra')
 puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
-puppeteer.use(
-  require('puppeteer-extra-plugin-font-size')({ defaultFontSize: 18 })
-)
+puppeteer.use(require('puppeteer-extra-plugin-font-size')({defaultFontSize: 18}))
+
 ;(async () => {
-  const browser = await puppeteer.launch({ headless: false })
+  const browser = await puppeteer.launch({headless: false})
   const page = await browser.newPage()
-  await page.goto('http://example.com', { waitUntil: 'domcontentloaded' })
+  await page.goto('http://example.com', {waitUntil: 'domcontentloaded'})
   await browser.close()
 })()
 ```
 
----
+#### use
 
-#### [use](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra/index.js#L63-L79)
+[packages/puppeteer-extra/src/index.ts:80-102](https://github.com/berstend/puppeteer-extra/blob/2dd01ace8d0b2ae5be71ae0f7495ef8caa967e11/packages/puppeteer-extra/src/index.ts#L80-L102 "Source code on GitHub")
 
-Outside interface to register plugins.
+The **main interface** to register `puppeteer-extra` plugins.
 
-Type: `function (plugin): this`
+##### Parameters
 
-- `plugin` **PuppeteerExtraPlugin**
+-   `plugin` **PuppeteerExtraPlugin**
 
-Example:
+Returns **this** The same `PuppeteerExtra` instance (for optional chaining)
 
-```javascript
-const puppeteer = require('puppeteer-extra')
-puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
-puppeteer.use(require('puppeteer-extra-plugin-user-preferences')())
-const browser = await puppeteer.launch(...)
-```
+#### launch
 
----
+[packages/puppeteer-extra/src/index.ts:141-165](https://github.com/berstend/puppeteer-extra/blob/2dd01ace8d0b2ae5be71ae0f7495ef8caa967e11/packages/puppeteer-extra/src/index.ts#L141-L165 "Source code on GitHub")
 
-#### [launch](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra/index.js#L94-L113)
-
-Launch a new browser instance with given arguments.
+The method launches a browser instance with given arguments. The browser will be closed when the parent node.js process is closed.
 
 Augments the original `puppeteer.launch` method with plugin lifecycle methods.
 
 All registered plugins that have a `beforeLaunch` method will be called
 in sequence to potentially update the `options` Object before launching the browser.
 
-Type: `function (options): Puppeteer.Browser`
+##### Parameters
 
-- `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Regular [Puppeteer launch options](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions) (optional, default `{}`)
+-   `options` **Puppeteer.LaunchOptions?** See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions).
 
----
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;Puppeteer.Browser>**
 
-#### [connect](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra/index.js#L126-L144)
+#### connect
+
+[packages/puppeteer-extra/src/index.ts:177-196](https://github.com/berstend/puppeteer-extra/blob/2dd01ace8d0b2ae5be71ae0f7495ef8caa967e11/packages/puppeteer-extra/src/index.ts#L177-L196 "Source code on GitHub")
 
 Attach Puppeteer to an existing Chromium instance.
 
@@ -217,23 +226,57 @@ Augments the original `puppeteer.connect` method with plugin lifecycle methods.
 All registered plugins that have a `beforeConnect` method will be called
 in sequence to potentially update the `options` Object before launching the browser.
 
-Type: `function (options)`
+##### Parameters
 
-- `options` **{browserWSEndpoint: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String), ignoreHTTPSErrors: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)}** (optional, default `{}`)
+-   `options` **Puppeteer.ConnectOptions?** See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerconnectoptions).
 
----
+Returns **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;Puppeteer.Browser>**
 
-#### [plugins](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra/index.js#L187-L187)
+#### defaultArgs
+
+[packages/puppeteer-extra/src/index.ts:203-205](https://github.com/berstend/puppeteer-extra/blob/2dd01ace8d0b2ae5be71ae0f7495ef8caa967e11/packages/puppeteer-extra/src/index.ts#L203-L205 "Source code on GitHub")
+
+The default flags that Chromium will be launched with.
+
+##### Parameters
+
+-   `options` **Puppeteer.ChromeArgOptions?** See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerdefaultargsoptions).
+
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>**
+
+#### executablePath
+
+[packages/puppeteer-extra/src/index.ts:208-210](https://github.com/berstend/puppeteer-extra/blob/2dd01ace8d0b2ae5be71ae0f7495ef8caa967e11/packages/puppeteer-extra/src/index.ts#L208-L210 "Source code on GitHub")
+
+Path where Puppeteer expects to find bundled Chromium.
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**
+
+#### createBrowserFetcher
+
+[packages/puppeteer-extra/src/index.ts:217-221](https://github.com/berstend/puppeteer-extra/blob/2dd01ace8d0b2ae5be71ae0f7495ef8caa967e11/packages/puppeteer-extra/src/index.ts#L217-L221 "Source code on GitHub")
+
+This methods attaches Puppeteer to an existing Chromium instance.
+
+##### Parameters
+
+-   `options` **Puppeteer.FetcherOptions?** See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteercreatebrowserfetcheroptions).
+
+Returns **Puppeteer.BrowserFetcher**
+
+#### plugins
+
+[packages/puppeteer-extra/src/index.ts:271-273](https://github.com/berstend/puppeteer-extra/blob/2dd01ace8d0b2ae5be71ae0f7495ef8caa967e11/packages/puppeteer-extra/src/index.ts#L271-L273 "Source code on GitHub")
 
 Get all registered plugins.
 
 Type: [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;PuppeteerExtraPlugin>
 
----
+#### getPluginData
 
-#### [getPluginData](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra/index.js#L209-L214)
+[packages/puppeteer-extra/src/index.ts:298-303](https://github.com/berstend/puppeteer-extra/blob/2dd01ace8d0b2ae5be71ae0f7495ef8caa967e11/packages/puppeteer-extra/src/index.ts#L298-L303 "Source code on GitHub")
 
-- **See: puppeteer-extra-plugin/data**
+-   **See: puppeteer-extra-plugin/data**
 
 Collects the exposed `data` property of all registered plugins.
 Will be reduced/flattened to a single array.
@@ -242,34 +285,58 @@ Can be accessed by plugins that listed the `dataFromPlugins` requirement.
 
 Implemented mainly for plugins that need data from other plugins (e.g. `user-preferences`).
 
-Type: `function (name)`
+##### Parameters
 
-- `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Filter data by name property (optional, default `null`)
+-   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Filter data by optional plugin name
 
----
+### defaultExport
 
-#### [executablePath](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra/index.js#L369-L371)
+[packages/puppeteer-extra/src/index.ts:483-485](https://github.com/berstend/puppeteer-extra/blob/2dd01ace8d0b2ae5be71ae0f7495ef8caa967e11/packages/puppeteer-extra/src/index.ts#L483-L485 "Source code on GitHub")
 
-Regular Puppeteer method that is being passed through.
+The **default export** will behave exactly the same as the regular puppeteer
+(just with extra plugin functionality) and can be used as a drop-in replacement.
 
-Type: `function (): string`
+Behind the scenes it will try to require either `puppeteer`
+or [`puppeteer-core`](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteer-vs-puppeteer-core)
+from the installed dependencies.
 
----
+```js
+// javascript import
+const puppeteer = require('puppeteer-extra')
 
-#### [defaultArgs](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra/index.js#L378-L380)
+// typescript import
+import puppeteer from 'puppeteer-extra'
 
-Regular Puppeteer method that is being passed through.
+// Add plugins
+puppeteer.use(...)
+```
 
-Type: `function ()`
+Type: [PuppeteerExtra](#puppeteerextra)
 
----
+### addExtra
 
-#### [createBrowserFetcher](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra/index.js#L388-L390)
+[packages/puppeteer-extra/src/index.ts:507-508](https://github.com/berstend/puppeteer-extra/blob/2dd01ace8d0b2ae5be71ae0f7495ef8caa967e11/packages/puppeteer-extra/src/index.ts#L507-L508 "Source code on GitHub")
 
-Regular Puppeteer method that is being passed through.
+An **alternative way** to use `puppeteer-extra`: Augments the provided puppeteer with extra plugin functionality.
 
-Type: `function (options): PuppeteerBrowserFetcher`
+This is useful in case you need multiple puppeteer instances with different plugins or to add plugins to a non-standard puppeteer package.
 
-- `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**
+```js
+// js import
+const { addExtra } = require('puppeteer-extra')
 
----
+// ts import
+import { addExtra } from 'puppeteer-extra'
+
+// Patch puppeteer-firefox and add plugins
+const puppeteer = addExtra(require('puppeteer-firefox'))
+puppeteer.use(...)
+```
+
+#### Parameters
+
+-   `puppeteer` **VanillaPuppeteer** Any puppeteer API-compatible puppeteer implementation or version.
+
+## License
+
+MIT
