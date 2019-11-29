@@ -47,10 +47,12 @@ script:
   # - 'rm -rf yarn.lock && rm -rf ./node_modules/puppeteer && yarn lerna add puppeteer@${PUPPETEER_VERSION}'
   - 'yarn'
   - 'yarn bootstrap'
+  - "yarn lerna exec --concurrency 1 'yarn build; echo 0'"
   - 'yarn lerna link'
 
   # For debugging
   - yarn list puppeteer
+  - file node_modules/puppeteer-extra/dist/index.cjs.js
 
   # Run tests
   - yarn test-ci
