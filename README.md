@@ -24,7 +24,7 @@ We use a [monorepo](https://github.com/berstend/puppeteer-extra) powered by [Ler
 
 ### Lerna
 
-This is monorepo is powered by [Lerna](https://github.com/lerna/lerna) and yarn workspaces.
+This monorepo is powered by [Lerna](https://github.com/lerna/lerna) and yarn workspaces.
 
 #### Initial setup
 
@@ -72,6 +72,27 @@ yarn lernaupdate
 # If in doubt :-(
 yarn lerna exec "rm -f yarn.lock; rm -rf node_modules; echo 0"
 rm -f yarn.lock &&  rm -rf node_modules && yarn cache clean
+```
+
+#### Publishing
+
+```bash
+# make sure you're signed into npm before publishing
+# yarn publishing is broken so lerna uses npm
+npm whoami
+
+# ensure everything is up2date and peachy
+yarn
+yarn bootstrap
+yarn lerna link
+yarn build
+yarn test
+
+# Phew, let's publish these packages!
+# - Will publish all changed packages
+# - Will ask for new pkg version per package
+# - Will updated inter-package dependency versions automatically
+yarn lerna publish
 ```
 
 </details>
