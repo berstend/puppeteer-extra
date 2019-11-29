@@ -29,8 +29,7 @@
   "devDependencies": {
     "ava": "2.4.0",
     "puppeteer": "^2.0.0",
-    "puppeteer-extra": "*",
-    "puppeteer-extra-plugin-devtools": "*"
+    "puppeteer-extra": "*"
   },
   "dependencies": {
     "debug": "^4.1.1",
