@@ -19,8 +19,7 @@
     "docs": "exit 0",
     "docs2": "rm -rf docs/* && typedoc --module commonjs --readme none --target ES6 --theme markdown --excludeNotExported --excludeExternals --excludePrivate --out docs --mode file src/index.ts",
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v src/**.test.ts",
-    "test-ci": "yarn build && TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v dist/*.test.js",
-    "prepublishOnly": "npm run test && npm run docs && npm run build"
+    "test-ci": "yarn build && TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v dist/*.test.js"
   },
   "engines": {
     "node": ">=9.11.2"
@@ -53,7 +52,7 @@
     "@types/puppeteer": "^2.0.0",
     "ava": "2.4.0",
     "puppeteer": "^2.0.0",
-    "puppeteer-extra": "^3.1.1",
+    "puppeteer-extra": "^2.1.6",
     "ts-node": "^8.5.4",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.18.0",
@@ -64,10 +63,10 @@
     "2captcha-api": "^1.0.0",
     "debug": "^4.1.1",
     "merge-deep": "^3.0.1",
-    "puppeteer-extra-plugin": "^3.1.0"
+    "puppeteer-extra-plugin": "^3.0.7"
   },
   "peerDependencies": {
     "puppeteer-extra": "*"
   },
-  "gitHead": "ed8cad504e38f81d35570e0a6af666539d4a4cc5"
+  "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }

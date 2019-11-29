@@ -17,8 +17,7 @@
     "build": "yarn clean && tsc --module commonjs && rollup -c rollup.config.ts",
     "docs": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API ./src/index.ts && npx prettier --write readme.md",
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v",
-    "test-ci": "yarn build && TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v dist/*.test.js",
-    "prepublishOnly": "npm run test && npm run docs && npm run build"
+    "test-ci": "yarn build && TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v dist/*.test.js"
   },
   "engines": {
     "node": ">=9.11.2"
@@ -76,5 +75,5 @@
   "peerDependencies": {
     "puppeteer-extra": "*"
   },
-  "gitHead": "ed8cad504e38f81d35570e0a6af666539d4a4cc5"
+  "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }

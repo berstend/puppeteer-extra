@@ -40,9 +40,9 @@
     "http-proxy-response-rewrite": "^0.0.1",
     "localtunnel": "^1.9.0",
     "ow": "^0.4.0",
-    "puppeteer-extra-plugin": "^3.1.0",
+    "puppeteer-extra-plugin": "^3.0.7",
     "randomstring": "^1.1.5",
     "url-parse": "^1.4.0"
   },
-  "gitHead": "ed8cad504e38f81d35570e0a6af666539d4a4cc5"
+  "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }

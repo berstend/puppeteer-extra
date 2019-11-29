@@ -18,8 +18,7 @@
     "test-ts": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v test/**.ts",
     "test-js": "ava -v --serial --concurrency 1 --fail-fast test/**.js",
     "test": "yarpm run test-js && yarpm run test-ts",
-    "test-ci": "yarpm run test",
-    "prepublish": "yarpm run build && yarpm run docs"
+    "test-ci": "yarpm run test"
   },
   "ava": {
     "compileEnhancements": false,
@@ -49,7 +48,7 @@
     "ava": "^2.4.0",
     "documentation-markdown-themes": "^12.1.5",
     "puppeteer": "^2.0.0",
-    "puppeteer-extra-plugin": "^3.1.0",
+    "puppeteer-extra-plugin": "^3.0.7",
     "puppeteer-extra-plugin-anonymize-ua": "^2.2.0",
     "puppeteer-firefox": "^0.5.0",
     "rimraf": "^3.0.0",
@@ -73,5 +72,6 @@
     "@types/puppeteer": "*",
     "debug": "^4.1.1",
     "deepmerge": "^4.2.2"
-  }
+  },
+  "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }
