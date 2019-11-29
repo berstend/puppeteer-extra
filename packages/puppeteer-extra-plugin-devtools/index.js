@@ -1,6 +1,6 @@
 'use strict'
 
-const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
+const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 const RemoteDevTools = require('./lib/RemoteDevTools')
 const ow = require('ow')
 

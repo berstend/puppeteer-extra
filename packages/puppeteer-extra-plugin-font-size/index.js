@@ -1,6 +1,6 @@
 'use strict'
 
-const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
+const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
 /**
  * Modify/increase the default font size in puppeteer.

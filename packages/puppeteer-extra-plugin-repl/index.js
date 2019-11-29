@@ -1,6 +1,6 @@
 'use strict'
 
-const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
+const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 const REPLSession = require('./lib/REPLSession')
 
 /**

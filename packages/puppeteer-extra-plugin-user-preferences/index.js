@@ -2,7 +2,7 @@
 
 const merge = require('deepmerge')
 
-const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
+const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
 /**
  * Launch puppeteer with arbitrary user preferences.

@@ -1,6 +1,6 @@
 'use strict'
 
-const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
+const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
 /**
  * Convenience function to wait for navigation to complete after clicking on an element.
