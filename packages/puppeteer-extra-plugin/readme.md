@@ -10,8 +10,8 @@ yarn add puppeteer-extra-plugin
 
 ### `v3.0.1`
 
--   Now written in TypeScript 🎉
--   **Breaking change:** Now using a named export:
+- Now written in TypeScript 🎉
+- **Breaking change:** Now using a named export:
 
 ```js
 // Before
@@ -27,31 +27,31 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
 #### Table of Contents
 
--   [class: PuppeteerExtraPlugin](#class-puppeteerextraplugin)
-    -   [.name](#name)
-    -   [.defaults](#defaults)
-    -   [.requirements](#requirements)
-    -   [.dependencies](#dependencies)
-    -   [.data](#data)
-    -   [.opts](#opts)
-    -   [.debug](#debug)
-    -   [.beforeLaunch(options)](#beforelaunchoptions)
-    -   [.afterLaunch(browser, opts)](#afterlaunchbrowser-opts)
-    -   [.beforeConnect(options)](#beforeconnectoptions)
-    -   [.afterConnect(browser, opts)](#afterconnectbrowser-opts)
-    -   [.onBrowser(browser, opts)](#onbrowserbrowser-opts)
-    -   [.onTargetCreated(target)](#ontargetcreatedtarget)
-    -   [.onPageCreated(page, target)](#onpagecreatedpage-target)
-    -   [.onTargetChanged(target)](#ontargetchangedtarget)
-    -   [.onTargetDestroyed(target)](#ontargetdestroyedtarget)
-    -   [.onDisconnected()](#ondisconnected)
-    -   [.onClose()](#onclose)
-    -   [.onPluginRegistered()](#onpluginregistered)
-    -   [.getDataFromPlugins(name?)](#getdatafrompluginsname)
+- [class: PuppeteerExtraPlugin](#class-puppeteerextraplugin)
+  - [.name](#name)
+  - [.defaults](#defaults)
+  - [.requirements](#requirements)
+  - [.dependencies](#dependencies)
+  - [.data](#data)
+  - [.opts](#opts)
+  - [.debug](#debug)
+  - [.beforeLaunch(options)](#beforelaunchoptions)
+  - [.afterLaunch(browser, opts)](#afterlaunchbrowser-opts)
+  - [.beforeConnect(options)](#beforeconnectoptions)
+  - [.afterConnect(browser, opts)](#afterconnectbrowser-opts)
+  - [.onBrowser(browser, opts)](#onbrowserbrowser-opts)
+  - [.onTargetCreated(target)](#ontargetcreatedtarget)
+  - [.onPageCreated(page, target)](#onpagecreatedpage-target)
+  - [.onTargetChanged(target)](#ontargetchangedtarget)
+  - [.onTargetDestroyed(target)](#ontargetdestroyedtarget)
+  - [.onDisconnected()](#ondisconnected)
+  - [.onClose()](#onclose)
+  - [.onPluginRegistered()](#onpluginregistered)
+  - [.getDataFromPlugins(name?)](#getdatafrompluginsname)
 
-### class: [PuppeteerExtraPlugin](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L65-L578)
+### class: [PuppeteerExtraPlugin](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L65-L576)
 
--   `opts` **PluginOptions?**
+- `opts` **PluginOptions?**
 
 Base class for `puppeteer-extra` plugins.
 
@@ -69,35 +69,39 @@ Example:
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
 class Plugin extends PuppeteerExtraPlugin {
-  constructor (opts = { }) { super(opts) }
+  constructor(opts = {}) {
+    super(opts)
+  }
 
-  get name () { return 'hello-world' }
+  get name() {
+    return 'hello-world'
+  }
 
-  async onPageCreated (page) {
+  async onPageCreated(page) {
     this.debug('page created', page.url())
     const ua = await page.browser().userAgent()
     this.debug('user agent', ua)
   }
 }
 
-module.exports = function (pluginConfig) { return new Plugin(pluginConfig) }
-
+module.exports = function(pluginConfig) {
+  return new Plugin(pluginConfig)
+}
 
 // foo.js
 const puppeteer = require('puppeteer-extra')
 puppeteer.use(require('./hello-world-plugin')())
-
 ;(async () => {
-  const browser = await puppeteer.launch({headless: false})
+  const browser = await puppeteer.launch({ headless: false })
   const page = await browser.newPage()
-  await page.goto('http://example.com', {waitUntil: 'domcontentloaded'})
+  await page.goto('http://example.com', { waitUntil: 'domcontentloaded' })
   await browser.close()
 })()
 ```
 
-* * *
+---
 
-#### .[name](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L96-L98)
+#### .[name](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L96-L98)
 
 Type: **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**
 
@@ -105,8 +109,8 @@ Plugin name (required).
 
 Convention:
 
--   Package: `puppeteer-extra-plugin-anonymize-ua`
--   Name: `anonymize-ua`
+- Package: `puppeteer-extra-plugin-anonymize-ua`
+- Name: `anonymize-ua`
 
 Example:
 
@@ -114,9 +118,9 @@ Example:
 get name () { return 'anonymize-ua' }
 ```
 
-* * *
+---
 
-#### .[defaults](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L121-L123)
+#### .[defaults](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L121-L123)
 
 Type: **PluginOptions**
 
@@ -141,11 +145,11 @@ get defaults () {
 puppeteer.use(require('puppeteer-extra-plugin-foobar')({ makeWindows: false }))
 ```
 
--   **See: \[[opts]]**
+- **See: \[[opts]]**
 
-* * *
+---
 
-#### .[requirements](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L149-L151)
+#### .[requirements](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L149-L151)
 
 Type: **PluginRequirements**
 
@@ -155,18 +159,18 @@ Signal certain plugin requirements to the base class and the user.
 
 Currently supported:
 
--   `launch`
-    -   If the plugin only supports locally created browser instances (no `puppeteer.connect()`),
-        will output a warning to the user.
--   `headful`
-    -   If the plugin doesn't work in `headless: true` mode,
-        will output a warning to the user.
--   `dataFromPlugins`
-    -   In case the plugin requires data from other plugins.
-        will enable usage of `this.getDataFromPlugins()`.
--   `runLast`
-    -   In case the plugin prefers to run after the others.
-        Useful when the plugin needs data from others.
+- `launch`
+  - If the plugin only supports locally created browser instances (no `puppeteer.connect()`),
+    will output a warning to the user.
+- `headful`
+  - If the plugin doesn't work in `headless: true` mode,
+    will output a warning to the user.
+- `dataFromPlugins`
+  - In case the plugin requires data from other plugins.
+    will enable usage of `this.getDataFromPlugins()`.
+- `runLast`
+  - In case the plugin prefers to run after the others.
+    Useful when the plugin needs data from others.
 
 Example:
 
@@ -176,9 +180,9 @@ get requirements () {
 }
 ```
 
-* * *
+---
 
-#### .[dependencies](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L164-L166)
+#### .[dependencies](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L164-L166)
 
 Type: **PluginDependencies**
 
@@ -195,9 +199,9 @@ get dependencies () {
 // Will ensure the 'puppeteer-extra-plugin-user-preferences' plugin is loaded.
 ```
 
-* * *
+---
 
-#### .[data](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L200-L202)
+#### .[data](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L200-L202)
 
 Type: **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;PluginData>**
 
@@ -233,11 +237,11 @@ async beforeLaunch () {
 }
 ```
 
--   **See: \[[getDataFromPlugins]]**
+- **See: \[[getDataFromPlugins]]**
 
-* * *
+---
 
-#### .[opts](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L219-L221)
+#### .[opts](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L219-L221)
 
 Type: **PluginOptions**
 
@@ -256,16 +260,16 @@ async onPageCreated (page) {
 }
 ```
 
--   **See: \[[defaults]]**
+- **See: \[[defaults]]**
 
-* * *
+---
 
-#### .[debug](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L239-L241)
+#### .[debug](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L239-L241)
 
 Type: **Debugger**
 
 Convenience debug logger based on the [debug] module.
- Will automatically namespace the logging output to the plugin package name.
+Will automatically namespace the logging output to the plugin package name.
 
 [debug]: https://www.npmjs.com/package/debug
 
@@ -283,11 +287,11 @@ this.debug('hello world')
 // will output e.g. 'puppeteer-extra-plugin:anonymize-ua hello world'
 ```
 
-* * *
+---
 
-#### .[beforeLaunch(options)](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L260-L262)
+#### .[beforeLaunch(options)](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L260-L262)
 
--   `options` **any** Puppeteer launch options
+- `options` **any** Puppeteer launch options
 
 Before a new browser instance is created/launched.
 
@@ -306,17 +310,17 @@ async beforeLaunch (options) {
 }
 ```
 
-* * *
+---
 
-#### .[afterLaunch(browser, opts)](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L291-L296)
+#### .[afterLaunch(browser, opts)](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L291-L296)
 
--   `browser` **Puppeteer.Browser** The `puppeteer` browser instance.
--   `opts`   (optional, default `{options:({}as Puppeteer.LaunchOptions)}`)
+- `browser` **Puppeteer.Browser** The `puppeteer` browser instance.
+- `opts` (optional, default `{options:({}as Puppeteer.LaunchOptions)}`)
 
 After the browser has launched.
 
 Note: Don't assume that there will only be a single browser instance during the lifecycle of a plugin.
-It's possible that `pupeeteer.launch` will be  called multiple times and more than one browser created.
+It's possible that `pupeeteer.launch` will be called multiple times and more than one browser created.
 In order to make the plugins as stateless as possible don't store a reference to the browser instance
 in the plugin but rather consider alternatives.
 
@@ -339,11 +343,11 @@ async afterLaunch (browser, opts) {
 }
 ```
 
-* * *
+---
 
-#### .[beforeConnect(options)](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L309-L311)
+#### .[beforeConnect(options)](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L309-L311)
 
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Puppeteer connect options
+- `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Puppeteer connect options
 
 Before connecting to an existing browser instance.
 
@@ -352,24 +356,24 @@ Can be used to modify the puppeteer connect options by modifying or returning th
 Plugins using this method will be called in sequence to each
 be able to update the launch options.
 
-* * *
+---
 
-#### .[afterConnect(browser, opts)](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L323-L325)
+#### .[afterConnect(browser, opts)](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L323-L325)
 
--   `browser` **Puppeteer.Browser** The `puppeteer` browser instance.
--   `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
-    -   `opts.options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Puppeteer connect options used.
+- `browser` **Puppeteer.Browser** The `puppeteer` browser instance.
+- `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** (optional, default `{}`)
+  - `opts.options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Puppeteer connect options used.
 
 After connecting to an existing browser instance.
 
 > Note: Don't assume that there will only be a single browser instance during the lifecycle of a plugin.
 
-* * *
+---
 
-#### .[onBrowser(browser, opts)](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L339-L341)
+#### .[onBrowser(browser, opts)](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L339-L341)
 
--   `browser` **Puppeteer.Browser** The `puppeteer` browser instance.
--   `opts` **any**
+- `browser` **Puppeteer.Browser** The `puppeteer` browser instance.
+- `opts` **any**
 
 Returns: **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>**
 
@@ -382,11 +386,11 @@ and don't mind if it has been created through `launch` or `connect`.
 
 > Note: Don't assume that there will only be a single browser instance during the lifecycle of a plugin.
 
-* * *
+---
 
-#### .[onTargetCreated(target)](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L352-L354)
+#### .[onTargetCreated(target)](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L352-L354)
 
--   `target` **Puppeteer.Target**
+- `target` **Puppeteer.Target**
 
 Called when a target is created, for example when a new page is opened by window.open or browser.newPage.
 
@@ -394,12 +398,12 @@ Called when a target is created, for example when a new page is opened by window
 >
 > Note: This includes browser instances created through `.launch()` as well as `.connect()`.
 
-* * *
+---
 
-#### .[onPageCreated(page, target)](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L375-L377)
+#### .[onPageCreated(page, target)](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L375-L377)
 
--   `page` **Puppeteer.Page**
--   `target` **Puppeteer.Target**
+- `page` **Puppeteer.Page**
+- `target` **Puppeteer.Target**
 
 Same as `onTargetCreated` but prefiltered to only contain Pages, for convenience.
 
@@ -420,11 +424,11 @@ async onPageCreated (page) {
 }
 ```
 
-* * *
+---
 
-#### .[onTargetChanged(target)](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L388-L390)
+#### .[onTargetChanged(target)](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L388-L390)
 
--   `target` **Puppeteer.Target**
+- `target` **Puppeteer.Target**
 
 Called when the url of a target changes.
 
@@ -432,11 +436,11 @@ Called when the url of a target changes.
 >
 > Note: This includes browser instances created through `.launch()` as well as `.connect()`.
 
-* * *
+---
 
-#### .[onTargetDestroyed(target)](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L401-L403)
+#### .[onTargetDestroyed(target)](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L401-L403)
 
--   `target` **Puppeteer.Target**
+- `target` **Puppeteer.Target**
 
 Called when a target is destroyed, for example when a page is closed.
 
@@ -444,20 +448,20 @@ Called when a target is destroyed, for example when a page is closed.
 >
 > Note: This includes browser instances created through `.launch()` as well as `.connect()`.
 
-* * *
+---
 
-#### .[onDisconnected()](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L412-L414)
+#### .[onDisconnected()](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L412-L414)
 
 Called when Puppeteer gets disconnected from the Chromium instance.
 
 This might happen because of one of the following:
 
--   Chromium is closed or crashed
--   The `browser.disconnect` method was called
+- Chromium is closed or crashed
+- The `browser.disconnect` method was called
 
-* * *
+---
 
-#### .[onClose()](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L428-L430)
+#### .[onClose()](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L428-L430)
 
 **Deprecated:** Since puppeteer v1.6.0 `onDisconnected` has been improved
 and should be used instead of `onClose`.
@@ -470,19 +474,19 @@ the `onClose` method had been introduced.
 >
 > Note: This only includes browser instances created through `.launch()`.
 
-* * *
+---
 
-#### .[onPluginRegistered()](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L437-L439)
+#### .[onPluginRegistered()](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L437-L439)
 
 After the plugin has been registered in `puppeteer-extra`.
 
 Normally right after `puppeteer.use(plugin)` is called
 
-* * *
+---
 
-#### .[getDataFromPlugins(name?)](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin/src/index.ts#L452-L454)
+#### .[getDataFromPlugins(name?)](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin/src/index.ts#L452-L454)
 
--   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Filter data by `name` property
+- `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Filter data by `name` property
 
 Returns: **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;PluginData>**
 
@@ -491,7 +495,7 @@ Helper method to retrieve `data` objects from other plugins.
 A plugin needs to state the `dataFromPlugins` requirement
 in order to use this method. Will be mapped to `puppeteer.getPluginData`.
 
--   **See: [data]**
--   **See: [requirements]**
+- **See: [data]**
+- **See: [requirements]**
 
-* * *
+---

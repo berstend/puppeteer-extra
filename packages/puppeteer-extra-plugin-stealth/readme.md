@@ -23,19 +23,19 @@ npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth
 ```js
 // puppeteer-extra is a drop-in replacement for puppeteer,
 // it augments the installed puppeteer with plugin functionality
-const puppeteer = require("puppeteer-extra")
+const puppeteer = require('puppeteer-extra')
 
 // add stealth plugin and use defaults (all evasion techniques)
-const pluginStealth = require("puppeteer-extra-plugin-stealth")
+const pluginStealth = require('puppeteer-extra-plugin-stealth')
 puppeteer.use(pluginStealth())
 
 // puppeteer usage as normal
 puppeteer.launch({ headless: true }).then(async browser => {
   const page = await browser.newPage()
   await page.setViewport({ width: 800, height: 600 })
-  await page.goto("https://bot.sannysoft.com")
+  await page.goto('https://bot.sannysoft.com')
   await page.waitFor(5000)
-  await page.screenshot({ path: "testresult.png", fullPage: true })
+  await page.screenshot({ path: 'testresult.png', fullPage: true })
   await browser.close()
 })
 ```
@@ -44,10 +44,10 @@ puppeteer.launch({ headless: true }).then(async browser => {
 
 ### `v2.1.2`
 
--   Improved: `navigator.plugins` - we fully emulate plugins/mimetypes in headless now 🎉
--   New: `webgl.vendor` - is otherwise set to "Google" in headless
--   New: `window.outerdimensions` - fix missing window.outerWidth/outerHeight and viewport
--   Fixed: `navigator.webdriver` now returns undefined instead of false
+- Improved: `navigator.plugins` - we fully emulate plugins/mimetypes in headless now 🎉
+- New: `webgl.vendor` - is otherwise set to "Google" in headless
+- New: `window.outerdimensions` - fix missing window.outerWidth/outerHeight and viewport
+- Fixed: `navigator.webdriver` now returns undefined instead of false
 
 ## Test results (red is bad)
 
@@ -102,18 +102,19 @@ _**Tip:** Have a look at the [recaptcha plugin](https://github.com/berstend/pupp
 
 #### Table of Contents
 
--   [class: Plugin](#class-plugin)
-    -   [Purpose](#purpose)
-    -   [Modularity](#modularity)
-    -   [Contributing](#contributing)
-    -   [Kudos](#kudos)
-    -   [.availableEvasions](#availableevasions)
-    -   [.enabledEvasions](#enabledevasions)
+- [class: StealthPlugin](#class-stealthplugin)
+  - [Purpose](#purpose)
+  - [Modularity](#modularity)
+  - [Contributing](#contributing)
+  - [Kudos](#kudos)
+  - [.availableEvasions](#availableevasions)
+  - [.enabledEvasions](#enabledevasions)
+- [defaultExport(opts?)](#defaultexportopts)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin-stealth/index.js#L72-L150)
+### class: [StealthPlugin](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin-stealth/index.js#L72-L150)
 
--   `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Options (optional, default `{}`)
-    -   `opts.enabledEvasions` **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>?** Specify which evasions to use (by default all)
+- `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Options (optional, default `{}`)
+  - `opts.enabledEvasions` **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>?** Specify which evasions to use (by default all)
 
 **Extends: PuppeteerExtraPlugin**
 
@@ -141,7 +142,9 @@ specific evasion plugins yourself, if you whish to do so (as they're standalone 
 
 ```es6
 // bypass main module and require a specific stealth plugin directly:
-puppeteer.use(require('puppeteer-extra-plugin-stealth/evasions/console.debug')())
+puppeteer.use(
+  require('puppeteer-extra-plugin-stealth/evasions/console.debug')()
+)
 ```
 
 #### Contributing
@@ -153,7 +156,7 @@ look at the [template](./evasions/_template) to kickstart things.
 
 Thanks to [Evan Sangaline](https://intoli.com/blog/not-possible-to-block-chrome-headless/) and [Paul Irish](https://github.com/paulirish/headless-cat-n-mouse) for kickstarting the discussion!
 
-* * *
+---
 
 Example:
 
@@ -161,30 +164,32 @@ Example:
 const puppeteer = require('puppeteer-extra')
 // Enable stealth plugin with all evasions
 puppeteer.use(require('puppeteer-extra-plugin-stealth')())
-
-
 ;(async () => {
   // Launch the browser in headless mode and set up a page.
-  const browser = await puppeteer.launch({ args: ['--no-sandbox'], headless: true })
+  const browser = await puppeteer.launch({
+    args: ['--no-sandbox'],
+    headless: true
+  })
   const page = await browser.newPage()
 
   // Navigate to the page that will perform the tests.
-  const testUrl = 'https://intoli.com/blog/' +
+  const testUrl =
+    'https://intoli.com/blog/' +
     'not-possible-to-block-chrome-headless/chrome-headless-test.html'
   await page.goto(testUrl)
 
   // Save a screenshot of the results.
   const screenshotPath = '/tmp/headless-test-result.png'
-  await page.screenshot({path: screenshotPath})
+  await page.screenshot({ path: screenshotPath })
   console.log('have a look at the screenshot:', screenshotPath)
 
   await browser.close()
 })()
 ```
 
-* * *
+---
 
-#### .[availableEvasions](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin-stealth/index.js#L123-L125)
+#### .[availableEvasions](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin-stealth/index.js#L123-L125)
 
 Type: **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>**
 
@@ -200,9 +205,9 @@ console.log(pluginStealth.availableEvasions) // => Set { 'user-agent', 'console.
 puppeteer.use(pluginStealth)
 ```
 
-* * *
+---
 
-#### .[enabledEvasions](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin-stealth/index.js#L140-L142)
+#### .[enabledEvasions](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin-stealth/index.js#L140-L142)
 
 Type: **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>**
 
@@ -219,7 +224,16 @@ pluginStealth.enabledEvasions.delete('console.debug')
 puppeteer.use(pluginStealth)
 ```
 
-* * *
+---
+
+### [defaultExport(opts?)](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin-stealth/index.js#L158-L158)
+
+- `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Options
+  - `opts.enabledEvasions` **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>?** Specify which evasions to use (by default all)
+
+Default export, PuppeteerExtraStealthPlugin
+
+---
 
 ## License
 

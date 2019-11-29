@@ -14,7 +14,7 @@
   "scripts": {
     "clean": "rimraf dist/*",
     "build": "yarpm run clean && tsc --module commonjs && rollup -c rollup.config.ts",
-    "docs": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API ./src/index.ts",
+    "docs": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API ./src/index.ts && npx prettier --write readme.md",
     "test-ts": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v test/**.ts",
     "test-js": "ava -v --serial --concurrency 1 --fail-fast test/**.js",
     "test": "yarpm run test-js && yarpm run test-ts",
