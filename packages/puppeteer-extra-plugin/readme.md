@@ -9,9 +9,7 @@ yarn add puppeteer-extra-plugin
 ## Changelog
 
 <details>
- <summary><strong>v3.0.1</strong></summary>
-
-### `v3.0.1`
+ <summary><strong>v3.0.1</strong></summary><br>
 
 - Now written in TypeScript 🎉
 - **Breaking change:** Now using a named export:
