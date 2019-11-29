@@ -28,5 +28,7 @@ packages/testing/
 packages/puppeteer-extra2/
 packages/test-*
 
+testing/
+
 *.tgz*
 
