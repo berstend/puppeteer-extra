@@ -4,15 +4,15 @@
 
 #### Table of Contents
 
--   [class: Plugin](#class-plugin)
+- [class: Plugin](#class-plugin)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/790777a5d72ef5d0c2be01baf8fdc594a41af96a/packages/puppeteer-extra-plugin-stealth/evasions/navigator.webdriver/index.js#L9-L28)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/cbe36dc15103fb621c2dd2944f8084a7723f6d82/packages/puppeteer-extra-plugin-stealth/evasions/navigator.webdriver/index.js#L9-L28)
 
--   `opts`   (optional, default `{}`)
+- `opts` (optional, default `{}`)
 
 **Extends: PuppeteerExtraPlugin**
 
 Pass the Webdriver Test.
 Will delete `navigator.webdriver` property.
 
-* * *
+---

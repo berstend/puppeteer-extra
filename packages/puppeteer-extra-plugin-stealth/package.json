@@ -10,8 +10,8 @@
   "license": "MIT",
   "scripts": {
     "docs": "yarn docs-for-plugin && yarn docs-for-evasions && yarn types",
-    "docs-for-plugin": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API index.js",
-    "docs-for-evasions": "cd ./evasions && loop \"documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API index.js\"",
+    "docs-for-plugin": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API index.js && npx prettier --write readme.md",
+    "docs-for-evasions": "cd ./evasions && loop \"documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API index.js && npx prettier --write readme.md\"",
     "test": "ava -v && eslint --ext .js .",
     "test-ci": "yarn test",
     "types": "npx --package typescript@3.7 tsc --emitDeclarationOnly --declaration --allowJs index.js"
