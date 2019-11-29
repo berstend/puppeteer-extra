@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-recaptcha",
-  "version": "3.0.7",
+  "version": "3.1.0",
   "description": "A puppeteer-extra plugin to solve reCAPTCHAs automatically.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -53,7 +53,7 @@
     "@types/puppeteer": "^2.0.0",
     "ava": "2.4.0",
     "puppeteer": "^2.0.0",
-    "puppeteer-extra": "*",
+    "puppeteer-extra": "^3.1.1",
     "ts-node": "^8.5.4",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.18.0",
@@ -64,7 +64,7 @@
     "2captcha-api": "^1.0.0",
     "debug": "^4.1.1",
     "merge-deep": "^3.0.1",
-    "puppeteer-extra-plugin": "^3.0.7"
+    "puppeteer-extra-plugin": "^3.1.0"
   },
   "peerDependencies": {
     "puppeteer-extra": "*"
