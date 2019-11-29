@@ -103,7 +103,7 @@ You can easily use your own provider as well, by providing the plugin a function
 
 ### What about invisible reCAPTCHAs?
 
-- [Invisible reCAPTCHAs](https://developers.google.com/recaptcha/docs/invisible) are a different beast. They're basically used to compute a score of how likely the user is a bot. Based on that score the site owner can block access to resources or (most often) present the user with a reCAPTCHA challenge. The [stealth plugin](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth) might be of interest here, as it masks the usage of puppeteer.
+- [Invisible reCAPTCHAs](https://developers.google.com/recaptcha/docs/invisible) are a different beast. They're basically used to compute a score of how likely the user is a bot. Based on that score the site owner can block access to resources or (most often) present the user with a reCAPTCHA challenge (which this plugin can solve). The [stealth plugin](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth) might be of interest here, as it masks the usage of puppeteer.
 
 ### When should I call `page.solveRecaptchas()`?
 
