@@ -24,13 +24,13 @@ test('will remove headless from remote browser', async t => {
 
   // Use puppeteer-extra with plugin to conntect to existing browser
   const puppeteer = require('puppeteer-extra')
-  // puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
+  puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
   const browser = await puppeteer.connect({ browserWSEndpoint })
 
   // Let's ensure we've anonymized the user-agent, despite not using .launch
   const page = await browser.newPage()
-  await page.evaluate(() => window.navigator.userAgent)
-  // t.true(!ua.includes('HeadlessChrome'))
+  const ua = await page.evaluate(() => window.navigator.userAgent)
+  t.true(!ua.includes('HeadlessChrome'))
 
   await browser.close()
   t.true(true)
