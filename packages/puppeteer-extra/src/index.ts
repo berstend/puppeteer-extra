@@ -75,6 +75,11 @@ export class PuppeteerExtra implements VanillaPuppeteer {
   /**
    * The **main interface** to register `puppeteer-extra` plugins.
    *
+   * @example
+   * puppeteer.use(plugin1).use(plugin2)
+   *
+   * @see [PuppeteerExtraPlugin]
+   *
    * @return The same `PuppeteerExtra` instance (for optional chaining)
    */
   use(plugin: PuppeteerExtraPlugin): this {
@@ -136,6 +141,12 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    *
    * All registered plugins that have a `beforeLaunch` method will be called
    * in sequence to potentially update the `options` Object before launching the browser.
+   *
+   * @example
+   * const browser = await puppeteer.launch({
+   *   headless: false,
+   *   defaultViewport: null
+   * })
    *
    * @param options - See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions).
    */
@@ -265,7 +276,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
   }
 
   /**
-   * Get all registered plugins.
+   * Get a list of all registered plugins.
    *
    * @member {Array<PuppeteerExtraPlugin>}
    */
@@ -291,7 +302,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    *
    * Implemented mainly for plugins that need data from other plugins (e.g. `user-preferences`).
    *
-   * @see puppeteer-extra-plugin/data
+   * @see [PuppeteerExtraPlugin]/data
    * @param name - Filter data by optional plugin name
    *
    * @private
@@ -470,7 +481,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
  * or [`puppeteer-core`](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteer-vs-puppeteer-core)
  * from the installed dependencies.
  *
- * ```js
+ * @example
  * // javascript import
  * const puppeteer = require('puppeteer-extra')
  *
@@ -479,7 +490,6 @@ export class PuppeteerExtra implements VanillaPuppeteer {
  *
  * // Add plugins
  * puppeteer.use(...)
- * ```
  */
 const defaultExport: PuppeteerExtra = (() => {
   return new PuppeteerExtra(...requireVanillaPuppeteer())
@@ -492,7 +502,7 @@ export default defaultExport
  *
  * This is useful in case you need multiple puppeteer instances with different plugins or to add plugins to a non-standard puppeteer package.
  *
- * ```js
+ * @example
  * // js import
  * const { addExtra } = require('puppeteer-extra')
  *
@@ -502,7 +512,7 @@ export default defaultExport
  * // Patch e.g. puppeteer-firefox and add plugins
  * const puppeteer = addExtra(require('puppeteer-firefox'))
  * puppeteer.use(...)
- * ```
+ *
  * @param puppeteer Any puppeteer API-compatible puppeteer implementation or version.
  * @return A fresh PuppeteerExtra instance using the provided puppeteer
  */
