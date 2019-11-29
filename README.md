@@ -8,10 +8,6 @@ In case you're interested in the available plugins, check out the [packages fold
 
 ## Monorepo
 
-<p align="center">
-  <img src="https://i.imgur.com/EuqiF5F.png" />
-</p>
-
 <details>
  <summary><strong>Contributing</strong></summary>
 
@@ -24,7 +20,9 @@ We use a [monorepo](https://github.com/berstend/puppeteer-extra) powered by [Ler
 </details>
 
 <details>
- <summary><strong>Lerna</strong></summary><br/>
+ <summary><strong>Lerna</strong></summary>
+
+### Lerna
 
 This is monorepo is powered by [Lerna](https://github.com/lerna/lerna) and yarn workspaces.
 
@@ -37,6 +35,9 @@ yarn
 # Bootstrap the packages in the current Lerna repo.
 # Installs all of their dependencies and links any cross-dependencies.
 yarn bootstrap
+
+# Build all TypeScript sources
+yarn build
 ```
 
 #### Development flow
@@ -59,7 +60,7 @@ yarn test
 yarn docs
 
 # Upgrade project wide deps like puppeteer
-# (We keep the devDependency version blurry with @next)
+# (We keep the devDependency version blurry)
 rm -rf node_modules
 rm -rf yarn.lock
 yarn
@@ -74,3 +75,8 @@ rm -f yarn.lock &&  rm -rf node_modules && yarn cache clean
 ```
 
 </details>
+
+<br>
+<p align="center">
+  <img src="https://i.imgur.com/EuqiF5F.png"  height="240"  />
+</p>
