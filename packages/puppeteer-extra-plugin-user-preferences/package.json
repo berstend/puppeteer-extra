@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-user-preferences",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Launch puppeteer with arbitrary user preferences.",
   "main": "index.js",
   "repository": "berstend/puppeteer-extra",
@@ -31,7 +31,7 @@
   "dependencies": {
     "debug": "^4.1.1",
     "deepmerge": "^4.2.2",
-    "puppeteer-extra-plugin": "^3.0.7"
+    "puppeteer-extra-plugin": "^3.1.1"
   },
   "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }
