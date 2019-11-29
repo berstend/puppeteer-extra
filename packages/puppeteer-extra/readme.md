@@ -27,19 +27,19 @@ const puppeteer = require('puppeteer-extra')
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 puppeteer.use(StealthPlugin())
 
-// Add plugin to anonymize the User-Agent and signal Windows as platform
-const UserAgentPlugin = require('puppeteer-extra-plugin-anonymize-ua')
-puppeteer.use(UserAgentPlugin({ makeWindows: true }))
+// Add adblocker plugin to efficiently block all ads and trackers (saves bandwidth!)
+const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker')
+puppeteer.use(AdblockerPlugin({ blockTrackers: true }))
 
 // That's it, the rest is puppeteer usage as normal 😊
 puppeteer.launch({ headless: true }).then(async browser => {
   const page = await browser.newPage()
   await page.setViewport({ width: 800, height: 600 })
 
-  console.log(`Testing the user agent plugin..`)
-  await page.goto('https://httpbin.org/headers')
+  console.log(`Testing adblocker plugin..`)
+  await page.goto('https://www.vanityfair.com')
   await page.waitFor(1000)
-  await page.screenshot({ path: 'headers.png', fullPage: true })
+  await page.screenshot({ path: 'adblocker.png', fullPage: true })
 
   console.log(`Testing the stealth plugin..`)
   await page.goto('https://bot.sannysoft.com')
@@ -51,12 +51,12 @@ puppeteer.launch({ headless: true }).then(async browser => {
 })
 ```
 
-The above example uses the [`stealth`](/packages/puppeteer-extra-plugin-stealth) and [`anonymize-ua`](/packages/puppeteer-extra-plugin-anonymize-ua) plugin, which need to be installed as well:
+The above example uses the [`stealth`](/packages/puppeteer-extra-plugin-stealth) and [`adblocker`](/packages/puppeteer-extra-plugin-adblocker) plugin, which need to be installed as well:
 
 ```bash
-yarn add puppeteer-extra-plugin-stealth puppeteer-extra-plugin-anonymize-ua
+yarn add puppeteer-extra-plugin-stealth puppeteer-extra-plugin-adblocker
 # - or -
-npm install puppeteer-extra-plugin-stealth puppeteer-extra-plugin-anonymize-ua
+npm install puppeteer-extra-plugin-stealth puppeteer-extra-plugin-adblocker
 ```
 
 If you'd like to see debug output just run your script like so:
@@ -73,21 +73,20 @@ DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node myscript.js
 ```ts
 import puppeteer from 'puppeteer-extra'
 
-import RecaptchaPlugin from 'puppeteer-extra-plugin-recaptcha'
+import AdblockerPlugin from 'puppeteer-extra-plugin-adblocker'
 import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 
-puppeteer.use(RecaptchaPlugin()).use(StealthPlugin())
+puppeteer.use(AdblockerPlugin()).use(StealthPlugin())
 
-puppeteer.launch({ headless: false }).then(async browser => {
-  const page = await browser.newPage()
-  await page.setViewport({ width: 800, height: 600 })
-
-  await page.goto('https://bot.sannysoft.com')
-  await page.waitFor(5000)
-  await page.screenshot({ path: 'stealth.png', fullPage: true })
-
-  await browser.close()
-})
+puppeteer
+  .launch({ headless: false, defaultViewport: null })
+  .then(async browser => {
+    const page = await browser.newPage()
+    await page.goto('https://bot.sannysoft.com')
+    await page.waitFor(5000)
+    await page.screenshot({ path: 'stealth.png', fullPage: true })
+    await browser.close()
+  })
 ```
 
 ![typings](https://i.imgur.com/bNtuTOt.png 'Typings')
@@ -101,15 +100,14 @@ puppeteer.launch({ headless: false }).then(async browser => {
 const { addExtra } = require('puppeteer-extra')
 const puppeteer = addExtra(require('puppeteer-firefox'))
 
-puppeteer.launch({ headless: false }).then(async browser => {
-  const page = await browser.newPage()
-  await page.setViewport({ width: 800, height: 600 })
-
-  await page.goto('https://www.spacejam.com/archive/spacejam/movie/jam.htm')
-  await page.waitFor(10 * 1000)
-
-  await browser.close()
-})
+puppeteer
+  .launch({ headless: false, defaultViewport: null })
+  .then(async browser => {
+    const page = await browser.newPage()
+    await page.goto('https://www.spacejam.com/archive/spacejam/movie/jam.htm')
+    await page.waitFor(10 * 1000)
+    await browser.close()
+  })
 ```
 
 </details>
@@ -118,13 +116,18 @@ puppeteer.launch({ headless: false }).then(async browser => {
 
 ## Plugins
 
-#### 🆕 [`puppeteer-extra-plugin-recaptcha`](/packages/puppeteer-extra-plugin-recaptcha)
-
-- Solves reCAPTCHAs automatically, using a single line of code: `page.solveRecaptchas()`.
-
 #### 🔥 [`puppeteer-extra-plugin-stealth`](/packages/puppeteer-extra-plugin-stealth)
 
 - Applies various evasion techniques to make detection of headless puppeteer harder.
+
+#### 🆕 [`puppeteer-extra-plugin-adblocker`](/packages/puppeteer-extra-plugin-adblocker)
+
+- Very fast & efficient blocker for ads and trackers. Reduces bandwidth & load times.
+- Thanks to [@remusao](https://github.com/remusao) for contributing this sweet plugin 👏
+
+#### 🏴 [`puppeteer-extra-plugin-recaptcha`](/packages/puppeteer-extra-plugin-recaptcha)
+
+- Solves reCAPTCHAs automatically, using a single line of code: `page.solveRecaptchas()`.
 
 #### [`puppeteer-extra-plugin-devtools`](/packages/puppeteer-extra-plugin-devtools)
 

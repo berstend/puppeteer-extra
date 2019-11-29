@@ -1,0 +1,71 @@
+{
+  "name": "puppeteer-extra-plugin-adblocker",
+  "version": "2.11.0",
+  "description": "A puppeteer-extra plugin to block ads and trackers.",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": "berstend/puppeteer-extra",
+  "homepage": "https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-adblocker",
+  "author": "remusao",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf dist/*",
+    "tscheck": "tsc --pretty --noEmit",
+    "build": "yarn clean && tsc --module commonjs && rollup -c rollup.config.ts",
+    "docs": "exit 0",
+    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v src/**.test.ts",
+    "test-ci": "yarn build && TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v dist/*.test.js"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "ava": {
+    "compileEnhancements": false,
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": false,
+    "singleQuote": true
+  },
+  "keywords": [
+    "puppeteer",
+    "puppeteer-extra",
+    "puppeteer-extra-plugin",
+    "ads",
+    "adblocker",
+    "adblocking"
+  ],
+  "devDependencies": {
+    "@types/debug": "^4.1.5",
+    "@types/node-fetch": "^2.5.4",
+    "@types/puppeteer": "^2.0.0",
+    "ava": "^2.4.0",
+    "puppeteer": "2.0.0",
+    "ts-node": "^8.5.4",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-config-standard": "^9.0.0",
+    "typescript": "^3.7.2"
+  },
+  "dependencies": {
+    "@cliqz/adblocker-puppeteer": "^1.4.0",
+    "@types/chrome": "0.0.91",
+    "debug": "^4.1.1",
+    "node-fetch": "^2.6.0",
+    "puppeteer-extra-plugin": "^3.1.2"
+  },
+  "peerDependencies": {
+    "puppeteer-extra": "*"
+  },
+  "gitHead": "72fe830c158f1e971c8499fdd5232338dd53c220"
+}
