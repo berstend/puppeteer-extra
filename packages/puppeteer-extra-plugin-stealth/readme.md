@@ -111,7 +111,7 @@ _**Tip:** Have a look at the [recaptcha plugin](https://github.com/berstend/pupp
   - [.enabledEvasions](#enabledevasions)
 - [defaultExport(opts?)](#defaultexportopts)
 
-### class: [StealthPlugin](https://github.com/berstend/puppeteer-extra/blob/83eac3d8e3d0b90606e13788c3df3192751b6657/packages/puppeteer-extra-plugin-stealth/index.js#L72-L150)
+### class: [StealthPlugin](https://github.com/berstend/puppeteer-extra/blob/fa3ecf77b786a97a4415812fc31ae5d97b71abe0/packages/puppeteer-extra-plugin-stealth/index.js#L72-L150)
 
 - `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Options (optional, default `{}`)
   - `opts.enabledEvasions` **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>?** Specify which evasions to use (by default all)
@@ -189,7 +189,7 @@ puppeteer.use(require('puppeteer-extra-plugin-stealth')())
 
 ---
 
-#### .[availableEvasions](https://github.com/berstend/puppeteer-extra/blob/83eac3d8e3d0b90606e13788c3df3192751b6657/packages/puppeteer-extra-plugin-stealth/index.js#L123-L125)
+#### .[availableEvasions](https://github.com/berstend/puppeteer-extra/blob/fa3ecf77b786a97a4415812fc31ae5d97b71abe0/packages/puppeteer-extra-plugin-stealth/index.js#L123-L125)
 
 Type: **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>**
 
@@ -207,7 +207,7 @@ puppeteer.use(pluginStealth)
 
 ---
 
-#### .[enabledEvasions](https://github.com/berstend/puppeteer-extra/blob/83eac3d8e3d0b90606e13788c3df3192751b6657/packages/puppeteer-extra-plugin-stealth/index.js#L140-L142)
+#### .[enabledEvasions](https://github.com/berstend/puppeteer-extra/blob/fa3ecf77b786a97a4415812fc31ae5d97b71abe0/packages/puppeteer-extra-plugin-stealth/index.js#L140-L142)
 
 Type: **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>**
 
@@ -226,7 +226,7 @@ puppeteer.use(pluginStealth)
 
 ---
 
-### [defaultExport(opts?)](https://github.com/berstend/puppeteer-extra/blob/83eac3d8e3d0b90606e13788c3df3192751b6657/packages/puppeteer-extra-plugin-stealth/index.js#L158-L158)
+### [defaultExport(opts?)](https://github.com/berstend/puppeteer-extra/blob/fa3ecf77b786a97a4415812fc31ae5d97b71abe0/packages/puppeteer-extra-plugin-stealth/index.js#L158-L158)
 
 - `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Options
   - `opts.enabledEvasions` **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>?** Specify which evasions to use (by default all)
