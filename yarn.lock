@@ -7692,6 +7692,14 @@ punycode@^2.1.0:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
+puppeteer-extra@^2.1.6:
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/puppeteer-extra/-/puppeteer-extra-2.1.6.tgz#469f37fbdce5227f7af2771491f06d6b812c3e92"
+  integrity sha512-UtD9ke+FhU5hC4NDCGJ4iW+jmtQLSTxqcjBNwhi8suDF514fuB4ahDlFcGyReEV52lRHDjjrGgmFBGqjKAAR/Q==
+  dependencies:
+    debug "^4.1.1"
+    deepmerge "^4.2.2"
+
 puppeteer-firefox@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/puppeteer-firefox/-/puppeteer-firefox-0.5.0.tgz#5800e48cbbe135adae5fbf3032114064a612d87a"

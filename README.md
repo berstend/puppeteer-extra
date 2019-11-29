@@ -93,6 +93,9 @@ yarn test
 # - Will ask for new pkg version per package
 # - Will updated inter-package dependency versions automatically
 yarn lerna publish
+
+# Fix new dependency version symlinks
+yarn bootstrap && yarn lerna link
 ```
 
 </details>
