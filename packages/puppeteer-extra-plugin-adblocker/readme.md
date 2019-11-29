@@ -11,7 +11,7 @@
 
 > Thanks to [@remusao](https://github.com/remusao) for contributing this sweet plugin and [adblocker engine](https://github.com/cliqz-oss/adblocker)! 👏
 
-## Install
+## Installation
 
 ```bash
 yarn add puppeteer-extra-plugin-adblocker
@@ -38,11 +38,8 @@ const puppeteer = require('puppeteer-extra')
 
 // Add adblocker plugin, which will transparently block ads in all pages you
 // create using puppeteer.
-const adblockerPlugin = require('puppeteer-extra-plugin-adblocker')({
-  blockTrackers: true, // default: false
-  cacheDir: '/tmp/cache/puppeteer-extra-plugin-adblocker/' // default: no caching
-})
-puppeteer.use(adblockerPlugin)
+const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker')
+puppeteer.use(AdblockerPlugin())
 
 // puppeteer usage as normal
 puppeteer.launch({ headless: true }).then(async browser => {
@@ -55,6 +52,52 @@ puppeteer.launch({ headless: true }).then(async browser => {
   await page.screenshot({ path: 'response.png', fullPage: true })
   await browser.close()
 })
+```
+
+<details>
+ <summary><strong>TypeScript usage</strong></summary><br/>
+
+```ts
+import puppeteer from 'puppeteer-extra'
+import Adblocker from 'puppeteer-extra-plugin-adblocker'
+
+puppeteer.use(Adblocker({ blockTrackers: true }))
+
+puppeteer
+  .launch({ headless: false, defaultViewport: null })
+  .then(async browser => {
+    const page = await browser.newPage()
+    await page.goto('https://www.vanityfair.com')
+    await page.waitFor(60 * 1000)
+    await browser.close()
+  })
+```
+
+</details>
+
+## Options
+
+Usage:
+
+```js
+const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker')
+const adblocker = AdblockerPlugin({
+  blockTrackers: true // default: false
+})
+puppeteer.use(adblocker)
+```
+
+Available options:
+
+```ts
+interface PluginOptions {
+  /** Whether or not to block trackers (in addition to ads). Default: false */
+  blockTrackers: boolean
+  /** Persist adblocker engine cache to disk for speedup. Default: true */
+  useCache: boolean
+  /** Optional custom directory for adblocker cache files. Default: undefined */
+  cacheDir?: string
+}
 ```
 
 ## Motivation

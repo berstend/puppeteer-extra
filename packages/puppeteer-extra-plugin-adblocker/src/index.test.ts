@@ -7,8 +7,7 @@ const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 test('will block ads', async t => {
   const puppeteer = require('puppeteer-extra')
   const adblockerPlugin = AdblockerPlugin({
-    blockTrackers: true,
-    cacheDir: '/tmp/puppeteer-extra-plugin-adblocker/cache'
+    blockTrackers: true
   })
   puppeteer.use(adblockerPlugin)
 

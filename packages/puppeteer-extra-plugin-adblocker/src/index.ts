@@ -1,16 +1,21 @@
 import { promises as fs } from 'fs'
+import os from 'os'
 import path from 'path'
 
 import { PuppeteerBlocker } from '@cliqz/adblocker-puppeteer'
-import mkdirp from 'mkdirp'
 import fetch from 'node-fetch'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+
+const pkg = require('../package.json')
+const engineCacheFilename = `${pkg.name}-${pkg.version}-engine.bin`
 
 /** Available plugin options */
 export interface PluginOptions {
   /** Whether or not to block trackers (in addition to ads). Default: false */
   blockTrackers: boolean
-  /** Custom directory for adblocker cache files. Default: undefined */
+  /** Persist adblocker engine cache to disk for speedup. Default: true */
+  useCache: boolean
+  /** Optional custom directory for adblocker cache files. Default: undefined */
   cacheDir?: string
 }
 
@@ -32,8 +37,14 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
   get defaults(): PluginOptions {
     return {
       blockTrackers: false,
+      useCache: true,
       cacheDir: undefined
     }
+  }
+
+  get engineCacheFile() {
+    const cacheDir = this.opts.cacheDir || os.tmpdir()
+    return path.join(cacheDir, engineCacheFilename)
   }
 
   /**
@@ -42,14 +53,11 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
    * used to load the adblocker faster.
    */
   private async persistToCache(blocker: PuppeteerBlocker): Promise<void> {
-    if (this.opts.cacheDir !== undefined) {
-      this.debug('persist to cache')
-      await new Promise(resolve => mkdirp(this.opts.cacheDir, resolve))
-      await fs.writeFile(
-        path.join(this.opts.cacheDir, 'engine.bin'),
-        blocker.serialize()
-      )
+    if (!this.opts.useCache) {
+      return
     }
+    this.debug('persist to cache', this.engineCacheFile)
+    await fs.writeFile(this.engineCacheFile, blocker.serialize())
   }
 
   /**
@@ -57,14 +65,12 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
    * Otherwise, it throws and we will try to initialize it from remote instead.
    */
   private async loadFromCache(): Promise<PuppeteerBlocker> {
-    if (this.opts.cacheDir === undefined) {
+    if (!this.opts.useCache) {
       throw new Error('caching disabled')
     }
-    this.debug('load from cache')
+    this.debug('load from cache', this.engineCacheFile)
     return PuppeteerBlocker.deserialize(
-      new Uint8Array(
-        await fs.readFile(path.join(this.opts.cacheDir, 'engine.bin'))
-      )
+      new Uint8Array(await fs.readFile(this.engineCacheFile))
     )
   }
 
@@ -75,7 +81,7 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
    * blocker).
    */
   private async loadFromRemote(): Promise<PuppeteerBlocker> {
-    this.debug('load from remote')
+    this.debug('load from remote', { blockTrackers: this.opts.blockTrackers })
     if (this.opts.blockTrackers === true) {
       return PuppeteerBlocker.fromPrebuiltAdsAndTracking(fetch)
     } else {
@@ -91,8 +97,6 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
   async getBlocker(): Promise<PuppeteerBlocker> {
     this.debug('getBlocker', { hasBlocker: !!this.blocker })
     if (this.blocker === undefined) {
-      console.log('blocker undefined')
-
       try {
         this.blocker = await this.loadFromCache()
       } catch (ex) {
