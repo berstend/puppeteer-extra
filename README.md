@@ -28,7 +28,7 @@ We use a [monorepo](https://github.com/berstend/puppeteer-extra) powered by [Ler
 
 This is monorepo is powered by [Lerna](https://github.com/lerna/lerna) and yarn workspaces.
 
-#### Development flow
+#### Initial setup
 
 ```bash
 # Install deps
@@ -37,7 +37,11 @@ yarn
 # Bootstrap the packages in the current Lerna repo.
 # Installs all of their dependencies and links any cross-dependencies.
 yarn bootstrap
+```
 
+#### Development flow
+
+```bash
 # Install debug in all packages
 yarn lerna add debug
 
