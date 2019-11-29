@@ -8,7 +8,7 @@ test('will block ads', async t => {
   const puppeteer = require('puppeteer-extra')
   const adblockerPlugin = AdblockerPlugin({
     blockTrackers: true,
-    cacheDir: '/tmp/puppeteer-extra-plugin-adblocker/cache',
+    cacheDir: '/tmp/puppeteer-extra-plugin-adblocker/cache'
   })
   puppeteer.use(adblockerPlugin)
 
@@ -17,28 +17,25 @@ test('will block ads', async t => {
     headless: true
   })
 
-  // Wait for adblocker to be operational; this is needed because there is
-  // currently no hook which allows to wait for initialization to be complete.
-  await adblockerPlugin.ready();
-  const blocker = await adblockerPlugin.getBlocker();
+  const blocker = await adblockerPlugin.getBlocker()
 
   const page = await browser.newPage()
 
-  let blockedRequests = 0;
+  let blockedRequests = 0
   blocker.on('request-blocked', () => {
-    blockedRequests += 1;
-  });
+    blockedRequests += 1
+  })
 
-  let hiddenAds = 0;
+  let hiddenAds = 0
   blocker.on('style-injected', () => {
-    hiddenAds += 1;
-  });
+    hiddenAds += 1
+  })
 
-  const url = 'https://www.google.com/search?q=rent%20a%20car';
+  const url = 'https://www.google.com/search?q=rent%20a%20car'
   await page.goto(url, { waitUntil: 'networkidle0' })
 
-  t.not(hiddenAds, 0);
-  t.not(blockedRequests, 0);
+  t.not(hiddenAds, 0)
+  t.not(blockedRequests, 0)
 
   await browser.close()
 })

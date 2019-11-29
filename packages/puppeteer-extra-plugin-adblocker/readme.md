@@ -2,6 +2,15 @@
 
 > A [puppeteer-extra](https://github.com/berstend/puppeteer-extra) plugin to block ads and trackers.
 
+## Features
+
+- Extremely efficient adblocker (both in memory usage and raw speed)
+- Pure JavaScript implementation
+- Effectively blocks all types of ads and tracking
+- Small and minimal (only 64KB minified and gzipped)
+
+> Thanks to [@remusao](https://github.com/remusao) for contributing this sweet plugin and [adblocker engine](https://github.com/cliqz-oss/adblocker)! 👏
+
 ## Install
 
 ```bash
@@ -31,21 +40,18 @@ const puppeteer = require('puppeteer-extra')
 // create using puppeteer.
 const adblockerPlugin = require('puppeteer-extra-plugin-adblocker')({
   blockTrackers: true, // default: false
-  cacheDir: '/tmp/cache/puppeteer-extra-plugin-adblocker/', // default: no caching
-});
-puppeteer.use(adblockerPlugin);
+  cacheDir: '/tmp/cache/puppeteer-extra-plugin-adblocker/' // default: no caching
+})
+puppeteer.use(adblockerPlugin)
 
 // puppeteer usage as normal
 puppeteer.launch({ headless: true }).then(async browser => {
-  // Make sure adblocker is ready by the time we create a new page.
-  await adblockerPlugin.ready();
-
   const page = await browser.newPage()
 
   // Visit a page, ads are blocked automatically!
-  await page.goto('https://www.google.com/search?q=rent%20a%20car');
+  await page.goto('https://www.google.com/search?q=rent%20a%20car')
 
-  await page.waitForNavigation();
+  await page.waitForNavigation()
   await page.screenshot({ path: 'response.png', fullPage: true })
   await browser.close()
 })
