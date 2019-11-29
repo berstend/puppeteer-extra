@@ -9,7 +9,7 @@ const debug = require('debug')('puppeteer-extra-plugin:user-data-dir')
 
 const mkdtempAsync = util.promisify(fs.mkdtemp)
 
-const PuppeteerExtraPlugin = require('puppeteer-extra-plugin')
+const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
 /**
  *

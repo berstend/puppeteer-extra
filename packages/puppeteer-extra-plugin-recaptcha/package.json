@@ -49,18 +49,15 @@
   ],
   "devDependencies": {
     "@types/debug": "^4.1.0",
-    "@types/node": "^12.12.12",
+    "@types/node": "^12.12.14",
     "@types/puppeteer": "^2.0.0",
     "ava": "2.4.0",
     "puppeteer": "^2.0.0",
     "puppeteer-extra": "*",
-    "ts-node": "^8.0.2",
+    "ts-node": "^8.5.4",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^9.0.0",
-    "typedoc": "^0.14.2",
-    "typedoc-plugin-markdown": "^1.1.26",
-    "typedoc-plugin-no-inherit": "^1.1.5",
     "typescript": "^3.3.3"
   },
   "dependencies": {
