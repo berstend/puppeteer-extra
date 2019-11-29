@@ -93,7 +93,11 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
   ) {
     this.debug('getRecaptchaSolutions')
     provider = provider || this.opts.provider
-    if (!provider || (!provider.token && !provider.fn)) {
+    if (
+      !provider ||
+      (!provider.token && !provider.fn) ||
+      (provider.token && provider.token === 'XXXXXXX' && !provider.fn)
+    ) {
       throw new Error('Please provide a solution provider to the plugin.')
     }
     let fn = provider.fn
