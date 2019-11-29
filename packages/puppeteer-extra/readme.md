@@ -68,7 +68,7 @@ DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node myscript.js
 ### More examples
 
 <details>
- <summary><strong>TypeScript usage</strong></summary>
+ <summary><strong>TypeScript usage</strong></summary><br/>
 
 ```ts
 import puppeteer from 'puppeteer-extra'
@@ -95,7 +95,7 @@ puppeteer.launch({ headless: false }).then(async browser => {
 </details>
 
 <details>
- <summary><strong>Firefox usage</strong></summary>
+ <summary><strong>Firefox usage</strong></summary><br/>
 
 ```js
 const { addExtra } = require('puppeteer-extra')
@@ -157,7 +157,7 @@ puppeteer.launch({ headless: false }).then(async browser => {
 ## Further info
 
 <details>
- <summary><strong>Contributing</strong></summary>
+ <summary><strong>Contributing</strong></summary><br/>
 
 PRs and new plugins are welcome! 🎉 The plugin API for `puppeteer-extra` is clean and fun to use. Have a look the [PuppeteerExtraPlugin](/packages/puppeteer-extra-plugin) base class documentation to get going and check out the [existing plugins](./packages/) (minimal example is the [anonymize-ua](/packages/puppeteer-extra-plugin-anonymize-ua/index.js) plugin) for reference.
 
@@ -166,7 +166,7 @@ We use a [monorepo](/) powered by [Lerna](https://github.com/lerna/lerna#--use-w
 </details>
 
 <details>
- <summary><strong>Kudos</strong></summary>
+ <summary><strong>Kudos</strong></summary><br/>
 
 - Thanks to [skyiea](https://github.com/skyiea) for [this PR](https://github.com/GoogleChrome/puppeteer/pull/1806) that started the project idea.
 - Thanks to [transitive-bullshit](https://github.com/transitive-bullshit) for [suggesting](https://github.com/berstend/puppeteer-extra/issues/2) a modular plugin design, which was fun to implement.
@@ -174,7 +174,7 @@ We use a [monorepo](/) powered by [Lerna](https://github.com/lerna/lerna#--use-w
 </details>
 
 <details>
- <summary><strong>Compatibility</strong></summary>
+ <summary><strong>Compatibility</strong></summary><br/>
 
 `puppeteer-extra` and all plugins are [tested continously](https://travis-ci.org/berstend/puppeteer-extra) against all relevant NodeJS (v8-v13) and puppeteer versions.
 We never broke compatibility and still support puppeteer down to version 1.6.2 (Released Aug 1, 2018).

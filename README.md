@@ -2,17 +2,29 @@
 
 This is the monorepo for [`puppeteer-extra`](./packages/puppeteer-extra), a modular plugin framework for [`puppeteer`](https://github.com/GoogleChrome/puppeteer). :-)
 
-**For the main documentation, please head over to the [`puppeteer-extra`](./packages/puppeteer-extra) package.**
+🌟 **For the main documentation, please head over to the [`puppeteer-extra`](./packages/puppeteer-extra) package.**
 
 In case you're interested in the available plugins, check out the [packages folder](./packages/).
 
-## Contributing
+## Monorepo
 
-PRs and new plugins are welcome! :tada: The plugin API for `puppeteer-extra` is clean and fun to use. Have a look the [`PuppeteerExtraPlugin`](./packages/puppeteer-extra-plugin) base class documentation to get going and check out the [existing plugins](./packages/) (minimal example is the [anonymize-ua](./packages/puppeteer-extra-plugin-anonymize-ua/index.js) plugin) for reference.
+<p align="center">
+  <img src="https://i.imgur.com/EuqiF5F.png" />
+</p>
+
+<details>
+ <summary><strong>Contributing</strong></summary>
+
+### Contributing
+
+PRs and new plugins are welcome! The plugin API for `puppeteer-extra` is clean and fun to use. Have a look the [`PuppeteerExtraPlugin`](./packages/puppeteer-extra-plugin) base class documentation to get going and check out the [existing plugins](./packages/) (minimal example is the [anonymize-ua](./packages/puppeteer-extra-plugin-anonymize-ua/index.js) plugin) for reference.
 
 We use a [monorepo](https://github.com/berstend/puppeteer-extra) powered by [Lerna](https://github.com/lerna/lerna#--use-workspaces) (and yarn workspaces), [ava](https://github.com/avajs/ava) for testing, the [standard](https://standardjs.com/) style for linting and [JSDoc](http://usejsdoc.org/about-getting-started.html) heavily to auto-generate markdown [documentation](https://github.com/documentationjs/documentation) based on code. :-)
 
-## Lerna
+</details>
+
+<details>
+ <summary><strong>Lerna</strong></summary><br/>
 
 This is monorepo is powered by [Lerna](https://github.com/lerna/lerna) and yarn workspaces.
 
@@ -56,3 +68,5 @@ yarn lernaupdate
 yarn lerna exec "rm -f yarn.lock; rm -rf node_modules; echo 0"
 rm -f yarn.lock &&  rm -rf node_modules && yarn cache clean
 ```
+
+</details>
