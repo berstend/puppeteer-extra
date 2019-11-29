@@ -44,12 +44,13 @@ puppeteer.use(AdblockerPlugin())
 // puppeteer usage as normal
 puppeteer.launch({ headless: true }).then(async browser => {
   const page = await browser.newPage()
-
   // Visit a page, ads are blocked automatically!
   await page.goto('https://www.google.com/search?q=rent%20a%20car')
 
-  await page.waitForNavigation()
+  await page.waitFor(5 * 1000)
   await page.screenshot({ path: 'response.png', fullPage: true })
+
+  console.log(`All done, check the screenshots. ✨`)
   await browser.close()
 })
 ```
