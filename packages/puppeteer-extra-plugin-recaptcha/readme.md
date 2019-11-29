@@ -75,7 +75,7 @@ _Please note:_ You need a provider configured for this plugin to do it's magic. 
 
 ### 2captcha
 
-Currently the only builtin solution provider as it's the cheapest and most reliable, from my experience. If you'd like to throw some free captcha credit my way feel free to [signup here](https://2captcha.com?from=6690177) (affiliate link).
+Currently the only builtin solution provider as it's the cheapest and most reliable, from my experience. If you'd like to throw some free captcha credit my way feel free to [signup here](https://2captcha.com?from=6690177) (referral link, allows me to write automated tests against their API).
 
 - Cost: 1000 reCAPTCHAs for 3 USD
 - Delay: Solving a reCAPTCHA takes between 10 to 60 seconds
