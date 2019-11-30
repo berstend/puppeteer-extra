@@ -1,5 +1,7 @@
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
+import { Frame, Page } from 'puppeteer'
+
 import * as types from './types'
 
 import { RecaptchaContentScript } from './content'
@@ -55,7 +57,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
     })()`
   }
 
-  async findRecaptchas(page: types.Page) {
+  async findRecaptchas(page: Page | Frame) {
     this.debug('findRecaptchas')
     // As this might be called very early while recaptcha is still loading
     // we add some extra waiting logic for developer convenience.
@@ -117,6 +119,12 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
       response.error ||
       response.solutions.find((s: types.CaptchaSolution) => !!s.error)
     this.debug('getRecaptchaSolutions', response)
+    if (response && response.error) {
+      console.warn(
+        'PuppeteerExtraPluginRecaptcha: An error occured during "getRecaptchaSolutions":',
+        response.error
+      )
+    }
     if (this.opts.throwOnError && response.error) {
       throw new Error(response.error)
     }
@@ -124,12 +132,14 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
   }
 
   async enterRecaptchaSolutions(
-    page: types.Page,
+    page: Page | Frame,
     solutions: types.CaptchaSolution[]
   ) {
     this.debug('enterRecaptchaSolutions')
     const evaluateReturn = await page.evaluate(
-      this._generateContentScript('enterRecaptchaSolutions', { solutions })
+      this._generateContentScript('enterRecaptchaSolutions', {
+        solutions
+      })
     )
     const response: types.EnterRecaptchaSolutionsResult = evaluateReturn as any
     response.error = response.error || response.solved.find(s => !!s.error)
@@ -141,7 +151,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
   }
 
   async solveRecaptchas(
-    page: types.Page
+    page: Page | Frame
   ): Promise<types.SolveRecaptchasResult> {
     this.debug('solveRecaptchas')
     const response: types.SolveRecaptchasResult = {
@@ -181,8 +191,9 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
     return response
   }
 
-  async onPageCreated(page: types.Page) {
-    this.debug('onPageCreated')
+  async onPageCreated(page: Page) {
+    this.debug('onPageCreated', page.url())
+
     // Make sure we can run our content script
     await page.setBypassCSP(true)
 
@@ -194,9 +205,24 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
     ) => this.getRecaptchaSolutions(captchas, provider)
     page.enterRecaptchaSolutions = async (solutions: types.CaptchaSolution[]) =>
       this.enterRecaptchaSolutions(page, solutions)
-
     // Add convenience methods that wraps all others
     page.solveRecaptchas = async () => this.solveRecaptchas(page)
+
+    // Add custom methods to potential frames as well
+    page.on('frameattached', frame => {
+      if (!frame) return
+      this.debug('add methods to frame', frame.url())
+      frame.findRecaptchas = async () => this.findRecaptchas(frame)
+      frame.getRecaptchaSolutions = async (
+        captchas: types.CaptchaInfo[],
+        provider?: types.SolutionProvider
+      ) => this.getRecaptchaSolutions(captchas, provider)
+      frame.enterRecaptchaSolutions = async (
+        solutions: types.CaptchaSolution[]
+      ) => this.enterRecaptchaSolutions(frame, solutions)
+      // Add convenience methods that wraps all others
+      frame.solveRecaptchas = async () => this.solveRecaptchas(frame)
+    })
   }
 }
 

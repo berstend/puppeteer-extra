@@ -1,4 +1,5 @@
-import * as Puppeteer from 'puppeteer'
+/// <reference path="./puppeteer-mods.d.ts" />
+// Warn: The above is EXTREMELY important for our custom page mods to be recognized by the end users typescript!
 
 /**
  * Extend window object with recaptcha things
@@ -13,6 +14,7 @@ declare global {
 }
 
 export type RecaptchaPluginPageAdditions = {
+  /** Attempt to find all reCAPTCHAs on this page. */
   findRecaptchas: () => Promise<FindRecaptchasResult>
 
   getRecaptchaSolutions: (
@@ -24,9 +26,9 @@ export type RecaptchaPluginPageAdditions = {
     solutions: CaptchaSolution[]
   ) => Promise<EnterRecaptchaSolutionsResult>
 
+  /** Attempt to detect and solve reCAPTCHAs on this page automatically. 🔮 */
   solveRecaptchas: () => Promise<SolveRecaptchasResult>
 }
-export type Page = Puppeteer.Page & RecaptchaPluginPageAdditions
 
 export interface SolutionProvider {
   id?: string
