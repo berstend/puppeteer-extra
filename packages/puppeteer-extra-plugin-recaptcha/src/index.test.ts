@@ -1,12 +1,17 @@
 import test from 'ava'
 
 import RecaptchaPlugin from './index'
-import * as types from './types'
+// import * as types from './types'
+
+// import { Puppeteer } from './puppeteer-mods'
+
+import { addExtra } from 'puppeteer-extra'
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
 test('will detect captchas', async t => {
-  const puppeteer = require('puppeteer-extra')
+  // const puppeteer = require('puppeteer-extra')
+  const puppeteer = addExtra(require('puppeteer'))
   const recaptchaPlugin = RecaptchaPlugin()
   puppeteer.use(recaptchaPlugin)
 
@@ -14,7 +19,7 @@ test('will detect captchas', async t => {
     args: PUPPETEER_ARGS,
     headless: true
   })
-  const page: types.Page = await browser.newPage()
+  const page = await browser.newPage()
 
   const url = 'https://www.google.com/recaptcha/api2/demo'
   await page.goto(url, { waitUntil: 'networkidle0' })

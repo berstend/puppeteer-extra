@@ -1,5 +1,7 @@
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
+import { Page } from 'puppeteer'
+
 import * as types from './types'
 
 import { RecaptchaContentScript } from './content'
@@ -55,7 +57,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
     })()`
   }
 
-  async findRecaptchas(page: types.Page) {
+  async findRecaptchas(page: Page) {
     this.debug('findRecaptchas')
     // As this might be called very early while recaptcha is still loading
     // we add some extra waiting logic for developer convenience.
@@ -124,12 +126,14 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
   }
 
   async enterRecaptchaSolutions(
-    page: types.Page,
+    page: Page,
     solutions: types.CaptchaSolution[]
   ) {
     this.debug('enterRecaptchaSolutions')
     const evaluateReturn = await page.evaluate(
-      this._generateContentScript('enterRecaptchaSolutions', { solutions })
+      this._generateContentScript('enterRecaptchaSolutions', {
+        solutions
+      })
     )
     const response: types.EnterRecaptchaSolutionsResult = evaluateReturn as any
     response.error = response.error || response.solved.find(s => !!s.error)
@@ -140,9 +144,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
     return response
   }
 
-  async solveRecaptchas(
-    page: types.Page
-  ): Promise<types.SolveRecaptchasResult> {
+  async solveRecaptchas(page: Page): Promise<types.SolveRecaptchasResult> {
     this.debug('solveRecaptchas')
     const response: types.SolveRecaptchasResult = {
       captchas: [],
@@ -181,7 +183,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
     return response
   }
 
-  async onPageCreated(page: types.Page) {
+  async onPageCreated(page: Page) {
     this.debug('onPageCreated')
     // Make sure we can run our content script
     await page.setBypassCSP(true)
