@@ -112,6 +112,36 @@ puppeteer
 
 </details>
 
+<details>
+ <summary><strong>Using with `chrome-aws-lambda`</strong></summary><br/>
+ 
+If you plan to use the extra stealth plugin, you'll need to modify the default args to remove the 
+`--disable-notifications` flag to pass all the tests.
+
+```js
+const chromium = require('chrome-aws-lambda')
+const { addExtra } = require('puppeteer-extra')
+const puppeteerExtra = addExtra(chromium.puppeteer)
+
+const launch = async () => {
+  puppeteerExtra.launch({
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath,
+    headless: chromium.headless,
+  }).then(async browser => {
+    const page = await browser.newPage()
+    await page.goto('https://www.spacejam.com/archive/spacejam/movie/jam.htm')
+    await page.waitFor(10 * 1000)
+    await browser.close()
+  })
+}
+
+launch() // Launch Browser
+```
+
+</details>
+
 ---
 
 ## Plugins
