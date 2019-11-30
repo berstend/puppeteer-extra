@@ -26,9 +26,9 @@ export type RecaptchaPluginPageAdditions = {
     solutions: CaptchaSolution[]
   ) => Promise<EnterRecaptchaSolutionsResult>
 
+  /** Attempt to detect and solve reCAPTCHAs on this page automatically. 🔮 */
   solveRecaptchas: () => Promise<SolveRecaptchasResult>
 }
-// export type Page = Puppeteer.Page & RecaptchaPluginPageAdditions
 
 export interface SolutionProvider {
   id?: string

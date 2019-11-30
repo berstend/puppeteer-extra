@@ -119,6 +119,12 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
       response.error ||
       response.solutions.find((s: types.CaptchaSolution) => !!s.error)
     this.debug('getRecaptchaSolutions', response)
+    if (response && response.error) {
+      console.warn(
+        'PuppeteerExtraPluginRecaptcha: An error occured during "getRecaptchaSolutions":',
+        response.error
+      )
+    }
     if (this.opts.throwOnError && response.error) {
       throw new Error(response.error)
     }

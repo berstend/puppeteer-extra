@@ -20,6 +20,16 @@ yarn add puppeteer puppeteer-extra puppeteer-extra-plugin-recaptcha
 npm install puppeteer puppeteer-extra puppeteer-extra-plugin-recaptcha
 ```
 
+<details>
+ <summary><strong>Changelog</strong></summary>
+
+#### `3.1.4`
+
+- Improved TypeScript experience: I found a way to make your TypeScript compiler automaticallly aware of the additions to the `Page` object (e.g. `page.solveRecaptchas()`).
+- We now print a warning if the provider throws an error (e.g. invalid api key)
+
+</details>
+
 ## Usage
 
 The plugin essentially provides a mighty `page.solveRecaptchas()` method that does everything needed automagically.
@@ -35,7 +45,10 @@ const puppeteer = require('puppeteer-extra')
 const RecaptchaPlugin = require('puppeteer-extra-plugin-recaptcha')
 puppeteer.use(
   RecaptchaPlugin({
-    provider: { id: '2captcha', token: 'XXXXXXX' },
+    provider: {
+      id: '2captcha',
+      token: 'XXXXXXX' // REPLACE THIS WITH YOUR OWN 2CAPTCHA API KEY ⚡
+    },
     visualFeedback: true // colorize reCAPTCHAs (violet = detected, green = solved)
   })
 )
@@ -55,6 +68,49 @@ puppeteer.launch({ headless: true }).then(async browser => {
   await page.screenshot({ path: 'response.png', fullPage: true })
   await browser.close()
 })
+```
+
+<details>
+ <summary><strong>TypeScript usage</strong></summary>
+
+```ts
+import puppeteer from 'puppeteer-extra'
+import RecaptchaPlugin from 'puppeteer-extra-plugin-recaptcha'
+
+puppeteer.use(
+  RecaptchaPlugin({
+    provider: {
+      id: '2captcha',
+      token: 'ENTER_YOUR_2CAPTCHA_API_KEY_HERE'
+    }
+  })
+)
+
+// Puppeteer usage as normal (headless is "false" just for this demo)
+puppeteer.launch({ headless: false }).then(async browser => {
+  const page = await browser.newPage()
+  await page.goto('https://www.google.com/recaptcha/api2/demo')
+
+  // Even this page mod is fully type safe 🎉
+  await page.solveRecaptchas()
+
+  await Promise.all([
+    page.waitForNavigation(),
+    page.click(`#recaptcha-demo-submit`)
+  ])
+  await page.screenshot({ path: 'response.png', fullPage: true })
+  await browser.close()
+})
+```
+
+</details>
+
+<br>
+
+If you'd like to see debug output just run your script like so:
+
+```bash
+DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node myscript.js
 ```
 
 _**Tip:** The recaptcha plugin works really well together with the [stealth plugin](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth)._
