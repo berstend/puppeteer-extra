@@ -1,6 +1,6 @@
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
-import { Page } from 'puppeteer'
+import { Frame, Page } from 'puppeteer'
 
 import * as types from './types'
 
@@ -57,7 +57,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
     })()`
   }
 
-  async findRecaptchas(page: Page) {
+  async findRecaptchas(page: Page | Frame) {
     this.debug('findRecaptchas')
     // As this might be called very early while recaptcha is still loading
     // we add some extra waiting logic for developer convenience.
@@ -132,7 +132,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
   }
 
   async enterRecaptchaSolutions(
-    page: Page,
+    page: Page | Frame,
     solutions: types.CaptchaSolution[]
   ) {
     this.debug('enterRecaptchaSolutions')
@@ -150,7 +150,9 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
     return response
   }
 
-  async solveRecaptchas(page: Page): Promise<types.SolveRecaptchasResult> {
+  async solveRecaptchas(
+    page: Page | Frame
+  ): Promise<types.SolveRecaptchasResult> {
     this.debug('solveRecaptchas')
     const response: types.SolveRecaptchasResult = {
       captchas: [],
@@ -190,7 +192,8 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
   }
 
   async onPageCreated(page: Page) {
-    this.debug('onPageCreated')
+    this.debug('onPageCreated', page.url())
+
     // Make sure we can run our content script
     await page.setBypassCSP(true)
 
@@ -202,9 +205,24 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
     ) => this.getRecaptchaSolutions(captchas, provider)
     page.enterRecaptchaSolutions = async (solutions: types.CaptchaSolution[]) =>
       this.enterRecaptchaSolutions(page, solutions)
-
     // Add convenience methods that wraps all others
     page.solveRecaptchas = async () => this.solveRecaptchas(page)
+
+    // Add custom methods to potential frames as well
+    page.on('frameattached', frame => {
+      if (!frame) return
+      this.debug('add methods to frame', frame.url())
+      frame.findRecaptchas = async () => this.findRecaptchas(frame)
+      frame.getRecaptchaSolutions = async (
+        captchas: types.CaptchaInfo[],
+        provider?: types.SolutionProvider
+      ) => this.getRecaptchaSolutions(captchas, provider)
+      frame.enterRecaptchaSolutions = async (
+        solutions: types.CaptchaSolution[]
+      ) => this.enterRecaptchaSolutions(frame, solutions)
+      // Add convenience methods that wraps all others
+      frame.solveRecaptchas = async () => this.solveRecaptchas(frame)
+    })
   }
 }
 

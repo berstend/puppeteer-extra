@@ -10,8 +10,10 @@ import { RecaptchaPluginPageAdditions } from './types'
 
 declare module 'puppeteer' {
   interface Page extends RecaptchaPluginPageAdditions {}
+  interface Frame extends RecaptchaPluginPageAdditions {}
 }
 
 declare module 'puppeteer-core' {
   interface Page extends RecaptchaPluginPageAdditions {}
+  interface Frame extends RecaptchaPluginPageAdditions {}
 }
