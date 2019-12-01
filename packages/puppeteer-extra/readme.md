@@ -1,6 +1,6 @@
 # puppeteer-extra [![Build Status](https://travis-ci.org/berstend/puppeteer-extra.svg?branch=master)](https://travis-ci.org/berstend/puppeteer-extra) [![npm](https://img.shields.io/npm/v/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra) [![npm](https://img.shields.io/npm/dt/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra) [![npm](https://img.shields.io/npm/l/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra)
 
-> A light-weight wrapper around [`puppeteer`](https://github.com/GoogleChrome/puppeteer) to enable cool [plugins](#plugins) through a clean interface.
+> A light-weight wrapper around [`puppeteer`](https://github.com/GoogleChrome/puppeteer) and [friends](#more-examples) to enable cool [plugins](#plugins) through a clean interface.
 
 <a href="https://github.com/berstend/puppeteer-extra"><img src="https://i.imgur.com/qtlnoQL.png" width="279px" height="187px" align="right" /></a>
 
