@@ -120,6 +120,71 @@ puppeteer
 </details>
 
 <details>
+ <summary><strong>Using with <code>puppeteer-cluster</code></strong></summary><br/>
+
+> [puppeteer-cluster](https://github.com/thomasdondorf/puppeteer-cluster) allows you to create a cluster of puppeteer workers and plays well together with `puppeteer-extra`.
+
+```js
+const { Cluster } = require('puppeteer-cluster')
+const vanillaPuppeteer = require('puppeteer')
+
+const { addExtra } = require('puppeteer-extra')
+const Stealth = require('puppeteer-extra-plugin-stealth')
+const Recaptcha = require('puppeteer-extra-plugin-recaptcha')
+
+async function main() {
+  // Create a custom puppeteer-extra instance using `addExtra`,
+  // so we could create additional ones with different plugin config.
+  const puppeteer = addExtra(vanillaPuppeteer)
+  puppeteer.use(Stealth())
+  puppeteer.use(Recaptcha())
+
+  // Launch cluster with puppeteer-extra
+  const cluster = await Cluster.launch({
+    puppeteer,
+    maxConcurrency: 2,
+    concurrency: Cluster.CONCURRENCY_CONTEXT
+  })
+
+  // Define task handler
+  await cluster.task(async ({ page, data: url }) => {
+    await page.goto(url)
+
+    const { hostname } = new URL(url)
+    const { captchas } = await page.findRecaptchas()
+    console.log(`Found ${captchas.length} captcha on ${hostname}`)
+
+    await page.screenshot({ path: `${hostname}.png`, fullPage: true })
+  })
+
+  // Queue any number of tasks
+  cluster.queue('https://bot.sannysoft.com')
+  cluster.queue('https://www.google.com/recaptcha/api2/demo')
+  cluster.queue('http://www.wikipedia.org/')
+
+  await cluster.idle()
+  await cluster.close()
+  console.log(`All done, check the screenshots. ✨`)
+}
+
+// Let's go
+main().catch(console.warn)
+```
+
+For using with TypeScript, just change your imports to:
+
+```ts
+import { Cluster } from 'puppeteer-cluster'
+import vanillaPuppeteer from 'puppeteer'
+
+import { addExtra } from 'puppeteer-extra'
+import Stealth from 'puppeteer-extra-plugin-stealth'
+import Recaptcha from 'puppeteer-extra-plugin-recaptcha'
+```
+
+</details>
+
+<details>
  <summary><strong>Using with <code>chrome-aws-lambda</code></strong></summary><br/>
 
 > If you plan to use [chrome-aws-lambda](https://github.com/alixaxel/chrome-aws-lambda) with the [`stealth`](/packages/puppeteer-extra-plugin-stealth) plugin, you'll need to modify the default args to remove the
