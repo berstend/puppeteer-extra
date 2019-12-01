@@ -162,7 +162,7 @@ launch() // Launch Browser
 #### 🆕 [`puppeteer-extra-plugin-adblocker`](/packages/puppeteer-extra-plugin-adblocker)
 
 - Very fast & efficient blocker for ads and trackers. Reduces bandwidth & load times.
-- Thanks to [@remusao](https://github.com/remusao) for contributing this sweet plugin 👏
+- Thanks to [@remusao](https://github.com/remusao) for contributing this plugin 👏
 
 #### 🏴 [`puppeteer-extra-plugin-recaptcha`](/packages/puppeteer-extra-plugin-recaptcha)
 
