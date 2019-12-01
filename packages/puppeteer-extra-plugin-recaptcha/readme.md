@@ -23,7 +23,12 @@ npm install puppeteer puppeteer-extra puppeteer-extra-plugin-recaptcha
 <details>
  <summary><strong>Changelog</strong></summary>
 
-#### `3.1.5`
+##### `3.1.6`
+
+- We'll now add our custom methods to any existing pages and frames in the browser instance.
+- Fixed reference import path for our ambient declarations.
+
+##### `3.1.5`
 
 - Solving reCAPTCHAs in frames is now supported as well, if need be:
 
@@ -33,7 +38,7 @@ for (const frame of page.mainFrame().childFrames()) {
 }
 ```
 
-#### `3.1.4`
+##### `3.1.4`
 
 - Improved TypeScript experience: I found a way to make your TypeScript compiler automatically aware of the additions to the `Page` and `Frame` object (e.g. `page.solveRecaptchas()`).
 - We now print a warning if the provider throws an error (e.g. invalid api key)

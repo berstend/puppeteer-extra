@@ -8258,6 +8258,17 @@ replace-ext@1.0.0, replace-ext@^1.0.0:
   resolved "https://registry.yarnpkg.com/replace-ext/-/replace-ext-1.0.0.tgz#de63128373fcbf7c3ccfa4de5a480c45a67958eb"
   integrity sha1-3mMSg3P8v3w8z6TeWkgMRaZ5WOs=
 
+replace-in-files-cli@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/replace-in-files-cli/-/replace-in-files-cli-0.3.0.tgz#f8ad64d1ad9906c233541d516469153a5dddf78f"
+  integrity sha512-u1/EIu8yT7ZqHTuBwEJ0ZPWyMxfC3sYoRk1O0CAebKLgnbfV6z4Ax9HAITJZDGA/1NWyAuqXOTH/1jWv9VWKtg==
+  dependencies:
+    arrify "^2.0.1"
+    escape-string-regexp "^2.0.0"
+    globby "^10.0.1"
+    meow "^5.0.0"
+    write-file-atomic "^3.0.0"
+
 request@^2.87.0:
   version "2.88.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.88.0.tgz#9c2fca4f7d35b592efe57c7f0a55e81052124fef"

@@ -5,6 +5,7 @@
     "module": "es2015",
     "moduleResolution": "node",
     "lib": ["es2015", "es2016", "es2017", "dom"],
+    // "noResolve": true, // Important: Otherwise TS would rewrite our ambient d.ts file locations (see: yarn copy-dts) :(
     "sourceMap": true,
     "declaration": true,
     "allowSyntheticDefaultImports": true,
