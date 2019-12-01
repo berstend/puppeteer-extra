@@ -97,6 +97,50 @@ puppeteer
 </details>
 
 <details>
+ <summary><strong>Multiple puppeteers with different plugins</strong></summary><br/>
+
+```js
+const vanillaPuppeteer = require("puppeteer")
+
+const { addExtra } = require("puppeteer-extra")
+const AnonymizeUA = require("puppeteer-extra-plugin-anonymize-ua")
+
+async function main() {
+  const pptr1 = addExtra(vanillaPuppeteer)
+  pptr1.use(
+    AnonymizeUA({
+      customFn: ua => "Hello1/" + ua.replace("Chrome", "Beer")
+    })
+  )
+
+  const pptr2 = addExtra(vanillaPuppeteer)
+  pptr2.use(
+    AnonymizeUA({
+      customFn: ua => "Hello2/" + ua.replace("Chrome", "Beer")
+    })
+  )
+
+  await checkUserAgent(pptr1)
+  await checkUserAgent(pptr2)
+}
+
+main()
+
+async function checkUserAgent(pptr) {
+  const browser = await pptr.launch({ headless: true })
+  const page = await browser.newPage()
+  await page.goto("https://httpbin.org/headers", {
+    waitUntil: "domcontentloaded"
+  })
+  const content = await page.content()
+  console.log(content)
+  await browser.close()
+}
+```
+
+</details>
+
+<details>
  <summary><strong>Using with <code>puppeteer-firefox</code></strong></summary><br/>
 
 > [puppeteer-firefox](https://github.com/puppeteer/puppeteer/tree/master/experimental/puppeteer-firefox) is still new and experimental, you can follow it's progress [here](https://aslushnikov.github.io/ispuppeteerfirefoxready/).
