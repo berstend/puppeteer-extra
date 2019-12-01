@@ -70,6 +70,9 @@ DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node myscript.js
 <details>
  <summary><strong>TypeScript usage</strong></summary><br/>
 
+> `puppeteer-extra` and most plugins are written in TS,
+> so you get perfect type support out of the box. :)
+
 ```ts
 import puppeteer from 'puppeteer-extra'
 
@@ -94,9 +97,13 @@ puppeteer
 </details>
 
 <details>
- <summary><strong>Firefox usage</strong></summary><br/>
+ <summary><strong>Using with <code>puppeteer-firefox</code></strong></summary><br/>
+
+> [puppeteer-firefox](https://github.com/puppeteer/puppeteer/tree/master/experimental/puppeteer-firefox) is still new and experimental, you can follow it's progress [here](https://aslushnikov.github.io/ispuppeteerfirefoxready/).
 
 ```js
+// Any puppeteer API-compatible puppeteer implementation
+// or version can be augmented with `addExtra`.
 const { addExtra } = require('puppeteer-extra')
 const puppeteer = addExtra(require('puppeteer-firefox'))
 
@@ -113,10 +120,10 @@ puppeteer
 </details>
 
 <details>
- <summary><strong>Using with `chrome-aws-lambda`</strong></summary><br/>
- 
-If you plan to use the extra stealth plugin, you'll need to modify the default args to remove the 
-`--disable-notifications` flag to pass all the tests.
+ <summary><strong>Using with <code>chrome-aws-lambda</code></strong></summary><br/>
+
+> If you plan to use [chrome-aws-lambda](https://github.com/alixaxel/chrome-aws-lambda) with the [`stealth`](/packages/puppeteer-extra-plugin-stealth) plugin, you'll need to modify the default args to remove the
+> `--disable-notifications` flag to pass all the tests.
 
 ```js
 const chromium = require('chrome-aws-lambda')
@@ -124,17 +131,19 @@ const { addExtra } = require('puppeteer-extra')
 const puppeteerExtra = addExtra(chromium.puppeteer)
 
 const launch = async () => {
-  puppeteerExtra.launch({
-    args: chromium.args,
-    defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath,
-    headless: chromium.headless,
-  }).then(async browser => {
-    const page = await browser.newPage()
-    await page.goto('https://www.spacejam.com/archive/spacejam/movie/jam.htm')
-    await page.waitFor(10 * 1000)
-    await browser.close()
-  })
+  puppeteerExtra
+    .launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath,
+      headless: chromium.headless
+    })
+    .then(async browser => {
+      const page = await browser.newPage()
+      await page.goto('https://www.spacejam.com/archive/spacejam/movie/jam.htm')
+      await page.waitFor(10 * 1000)
+      await browser.close()
+    })
 }
 
 launch() // Launch Browser
