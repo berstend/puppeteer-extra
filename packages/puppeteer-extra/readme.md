@@ -27,7 +27,7 @@ const puppeteer = require('puppeteer-extra')
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 puppeteer.use(StealthPlugin())
 
-// Add adblocker plugin to efficiently block all ads and trackers (saves bandwidth!)
+// Add adblocker plugin to block all ads and trackers (saves bandwidth)
 const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker')
 puppeteer.use(AdblockerPlugin({ blockTrackers: true }))
 
