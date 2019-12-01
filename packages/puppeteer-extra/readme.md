@@ -216,6 +216,35 @@ launch() // Launch Browser
 
 </details>
 
+<details>
+ <summary><strong>Using with <code>Kikobeats/browserless</code></strong></summary><br/>
+
+> [Kikobeats/browserless](https://github.com/Kikobeats/browserless) is a puppeteer-like Node.js library for interacting with Headless production scenarios.
+
+```js
+const puppeteer = require('puppeteer-extra')
+const StealthPlugin = require('puppeteer-extra-plugin-stealth')
+puppeteer.use(StealthPlugin())
+
+const browserless = require('browserless')({ puppeteer })
+
+const saveBufferToFile = (buffer, fileName) => {
+  const wstream = require('fs').createWriteStream(fileName)
+  wstream.write(buffer)
+  wstream.end()
+}
+
+browserless
+  .screenshot('https://bot.sannysoft.com', { device: 'iPhone 6' })
+  .then(buffer => {
+    const fileName = 'screenshot.png'
+    saveBufferToFile(buffer, fileName)
+    console.log(`your screenshot is here: `, fileName)
+  })
+```
+
+</details>
+
 ---
 
 ## Plugins
