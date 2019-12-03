@@ -27,7 +27,7 @@ test('should have the public child class members', async t => {
   t.true(childClassMembers.includes('defaults'))
   t.true(childClassMembers.includes('availableEvasions'))
   t.true(childClassMembers.includes('enabledEvasions'))
-  t.true(childClassMembers.length === 6)
+  t.is(childClassMembers.length, 7)
 })
 
 test('should have opts with default values', async t => {

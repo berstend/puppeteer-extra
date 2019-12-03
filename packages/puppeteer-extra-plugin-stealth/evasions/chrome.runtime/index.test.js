@@ -24,5 +24,4 @@ test('stealth: is chrome true', async t => {
   )
   t.is(hasChrome, true)
   t.true(chrome instanceof Object)
-  t.deepEqual(chrome.runtime, {})
 })

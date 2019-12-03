@@ -31,6 +31,11 @@
     "headless",
     "pupeteer"
   ],
+  "ava": {
+    "files": [
+      "!test/util.js"
+    ]
+  },
   "devDependencies": {
     "ava": "2.4.0",
     "documentation-markdown-themes": "^12.1.5",

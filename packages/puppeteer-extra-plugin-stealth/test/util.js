@@ -9,23 +9,6 @@ const getFingerPrintFromPage = async page => {
 
 const dummyHTMLPath = require('path').join(__dirname, './fixtures/dummy.html')
 
-// const getBrowser = async puppeteer => {
-//   const browser = await puppeteer.launch({ headless: true })
-//   const page = await browser.newPage()
-
-//   await page.evaluateOnNewDocument(() => {
-//     // eslint-disable-next-line
-//     Object.defineProperty(HTMLIFrameElement.prototype, 'contentWindow', {
-//       get: function() {
-//         return window
-//       }
-//     })
-//   })
-
-//   await page.goto('file://' + dummyHTMLPath)
-//   return { browser, page }
-// }
-
 const getFingerPrint = async (puppeteer, pageFn) => {
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
@@ -47,16 +30,10 @@ const getVanillaFingerPrint = async pageFn =>
 const getStealthFingerPrint = async (Plugin, pageFn) =>
   getFingerPrint(addExtra(vanillaPuppeteer).use(Plugin()), pageFn)
 
-// const getVanillaBrowser = async () => getBrowser(vanillaPuppeteer)
-// const getStealthBrowser = async Plugin =>
-//   getBrowser(addExtra(vanillaPuppeteer).use(Plugin()))
-
 module.exports = {
   getVanillaFingerPrint,
   getStealthFingerPrint,
   dummyHTMLPath,
   vanillaPuppeteer,
   addExtra
-  // getVanillaBrowser,
-  // getStealthBrowser
 }
