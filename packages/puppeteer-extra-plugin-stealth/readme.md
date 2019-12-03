@@ -91,7 +91,7 @@ If something new comes up or you experience a problem, please do your homework a
 
 #### `v2.4.0`
 
-Let's ring the bell for round 2 in this cat and mouse fight :)
+Let's ring the bell for round 2 in this cat and mouse fight 😄
 
 - New: All evasions now have a specific before and after test to make make this whole topic less voodoo
 - New: `media.codecs` - we spoof the presence of proprietary codecs in Chromium now
@@ -138,7 +138,9 @@ Let's ring the bell for round 2 in this cat and mouse fight :)
 </tr>
 </table>
 
-Tests have been done using [this test site](https://bot.sannysoft.com/) and [these scripts](./stealthtests/). Note: The `MQ_SCREEN` test is broken on their page (will fail in regular Chrome as well).
+> Note: The `MQ_SCREEN` test is broken on their page (will fail in regular Chrome as well).
+
+Tests have been done using [this test site](https://bot.sannysoft.com/) and [these scripts](./stealthtests/).
 
 #### Improved reCAPTCHA v3 scores
 
