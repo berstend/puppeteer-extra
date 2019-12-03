@@ -5,9 +5,8 @@ const screenshotPath = path.join(__dirname, '_results', `${scriptName}.png`)
 const puppeteer = require('puppeteer-extra')
 const pluginStealth = require('puppeteer-extra-plugin-stealth')
 
-puppeteer.use(pluginStealth())
-
 async function main() {
+  puppeteer.use(pluginStealth())
   console.log('start', scriptName)
   const browser = await puppeteer.launch({ headless: false })
 

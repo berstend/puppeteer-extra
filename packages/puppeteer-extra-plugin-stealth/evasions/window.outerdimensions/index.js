@@ -35,6 +35,7 @@ class Plugin extends PuppeteerExtraPlugin {
     if (!('defaultViewport' in options)) {
       options.defaultViewport = null
     }
+    return options
   }
 }
 

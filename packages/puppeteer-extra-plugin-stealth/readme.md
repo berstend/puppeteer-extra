@@ -2,7 +2,9 @@
 
 > A plugin for [puppeteer-extra](https://github.com/berstend/puppeteer-extra) to prevent detection.
 
-### Install
+<p align="center"><img src="https://i.imgur.com/q2xBjqH.png" /></p>
+
+## Install
 
 ```bash
 yarn add puppeteer-extra-plugin-stealth
@@ -18,7 +20,7 @@ yarn add puppeteer puppeteer-extra puppeteer-extra-plugin-stealth
 npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth
 ```
 
-### Usage
+## Usage
 
 ```js
 // puppeteer-extra is a drop-in replacement for puppeteer,
@@ -26,21 +28,73 @@ npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth
 const puppeteer = require('puppeteer-extra')
 
 // add stealth plugin and use defaults (all evasion techniques)
-const pluginStealth = require('puppeteer-extra-plugin-stealth')
-puppeteer.use(pluginStealth())
+const StealthPlugin = require('puppeteer-extra-plugin-stealth')
+puppeteer.use(StealthPlugin())
 
 // puppeteer usage as normal
 puppeteer.launch({ headless: true }).then(async browser => {
+  console.log('Running tests..')
   const page = await browser.newPage()
-  await page.setViewport({ width: 800, height: 600 })
   await page.goto('https://bot.sannysoft.com')
   await page.waitFor(5000)
   await page.screenshot({ path: 'testresult.png', fullPage: true })
   await browser.close()
+  console.log(`All done, check the screenshot. ✨`)
 })
 ```
 
+<details>
+ <summary><strong>TypeScript usage</strong></summary><br/>
+
+> `puppeteer-extra` and most plugins are written in TS,
+> so you get perfect type support out of the box. :)
+
+```ts
+import puppeteer from 'puppeteer-extra'
+import StealthPlugin from 'puppeteer-extra-plugin-stealth'
+
+puppeteer
+  .use(StealthPlugin())
+  .launch({ headless: true })
+  .then(async browser => {
+    const page = await browser.newPage()
+    await page.goto('https://bot.sannysoft.com')
+    await page.waitFor(5000)
+    await page.screenshot({ path: 'stealth.png', fullPage: true })
+    await browser.close()
+  })
+```
+
+> Please check this [wiki](https://github.com/berstend/puppeteer-extra/wiki/TypeScript-usage) entry in case you have TypeScript related import issues.
+
+</details><br>
+
+Please check out the [main documentation](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra) to learn more about `puppeteer-extra` (Firefox usage, other Plugins, etc).
+
+## Status
+
+_December 2019_
+
+- ✅ **`puppeeteer-extra` with stealth passes all public bot tests.**
+
+Please note: I consider this a friendly competition in a rather interesting cat and mouse game. If the other team (👋) wants to detect headless chromium there are still ways to do that (at least I noticed a few, which I'll tackle in future updates).
+
+It's probably impossible to prevent all ways to detect headless chromium, but it should be possible to make it so difficult that it becomes cost-prohibitive or triggers too many false-positives to be feasible.
+
+If something new comes up or you experience a problem, please do your homework and create a PR in a respectful way (this is Github, not reddit) or I might not be motivated to help. :)
+
 ## Changelog
+
+### `v2.4.0`
+
+Let's ring the bell for round 2 in this cat and mouse fight :)
+
+- New: All evasions now have a specific before and after test to make make this whole topic less voodoo
+- New: `media.codecs` - we spoof the presence of proprietary codecs in Chromium now
+- New & improved: `iframe.contentWindow` - Found a way to fix `srcdoc` frame based detection without breaking recaptcha inline popup & other iframes (please report any issues)
+- New: `accept-language` - Adds a missing `Accept-Language` header in headless (capitalized correctly, `page.setExtraHTTPHeaders` is all lowercase which can be detected)
+- Improved: `chrome.runtime` - More extensive mocking of the chrome object
+- Feat: All [fpscanner](https://antoinevastel.com/bots/) tests are now being passed, All [intoli](https://bot.sannysoft.com) tests are being passed, [`areyouheadless`](https://arh.antoinevastel.com/bots/areyouheadless) is now being passed
 
 ### `v2.1.2`
 
@@ -77,7 +131,7 @@ puppeteer.launch({ headless: true }).then(async browser => {
 </tr>
 </table>
 
-Tests have been done using [this test site](https://bot.sannysoft.com/) and [these scripts](./stealthtests/).
+Tests have been done using [this test site](https://bot.sannysoft.com/) and [these scripts](./stealthtests/). Note: The `MQ_SCREEN` test is broken on their page (will fail in regular Chrome as well).
 
 #### Improved reCAPTCHA v3 scores
 

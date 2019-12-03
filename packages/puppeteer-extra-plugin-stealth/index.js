@@ -80,8 +80,11 @@ class StealthPlugin extends PuppeteerExtraPlugin {
 
   get defaults() {
     const availableEvasions = new Set([
+      'accept-language',
       'chrome.runtime',
       'console.debug',
+      'iframe.contentWindow',
+      'media.codecs',
       'navigator.languages',
       'navigator.permissions',
       'navigator.webdriver',
@@ -146,6 +149,11 @@ class StealthPlugin extends PuppeteerExtraPlugin {
    */
   set enabledEvasions(evasions) {
     this.opts.enabledEvasions = evasions
+  }
+
+  onBrowser(browser) {
+    // Increase event emitter listeners to prevent MaxListenersExceededWarning
+    browser.setMaxListeners(30)
   }
 }
 
