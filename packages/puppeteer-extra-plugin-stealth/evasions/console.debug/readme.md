@@ -6,7 +6,7 @@
 
 - [class: Plugin](#class-plugin)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/a769d9e78174808c217a71dc5a2261129b5b9127/packages/puppeteer-extra-plugin-stealth/evasions/console.debug/index.js#L8-L24)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/6d452681fe832a6d864616ee8fa79134ebd19be7/packages/puppeteer-extra-plugin-stealth/evasions/console.debug/index.js#L8-L24)
 
 - `opts` (optional, default `{}`)
 

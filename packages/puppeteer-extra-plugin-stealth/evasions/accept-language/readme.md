@@ -6,7 +6,7 @@
 
 - [class: Plugin](#class-plugin)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/a769d9e78174808c217a71dc5a2261129b5b9127/packages/puppeteer-extra-plugin-stealth/evasions/accept-language/index.js#L37-L136)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/6d452681fe832a6d864616ee8fa79134ebd19be7/packages/puppeteer-extra-plugin-stealth/evasions/accept-language/index.js#L39-L138)
 
 - `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Options (optional, default `{}`)
   - `opts.locale` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The locale to use in `Accept-Language` (default: `en-US,en;q=0.9`)
@@ -31,9 +31,11 @@ const puppeteer = require('puppeteer-extra')
 
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 const stealth = StealthPlugin()
-stealth.enabledEvasions.delete('accept-language') // Remove a specific stealth plugin from the default set
+// Remove this specific stealth plugin from the default set
+stealth.enabledEvasions.delete('accept-language')
 puppeteer.use(stealth)
 
+// Stealth plugins are just regular `puppeteer-extra` plugins and can be added as such
 const AcceptLanguagePlugin = require('puppeteer-extra-plugin-stealth/evasions/accept-language')
 const acceptLanguage = AcceptLanguagePlugin({ locale: 'de-DE,de;q=0.9' }) // Custom locale
 puppeteer.use(acceptLanguage)

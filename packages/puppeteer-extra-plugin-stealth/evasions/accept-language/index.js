@@ -22,9 +22,11 @@ const userInfo = msg => {
  *
  * const StealthPlugin = require("puppeteer-extra-plugin-stealth")
  * const stealth = StealthPlugin()
- * stealth.enabledEvasions.delete("accept-language") // Remove a specific stealth plugin from the default set
+ * // Remove this specific stealth plugin from the default set
+ * stealth.enabledEvasions.delete("accept-language")
  * puppeteer.use(stealth)
  *
+ * // Stealth plugins are just regular `puppeteer-extra` plugins and can be added as such
  * const AcceptLanguagePlugin = require("puppeteer-extra-plugin-stealth/evasions/accept-language")
  * const acceptLanguage = AcceptLanguagePlugin({ locale: "de-DE,de;q=0.9" }) // Custom locale
  * puppeteer.use(acceptLanguage)
