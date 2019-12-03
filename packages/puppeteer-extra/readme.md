@@ -73,6 +73,7 @@ DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node myscript.js
 > `puppeteer-extra` and most plugins are written in TS,
 > so you get perfect type support out of the box. :)
 
+
 ```ts
 import puppeteer from 'puppeteer-extra'
 
@@ -91,6 +92,8 @@ puppeteer
     await browser.close()
   })
 ```
+
+> Please check this [wiki](https://github.com/berstend/puppeteer-extra/wiki/TypeScript-usage) entry in case you have TypeScript related import issues.
 
 ![typings](https://i.imgur.com/bNtuTOt.png 'Typings')
 
