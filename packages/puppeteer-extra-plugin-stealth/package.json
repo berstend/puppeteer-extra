@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-stealth",
-  "version": "2.3.2",
+  "version": "2.4.0",
   "description": "Stealth mode: Applies various techniques to make detection of headless puppeteer harder.",
   "main": "index.js",
   "typings": "index.d.ts",
@@ -47,7 +47,7 @@
   "dependencies": {
     "debug": "^4.1.1",
     "puppeteer-extra-plugin": "^3.1.2",
-    "puppeteer-extra-plugin-anonymize-ua": "^2.2.2"
+    "puppeteer-extra-plugin-anonymize-ua": "^2.2.5"
   },
   "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }
