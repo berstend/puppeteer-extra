@@ -4466,6 +4466,18 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
+fpcollect@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/fpcollect/-/fpcollect-1.0.4.tgz#3401571016ea48d0bee8dcaf34ccf3671896ac85"
+  integrity sha512-LFt5vtCWRFTin/RnNOGwrwtsI1xGfJzpMvFZzYfqkQ15sScS4qo0wa2SX6j8j7O4KAASJkvM3XPx/KPZV75jcA==
+
+fpscanner@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/fpscanner/-/fpscanner-0.1.5.tgz#f4eb26cd5414f3eff2a0714726691de1a5c39e9a"
+  integrity sha512-DNHW1xDndAj1WEfmaXwSnT/CRYenoB5unfJyYY+aFBGPjXb5zdbWPLUeMnskci0naZBxIcG7aF/LMl4sFVwi9Q==
+  dependencies:
+    ua-parser-js "^0.7.18"
+
 fragment-cache@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/fragment-cache/-/fragment-cache-0.2.1.tgz#4290fad27f13e89be7f33799c6bc5a0abfff0d19"
@@ -4529,7 +4541,7 @@ fs.realpath@^1.0.0:
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
   integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
 
-fsevents@~2.1.1:
+fsevents@^2.1.2, fsevents@~2.1.1:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.1.2.tgz#4c0a1fb34bc68e543b4b82a9ec392bfbda840805"
   integrity sha512-R4wDiBwZ0KzpgOWetKDug1FZcYhqYnUYKtfZYt4mD5SBz76q0KR4Q9o7GIPamsVPGmW3EYPPJ0dOOjvx32ldZA==
@@ -9551,6 +9563,11 @@ typescript@^3.3.3, typescript@^3.7.2:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.2.tgz#27e489b95fa5909445e9fef5ee48d81697ad18fb"
   integrity sha512-ml7V7JfiN2Xwvcer+XAf2csGO1bPBdRbFCkYBczNZggrBZ9c7G3riSUeJmqEU5uOtXNPMhE3n+R4FA/3YOAWOQ==
+
+ua-parser-js@^0.7.18:
+  version "0.7.20"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.20.tgz#7527178b82f6a62a0f243d1f94fd30e3e3c21098"
+  integrity sha512-8OaIKfzL5cpx8eCMAhhvTlft8GYF8b2eQr6JkCyVdrgjcytyOmPCXrqXFcUnhonRpLlh5yxEZVohm6mzaowUOw==
 
 uglify-js@^3.1.4:
   version "3.7.0"
