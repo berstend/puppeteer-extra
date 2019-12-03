@@ -69,7 +69,7 @@ puppeteer
 
 </details><br>
 
-Please check out the [main documentation](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra) to learn more about `puppeteer-extra` (Firefox usage, other Plugins, etc).
+Please check out the [main documentation](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra) to learn more about `puppeteer-extra` (AWS and Firefox usage, other Plugins, etc).
 
 ## Status
 
@@ -85,7 +85,11 @@ If something new comes up or you experience a problem, please do your homework a
 
 ## Changelog
 
-### `v2.4.0`
+#### `v2.4.1`
+
+- Improved: `accept-language` - More robust and it's now possible to [set a custom locale](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth/evasions/accept-language#readme) if needed.
+
+#### `v2.4.0`
 
 Let's ring the bell for round 2 in this cat and mouse fight :)
 
@@ -96,12 +100,15 @@ Let's ring the bell for round 2 in this cat and mouse fight :)
 - Improved: `chrome.runtime` - More extensive mocking of the chrome object
 - Feat: All [fpscanner](https://antoinevastel.com/bots/) tests are now being passed, All [intoli](https://bot.sannysoft.com) tests are being passed, [`areyouheadless`](https://arh.antoinevastel.com/bots/areyouheadless) is now being passed
 
-### `v2.1.2`
+<details>
+ <summary><code>v2.1.2</code></summary><br/>
 
 - Improved: `navigator.plugins` - we fully emulate plugins/mimetypes in headless now 🎉
 - New: `webgl.vendor` - is otherwise set to "Google" in headless
 - New: `window.outerdimensions` - fix missing window.outerWidth/outerHeight and viewport
 - Fixed: `navigator.webdriver` now returns undefined instead of false
+
+</details>
 
 ## Test results (red is bad)
 
@@ -165,7 +172,7 @@ _**Tip:** Have a look at the [recaptcha plugin](https://github.com/berstend/pupp
   - [.enabledEvasions](#enabledevasions)
 - [defaultExport(opts?)](#defaultexportopts)
 
-### class: [StealthPlugin](https://github.com/berstend/puppeteer-extra/blob/17a42c3302ba1e7b446097b9aa2dd886ea6c8ef6/packages/puppeteer-extra-plugin-stealth/index.js#L72-L158)
+### class: [StealthPlugin](https://github.com/berstend/puppeteer-extra/blob/a769d9e78174808c217a71dc5a2261129b5b9127/packages/puppeteer-extra-plugin-stealth/index.js#L72-L158)
 
 - `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Options (optional, default `{}`)
   - `opts.enabledEvasions` **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>?** Specify which evasions to use (by default all)
@@ -243,7 +250,7 @@ puppeteer.use(require('puppeteer-extra-plugin-stealth')())
 
 ---
 
-#### .[availableEvasions](https://github.com/berstend/puppeteer-extra/blob/17a42c3302ba1e7b446097b9aa2dd886ea6c8ef6/packages/puppeteer-extra-plugin-stealth/index.js#L126-L128)
+#### .[availableEvasions](https://github.com/berstend/puppeteer-extra/blob/a769d9e78174808c217a71dc5a2261129b5b9127/packages/puppeteer-extra-plugin-stealth/index.js#L126-L128)
 
 Type: **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>**
 
@@ -261,7 +268,7 @@ puppeteer.use(pluginStealth)
 
 ---
 
-#### .[enabledEvasions](https://github.com/berstend/puppeteer-extra/blob/17a42c3302ba1e7b446097b9aa2dd886ea6c8ef6/packages/puppeteer-extra-plugin-stealth/index.js#L143-L145)
+#### .[enabledEvasions](https://github.com/berstend/puppeteer-extra/blob/a769d9e78174808c217a71dc5a2261129b5b9127/packages/puppeteer-extra-plugin-stealth/index.js#L143-L145)
 
 Type: **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>**
 
@@ -280,7 +287,7 @@ puppeteer.use(pluginStealth)
 
 ---
 
-### [defaultExport(opts?)](https://github.com/berstend/puppeteer-extra/blob/17a42c3302ba1e7b446097b9aa2dd886ea6c8ef6/packages/puppeteer-extra-plugin-stealth/index.js#L166-L166)
+### [defaultExport(opts?)](https://github.com/berstend/puppeteer-extra/blob/a769d9e78174808c217a71dc5a2261129b5b9127/packages/puppeteer-extra-plugin-stealth/index.js#L166-L166)
 
 - `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Options
   - `opts.enabledEvasions` **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>?** Specify which evasions to use (by default all)

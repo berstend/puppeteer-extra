@@ -11,11 +11,9 @@ const userInfo = msg => {
  *
  * It's (theoretically) possible to fix that using either `page.setExtraHTTPHeaders` or a `--lang` launch arg.
  * Unfortunately `page.setExtraHTTPHeaders` will lowercase everything and launch args are not always available. :)
+ *
  * As a solution we hook into a deeper level and add the header there in case it's missing (capitalized correctly).
  * A challenge poses the restriction that only a single request listener can modify the request, so we need to take care of that.
- *
- * https://github.com/berstend/puppeteer-extra/issues/51
- * https://github.com/berstend/puppeteer-extra/issues/62
  *
  * It's possible to override the default locale or add additional headers.
  *
@@ -32,8 +30,8 @@ const userInfo = msg => {
  * puppeteer.use(acceptLanguage)
  *
  * @param {Object} [opts] - Options
- * @param {string} [opts.locale] - The locale to use in `Accept-Language`
- * @param {Object} [opts.extraHeaders] - Any other headers you would like to add to every request
+ * @param {string} [opts.locale] - The locale to use in `Accept-Language` (default: `en-US,en;q=0.9`)
+ * @param {Object} [opts.extraHeaders] - Any other headers you would like to add to every request (default: `{}`)
  *
  */
 class Plugin extends PuppeteerExtraPlugin {

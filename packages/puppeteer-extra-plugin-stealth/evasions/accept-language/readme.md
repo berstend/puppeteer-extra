@@ -6,9 +6,11 @@
 
 - [class: Plugin](#class-plugin)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/17a42c3302ba1e7b446097b9aa2dd886ea6c8ef6/packages/puppeteer-extra-plugin-stealth/evasions/accept-language/index.js#L16-L46)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/a769d9e78174808c217a71dc5a2261129b5b9127/packages/puppeteer-extra-plugin-stealth/evasions/accept-language/index.js#L37-L136)
 
-- `opts` (optional, default `{}`)
+- `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Options (optional, default `{}`)
+  - `opts.locale` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The locale to use in `Accept-Language` (default: `en-US,en;q=0.9`)
+  - `opts.extraHeaders` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Any other headers you would like to add to every request (default: `{}`)
 
 **Extends: PuppeteerExtraPlugin**
 
@@ -16,9 +18,25 @@ By default puppeteer will not set a `accept-language` header in headless.
 
 It's (theoretically) possible to fix that using either `page.setExtraHTTPHeaders` or a `--lang` launch arg.
 Unfortunately `page.setExtraHTTPHeaders` will lowercase everything and launch args are not always available. :)
-As a solution we hook into the CDP protocol and add the header there in case it's missing (capitalized correctly).
 
-<https://github.com/berstend/puppeteer-extra/issues/51>
-<https://github.com/berstend/puppeteer-extra/issues/62>
+As a solution we hook into a deeper level and add the header there in case it's missing (capitalized correctly).
+A challenge poses the restriction that only a single request listener can modify the request, so we need to take care of that.
+
+It's possible to override the default locale or add additional headers.
+
+Example:
+
+```javascript
+const puppeteer = require('puppeteer-extra')
+
+const StealthPlugin = require('puppeteer-extra-plugin-stealth')
+const stealth = StealthPlugin()
+stealth.enabledEvasions.delete('accept-language') // Remove a specific stealth plugin from the default set
+puppeteer.use(stealth)
+
+const AcceptLanguagePlugin = require('puppeteer-extra-plugin-stealth/evasions/accept-language')
+const acceptLanguage = AcceptLanguagePlugin({ locale: 'de-DE,de;q=0.9' }) // Custom locale
+puppeteer.use(acceptLanguage)
+```
 
 ---

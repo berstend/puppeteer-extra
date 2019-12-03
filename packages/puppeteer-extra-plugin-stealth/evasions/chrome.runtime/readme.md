@@ -6,7 +6,7 @@
 
 - [class: Plugin](#class-plugin)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/17a42c3302ba1e7b446097b9aa2dd886ea6c8ef6/packages/puppeteer-extra-plugin-stealth/evasions/chrome.runtime/index.js#L15-L44)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/a769d9e78174808c217a71dc5a2261129b5b9127/packages/puppeteer-extra-plugin-stealth/evasions/chrome.runtime/index.js#L15-L44)
 
 - `opts` (optional, default `{}`)
 
