@@ -7,7 +7,9 @@ const {
   vanillaPuppeteer,
   addExtra
 } = require('../../test/util')
-const Plugin = require('.')
+// const Plugin = require('.')
+// NOTE: We're using the full plugin for testing here as `iframe.contentWindow` uses data set by `chrome.runtime`
+const Plugin = require('puppeteer-extra-plugin-stealth')
 
 // Fix CI issues with old versions
 const isOldPuppeteerVersion = () => {
@@ -151,6 +153,96 @@ test('stealth: it will cover all frames including srcdoc', async t => {
     t.is(typeof sandboxSOASiframe, 'object')
     t.is(typeof srcdociframe, 'object')
   }
+})
+
+/* global HTMLIFrameElement */
+test('stealth: it will emulate advanved contentWindow features correctly', async t => {
+  // const browser = await vanillaPuppeteer.launch({ headless: false })
+  const browser = await addExtra(vanillaPuppeteer)
+    .use(Plugin())
+    .launch({ headless: true })
+  const page = await browser.newPage()
+
+  await page.goto('file://' + dummyHTMLPath)
+
+  // page.on('console', msg => {
+  //   console.log('Page console: ', msg.text())
+  // })
+
+  const results = await page.evaluate(() => {
+    const results = {}
+
+    const iframe = document.createElement('iframe')
+    iframe.srcdoc = 'page intentionally left blank' // Note: srcdoc
+    document.body.appendChild(iframe)
+
+    const basicIframe = document.createElement('iframe')
+    basicIframe.src = 'data:text/plain;charset=utf-8,foobar'
+    document.body.appendChild(iframe)
+
+    results.descriptorsOK = (() => {
+      // Verify iframe prototype isn't touched
+      const descriptors = Object.getOwnPropertyDescriptors(
+        HTMLIFrameElement.prototype
+      )
+      const str = descriptors.contentWindow.get.toString()
+      return str === `function get contentWindow() { [native code] }`
+    })()
+
+    results.noProxySignature = (() => {
+      return iframe.srcdoc.toString.hasOwnProperty('[[IsRevoked]]') // eslint-disable-line
+    })()
+
+    results.doesExist = (() => {
+      // Verify iframe isn't remapped to main window
+      return !!iframe.contentWindow
+    })()
+
+    results.isNotAClone = (() => {
+      // Verify iframe isn't remapped to main window
+      return iframe.contentWindow !== window
+    })()
+
+    results.hasPlugins = (() => {
+      return iframe.contentWindow.navigator.plugins.length > 0
+    })()
+
+    results.hasSameNumberOfPlugins = (() => {
+      return (
+        window.navigator.plugins.length ===
+        iframe.contentWindow.navigator.plugins.length
+      )
+    })()
+
+    results.SelfIsNotWindow = (() => {
+      return iframe.contentWindow.self !== window
+    })()
+
+    results.SelfIsNotWindowTop = (() => {
+      return iframe.contentWindow.self !== window.top
+    })()
+
+    results.TopIsNotSame = (() => {
+      return iframe.contentWindow.top !== iframe.contentWindow
+    })()
+
+    results.FrameElementMatches = (() => {
+      return iframe.contentWindow.frameElement === iframe
+    })()
+
+    return results
+  })
+
+  await browser.close()
+
+  t.true(results.descriptorsOK)
+  t.true(results.doesExist)
+  t.true(results.isNotAClone)
+  t.true(results.hasPlugins)
+  t.true(results.hasSameNumberOfPlugins)
+  t.true(results.SelfIsNotWindow)
+  t.true(results.SelfIsNotWindowTop)
+  t.true(results.TopIsNotSame)
 })
 
 test('regression: new method will not break recaptcha popup', async t => {

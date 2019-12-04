@@ -1,11 +1,11 @@
 'use strict'
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
-const { getChromeRuntimeMock } = require('../shared')
 
 /**
  * Fix for the HEADCHR_IFRAME detection (iframe.contentWindow.chrome), hopefully this time without breaking iframes.
  * Note: Only `srcdoc` powered iframes cause issues due to a chromium bug:
+ *
  * https://github.com/puppeteer/puppeteer/issues/1106
  */
 class Plugin extends PuppeteerExtraPlugin {
@@ -17,42 +17,80 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/iframe.contentWindow'
   }
 
+  get requirements() {
+    // Make sure `chrome.runtime` has ran, we use data defined by it (e.g. `window.chrome`)
+    return new Set(['runLast'])
+  }
+
   async onPageCreated(page) {
-    await page.evaluateOnNewDocument(
-      args => {
-        try {
-          // Rematerialize serialized functions
-          if (args && args.fns) {
-            for (const fn of Object.keys(args.fns)) {
-              eval(`var ${fn} =  ${args.fns[fn]}`) // eslint-disable-line
+    await page.evaluateOnNewDocument(() => {
+      try {
+        // Adds a contentWindow proxy to the provided iframe element
+        const addContentWindowProxy = iframe => {
+          const contentWindowProxy = {
+            get(target, key) {
+              // Now to the interesting part:
+              // We actually make this thing behave like a regular iframe window,
+              // by intercepting calls to e.g. `.self` and redirect it to the correct thing. :)
+              // That makes it possible for these assertions to be correct:
+              // iframe.contentWindow.self === window.top // must be false
+              if (key === 'self') {
+                return this
+              }
+              // iframe.contentWindow.frameElement === iframe // must be true
+              if (key === 'frameElement') {
+                return iframe
+              }
+              return Reflect.get(target, key)
             }
           }
 
-          const addChromeRuntime = el => {
-            // Adding a contentWindow if not present might not be strictly needed
-            if (!el.contentWindow) {
-              Object.defineProperty(el, 'contentWindow', {
-                configurable: true,
-                value: {}
+          if (!iframe.contentWindow) {
+            const proxy = new Proxy(window, contentWindowProxy)
+            Object.defineProperty(iframe, 'contentWindow', {
+              get() {
+                return proxy
+              },
+              set(newValue) {
+                return newValue // contentWindow is immutable
+              },
+              enumerable: true,
+              configurable: false
+            })
+          }
+        }
+
+        // Handles iframe element creation, augments `srcdoc` property so we can intercept further
+        const handleIframeCreation = (target, thisArg, args) => {
+          const iframe = target.apply(thisArg, args)
+
+          // We need to keep the originals around
+          const _iframe = iframe
+          const _srcdoc = _iframe.srcdoc
+
+          // Add hook for the srcdoc property
+          // We need to be very surgical here to not break other iframes by accident
+          Object.defineProperty(iframe, 'srcdoc', {
+            configurable: true, // Important, so we can reset this later
+            get: function() {
+              return _iframe.srcdoc
+            },
+            set: function(newValue) {
+              addContentWindowProxy(this)
+              // Reset property, the hook is only needed once
+              Object.defineProperty(iframe, 'srcdoc', {
+                configurable: false,
+                writable: false,
+                value: _srcdoc
               })
+              _iframe.srcdoc = newValue
             }
+          })
+          return iframe
+        }
 
-            if (el.contentWindow && !el.contentWindow.chrome) {
-              Object.defineProperty(el.contentWindow, 'chrome', {
-                configurable: true,
-                value: window.chrome ||
-                  getChromeRuntimeMock(el.contentWindow) || {
-                    runtime: {}
-                  }
-              })
-            }
-          }
-
-          // This is sufficient for regular frames but not ones with srcdoc
-          if (window.frameElement) {
-            addChromeRuntime(window.frameElement)
-          }
-
+        // Adds a hook to intercept iframe creation events
+        const addIframeCreationSniffer = () => {
           /* global document */
           const createElement = {
             // Make toString() native
@@ -65,53 +103,24 @@ class Plugin extends PuppeteerExtraPlugin {
               if (!isIframe) {
                 // Everything as usual
                 return target.apply(thisArg, args)
+              } else {
+                return handleIframeCreation(target, thisArg, args)
               }
-
-              const iframe = target.apply(thisArg, args)
-              const _iframe = iframe
-              const _srcdoc = _iframe.srcdoc
-
-              // Add hook for the srcdoc property
-              // We need to be surgical here to not break other iframes by accident
-              Object.defineProperty(iframe, 'srcdoc', {
-                configurable: true, // Important
-                get: function() {
-                  return _iframe.srcdoc
-                },
-                set: function(newValue) {
-                  addChromeRuntime(this)
-
-                  // Reset property, the hook is only needed once
-                  Object.defineProperty(iframe, 'srcdoc', {
-                    configurable: true,
-                    writable: false,
-                    value: _srcdoc
-                  })
-
-                  _iframe.srcdoc = newValue
-                }
-              })
-
-              return iframe
             }
           }
-
           // All this just due to iframes with srcdoc bug
           document.createElement = new Proxy(
             document.createElement,
             createElement
           )
-        } catch (err) {
-          // console.warn(err)
         }
-      },
-      {
-        // Serialize functions
-        fns: {
-          getChromeRuntimeMock: `${getChromeRuntimeMock.toString()}`
-        }
+
+        // Let's go
+        addIframeCreationSniffer()
+      } catch (err) {
+        // console.warn(err)
       }
-    )
+    })
   }
 }
 

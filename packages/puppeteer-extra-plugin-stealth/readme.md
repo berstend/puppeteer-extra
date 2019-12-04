@@ -85,9 +85,11 @@ If something new comes up or you experience a problem, please do your homework a
 
 ## Changelog
 
-#### `v2.4.1`
+#### `v2.4.2` / `v2.4.1`
 
+- Improved: `iframe.contentWindow` - We now proxy the original window object and smartly redirect calls that might reveal it's true identity, as opposed to mocking it like peasants :)
 - Improved: `accept-language` - More robust and it's now possible to [set a custom locale](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth/evasions/accept-language#readme) if needed.
+- ⭐️ Passes the [headless-cat-n-mouse](https://github.com/paulirish/headless-cat-n-mouse) test
 
 #### `v2.4.0`
 
@@ -98,7 +100,7 @@ Let's ring the bell for round 2 in this cat and mouse fight 😄
 - New & improved: `iframe.contentWindow` - Found a way to fix `srcdoc` frame based detection without breaking recaptcha inline popup & other iframes (please report any issues)
 - New: `accept-language` - Adds a missing `Accept-Language` header in headless (capitalized correctly, `page.setExtraHTTPHeaders` is all lowercase which can be detected)
 - Improved: `chrome.runtime` - More extensive mocking of the chrome object
-- Feat: All [fpscanner](https://antoinevastel.com/bots/) tests are now being passed, All [intoli](https://bot.sannysoft.com) tests are being passed, [`areyouheadless`](https://arh.antoinevastel.com/bots/areyouheadless) is now being passed
+- ⭐️ All [fpscanner](https://antoinevastel.com/bots/) tests are now green, as well as all [intoli](https://bot.sannysoft.com) tests and the [`areyouheadless`](https://arh.antoinevastel.com/bots/areyouheadless) test
 
 <details>
  <summary><code>v2.1.2</code></summary><br/>
