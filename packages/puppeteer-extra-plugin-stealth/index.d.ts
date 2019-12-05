@@ -107,5 +107,5 @@ declare class StealthPlugin extends StealthPlugin_base {
      * puppeteer.use(pluginStealth)
      */
     get enabledEvasions(): Set<string>;
-    onBrowser(browser: any): void;
+    onBrowser(browser: any): Promise<void>;
 }

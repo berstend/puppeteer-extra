@@ -151,7 +151,7 @@ class StealthPlugin extends PuppeteerExtraPlugin {
     this.opts.enabledEvasions = evasions
   }
 
-  onBrowser(browser) {
+  async onBrowser(browser) {
     // Increase event emitter listeners to prevent MaxListenersExceededWarning
     browser.setMaxListeners(30)
   }
