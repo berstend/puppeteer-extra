@@ -51,7 +51,6 @@ class Plugin extends PuppeteerExtraPlugin {
     this.debug('onPageCreated - Will set these user agent options', {
       opts: this.opts
     })
-    console.log("opts", this.opts)
 
     page._client.send('Network.setUserAgentOverride', { userAgent: this.opts.userAgent || (await page.browser().userAgent()), acceptLanguage: this.opts.locale || 'en-US,en;q=0.9', platform: this.opts.platform || 'Win32' })    
 
