@@ -2,14 +2,10 @@
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
-const userInfo = msg => {
-  console.log(`INFO: puppeteer-extra-plugin-stealth(user-agent-language-platform): ${msg}`)
-}
-
 /**
  * By default puppeteer will have a fixed locale setting, represented in the `Accept-Language` header and in `navigator.languages`.
  * In addition, the `navigator.platform` and `navigator.vendor` properties are always set to the host values, so for example platform `Linux` which makes detection very easy.
- * 
+ *
  * This plugin fixes these issues. Please know that you cannot use the regular ``page.setUserAgent()`` puppeteer call in your code,
  * as it will reset the language and platform values you set with this plugin.
  *
@@ -44,7 +40,12 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   get defaults() {
-    return { userAgent: null, acceptLanguage: 'en-US,en;q=0.9', platform: 'Win32', vendor: 'Google Inc.' }
+    return {
+      userAgent: null,
+      acceptLanguage: 'en-US,en;q=0.9',
+      platform: 'Win32',
+      vendor: 'Google Inc.'
+    }
   }
 
   async onPageCreated(page) {
@@ -52,13 +53,17 @@ class Plugin extends PuppeteerExtraPlugin {
       opts: this.opts
     })
 
-    page._client.send('Network.setUserAgentOverride', { userAgent: this.opts.userAgent || (await page.browser().userAgent()), acceptLanguage: this.opts.locale || 'en-US,en;q=0.9', platform: this.opts.platform || 'Win32' })    
+    page._client.send('Network.setUserAgentOverride', {
+      userAgent: this.opts.userAgent || (await page.browser().userAgent()),
+      acceptLanguage: this.opts.locale || 'en-US,en;q=0.9',
+      platform: this.opts.platform || 'Win32'
+    })
 
-    await page.evaluateOnNewDocument((v) => {
-        // Overwrite the `vendor` property to use a custom getter.
-        Object.defineProperty(navigator, 'vendor', {
-            get: () => v
-        })
+    await page.evaluateOnNewDocument(v => {
+      // Overwrite the `vendor` property to use a custom getter.
+      Object.defineProperty(navigator, 'vendor', {
+        get: () => v
+      })
     }, this.opts.vendor || 'Google Inc.')
   } // onPageCreated
 }
