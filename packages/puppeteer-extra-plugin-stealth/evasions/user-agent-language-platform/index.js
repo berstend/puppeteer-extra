@@ -41,7 +41,7 @@ class Plugin extends PuppeteerExtraPlugin {
   get defaults() {
     return {
       userAgent: null,
-      acceptLanguage: 'en-US,en;q=0.9',
+      acceptLanguage: 'en-US,en',
       platform: 'Win32'
     }
   }
@@ -58,7 +58,7 @@ class Plugin extends PuppeteerExtraPlugin {
           'HeadlessChrome/',
           'Chrome/'
         ),
-      acceptLanguage: this.opts.locale || 'en-US,en;q=0.9',
+      acceptLanguage: this.opts.locale || 'en-US,en',
       platform: this.opts.platform || 'Win32'
     })
   } // onPageCreated
