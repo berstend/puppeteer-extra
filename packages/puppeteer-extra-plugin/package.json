@@ -50,7 +50,7 @@
     "pupeteer"
   ],
   "devDependencies": {
-    "@types/node": "^12.12.14",
+    "@types/node": "^13.1.4",
     "@types/puppeteer": "*",
     "ava": "2.4.0",
     "documentation-markdown-themes": "^12.1.5",
