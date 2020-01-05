@@ -4,7 +4,8 @@ import * as types from '../types'
 import Debug from 'debug'
 const debug = Debug(`puppeteer-extra-plugin:recaptcha:${PROVIDER_ID}`)
 
-const solver = require('2captcha-api')
+// const solver = require('./2captcha-api')
+import * as solver from './2captcha-api'
 
 const secondsBetweenDates = (before: Date, after: Date) =>
   (after.getTime() - before.getTime()) / 1000
@@ -15,14 +16,15 @@ export interface DecodeRecaptchaAsyncResult {
   invalid?: any
 }
 
-async function decodeRecaptchaAsync (
+async function decodeRecaptchaAsync(
   token: string,
   sitekey: string,
   url: string,
   opts = { pollingInterval: 2000 }
 ): Promise<DecodeRecaptchaAsyncResult> {
   return new Promise(resolve => {
-    const cb = (err: any, result: any, invalid: any) => resolve({ err, result, invalid })
+    const cb = (err: any, result: any, invalid: any) =>
+      resolve({ err, result, invalid })
     try {
       solver.setApiKey(token)
       solver.decodeReCaptcha(sitekey, url, opts, cb)
@@ -32,15 +34,17 @@ async function decodeRecaptchaAsync (
   })
 }
 
-export async function getSolutions (
+export async function getSolutions(
   captchas: types.CaptchaInfo[] = [],
   token?: string
 ): Promise<types.GetSolutionsResult> {
-  const solutions = await Promise.all(captchas.map(c => getSolution(c, token || '')))
+  const solutions = await Promise.all(
+    captchas.map(c => getSolution(c, token || ''))
+  )
   return { solutions, error: solutions.find(s => !!s.error) }
 }
 
-async function getSolution (
+async function getSolution(
   captcha: types.CaptchaInfo,
   token: string
 ): Promise<types.CaptchaSolution> {
@@ -68,7 +72,10 @@ async function getSolution (
     solution.text = result.text
     solution.responseAt = new Date()
     solution.hasSolution = !!solution.text
-    solution.duration = secondsBetweenDates(solution.requestAt, solution.responseAt)
+    solution.duration = secondsBetweenDates(
+      solution.requestAt,
+      solution.responseAt
+    )
   } catch (error) {
     debug('Error', error)
     solution.error = error.toString()

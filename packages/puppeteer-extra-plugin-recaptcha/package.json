@@ -65,7 +65,6 @@
     "typescript": "^3.7.2"
   },
   "dependencies": {
-    "2captcha-api": "^1.0.0",
     "debug": "^4.1.1",
     "merge-deep": "^3.0.2",
     "puppeteer-extra-plugin": "^3.1.2"

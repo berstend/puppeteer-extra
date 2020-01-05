@@ -12,7 +12,7 @@
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "strict": true,
+    "strict": false,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": false,
     "noUnusedLocals": true,
@@ -25,7 +25,8 @@
     "./src/**/*.ts",
     "./src/**/*.d.ts",
     "./src/**/*.test.ts",
-    "./test/**/*.ts"
+    "./test/**/*.ts",
+    "src/provider/2captcha-api.js"
   ],
   "exclude": ["node_modules", "dist", "./test/**/*.spec.ts"]
 }
