@@ -18,7 +18,7 @@
     "test-ts": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v test/**.ts",
     "test-js": "ava -v --serial --concurrency 1 --fail-fast test/**.js",
     "test": "yarpm run test-js && yarpm run test-ts",
-    "test-ci": "yarpm run test"
+    "test-ci": "yarpm run build && yarpm run test"
   },
   "ava": {
     "compileEnhancements": false,

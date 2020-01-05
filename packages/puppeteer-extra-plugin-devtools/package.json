@@ -9,7 +9,7 @@
   "scripts": {
     "docs": "exit 0",
     "test": "ava -v && eslint --ext .js .",
-    "test-ci": "yarn test"
+    "test-ci-old": "yarn test"
   },
   "engines": {
     "node": ">=8"
