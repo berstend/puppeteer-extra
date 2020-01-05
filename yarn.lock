@@ -2,11 +2,6 @@
 # yarn lockfile v1
 
 
-"2captcha-api@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/2captcha-api/-/2captcha-api-1.0.0.tgz#d1cee8c72d1b2d15b3a4be3fc46b63b3e62d187b"
-  integrity sha1-0c7oxy0bLRWzpL4/xGtjs+YtGHs=
-
 "@ava/babel-plugin-throws-helper@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@ava/babel-plugin-throws-helper/-/babel-plugin-throws-helper-4.0.0.tgz#8f5b45b7a0a79c6f4032de2101e0c221847efb62"
@@ -1926,10 +1921,15 @@
   dependencies:
     "@types/node" "*"
 
-"@types/node@*", "@types/node@>= 8", "@types/node@^12.12.14":
+"@types/node@*", "@types/node@>= 8":
   version "12.12.14"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.14.tgz#1c1d6e3c75dba466e0326948d56e8bd72a1903d2"
   integrity sha512-u/SJDyXwuihpwjXy7hOOghagLEV1KdAST6syfnOk6QZAMzZuWZqXy5aYYZbh8Jdpd4escVFP0MvftHNDb9pruA==
+
+"@types/node@^13.1.4":
+  version "13.1.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.1.4.tgz#4cfd90175a200ee9b02bd6b1cd19bc349741607e"
+  integrity sha512-Lue/mlp2egZJoHXZr4LndxDAd7i/7SQYhV0EjWfb/a4/OZ6tuVwMCVPiwkU5nsEipxEf7hmkSU7Em5VQ8P5NGA==
 
 "@types/puppeteer@*", "@types/puppeteer@^2.0.0":
   version "2.0.0"
