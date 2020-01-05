@@ -2,7 +2,7 @@
 
 This is the monorepo for [`puppeteer-extra`](./packages/puppeteer-extra), a modular plugin framework for [`puppeteer`](https://github.com/GoogleChrome/puppeteer). :-)
 
-🌟 **For the main documentation, please head over to the [`puppeteer-extra`](./packages/puppeteer-extra) package.**
+🌟 **For the main documentation, please head over to the [`puppeteer-extra`](./packages/puppeteer-extra#readme) package.**
 
 In case you're interested in the available plugins, check out the [packages folder](./packages/).
 
