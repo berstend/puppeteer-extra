@@ -65,7 +65,7 @@
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^9.0.0",
-    "typescript": "^3.3.3"
+    "typescript": "^3.7.4"
   },
   "dependencies": {
     "@types/debug": "^4.1.0",
