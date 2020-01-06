@@ -74,11 +74,7 @@ export abstract class PuppeteerExtraPlugin {
     this._debugBase = debug(`puppeteer-extra-plugin:base:${this.name}`)
     this._childClassMembers = []
 
-    this._opts = {}
-    // Deep merge opts with defaults, if available
-    if (Object.keys(this.defaults).length) {
-      this._opts = merge(this.defaults, opts || {})
-    }
+    this._opts = merge(this.defaults, opts || {})
 
     this._debugBase('Initialized.')
   }
