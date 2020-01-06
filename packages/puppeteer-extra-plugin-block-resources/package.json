@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-block-resources",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "Block resources (images, media, etc.) in puppeteer.",
   "main": "index.js",
   "repository": "berstend/puppeteer-extra",
@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "debug": "^4.1.1",
-    "puppeteer-extra-plugin": "^3.1.2"
+    "puppeteer-extra-plugin": "^3.1.3"
   },
   "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }
