@@ -80,18 +80,17 @@ class StealthPlugin extends PuppeteerExtraPlugin {
 
   get defaults() {
     const availableEvasions = new Set([
-      // 'accept-language', // Temp disabled: see issue #91
       'chrome.runtime',
       'console.debug',
       'iframe.contentWindow',
       'media.codecs',
       'navigator.languages',
       'navigator.permissions',
-      'navigator.webdriver',
       'navigator.plugins',
-      'window.outerdimensions',
+      'navigator.webdriver',
+      'user-agent-override',
       'webgl.vendor',
-      'user-agent'
+      'window.outerdimensions'
     ])
     return {
       availableEvasions,
