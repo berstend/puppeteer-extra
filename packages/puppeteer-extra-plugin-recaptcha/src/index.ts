@@ -62,7 +62,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
     // As this might be called very early while recaptcha is still loading
     // we add some extra waiting logic for developer convenience.
     const hasRecaptchaScriptTag = await page.$(
-      `script[src="https://www.google.com/recaptcha/api.js"]`
+      `script[src^="https://www.google.com/recaptcha/api.js"]`
     )
     this.debug('hasRecaptchaScriptTag', !!hasRecaptchaScriptTag)
     if (hasRecaptchaScriptTag) {

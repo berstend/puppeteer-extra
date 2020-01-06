@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin",
-  "version": "3.1.2",
+  "version": "3.1.3",
   "description": "Base class for puppeteer-extra plugins.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -17,7 +17,7 @@
     "build": "yarn clean && tsc --module commonjs && rollup -c rollup.config.ts",
     "docs": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API ./src/index.ts && npx prettier --write readme.md",
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v",
-    "test-ci": "yarn build && TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v dist/*.test.js"
+    "test-ci": "yarn build && TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava --fail-fast -v dist/*.test.js"
   },
   "engines": {
     "node": ">=9.11.2"
@@ -50,7 +50,7 @@
     "pupeteer"
   ],
   "devDependencies": {
-    "@types/node": "^12.12.14",
+    "@types/node": "^13.1.4",
     "@types/puppeteer": "*",
     "ava": "2.4.0",
     "documentation-markdown-themes": "^12.1.5",
@@ -65,7 +65,7 @@
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^9.0.0",
-    "typescript": "^3.3.3"
+    "typescript": "^3.7.4"
   },
   "dependencies": {
     "@types/debug": "^4.1.0",
