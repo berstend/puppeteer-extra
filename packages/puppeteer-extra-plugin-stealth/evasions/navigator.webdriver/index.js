@@ -16,13 +16,17 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   async onPageCreated(page) {
-    // Chrome returns undefined, Firefox false
     await page.evaluateOnNewDocument(() => {
-      // eslint-disable-next-line
-      const newProto = navigator.__proto__
-      delete newProto.webdriver
-      // eslint-disable-next-line
-      navigator.__proto__ = newProto
+      Object.defineProperty(window, "navigator", {
+        value: new Proxy(navigator, {
+            has: (target, key) => (key === 'webdriver')
+                ? false
+                : key in target,
+            get: (target, key, receiver) => (key === 'webdriver')
+                ? undefined
+                : target[key],
+        })
+      });
     })
   }
 }
