@@ -73,7 +73,7 @@ Please check out the [main documentation](https://github.com/berstend/puppeteer-
 
 ## Status
 
-_December 2019_
+_January 2020_
 
 - ✅ **`puppeeteer-extra` with stealth passes all public bot tests.**
 
@@ -84,6 +84,13 @@ It's probably impossible to prevent all ways to detect headless chromium, but it
 If something new comes up or you experience a problem, please do your homework and create a PR in a respectful way (this is Github, not reddit) or I might not be motivated to help. :)
 
 ## Changelog
+
+#### `v2.4.7`
+
+- New: `user-agent-override` - Used to set a stealthy UA string, language & platform. This also fixes issues with the prior method of setting the `Accept-Language` header through request interception ([#104](https://github.com/berstend/puppeteer-extra/pull/104), kudos to [@Niek](https://github.com/Niek))
+- New: `navigator.vendor` - Makes it possible to optionally override navigator.vendor ([#110](https://github.com/berstend/puppeteer-extra/pull/110), thanks [@Niek](https://github.com/Niek))
+- Improved: `navigator.webdriver`: Now uses ES6 Proxies to pass `instanceof` tests ([#117](https://github.com/berstend/puppeteer-extra/pull/117), thanks [@aabbccsmith](https://github.com/aabbccsmith))
+- Removed: `user-agent`, `accept-language` (now obsolete)
 
 #### `v2.4.2` / `v2.4.1`
 
