@@ -37,7 +37,7 @@ test('vanilla: navigator.platform set to host platform', async t => {
   const platform = await page.evaluate(() => navigator.platform)
   switch (process.platform) {
     case 'linux':
-      t.true(platform === 'Linux')
+      t.true(platform.includes('Linux')) // TravisCI
       break
     case 'darwin':
       t.true(platform === 'MacIntel')
