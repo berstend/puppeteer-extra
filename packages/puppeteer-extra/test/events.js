@@ -4,6 +4,9 @@ const test = require('ava')
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
+const puppeteerVanilla = require('puppeteer')
+const { addExtra } = require('puppeteer-extra')
+
 test.beforeEach(t => {
   // Make sure we work with pristine modules
   try {
@@ -17,7 +20,7 @@ test.beforeEach(t => {
 test('will bind launched browser events to plugins', async t => {
   const PLUGIN_EVENTS = []
 
-  const puppeteer = require('puppeteer-extra')
+  const puppeteer = addExtra(puppeteerVanilla)
   const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
   class Plugin extends PuppeteerExtraPlugin {
@@ -75,10 +78,10 @@ test('will bind launched browser events to plugins', async t => {
   // t.true(!PLUGIN_EVENTS.includes('beforeConnect'))
   // t.true(!PLUGIN_EVENTS.includes('afterConnect'))
   t.true(PLUGIN_EVENTS.includes('onBrowser'))
-  const page = await browser.newPage()
+  const page = await browser.newPage().catch(console.log)
   t.true(PLUGIN_EVENTS.includes('onTargetCreated'))
   t.true(PLUGIN_EVENTS.includes('onPageCreated'))
-  await page.goto('about:blank#foo')
+  await page.goto('about:blank#foo').catch(console.log)
   t.true(PLUGIN_EVENTS.includes('onTargetChanged'))
   await page.close().catch(console.log)
   t.true(PLUGIN_EVENTS.includes('onTargetDestroyed'))
@@ -91,13 +94,15 @@ test('will bind connected browser events to plugins', async t => {
   const PLUGIN_EVENTS = []
 
   // Launch vanilla puppeteer browser with no plugins
-  const puppeteerVanilla = require('puppeteer')
-  const browserVanilla = await puppeteerVanilla.launch({
+
+  const pptr1 = addExtra(puppeteerVanilla)
+
+  const browserVanilla = await pptr1.launch({
     args: PUPPETEER_ARGS
   })
   const browserWSEndpoint = browserVanilla.wsEndpoint()
 
-  const puppeteer = require('puppeteer-extra')
+  const puppeteer = addExtra(puppeteerVanilla)
   const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
   class Plugin extends PuppeteerExtraPlugin {
@@ -149,7 +154,9 @@ test('will bind connected browser events to plugins', async t => {
   const instance = new Plugin()
   puppeteer.use(instance)
   t.true(PLUGIN_EVENTS.includes('onPluginRegistered'))
-  const browser = await puppeteer.connect({ browserWSEndpoint })
+  const browser = await puppeteer
+    .connect({ browserWSEndpoint })
+    .catch(console.log)
   t.true(!PLUGIN_EVENTS.includes('beforeLaunch'))
   t.true(!PLUGIN_EVENTS.includes('afterLaunch'))
   t.true(PLUGIN_EVENTS.includes('beforeConnect'))
@@ -158,7 +165,7 @@ test('will bind connected browser events to plugins', async t => {
   const page = await browser.newPage()
   t.true(PLUGIN_EVENTS.includes('onTargetCreated'))
   t.true(PLUGIN_EVENTS.includes('onPageCreated'))
-  await page.goto('about:blank#foo')
+  await page.goto('about:blank#foo').catch(console.log)
   t.true(PLUGIN_EVENTS.includes('onTargetChanged'))
   await page.close().catch(console.log)
   t.true(PLUGIN_EVENTS.includes('onTargetDestroyed'))

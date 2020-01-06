@@ -23,6 +23,11 @@ npm install puppeteer puppeteer-extra puppeteer-extra-plugin-recaptcha
 <details>
  <summary><strong>Changelog</strong></summary>
 
+##### `3.1.9`
+
+- Support reCAPTCHAs not in forms ([#57](https://github.com/berstend/puppeteer-extra/issues/57))
+- Make script detection more fuzzy ([#48](https://github.com/berstend/puppeteer-extra/issues/48))
+
 ##### `3.1.6`
 
 - We'll now add our custom methods to any existing pages and frames in the browser instance.
