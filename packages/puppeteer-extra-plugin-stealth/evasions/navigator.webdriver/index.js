@@ -17,16 +17,13 @@ class Plugin extends PuppeteerExtraPlugin {
 
   async onPageCreated(page) {
     await page.evaluateOnNewDocument(() => {
-      Object.defineProperty(window, "navigator", {
+      Object.defineProperty(window, 'navigator', {
         value: new Proxy(navigator, {
-            has: (target, key) => (key === 'webdriver')
-                ? false
-                : key in target,
-            get: (target, key, receiver) => (key === 'webdriver')
-                ? undefined
-                : target[key],
+          has: (target, key) => (key === 'webdriver' ? false : key in target),
+          get: (target, key, receiver) =>
+            key === 'webdriver' ? undefined : target[key]
         })
-      });
+      })
     })
   }
 }
