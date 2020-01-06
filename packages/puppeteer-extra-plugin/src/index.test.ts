@@ -15,10 +15,10 @@ test('will throw without a name', async t => {
 test('should have the basic class members', async t => {
   const pluginName = 'hello-world'
   class Plugin extends PuppeteerExtraPlugin {
-    constructor (opts = {}) {
+    constructor(opts = {}) {
       super(opts)
     }
-    get name () {
+    get name() {
       return pluginName
     }
   }
@@ -38,10 +38,10 @@ test('should have the basic class members', async t => {
 test('should have the public class members', async t => {
   const pluginName = 'hello-world'
   class Plugin extends PuppeteerExtraPlugin {
-    constructor (opts = {}) {
+    constructor(opts = {}) {
       super(opts)
     }
-    get name () {
+    get name() {
       return pluginName
     }
   }
@@ -63,10 +63,10 @@ test('should have the public class members', async t => {
 test('should have the internal class members', async t => {
   const pluginName = 'hello-world'
   class Plugin extends PuppeteerExtraPlugin {
-    constructor (opts = {}) {
+    constructor(opts = {}) {
       super(opts)
     }
-    get name () {
+    get name() {
       return pluginName
     }
   }
@@ -86,13 +86,13 @@ test('should merge opts with defaults automatically', async t => {
   const userOpts = { foo2: 'bob', extra2: 666 }
 
   class Plugin extends PuppeteerExtraPlugin {
-    constructor (opts = {}) {
+    constructor(opts = {}) {
       super(opts)
     }
-    get name () {
+    get name() {
       return pluginName
     }
-    get defaults () {
+    get defaults() {
       return pluginDefaults
     }
   }
@@ -103,4 +103,21 @@ test('should merge opts with defaults automatically', async t => {
   t.is(instance.opts.foo2, userOpts.foo2)
   t.is(instance.opts.extra1, pluginDefaults.extra1)
   t.is(instance.opts.extra2, userOpts.extra2)
+})
+
+test('should have opts when defaults is not defined', async t => {
+  const pluginName = 'hello-world'
+  const userOpts = { foo2: 'bob', extra2: 666 }
+
+  class Plugin extends PuppeteerExtraPlugin {
+    constructor(opts = {}) {
+      super(opts)
+    }
+    get name() {
+      return pluginName
+    }
+  }
+  const instance = new Plugin(userOpts)
+
+  t.deepEqual(instance.opts, userOpts)
 })
