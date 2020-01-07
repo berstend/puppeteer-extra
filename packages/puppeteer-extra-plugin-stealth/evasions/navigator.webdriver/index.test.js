@@ -7,8 +7,8 @@ test('vanilla: navigator.webdriver is defined', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
-  const vendor = await page.evaluate(() => navigator.webdriver)
-  t.is(vendor, true)
+  const data = await page.evaluate(() => navigator.webdriver)
+  t.is(data, true)
 })
 
 test('stealth: navigator.webdriver is undefined', async t => {
@@ -16,6 +16,20 @@ test('stealth: navigator.webdriver is undefined', async t => {
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
-  const vendor = await page.evaluate(() => navigator.webdriver)
-  t.is(vendor, undefined)
+  const data = await page.evaluate(() => navigator.webdriver)
+  t.is(data, undefined)
+})
+
+// https://github.com/berstend/puppeteer-extra/pull/130
+test('stealth: regression: wont kill other navigator methods', async t => {
+  const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
+  const browser = await puppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  try {
+    const data = await page.evaluate(() => navigator.javaEnabled())
+    t.is(data, undefined)
+  } catch (err) {
+    t.is(err, undefined)
+  }
 })
