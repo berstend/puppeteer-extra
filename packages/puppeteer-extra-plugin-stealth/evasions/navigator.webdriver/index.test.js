@@ -28,7 +28,7 @@ test('stealth: regression: wont kill other navigator methods', async t => {
 
   try {
     const data = await page.evaluate(() => navigator.javaEnabled())
-    t.is(data, undefined)
+    t.is(data, false)
   } catch (err) {
     t.is(err, undefined)
   }
