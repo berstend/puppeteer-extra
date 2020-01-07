@@ -29,14 +29,11 @@ class Plugin extends PuppeteerExtraPlugin {
 
         const getParameterProxyHandler = {
           get(target, key) {
-            // There's a slight difference in toString: Our version does not return a named function by default
-            if (key === 'toString') {
-              const dummyFn = function toString() {
-                return target.toString() // `function getParameter() { [native code] }`
-              }.bind(Function.prototype.toString) // eslint-disable-line
-              return dummyFn
-            }
             try {
+              // Mitigate Chromium bug (#130)
+              if (typeof target[key] === 'function') {
+                return target[key].bind(target)
+              }
               return Reflect.get(target, key)
             } catch (err) {
               err.stack = stripErrorStack(err.stack)

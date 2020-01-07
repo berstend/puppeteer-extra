@@ -48,6 +48,10 @@ class Plugin extends PuppeteerExtraPlugin {
         const canPlayType = {
           // Make toString() native
           get(target, key) {
+            // Mitigate Chromium bug (#130)
+            if (typeof target[key] === 'function') {
+              return target[key].bind(target)
+            }
             return Reflect.get(target, key)
           },
           // Intercept certain requests
