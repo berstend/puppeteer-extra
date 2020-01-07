@@ -20,8 +20,12 @@ class Plugin extends PuppeteerExtraPlugin {
       Object.defineProperty(window, 'navigator', {
         value: new Proxy(navigator, {
           has: (target, key) => (key === 'webdriver' ? false : key in target),
-          get: (target, key, receiver) =>
-            key === 'webdriver' ? undefined : target[key]
+          get: (target, key) =>
+            key === 'webdriver'
+              ? undefined
+              : typeof target[key] === 'function'
+              ? target[key].bind(target)
+              : target[key]
         })
       })
     })
