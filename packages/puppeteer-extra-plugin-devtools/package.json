@@ -38,7 +38,7 @@
     "http-auth": "^3.2.3",
     "http-proxy": "^1.17.0",
     "http-proxy-response-rewrite": "^0.0.1",
-    "localtunnel": "^1.9.0",
+    "localtunnel": "^2.0.0",
     "ow": "^0.4.0",
     "puppeteer-extra-plugin": "^3.1.4",
     "randomstring": "^1.1.5",

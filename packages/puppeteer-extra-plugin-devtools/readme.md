@@ -74,6 +74,7 @@ Type: `function (opts)`
         -   `opts.auth.user` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Username (default: 'user')
         -   `opts.auth.pass` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Password (will be generated if not provided)
     -   `opts.prefix` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** The prefix to use for the localtunnel.me subdomain (default: 'devtools-tunnel')
+    -   `opts.localtunnel` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Advanced options to pass to [localtunnel](https://github.com/localtunnel/localtunnel#options)
 
 Example:
 
