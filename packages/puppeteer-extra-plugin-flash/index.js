@@ -72,34 +72,10 @@ class Plugin extends PuppeteerExtraPlugin {
     }
     const allowFlashPreferences = {
       profile: {
-        content_settings: {
-          exceptions: {
-            flash_data: {
-              '*,*': {
-                setting: {
-                  flashPreviouslyChanged: true
-                }
-              }
-            },
-            permission_autoblocking_data: {
-              '*,*': {
-                setting: {
-                  Flash: {
-                    dismiss_count: 1
-                  }
-                }
-              }
-            },
-            plugins: {
-              '*,*': {
-                per_resource: {
-                  'adobe-flash-player': 1
-                }
-              }
-            }
-          },
-          pref_version: 1
-        }
+        managed_default_content_settings: {
+          plugins: 1
+        },
+        managed_plugins_allowed_for_urls: ['https://*', 'http://*']
       }
     }
     return [
