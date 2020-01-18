@@ -73,7 +73,6 @@ DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node myscript.js
 > `puppeteer-extra` and most plugins are written in TS,
 > so you get perfect type support out of the box. :)
 
-
 ```ts
 import puppeteer from 'puppeteer-extra'
 
@@ -103,23 +102,23 @@ puppeteer
  <summary><strong>Multiple puppeteers with different plugins</strong></summary><br/>
 
 ```js
-const vanillaPuppeteer = require("puppeteer")
+const vanillaPuppeteer = require('puppeteer')
 
-const { addExtra } = require("puppeteer-extra")
-const AnonymizeUA = require("puppeteer-extra-plugin-anonymize-ua")
+const { addExtra } = require('puppeteer-extra')
+const AnonymizeUA = require('puppeteer-extra-plugin-anonymize-ua')
 
 async function main() {
   const pptr1 = addExtra(vanillaPuppeteer)
   pptr1.use(
     AnonymizeUA({
-      customFn: ua => "Hello1/" + ua.replace("Chrome", "Beer")
+      customFn: ua => 'Hello1/' + ua.replace('Chrome', 'Beer')
     })
   )
 
   const pptr2 = addExtra(vanillaPuppeteer)
   pptr2.use(
     AnonymizeUA({
-      customFn: ua => "Hello2/" + ua.replace("Chrome", "Beer")
+      customFn: ua => 'Hello2/' + ua.replace('Chrome', 'Beer')
     })
   )
 
@@ -132,8 +131,8 @@ main()
 async function checkUserAgent(pptr) {
   const browser = await pptr.launch({ headless: true })
   const page = await browser.newPage()
-  await page.goto("https://httpbin.org/headers", {
-    waitUntil: "domcontentloaded"
+  await page.goto('https://httpbin.org/headers', {
+    waitUntil: 'domcontentloaded'
   })
   const content = await page.content()
   console.log(content)
@@ -340,6 +339,12 @@ browserless
 > Check out the [packages folder](/packages/) for more plugins.
 
 ---
+
+## Contributors
+
+<a href="https://github.com/berstend/puppeteer-extra/graphs/contributors">
+  <img src="https://contributors-img.firebaseapp.com/image?repo=berstend/puppeteer-extra" />
+</a>
 
 ## Further info
 
