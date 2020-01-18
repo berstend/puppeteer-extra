@@ -2,11 +2,17 @@
 
 > A plugin for [puppeteer-extra](https://github.com/berstend/puppeteer-extra).
 
-### Install
+## Install
 
 ```bash
 yarn add puppeteer-extra-plugin-flash
 ```
+
+## Changelog
+
+#### `v2.2.5`
+
+- Improved: Fixes flash content in newer Chrome versions (76+) ([#133](https://github.com/berstend/puppeteer-extra/pull/133), thanks [@Niek](https://github.com/Niek))
 
 ## API
 
@@ -14,7 +20,7 @@ yarn add puppeteer-extra-plugin-flash
 
 #### Table of Contents
 
--   [Plugin](#plugin)
+- [Plugin](#plugin)
 
 ### [Plugin](https://github.com/berstend/puppeteer-extra/blob/db57ea66cf10d407cf63af387892492e495a84f2/packages/puppeteer-extra-plugin-flash/index.js#L31-L100)
 
@@ -34,10 +40,10 @@ see [this gist] for a workaround using management policies.
 
 Type: `function (opts)`
 
--   `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Options (optional, default `{}`)
-    -   `opts.allowFlash` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Whether to allow flash content or not (optional, default `true`)
-    -   `opts.pluginPath` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Flash plugin path (optional, default `null`)
-    -   `opts.pluginVersion` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Flash plugin version (9000 is high enough for Chrome not to complain) (optional, default `9000`)
+- `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Options (optional, default `{}`)
+  - `opts.allowFlash` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Whether to allow flash content or not (optional, default `true`)
+  - `opts.pluginPath` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Flash plugin path (optional, default `null`)
+  - `opts.pluginVersion` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Flash plugin version (9000 is high enough for Chrome not to complain) (optional, default `9000`)
 
 Example:
 
@@ -45,10 +51,10 @@ Example:
 const puppeteer = require('puppeteer-extra')
 puppeteer.use(require('puppeteer-extra-plugin-flash')())
 ;(async () => {
-  const browser = await puppeteer.launch({headless: false})
+  const browser = await puppeteer.launch({ headless: false })
   const page = await browser.newPage()
-  await page.goto('http://ultrasounds.com', {waitUntil: 'domcontentloaded'})
+  await page.goto('http://ultrasounds.com', { waitUntil: 'domcontentloaded' })
 })()
 ```
 
-* * *
+---
