@@ -18,3 +18,8 @@ test('stealth: is array with en-US', async t => {
   t.is(Array.isArray(languages), true)
   t.is(languages[0], 'en-US')
 })
+
+test('stealth: customized value', async t => {
+  const { languages } = await getStealthFingerPrint(Plugin, null, { languages: ['foo', 'bar'] })
+  t.deepEqual(languages, ['foo', 'bar'])
+})
