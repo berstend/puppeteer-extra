@@ -90,7 +90,8 @@ class StealthPlugin extends PuppeteerExtraPlugin {
       'navigator.webdriver',
       'user-agent-override',
       'webgl.vendor',
-      'window.outerdimensions'
+      'window.outerdimensions',
+      'canvas.fingerprint'
     ])
     return {
       availableEvasions,
