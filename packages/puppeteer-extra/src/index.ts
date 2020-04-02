@@ -154,7 +154,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
     // Ensure there are certain properties (e.g. the `options.args` array)
     const defaultLaunchOptions = { args: [] }
     options = merge(defaultLaunchOptions, options as any)
-    this.resolvePluginDependencies()
+    this.resolvePluginDependencies(options)
     this.orderPlugins()
 
     // Give plugins the chance to modify the options before launch
@@ -332,7 +332,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    *
    * @private
    */
-  private resolvePluginDependencies() {
+  private resolvePluginDependencies(options?: Puppeteer.LaunchOptions) {
     // Request missing dependencies from all plugins and flatten to a single Set
     const missingPlugins = this._plugins
       .map(p => p._getMissingDependencies(this._plugins))
@@ -362,7 +362,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
       let dep = null
       try {
         // Try to require and instantiate the stated dependency
-        dep = require(name)()
+        dep = require(name)(options)
         // Register it with `puppeteer-extra` as plugin
         this.use(dep)
       } catch (err) {
