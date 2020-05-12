@@ -63,8 +63,8 @@ class Plugin extends PuppeteerExtraPlugin {
           'HeadlessChrome/',
           'Chrome/'
         ),
-      acceptLanguage: this.opts.locale || 'en-US,en',
-      platform: this.opts.platform || 'Win32'
+      acceptLanguage: this.opts.locale,
+      platform: this.opts.platform
     }
 
     this.debug('onPageCreated - Will set these user agent options', {
