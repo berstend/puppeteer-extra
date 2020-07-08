@@ -41,7 +41,7 @@ script:
 
   # Fix for: error fsevents@2.1.2: The platform "linux" is incompatible with this module.
   # - npx json -I -f package.json -e 'this.resolutions={}'
-  - npx json -I -f package.json -e 'this.resolutions={"puppeteer":"${PUPPETEER_VERSION}"}'
+  - npx json -I -f package.json -e 'this.resolutions={"puppeteer":"'${PUPPETEER_VERSION}'"}'
 
   # Install older version when required
   - rm -rf ./node_modules/
@@ -49,7 +49,7 @@ script:
   # - 'yarn lerna exec "rm -f yarn.lock; rm -rf node_modules; echo 0"'
   # - 'rm -rf yarn.lock && yarn cache clean && rm -rf ./node_modules/puppeteer && yarn lerna add puppeteer@${PUPPETEER_VERSION}'
 
-  - "yarn lerna exec --concurrency 1 'yarn set resolution --save puppeteer@* 5.0.0; echo 0'"
+  # - "yarn lerna exec --concurrency 1 'yarn set resolution --save puppeteer@* 5.0.0; echo 0'"
 
   - 'yarn'
   - 'yarn bootstrap'
