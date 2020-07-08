@@ -38,5 +38,6 @@
   "resolutions": {
     "**/fsevents": "^2.1.2"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "version": "0.0.0"
 }
