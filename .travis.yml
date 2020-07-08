@@ -16,7 +16,7 @@ before_install:
 # test against multiple node versions
 node_js:
 - '13'
-# - '10'
+- '10'
 
 # Fix for: error fsevents@2.1.2: The platform "linux" is incompatible with this module.
 install: skip
@@ -29,7 +29,8 @@ cache:
 # test against multiple puppeteer versions
 env:
   - PUPPETEER_VERSION=5.0.0
-  - PUPPETEER_VERSION=2.0.0 # Chromium 79.0.3942.0, Oct 24 2019
+  - PUPPETEER_VERSION=2.1.1 # Chromium 79.0.3942.0, Oct 24 2019
+  # - PUPPETEER_VERSION=2.0.0 # Chromium 79.0.3942.0, Oct 24 2019
   # - PUPPETEER_VERSION=1.20.0 # Chromium 78.0.3882.0, Sep 13 2019
   # - PUPPETEER_VERSION=1.15.0 # Chromium 75.0.3765.0, Apr 26 2019
   # - PUPPETEER_VERSION=1.9.0 # Chromium 71.0.3563.0, Oct 4, 2018
@@ -40,15 +41,14 @@ script:
   # https://github.com/yarnpkg/yarn/issues/4731
 
   # Fix for: error fsevents@2.1.2: The platform "linux" is incompatible with this module.
-  # - npx json -I -f package.json -e 'this.resolutions={}'
-  - npx json -I -f package.json -e 'this.resolutions={"**/puppeteer":"'${PUPPETEER_VERSION}'"}'
+  - npx json -I -f package.json -e 'this.resolutions={}'
+  # - npx json -I -f package.json -e 'this.resolutions={"**/puppeteer":"'${PUPPETEER_VERSION}'"}'
 
   # Install older version when required
   - rm -rf ./node_modules/
   # - 'yarn; echo 0'
   # - 'yarn lerna exec "rm -f yarn.lock; rm -rf node_modules; echo 0"'
   # - 'rm -rf yarn.lock && yarn cache clean && rm -rf ./node_modules/puppeteer && yarn lerna add puppeteer@${PUPPETEER_VERSION}'
-
   # - "yarn lerna exec --concurrency 1 'yarn set resolution --save puppeteer@* 5.0.0; echo 0'"
 
   - 'yarn'
@@ -56,7 +56,6 @@ script:
   -  yarn lerna add puppeteer@${PUPPETEER_VERSION}
   - 'yarn lerna link'
   - 'yarn lerna run build --concurrency 1'
-  # - 'yarn bootstrap'
 
   # For debugging
   - yarn list puppeteer
