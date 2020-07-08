@@ -20,7 +20,10 @@ test('stealth: videoCard is Intel Inc', async t => {
 
 test('stealth: customized values', async t => {
   const pageFn = async page => await page.evaluate(() => window.chrome) // eslint-disable-line
-  const { videoCard } = await getStealthFingerPrint(Plugin, pageFn, { vendor: 'foo', renderer: 'bar' })
+  const { videoCard } = await getStealthFingerPrint(Plugin, pageFn, {
+    vendor: 'foo',
+    renderer: 'bar'
+  })
   t.deepEqual(videoCard, ['foo', 'bar'])
 })
 
