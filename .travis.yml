@@ -49,7 +49,7 @@ script:
   - 'yarn'
   - 'yarn bootstrap'
   # - "yarn lerna exec --concurrency 1 'yarn build; echo 0'"
-  - 'yarn lerna run build'
+  - 'yarn lerna run build --concurrency 1'
   - 'yarn lerna link'
   - 'yarn bootstrap'
 
