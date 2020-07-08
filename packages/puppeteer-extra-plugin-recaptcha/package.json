@@ -15,7 +15,7 @@
   "scripts": {
     "clean": "rm -rf dist/*",
     "tscheck": "tsc --pretty --noEmit",
-    "build": "yarn clean && tsc --module commonjs && rollup -c rollup.config.ts && yarn ambient-dts",
+    "build": "yarn clean && tsc && rollup -c rollup.config.ts && yarn ambient-dts",
     "docs": "exit 0",
     "docs2": "rm -rf docs/* && typedoc --module commonjs --readme none --target ES6 --theme markdown --excludeNotExported --excludeExternals --excludePrivate --out docs --mode file src/index.ts",
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v src/**.test.ts",
