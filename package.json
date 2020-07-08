@@ -36,9 +36,7 @@
     "prettier-config-standard": "^1.0.1"
   },
   "resolutions": {
-    "puppeteer": "",
-    "puppeteer@2.0.0": "",
-    "puppeteer@^2.0.0": ""
+    "**/fsevents": "^2.1.2"
   },
   "dependencies": {},
   "version": "0.0.0"
