@@ -3,15 +3,16 @@ const test = require('ava')
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
 const Plugin = require('.')
 
-test('vanilla: Accept-Language header is missing', async t => {
-  const browser = await vanillaPuppeteer.launch({ headless: true })
-  const page = await browser.newPage()
-  await page.goto('http://httpbin.org/headers')
+// Fixed since 2.1.1?
+// test('vanilla: Accept-Language header is missing', async t => {
+//   const browser = await vanillaPuppeteer.launch({ headless: true })
+//   const page = await browser.newPage()
+//   await page.goto('http://httpbin.org/headers')
 
-  const content = await page.content()
-  t.true(content.includes(`"User-Agent"`))
-  t.false(content.includes(`"Accept-Language"`))
-})
+//   const content = await page.content()
+//   t.true(content.includes(`"User-Agent"`))
+//   t.false(content.includes(`"Accept-Language"`))
+// })
 
 test('vanilla: User-Agent header contains HeadlessChrome', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
