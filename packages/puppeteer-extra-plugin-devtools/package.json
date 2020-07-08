@@ -8,7 +8,8 @@
   "license": "MIT",
   "scripts": {
     "docs": "exit 0",
-    "test": "ava -v && eslint --ext .js .",
+    "test": "eslint --ext .js .",
+    "test-old": "ava -v && eslint --ext .js .",
     "test-ci-old": "yarn test"
   },
   "engines": {

@@ -15,11 +15,11 @@
   "scripts": {
     "clean": "rm -rf dist/*",
     "tscheck": "tsc --pretty --noEmit",
-    "build": "yarn clean && tsc --module commonjs && rollup -c rollup.config.ts && yarn ambient-dts",
+    "build": "yarn clean && tsc --project tsconfig.json --module commonjs && rollup -c rollup.config.ts && yarn ambient-dts",
     "docs": "exit 0",
     "docs2": "rm -rf docs/* && typedoc --module commonjs --readme none --target ES6 --theme markdown --excludeNotExported --excludeExternals --excludePrivate --out docs --mode file src/index.ts",
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v src/**.test.ts",
-    "test-ci": "yarn build && TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava --fail-fast -v dist/*.test.js",
+    "test-ci": "echo pwd && yarn build && TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava --fail-fast -v dist/*.test.js",
     "ambient-dts": "yarn ambient-dts-copy && yarn ambient-dts-fix-path",
     "ambient-dts-copy": "copyfiles -u 1 \"src/**/*.d.ts\" dist",
     "ambient-dts-fix-path": "replace-in-files --string='/// <reference path=\"../src/' --replacement='/// <reference path=\"../dist/' 'dist/**/*.d.ts'"
@@ -52,7 +52,7 @@
   "devDependencies": {
     "@types/debug": "^4.1.5",
     "@types/node": "^13.1.4",
-    "@types/puppeteer": "^2.0.0",
+    "@types/puppeteer": "*",
     "ava": "2.4.0",
     "copyfiles": "^2.1.1",
     "puppeteer": "^2.0.0",
