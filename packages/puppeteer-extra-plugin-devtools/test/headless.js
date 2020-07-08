@@ -24,3 +24,21 @@ test('will create a tunnel', async t => {
   })
   t.true(true)
 })
+
+test('will create a tunnel with custom localtunnel options', async t => {
+  const puppeteer = require('puppeteer-extra')
+  const devtools = require('puppeteer-extra-plugin-devtools')({
+    auth: { user: 'francis', pass: 'president' },
+    localtunnel: {
+      host: 'https://tunnel.datahub.at'
+    }
+  })
+  puppeteer.use(devtools)
+
+  await puppeteer.launch({ args: PUPPETEER_ARGS }).then(async browser => {
+    const tunnel = await devtools.createTunnel(browser)
+    t.true(tunnel.url.includes('.tunnel.datahub.at'))
+    browser.close()
+  })
+  t.true(true)
+})
