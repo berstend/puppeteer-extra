@@ -12,8 +12,8 @@
     "bootstrap": "lerna bootstrap",
     "build": "yarn lerna exec --concurrency 1 'yarn build; echo 0'",
     "docs": "lerna run docs",
-    "test": "lerna run test",
-    "test-ci": "lerna run test-ci",
+    "test": "lerna run test --concurrency 1 --stream",
+    "test-ci": "lerna run test-ci --concurrency 1 --stream",
     "prepare": "lerna run prepare",
     "release": "lerna publish --npm-client npm"
   },
@@ -41,5 +41,6 @@
   "resolutions": {
     "**/fsevents": "^2.1.2"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "version": "0.0.0"
 }

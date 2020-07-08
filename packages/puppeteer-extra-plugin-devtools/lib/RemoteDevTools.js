@@ -100,7 +100,8 @@ class DevToolsTunnel extends DevToolsCommon {
     return {
       prefix: 'devtools-tunnel',
       subdomain: null,
-      auth: { user: null, pass: null }
+      auth: { user: null, pass: null },
+      localtunnel: {}
     }
   }
 
@@ -122,7 +123,13 @@ class DevToolsTunnel extends DevToolsCommon {
 
     this.proxyServer = this._createProxyServer(this.wsHost, this.wsPort)
     this.server = await this._createServer(serverPort, basicAuth)
-    this.tunnel = await this._createTunnel(this.wsHost, serverPort, subdomain)
+    this.tunnel = await this._createTunnel({
+      local_host: this.wsHost,
+      port: serverPort,
+      subdomain,
+      ...this.opts.localtunnel
+    })
+
     this.tunnelHost = urlParse(this.tunnel.url).hostname
 
     debug(
@@ -241,24 +248,16 @@ class DevToolsTunnel extends DevToolsCommon {
     return server
   }
 
-  async _createTunnel(host, port, subdomain = null) {
-    return new Promise((resolve, reject) => {
-      const tunnel = localtunnel(
-        port,
-        { local_host: host, subdomain },
-        (err, tunnel) => {
-          if (err) {
-            return reject(err)
-          }
-          debug('tunnel:created', tunnel.url)
-          return resolve(tunnel)
-        }
-      )
-      tunnel.on('close', () => {
-        // todo: add keep-alive?
-        debug('tunnel:close')
-      })
+  async _createTunnel(options) {
+    const tunnel = await localtunnel(options)
+
+    tunnel.on('close', () => {
+      // todo: add keep-alive?
+      debug('tunnel:close')
     })
+
+    debug('tunnel:created', tunnel.url)
+    return tunnel
   }
 }
 
