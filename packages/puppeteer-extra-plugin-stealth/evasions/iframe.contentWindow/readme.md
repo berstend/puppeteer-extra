@@ -6,7 +6,7 @@
 
 - [class: Plugin](#class-plugin)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/6d452681fe832a6d864616ee8fa79134ebd19be7/packages/puppeteer-extra-plugin-stealth/evasions/iframe.contentWindow/index.js#L11-L116)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/bd73a05835ef5bd19565330188ad69d49431b7ea/packages/puppeteer-extra-plugin-stealth/evasions/iframe.contentWindow/index.js#L11-L125)
 
 - `opts` (optional, default `{}`)
 
@@ -14,6 +14,7 @@
 
 Fix for the HEADCHR_IFRAME detection (iframe.contentWindow.chrome), hopefully this time without breaking iframes.
 Note: Only `srcdoc` powered iframes cause issues due to a chromium bug:
+
 <https://github.com/puppeteer/puppeteer/issues/1106>
 
 ---
