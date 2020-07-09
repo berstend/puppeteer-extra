@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         puppeteer_version:
-          - 5.0.0
+          # - 5.0.0
           - 2.1.1 # Chromium 79.0.3942.0, Oct 24 2019
           # - 2.0.0 # Chromium 79.0.3942.0, Oct 24 2019
           # - 1.20.0 # Chromium 78.0.3882.0, Sep 13 2019
@@ -25,10 +25,10 @@ jobs:
           # - 1.6.2 # Chromium 69.0.3494.0, Aug 1, 2018
         node:
           - 10
-          - 13
+          # - 13
         os:
-          - ubuntu-latest
-          - macOS-latest
+          # - ubuntu-latest
+          # - macOS-latest
           - windows-latest
 
     steps:
