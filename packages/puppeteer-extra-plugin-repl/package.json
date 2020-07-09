@@ -3,6 +3,7 @@
   "version": "2.2.6",
   "description": "Start an interactive REPL in your puppeteer code.",
   "main": "index.js",
+  "types": "index.d.ts",
   "repository": "berstend/puppeteer-extra",
   "author": "nswbmw & berstend",
   "license": "MIT",
