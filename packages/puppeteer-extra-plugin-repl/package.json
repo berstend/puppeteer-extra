@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-repl",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "description": "Start an interactive REPL in your puppeteer code.",
   "main": "index.js",
   "repository": "berstend/puppeteer-extra",
@@ -36,7 +36,7 @@
     "chalk": "^3.0.0",
     "debug": "^4.1.1",
     "ow": "^0.4.0",
-    "puppeteer-extra-plugin": "^3.1.5"
+    "puppeteer-extra-plugin": "^3.1.6"
   },
   "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }
