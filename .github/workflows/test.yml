@@ -60,8 +60,7 @@ jobs:
 
       - name: debug
         run: |
-          yarn list puppeteer
-          yarn list puppeteer-extra
+          yarn list --pattern "puppeteer|puppeteer-extra"
           file node_modules/puppeteer-extra/dist/index.cjs.js
 
       - name: test
