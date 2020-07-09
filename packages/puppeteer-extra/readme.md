@@ -411,7 +411,7 @@ The API is backwards compatible, I bumped the major version just in case I misse
 - [defaultExport()](#defaultexport)
 - [addExtra(puppeteer)](#addextrapuppeteer)
 
-### class: [PuppeteerExtra](https://github.com/berstend/puppeteer-extra/blob/bd73a05835ef5bd19565330188ad69d49431b7ea/packages/puppeteer-extra/src/index.ts#L67-L474)
+### class: [PuppeteerExtra](https://github.com/berstend/puppeteer-extra/blob/dc8b90260a927c0c66c4585c5a56092ea9c35049/packages/puppeteer-extra/src/index.ts#L67-L474)
 
 Modular plugin framework to teach `puppeteer` new tricks.
 
@@ -438,7 +438,7 @@ puppeteer.use(
 
 ---
 
-#### .[use(plugin)](https://github.com/berstend/puppeteer-extra/blob/bd73a05835ef5bd19565330188ad69d49431b7ea/packages/puppeteer-extra/src/index.ts#L85-L107)
+#### .[use(plugin)](https://github.com/berstend/puppeteer-extra/blob/dc8b90260a927c0c66c4585c5a56092ea9c35049/packages/puppeteer-extra/src/index.ts#L85-L107)
 
 - `plugin` **PuppeteerExtraPlugin**
 
@@ -456,7 +456,7 @@ puppeteer.use(plugin1).use(plugin2)
 
 ---
 
-#### .[launch(options?)](https://github.com/berstend/puppeteer-extra/blob/bd73a05835ef5bd19565330188ad69d49431b7ea/packages/puppeteer-extra/src/index.ts#L153-L177)
+#### .[launch(options?)](https://github.com/berstend/puppeteer-extra/blob/dc8b90260a927c0c66c4585c5a56092ea9c35049/packages/puppeteer-extra/src/index.ts#L153-L177)
 
 - `options` **Puppeteer.LaunchOptions?** See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions).
 
@@ -480,7 +480,7 @@ const browser = await puppeteer.launch({
 
 ---
 
-#### .[connect(options?)](https://github.com/berstend/puppeteer-extra/blob/bd73a05835ef5bd19565330188ad69d49431b7ea/packages/puppeteer-extra/src/index.ts#L189-L208)
+#### .[connect(options?)](https://github.com/berstend/puppeteer-extra/blob/dc8b90260a927c0c66c4585c5a56092ea9c35049/packages/puppeteer-extra/src/index.ts#L189-L208)
 
 - `options` **Puppeteer.ConnectOptions?** See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerconnectoptions).
 
@@ -495,7 +495,7 @@ in sequence to potentially update the `options` Object before launching the brow
 
 ---
 
-#### .[defaultArgs(options?)](https://github.com/berstend/puppeteer-extra/blob/bd73a05835ef5bd19565330188ad69d49431b7ea/packages/puppeteer-extra/src/index.ts#L215-L217)
+#### .[defaultArgs(options?)](https://github.com/berstend/puppeteer-extra/blob/dc8b90260a927c0c66c4585c5a56092ea9c35049/packages/puppeteer-extra/src/index.ts#L215-L217)
 
 - `options` **Puppeteer.ChromeArgOptions?** See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerdefaultargsoptions).
 
@@ -505,7 +505,7 @@ The default flags that Chromium will be launched with.
 
 ---
 
-#### .[executablePath()](https://github.com/berstend/puppeteer-extra/blob/bd73a05835ef5bd19565330188ad69d49431b7ea/packages/puppeteer-extra/src/index.ts#L220-L222)
+#### .[executablePath()](https://github.com/berstend/puppeteer-extra/blob/dc8b90260a927c0c66c4585c5a56092ea9c35049/packages/puppeteer-extra/src/index.ts#L220-L222)
 
 Returns: **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**
 
@@ -513,7 +513,7 @@ Path where Puppeteer expects to find bundled Chromium.
 
 ---
 
-#### .[createBrowserFetcher(options?)](https://github.com/berstend/puppeteer-extra/blob/bd73a05835ef5bd19565330188ad69d49431b7ea/packages/puppeteer-extra/src/index.ts#L229-L233)
+#### .[createBrowserFetcher(options?)](https://github.com/berstend/puppeteer-extra/blob/dc8b90260a927c0c66c4585c5a56092ea9c35049/packages/puppeteer-extra/src/index.ts#L229-L233)
 
 - `options` **Puppeteer.FetcherOptions?** See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteercreatebrowserfetcheroptions).
 
@@ -523,7 +523,7 @@ This methods attaches Puppeteer to an existing Chromium instance.
 
 ---
 
-#### .[plugins](https://github.com/berstend/puppeteer-extra/blob/bd73a05835ef5bd19565330188ad69d49431b7ea/packages/puppeteer-extra/src/index.ts#L283-L285)
+#### .[plugins](https://github.com/berstend/puppeteer-extra/blob/dc8b90260a927c0c66c4585c5a56092ea9c35049/packages/puppeteer-extra/src/index.ts#L283-L285)
 
 Type: **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;PuppeteerExtraPlugin>**
 
@@ -531,7 +531,7 @@ Get a list of all registered plugins.
 
 ---
 
-#### .[getPluginData(name?)](https://github.com/berstend/puppeteer-extra/blob/bd73a05835ef5bd19565330188ad69d49431b7ea/packages/puppeteer-extra/src/index.ts#L310-L315)
+#### .[getPluginData(name?)](https://github.com/berstend/puppeteer-extra/blob/dc8b90260a927c0c66c4585c5a56092ea9c35049/packages/puppeteer-extra/src/index.ts#L310-L315)
 
 - `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Filter data by optional plugin name
 
@@ -546,7 +546,7 @@ Implemented mainly for plugins that need data from other plugins (e.g. `user-pre
 
 ---
 
-### [defaultExport()](https://github.com/berstend/puppeteer-extra/blob/bd73a05835ef5bd19565330188ad69d49431b7ea/packages/puppeteer-extra/src/index.ts#L494-L496)
+### [defaultExport()](https://github.com/berstend/puppeteer-extra/blob/dc8b90260a927c0c66c4585c5a56092ea9c35049/packages/puppeteer-extra/src/index.ts#L494-L496)
 
 Type: **[PuppeteerExtra](#puppeteerextra)**
 
@@ -572,7 +572,7 @@ puppeteer.use(...)
 
 ---
 
-### [addExtra(puppeteer)](https://github.com/berstend/puppeteer-extra/blob/bd73a05835ef5bd19565330188ad69d49431b7ea/packages/puppeteer-extra/src/index.ts#L519-L520)
+### [addExtra(puppeteer)](https://github.com/berstend/puppeteer-extra/blob/dc8b90260a927c0c66c4585c5a56092ea9c35049/packages/puppeteer-extra/src/index.ts#L519-L520)
 
 - `puppeteer` **VanillaPuppeteer** Any puppeteer API-compatible puppeteer implementation or version.
 
