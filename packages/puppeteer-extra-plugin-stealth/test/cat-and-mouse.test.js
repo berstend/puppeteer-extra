@@ -51,6 +51,27 @@ async function detectHeadless() {
     return 'webdriver' in navigator
   })
 
+  await test('navigator.webdriver not undefined', _ => {
+    return navigator.webdriver !== undefined
+  })
+
+  /* eslint-disable no-proto */
+  await test('navigator.webdriver property overridden', _ => {
+    return (
+      Object.getOwnPropertyDescriptor(navigator.__proto__, 'webdriver') !==
+      undefined
+    )
+  })
+
+  await test('navigator.webdriver prop detected', _ => {
+    for (const prop in navigator) {
+      if (prop === 'webdriver') {
+        return true
+      }
+    }
+    return false
+  })
+
   await test('window.chrome missing', _ => {
     return /Chrome/.test(window.navigator.userAgent) && !window.chrome
   })
