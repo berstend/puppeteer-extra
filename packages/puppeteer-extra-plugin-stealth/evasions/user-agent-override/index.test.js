@@ -114,8 +114,10 @@ test('stealth: navigator.languages with custom locale', async t => {
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
-  const lang = await page.evaluate(() => navigator.languages)
-  t.true(lang.length === 2 && lang[0] === 'de-DE' && lang[1] === 'de')
+  const langs = await page.evaluate(() => navigator.languages)
+  t.deepEqual(langs, ['de-DE', 'de'])
+  const lang = await page.evaluate(() => navigator.language)
+  t.deepEqual(lang, 'de-DE')
 })
 
 test('stealth: navigator.platform with default platform', async t => {

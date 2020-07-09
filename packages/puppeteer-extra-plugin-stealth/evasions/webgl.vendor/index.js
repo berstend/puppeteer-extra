@@ -4,6 +4,10 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
 /**
  * Fix WebGL Vendor/Renderer being set to Google in headless mode
+ *
+ * @param {Object} [opts] - Options
+ * @param {string} [opts.vendor] - The vendor string to use (default: `Intel Inc.`)
+ * @param {string} [opts.renderer] - The renderer string (default: `Intel Iris OpenGL Engine`)
  */
 class Plugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
@@ -17,7 +21,7 @@ class Plugin extends PuppeteerExtraPlugin {
   /* global WebGLRenderingContext */
   async onPageCreated(page) {
     // Chrome returns undefined, Firefox false
-    await page.evaluateOnNewDocument(() => {
+    await page.evaluateOnNewDocument(opts => {
       try {
         // Remove traces of our Proxy ;-)
         var stripErrorStack = stack =>
@@ -44,11 +48,11 @@ class Plugin extends PuppeteerExtraPlugin {
             const param = (args || [])[0]
             // UNMASKED_VENDOR_WEBGL
             if (param === 37445) {
-              return 'Intel Inc.'
+              return opts.vendor || 'Intel Inc.'
             }
             // UNMASKED_RENDERER_WEBGL
             if (param === 37446) {
-              return 'Intel Iris OpenGL Engine'
+              return opts.renderer || 'Intel Iris OpenGL Engine'
             }
             try {
               return Reflect.apply(target, thisArg, args)
@@ -73,7 +77,7 @@ class Plugin extends PuppeteerExtraPlugin {
       } catch (err) {
         console.warn(err)
       }
-    })
+    }, this.opts)
   }
 }
 
