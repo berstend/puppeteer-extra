@@ -6,6 +6,7 @@ on:
 
 env:
   CI: "true"
+  FORCE_COLOR: "true"
 
 jobs:
   test:
