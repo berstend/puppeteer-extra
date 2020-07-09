@@ -27,8 +27,8 @@ const getFingerPrint = async (puppeteer, pageFn) => {
 
 const getVanillaFingerPrint = async pageFn =>
   getFingerPrint(vanillaPuppeteer, pageFn)
-const getStealthFingerPrint = async (Plugin, pageFn) =>
-  getFingerPrint(addExtra(vanillaPuppeteer).use(Plugin()), pageFn)
+const getStealthFingerPrint = async (Plugin, pageFn, pluginOptions = null) =>
+  getFingerPrint(addExtra(vanillaPuppeteer).use(Plugin(pluginOptions)), pageFn)
 
 module.exports = {
   getVanillaFingerPrint,
