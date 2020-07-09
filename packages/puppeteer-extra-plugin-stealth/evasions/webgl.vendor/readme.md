@@ -6,9 +6,11 @@
 
 - [class: Plugin](#class-plugin)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/6d452681fe832a6d864616ee8fa79134ebd19be7/packages/puppeteer-extra-plugin-stealth/evasions/webgl.vendor/index.js#L8-L37)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/dc8b90260a927c0c66c4585c5a56092ea9c35049/packages/puppeteer-extra-plugin-stealth/evasions/webgl.vendor/index.js#L12-L82)
 
-- `opts` (optional, default `{}`)
+- `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Options (optional, default `{}`)
+  - `opts.vendor` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The vendor string to use (default: `Intel Inc.`)
+  - `opts.renderer` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The renderer string (default: `Intel Iris OpenGL Engine`)
 
 **Extends: PuppeteerExtraPlugin**
 

@@ -7,7 +7,7 @@
 - [class: Plugin](#class-plugin)
 - [parseInput(arg)](#parseinputarg)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/6d452681fe832a6d864616ee8fa79134ebd19be7/packages/puppeteer-extra-plugin-stealth/evasions/media.codecs/index.js#L9-L85)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/dc8b90260a927c0c66c4585c5a56092ea9c35049/packages/puppeteer-extra-plugin-stealth/evasions/media.codecs/index.js#L9-L89)
 
 - `opts` (optional, default `{}`)
 
@@ -18,7 +18,7 @@ Fix Chromium not reporting "probably" to codecs like `videoEl.canPlayType('video
 
 ---
 
-### [parseInput(arg)](https://github.com/berstend/puppeteer-extra/blob/6d452681fe832a6d864616ee8fa79134ebd19be7/packages/puppeteer-extra-plugin-stealth/evasions/media.codecs/index.js#L31-L45)
+### [parseInput(arg)](https://github.com/berstend/puppeteer-extra/blob/dc8b90260a927c0c66c4585c5a56092ea9c35049/packages/puppeteer-extra-plugin-stealth/evasions/media.codecs/index.js#L31-L45)
 
 - `arg` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**
 

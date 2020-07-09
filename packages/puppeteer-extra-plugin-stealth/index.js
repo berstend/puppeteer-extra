@@ -151,8 +151,10 @@ class StealthPlugin extends PuppeteerExtraPlugin {
   }
 
   async onBrowser(browser) {
-    // Increase event emitter listeners to prevent MaxListenersExceededWarning
-    browser.setMaxListeners(30)
+    if (browser && browser.setMaxListeners) {
+      // Increase event emitter listeners to prevent MaxListenersExceededWarning
+      browser.setMaxListeners(30)
+    }
   }
 }
 
