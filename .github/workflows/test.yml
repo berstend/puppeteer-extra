@@ -29,8 +29,8 @@ jobs:
           # - 13
         os:
           # - ubuntu-latest
-          # - macOS-latest
-          - windows-latest
+          - macOS-latest
+          # - windows-latest
 
     steps:
       - name: Checkout
