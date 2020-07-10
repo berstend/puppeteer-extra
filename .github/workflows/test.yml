@@ -49,7 +49,7 @@ jobs:
         run: npx json -I -f package.json -e 'this.resolutions={}'
 
       - name: yarn install
-        run: yarn
+        uses: bahmutov/npm-install@v1
 
       - name: yarn bootstrap
         run: yarn bootstrap
