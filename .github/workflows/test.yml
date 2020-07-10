@@ -1,8 +1,11 @@
 name: Test
 
 on:
-  - push
-  - pull_request
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 env:
   CI: "true"
