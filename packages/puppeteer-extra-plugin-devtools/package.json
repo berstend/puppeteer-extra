@@ -9,7 +9,8 @@
   "scripts": {
     "docs": "node -e 0",
     "lint": "eslint --ext .js .",
-    "test": "run-s lint",
+    "test": "ava -v",
+    "posttest": "run-s lint",
     "test-ci": "run-s test"
   },
   "engines": {
