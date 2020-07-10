@@ -68,9 +68,6 @@ jobs:
           yarn list --pattern "puppeteer|puppeteer-extra"
           file node_modules/puppeteer-extra/dist/index.cjs.js
 
-      - name: test
-        run: yarn test-ci
-
       - name: test with xvfb
         uses: GabrielBB/xvfb-action@v1.2
         env:
