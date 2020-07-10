@@ -13,12 +13,16 @@
   ],
   "scripts": {
     "clean": "rimraf dist/*",
-    "build": "yarpm run clean && tsc --module commonjs && rollup -c rollup.config.ts",
-    "docs": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API ./src/index.ts && npx prettier --write readme.md",
-    "test-ts": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v test/**.ts",
+    "prebuild": "run-s clean",
+    "build": "run-s build:tsc build:rollup",
+    "build:tsc": "tsc --module commonjs",
+    "build:rollup": "rollup -c rollup.config.ts",
+    "docs": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API ./src/index.ts",
+    "postdocs": "npx prettier --write readme.md",
+    "test-ts": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v test/**.ts",
     "test-js": "ava -v --serial --concurrency 1 --fail-fast test/**.js",
-    "test": "yarpm run test-js && yarpm run test-ts",
-    "test-ci": "yarpm run test"
+    "test": "run-s test-js test-ts",
+    "test-ci": "run-s test"
   },
   "ava": {
     "compileEnhancements": false,
@@ -46,7 +50,9 @@
   "devDependencies": {
     "@types/puppeteer": "^2.0.0",
     "ava": "^2.4.0",
+    "cross-env": "^7.0.2",
     "documentation-markdown-themes": "^12.1.5",
+    "npm-run-all": "^4.1.5",
     "puppeteer": "^2.0.0",
     "puppeteer-extra-plugin": "^3.1.6",
     "puppeteer-extra-plugin-anonymize-ua": "^2.2.11",
@@ -61,8 +67,7 @@
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^9.0.0",
-    "typescript": "^3.7.4",
-    "yarpm": "^0.2.1"
+    "typescript": "^3.7.4"
   },
   "peerDependencies": {
     "puppeteer": "*"
