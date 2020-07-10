@@ -28,8 +28,8 @@ jobs:
           - 10
           # - 13
         os:
-          # - ubuntu-latest
-          - macOS-latest
+          - ubuntu-latest
+          # - macOS-latest
           # - windows-latest
 
     steps:
