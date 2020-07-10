@@ -57,7 +57,7 @@ jobs:
         run: yarn lerna link
 
       - name: lerna build
-        run: yarn --verbose lerna run build --concurrency 1
+        run: yarn lerna run build --concurrency 1
 
       - name: debug
         run: |
