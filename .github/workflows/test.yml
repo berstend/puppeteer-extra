@@ -30,7 +30,7 @@ jobs:
           - 14
         os:
           - ubuntu-latest
-          # - macOS-latest
+          - macOS-latest
           # - windows-latest
 
     steps:
