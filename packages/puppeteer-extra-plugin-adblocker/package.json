@@ -20,21 +20,12 @@
     "build:tsc": "tsc --module commonjs",
     "build:rollup": "rollup -c rollup.config.ts",
     "docs": "node -e 0",
-    "test": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v src/**.test.ts",
+    "test": "ava -v --config ava.config-ts.js",
     "pretest-ci": "run-s build",
-    "test-ci": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava --fail-fast -v dist/*.test.js"
+    "test-ci": "ava --fail-fast -v"
   },
   "engines": {
     "node": ">=8"
-  },
-  "ava": {
-    "compileEnhancements": false,
-    "extensions": [
-      "ts"
-    ],
-    "require": [
-      "ts-node/register"
-    ]
   },
   "prettier": {
     "printWidth": 80,

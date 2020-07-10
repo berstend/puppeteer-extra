@@ -19,19 +19,10 @@
     "build:rollup": "rollup -c rollup.config.ts",
     "docs": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API ./src/index.ts",
     "postdocs": "npx prettier --write readme.md",
-    "test-ts": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v test/**.ts",
-    "test-js": "ava -v --serial --concurrency 1 --fail-fast test/**.js",
+    "test-ts": "ava -v --config ava.config-ts.js",
+    "test-js": "ava -v --serial --concurrency 1 --fail-fast",
     "test": "run-s test-js test-ts",
     "test-ci": "run-s test"
-  },
-  "ava": {
-    "compileEnhancements": false,
-    "extensions": [
-      "ts"
-    ],
-    "require": [
-      "ts-node/register"
-    ]
   },
   "keywords": [
     "puppeteer",

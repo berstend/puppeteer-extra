@@ -20,24 +20,12 @@
     "build:rollup": "rollup -c rollup.config.ts",
     "docs": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API ./src/index.ts",
     "postdocs": "npx prettier --write readme.md",
-    "test": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v",
+    "test": "ava -v --config ava.config-ts.js",
     "pretest-ci": "run-s build",
-    "test-ci": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava --fail-fast -v dist/*.test.js"
+    "test-ci": "ava --fail-fast -v"
   },
   "engines": {
     "node": ">=9.11.2"
-  },
-  "ava": {
-    "files": [
-      "src/**/*.test.ts"
-    ],
-    "compileEnhancements": false,
-    "extensions": [
-      "ts"
-    ],
-    "require": [
-      "ts-node/register"
-    ]
   },
   "prettier": {
     "printWidth": 80,

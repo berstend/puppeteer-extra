@@ -22,23 +22,14 @@
     "docs": "node -e 0",
     "predocs2": "rimraf docs/*",
     "docs2": "typedoc --module commonjs --readme none --target ES6 --theme markdown --excludeNotExported --excludeExternals --excludePrivate --out docs --mode file src/index.ts",
-    "test": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v src/**.test.ts",
+    "test": "ava -v --config ava.config-ts.js",
     "pretest-ci": "run-s build",
-    "test-ci": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava --fail-fast -v dist/*.test.js",
+    "test-ci": "ava --fail-fast -v",
     "ambient-dts": "run-s ambient-dts-copy",
     "ambient-dts-copy": "copyfiles -u 1 \"src/**/*.d.ts\" dist"
   },
   "engines": {
     "node": ">=9.11.2"
-  },
-  "ava": {
-    "compileEnhancements": false,
-    "extensions": [
-      "ts"
-    ],
-    "require": [
-      "ts-node/register"
-    ]
   },
   "prettier": {
     "printWidth": 80,
