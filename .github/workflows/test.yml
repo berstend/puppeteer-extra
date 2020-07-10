@@ -52,7 +52,7 @@ jobs:
         run: yarn bootstrap
 
       - name: install puppeteer@${{ matrix.puppeteer_version }}
-        run: yarn lerna add puppeteer@${{ matrix.puppeteer_version }}
+        run: yarn lerna add --dev puppeteer@${{ matrix.puppeteer_version }}
 
       - name: lerna link
         run: yarn lerna link
