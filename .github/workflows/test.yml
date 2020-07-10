@@ -10,7 +10,7 @@ env:
 
 jobs:
   test:
-    name: Test Node v${{ matrix.node }} on ${{ matrix.os }} and ${{ matrix.puppeteer_version }}
+    name: Test Node@${{ matrix.node }} on ${{ matrix.os }} and puppeteer@${{ matrix.puppeteer_version }}
 
     runs-on: ${{ matrix.os }}
 
