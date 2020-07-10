@@ -67,3 +67,10 @@ jobs:
 
       - name: test
         run: yarn test-ci
+
+      - name: test with xvfb
+        uses: GabrielBB/xvfb-action@v1.2
+        env:
+          DISPLAY: ":99.0"
+        with:
+          run: yarn test-ci
