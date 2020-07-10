@@ -26,7 +26,8 @@ jobs:
           # - 1.6.2 # Chromium 69.0.3494.0, Aug 1, 2018
         node:
           - 10
-          # - 13
+          - 12
+          - 14
         os:
           - ubuntu-latest
           # - macOS-latest
