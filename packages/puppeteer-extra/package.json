@@ -19,9 +19,9 @@
     "build:rollup": "rollup -c rollup.config.ts",
     "docs": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API ./src/index.ts",
     "postdocs": "npx prettier --write readme.md",
-    "test-ts": "ava -v --config ava.config-ts.js",
-    "test-js": "ava -v --serial --concurrency 1 --fail-fast",
-    "test": "run-s test-js test-ts",
+    "test:ts": "ava -v --config ava.config-ts.js",
+    "test:js": "ava -v --serial --concurrency 1 --fail-fast",
+    "test": "run-p test:js test:ts",
     "test-ci": "run-s test"
   },
   "keywords": [

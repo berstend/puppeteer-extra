@@ -8,8 +8,9 @@
   "license": "MIT",
   "scripts": {
     "docs": "node -e 0",
-    "test": "eslint --ext .js .",
-    "test-ci": "yarn test"
+    "lint": "eslint --ext .js .",
+    "test": "run-p lint",
+    "test-ci": "run-s test"
   },
   "engines": {
     "node": ">=8"

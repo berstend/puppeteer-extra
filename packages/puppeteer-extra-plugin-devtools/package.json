@@ -10,8 +10,7 @@
     "docs": "node -e 0",
     "lint": "eslint --ext .js .",
     "test-old": "ava --fail-fast -v",
-    "test": "node -e 0",
-    "posttest": "run-s lint",
+    "test": "run-p lint",
     "test-ci": "run-s test"
   },
   "engines": {
