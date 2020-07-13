@@ -8,9 +8,10 @@
   "author": "nswbmw & berstend",
   "license": "MIT",
   "scripts": {
-    "docs": "exit 0",
-    "test": "eslint --ext .js .",
-    "test-ci": "yarn test"
+    "docs": "node -e 0",
+    "lint": "eslint --ext .js .",
+    "test": "run-p lint",
+    "test-ci": "run-s test"
   },
   "engines": {
     "node": ">=8"
@@ -31,6 +32,7 @@
   "devDependencies": {
     "ava": "2.4.0",
     "mock-stdin": "^0.3.1",
+    "npm-run-all": "^4.1.5",
     "puppeteer": "^2.0.0"
   },
   "dependencies": {
