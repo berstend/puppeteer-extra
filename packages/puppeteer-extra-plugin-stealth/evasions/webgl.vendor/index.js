@@ -18,7 +18,7 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/webgl.vendor'
   }
 
-  /* global WebGLRenderingContext */
+  /* global WebGLRenderingContext WebGL2RenderingContext */
   async onPageCreated(page) {
     // Chrome returns undefined, Firefox false
     await page.evaluateOnNewDocument(opts => {
@@ -63,17 +63,31 @@ class Plugin extends PuppeteerExtraPlugin {
           }
         }
 
-        const proxy = new Proxy(
-          WebGLRenderingContext.prototype.getParameter,
-          getParameterProxyHandler
-        )
+        // There's more than one WebGL rendering context
+        // https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext#Browser_compatibility
         // To find out the original values here: Object.getOwnPropertyDescriptors(WebGLRenderingContext.prototype.getParameter)
         Object.defineProperty(WebGLRenderingContext.prototype, 'getParameter', {
           configurable: true,
           enumerable: false,
           writable: false,
-          value: proxy
+          value: new Proxy(
+            WebGLRenderingContext.prototype.getParameter,
+            getParameterProxyHandler
+          )
         })
+        Object.defineProperty(
+          WebGL2RenderingContext.prototype,
+          'getParameter',
+          {
+            configurable: true,
+            enumerable: false,
+            writable: false,
+            value: new Proxy(
+              WebGL2RenderingContext.prototype.getParameter,
+              getParameterProxyHandler
+            )
+          }
+        )
       } catch (err) {
         console.warn(err)
       }
