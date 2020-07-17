@@ -336,6 +336,12 @@ browserless
 - Allows setting custom Chrome/Chromium user preferences.
 - Has itself a plugin interface which is used by e.g. [`puppeteer-extra-plugin-font-size`](/packages/puppeteer-extra-plugin-font-size).
 
+
+#### [`puppeteer-extra-plugin-minmax`](https://github.com/Stillerman/puppeteer-extra-minmax)
+
+- Minimize and maximize puppeteer in real time.
+- Great for manually solving captchas.
+
 > Check out the [packages folder](/packages/) for more plugins.
 
 ---
