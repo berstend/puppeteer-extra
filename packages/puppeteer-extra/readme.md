@@ -337,12 +337,20 @@ browserless
 - Has itself a plugin interface which is used by e.g. [`puppeteer-extra-plugin-font-size`](/packages/puppeteer-extra-plugin-font-size).
 
 
+> Check out the [packages folder](/packages/) for more plugins.
+
+
+### Community Plugins
+
+_These plugins have been generously contributed by members of the community._
+_Please note that they're hosted outside the main project and not under our control or supervision._
+
 #### [`puppeteer-extra-plugin-minmax`](https://github.com/Stillerman/puppeteer-extra-minmax)
 
 - Minimize and maximize puppeteer in real time.
 - Great for manually solving captchas.
 
-> Check out the [packages folder](/packages/) for more plugins.
+> Please check the `Contributing` section below if you're interested in creating a plugin as well.
 
 ---
 
