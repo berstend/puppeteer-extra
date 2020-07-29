@@ -2,7 +2,7 @@ import debug, { Debugger } from 'debug'
 import * as Puppeteer from 'puppeteer'
 
 /** @private */
-const merge = require('merge-deep')
+const merge = require('deepmerge')
 
 export interface PluginOptions {
   [key: string]: any
@@ -96,7 +96,7 @@ export abstract class PuppeteerExtraPlugin {
   /**
    * Plugin defaults (optional).
    *
-   * If defined will be ([deep-](https://github.com/jonschlinkert/merge-deep))merged with the (optional) user supplied options (supplied during plugin instantiation).
+   * If defined will be ([deep-](https://github.com/TehShrike/deepmerge))merged with the (optional) user supplied options (supplied during plugin instantiation).
    *
    * The result of merging defaults with user supplied options can be accessed through `this.opts`.
    *
