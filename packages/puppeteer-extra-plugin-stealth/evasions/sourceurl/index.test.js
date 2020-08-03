@@ -17,6 +17,15 @@ test('vanilla: sourceurl is leaking', async t => {
     () => document.querySelector('#result').innerText
   )
   t.is(result, 'FAIL')
+
+  const result2 = await page.evaluate(() => {
+    try {
+      Function.prototype.toString.apply({})
+    } catch (err) {
+      return err.stack
+    }
+  })
+  t.true(result2.includes('__puppeteer_evaluation_script'))
 })
 
 test('stealth: sourceurl is not leaking', async t => {
@@ -33,4 +42,13 @@ test('stealth: sourceurl is not leaking', async t => {
     () => document.querySelector('#result').innerText
   )
   t.is(result, 'PASS')
+
+  const result2 = await page.evaluate(() => {
+    try {
+      Function.prototype.toString.apply({})
+    } catch (err) {
+      return err.stack
+    }
+  })
+  t.false(result2.includes('__puppeteer_evaluation_script'))
 })
