@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <h1 id="result">Please use `document.querySelector`..</h1>
+
+    <script>
+      function test() {
+        const err = new Error('Test Error')
+        const isPptr = err.stack
+          .toString()
+          .includes('puppeteer_evaluation_script')
+
+        document.getElementById('result').innerHTML = isPptr ? 'FAIL' : 'PASS'
+        console.log({ err, isPptr })
+      }
+
+      function overrideFunction(item) {
+        item.obj[item.propName] = (function(orig) {
+          return function() {
+            test()
+            return orig.apply(this, arguments)
+          }
+        })(item.obj[item.propName])
+      }
+
+      overrideFunction({
+        propName: 'querySelector',
+        obj: document
+      })
+    </script>
+  </body>
+</html>
