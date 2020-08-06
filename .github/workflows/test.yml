@@ -52,7 +52,7 @@ jobs:
 #         uses: bahmutov/npm-install@v1
 
       - name: yarn install (NPM registry)
-        run: yarn config set registry https://registry.npmjs.org && yarn install --registry=https://registry.npmjs.org
+        run: yarn cache clean && yarn config set registry "https://registry.npmjs.org" && yarn install --registry "https://registry.npmjs.org"
 
       - name: yarn bootstrap
         run: yarn bootstrap
