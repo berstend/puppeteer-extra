@@ -33,7 +33,7 @@ jobs:
           - 14
         os:
           - ubuntu-latest
-          - macOS-latest
+#           - macOS-latest
           # - windows-latest
 
     steps:
@@ -52,7 +52,7 @@ jobs:
 #         uses: bahmutov/npm-install@v1
 
       - name: yarn install (NPM registry)
-        run: yarn install --registry=https://registry.npmjs.org
+        run: yarn config set registry https://registry.npmjs.org && yarn install --registry=https://registry.npmjs.org
 
       - name: yarn bootstrap
         run: yarn bootstrap
