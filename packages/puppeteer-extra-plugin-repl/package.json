@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-repl",
-  "version": "2.2.7",
+  "version": "2.2.8",
   "description": "Start an interactive REPL in your puppeteer code.",
   "main": "index.js",
   "types": "index.d.ts",
@@ -8,9 +8,10 @@
   "author": "nswbmw & berstend",
   "license": "MIT",
   "scripts": {
-    "docs": "exit 0",
-    "test": "eslint --ext .js .",
-    "test-ci": "yarn test"
+    "docs": "node -e 0",
+    "lint": "eslint --ext .js .",
+    "test": "run-p lint",
+    "test-ci": "run-s test"
   },
   "engines": {
     "node": ">=8"
@@ -31,13 +32,14 @@
   "devDependencies": {
     "ava": "2.4.0",
     "mock-stdin": "^0.3.1",
+    "npm-run-all": "^4.1.5",
     "puppeteer": "^2.0.0"
   },
   "dependencies": {
     "chalk": "^3.0.0",
     "debug": "^4.1.1",
     "ow": "^0.4.0",
-    "puppeteer-extra-plugin": "^3.1.6"
+    "puppeteer-extra-plugin": "^3.1.7"
   },
   "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }

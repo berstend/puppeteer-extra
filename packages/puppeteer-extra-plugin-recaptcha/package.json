@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-recaptcha",
-  "version": "3.1.13",
+  "version": "3.1.14",
   "description": "A puppeteer-extra plugin to solve reCAPTCHAs automatically.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -13,28 +13,24 @@
   "author": "berstend",
   "license": "MIT",
   "scripts": {
-    "clean": "rm -rf dist/*",
+    "clean": "rimraf dist/*",
     "tscheck": "tsc --pretty --noEmit",
-    "build": "yarn clean && tsc --project tsconfig.json --module commonjs && rollup -c rollup.config.ts && yarn ambient-dts",
-    "docs": "exit 0",
-    "docs2": "rm -rf docs/* && typedoc --module commonjs --readme none --target ES6 --theme markdown --excludeNotExported --excludeExternals --excludePrivate --out docs --mode file src/index.ts",
-    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava -v src/**.test.ts",
-    "test-ci": "echo pwd && yarn build && TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ava --fail-fast -v dist/*.test.js",
-    "ambient-dts": "yarn ambient-dts-copy && yarn ambient-dts-fix-path",
+    "prebuild": "run-s clean",
+    "build": "run-s build:tsc build:rollup ambient-dts",
+    "build:tsc": "tsc --project tsconfig.json --module commonjs",
+    "build:rollup": "rollup -c rollup.config.ts",
+    "docs": "node -e 0",
+    "predocs2": "rimraf docs/*",
+    "docs2": "typedoc --module commonjs --readme none --target ES6 --theme markdown --excludeNotExported --excludeExternals --excludePrivate --out docs --mode file src/index.ts",
+    "test": "ava -v --config ava.config-ts.js",
+    "pretest-ci": "run-s build",
+    "test-ci": "ava --fail-fast -v",
+    "ambient-dts": "run-s ambient-dts-copy ambient-dts-fix-path",
     "ambient-dts-copy": "copyfiles -u 1 \"src/**/*.d.ts\" dist",
     "ambient-dts-fix-path": "replace-in-files --string='/// <reference path=\"../src/' --replacement='/// <reference path=\"../dist/' 'dist/**/*.d.ts'"
   },
   "engines": {
     "node": ">=9.11.2"
-  },
-  "ava": {
-    "compileEnhancements": false,
-    "extensions": [
-      "ts"
-    ],
-    "require": [
-      "ts-node/register"
-    ]
   },
   "prettier": {
     "printWidth": 80,
@@ -55,9 +51,11 @@
     "@types/puppeteer": "*",
     "ava": "2.4.0",
     "copyfiles": "^2.1.1",
+    "npm-run-all": "^4.1.5",
     "puppeteer": "^2.0.0",
-    "puppeteer-extra": "^3.1.12",
-    "replace-in-files-cli": "^0.3.0",
+    "puppeteer-extra": "^3.1.13",
+    "replace-in-files-cli": "^0.3.1",
+    "rimraf": "^3.0.0",
     "ts-node": "^8.5.4",
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
@@ -67,7 +65,7 @@
   "dependencies": {
     "debug": "^4.1.1",
     "merge-deep": "^3.0.2",
-    "puppeteer-extra-plugin": "^3.1.6"
+    "puppeteer-extra-plugin": "^3.1.7"
   },
   "peerDependencies": {
     "puppeteer-extra": "*"

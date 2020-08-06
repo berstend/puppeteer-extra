@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-stealth",
-  "version": "2.4.13",
+  "version": "2.4.14",
   "description": "Stealth mode: Applies various techniques to make detection of headless puppeteer harder.",
   "main": "index.js",
   "typings": "index.d.ts",
@@ -9,11 +9,15 @@
   "author": "berstend",
   "license": "MIT",
   "scripts": {
-    "docs": "yarn docs-for-plugin && yarn docs-for-evasions && yarn types",
-    "docs-for-plugin": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API index.js && npx prettier --write readme.md",
-    "docs-for-evasions": "cd ./evasions && loop \"documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API index.js && npx prettier --write readme.md\"",
-    "test": "ava --concurrency 2 -v && eslint --ext .js .",
-    "test-ci": "yarn test",
+    "docs": "run-s docs-for-plugin docs-for-evasions types",
+    "docs-for-plugin": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API index.js",
+    "postdocs-for-plugin": "npx prettier --write readme.md",
+    "docs-for-evasions": "cd ./evasions && loop \"documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API index.js\"",
+    "postdocs-for-evasions": "cd ./evasions && loop \"npx prettier --write readme.md\"",
+    "lint": "eslint --ext .js .",
+    "test:js": "ava --concurrency 2 -v",
+    "test": "run-p test:js lint",
+    "test-ci": "run-s test",
     "types": "npx --package typescript@3.7 tsc --emitDeclarationOnly --declaration --allowJs index.js"
   },
   "engines": {
@@ -42,11 +46,12 @@
     "fpcollect": "^1.0.4",
     "fpscanner": "^0.1.5",
     "loop": "^3.0.6",
+    "npm-run-all": "^4.1.5",
     "puppeteer": "^2.0.0"
   },
   "dependencies": {
     "debug": "^4.1.1",
-    "puppeteer-extra-plugin": "^3.1.6"
+    "puppeteer-extra-plugin": "^3.1.7"
   },
   "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }

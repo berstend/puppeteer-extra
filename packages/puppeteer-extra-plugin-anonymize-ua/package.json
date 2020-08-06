@@ -1,15 +1,17 @@
 {
   "name": "puppeteer-extra-plugin-anonymize-ua",
-  "version": "2.2.11",
+  "version": "2.2.12",
   "description": "Anonymize User-Agent in puppeteer.",
   "main": "index.js",
   "repository": "berstend/puppeteer-extra",
   "author": "berstend",
   "license": "MIT",
   "scripts": {
-    "docs": "exit 0",
-    "test": "ava -v --serial --concurrency 1 --fail-fast && eslint --ext .js .",
-    "test-ci": "yarn test"
+    "docs": "node -e 0",
+    "lint": "eslint --ext .js .",
+    "test:js": "ava -v --serial --concurrency 1 --fail-fast",
+    "test": "run-p test:js lint",
+    "test-ci": "run-s test"
   },
   "engines": {
     "node": ">=8"
@@ -26,13 +28,14 @@
   ],
   "devDependencies": {
     "ava": "2.4.0",
+    "npm-run-all": "^4.1.5",
     "puppeteer": "^2.0.0",
-    "puppeteer-extra": "^3.1.12",
-    "puppeteer-extra-plugin-devtools": "^2.2.11"
+    "puppeteer-extra": "^3.1.13",
+    "puppeteer-extra-plugin-devtools": "^2.2.12"
   },
   "dependencies": {
     "debug": "^4.1.1",
-    "puppeteer-extra-plugin": "^3.1.6"
+    "puppeteer-extra-plugin": "^3.1.7"
   },
   "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }

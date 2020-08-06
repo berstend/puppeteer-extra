@@ -1,16 +1,17 @@
 {
   "name": "puppeteer-extra-plugin-devtools",
-  "version": "2.2.11",
+  "version": "2.2.12",
   "description": "Make puppeteer browser debugging possible from anywhere (devtools with screencasting on the internet).",
   "main": "index.js",
   "repository": "berstend/puppeteer-extra",
   "author": "berstend",
   "license": "MIT",
   "scripts": {
-    "docs": "exit 0",
-    "test": "eslint --ext .js .",
-    "test-old": "ava -v && eslint --ext .js .",
-    "test-ci-old": "yarn test"
+    "docs": "node -e 0",
+    "lint": "eslint --ext .js .",
+    "test-old": "ava --fail-fast -v",
+    "test": "run-p lint",
+    "test-ci": "run-s test"
   },
   "engines": {
     "node": ">=8"
@@ -29,8 +30,9 @@
   ],
   "devDependencies": {
     "ava": "2.4.0",
+    "npm-run-all": "^4.1.5",
     "puppeteer": "^2.0.0",
-    "puppeteer-extra": "^3.1.12"
+    "puppeteer-extra": "^3.1.13"
   },
   "dependencies": {
     "debug": "^4.1.1",
@@ -41,7 +43,7 @@
     "http-proxy-response-rewrite": "^0.0.1",
     "localtunnel": "^2.0.0",
     "ow": "^0.4.0",
-    "puppeteer-extra-plugin": "^3.1.6",
+    "puppeteer-extra-plugin": "^3.1.7",
     "randomstring": "^1.1.5",
     "url-parse": "^1.4.0"
   },
