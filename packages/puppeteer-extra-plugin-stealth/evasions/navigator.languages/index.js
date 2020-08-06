@@ -3,10 +3,10 @@
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
 /**
- * Pass the Languages Test.
+ * Pass the Languages Test. Allows setting custom languages.
  *
  * @param {Object} [opts] - Options
- * @param {Array<string>} [opts.languages] - The user agent to use (default: `['en-US', 'en']`)
+ * @param {Array<string>} [opts.languages] - The languages to use (default: `['en-US', 'en']`)
  */
 class Plugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
@@ -20,7 +20,7 @@ class Plugin extends PuppeteerExtraPlugin {
   async onPageCreated(page) {
     await page.evaluateOnNewDocument(opts => {
       // Overwrite the `languages` property to use a custom getter.
-      Object.defineProperty(navigator, 'languages', {
+      Object.defineProperty(Object.getPrototypeOf(navigator), 'languages', {
         get: () => opts.languages || ['en-US', 'en']
       })
     }, this.opts)
