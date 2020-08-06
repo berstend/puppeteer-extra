@@ -48,11 +48,11 @@ jobs:
       - name: 'Fix for: error fsevents@2.1.2: The platform "linux" is incompatible with this module.'
         run: npx json -I -f package.json -e 'this.resolutions={}'
 
-      - name: 'Temporary fix: Use NPM registry'
-        run: yarn config set registry "https://registry.npmjs.org/"
+#       - name: yarn install
+#         uses: bahmutov/npm-install@v1
 
-      - name: yarn install
-        uses: bahmutov/npm-install@v1
+      - name: yarn install (NPM registry)
+        run: yarn install --registry=https://registry.npmjs.org
 
       - name: yarn bootstrap
         run: yarn bootstrap
