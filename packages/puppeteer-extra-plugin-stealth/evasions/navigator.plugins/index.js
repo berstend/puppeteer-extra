@@ -156,7 +156,7 @@ class Plugin extends PuppeteerExtraPlugin {
         }
 
         const mimeTypeArray = generateMimeTypeArray()
-        Object.defineProperty(navigator, 'mimeTypes', {
+        Object.defineProperty(Object.getPrototypeOf(navigator), 'mimeTypes', {
           get: () => mimeTypeArray
         })
 
@@ -196,7 +196,7 @@ class Plugin extends PuppeteerExtraPlugin {
         }
 
         const pluginArray = generatePluginArray()
-        Object.defineProperty(navigator, 'plugins', {
+        Object.defineProperty(Object.getPrototypeOf(navigator), 'plugins', {
           get: () => pluginArray
         })
 
