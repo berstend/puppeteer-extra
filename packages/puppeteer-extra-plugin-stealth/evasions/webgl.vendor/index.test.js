@@ -4,6 +4,8 @@ const {
   getVanillaFingerPrint,
   getStealthFingerPrint
 } = require('../../test/util')
+const { vanillaPuppeteer, addExtra } = require('../../test/util')
+
 const Plugin = require('.')
 
 test('vanilla: videoCard is Google Inc', async t => {
@@ -104,4 +106,54 @@ test('stealth: webgl is native', async t => {
     console.log(result)
   }
   t.false(wasHeadlessDetected)
+})
+
+/**
+ * A very simple method to retrieve the name of the default videocard of the system
+ * using webgl.
+ *
+ * Example (Apple Retina MBP 13): {vendor: "Intel Inc.", renderer: "Intel(R) Iris(TM) Graphics 6100"}
+ *
+ * @see https://stackoverflow.com/questions/49267764/how-to-get-the-video-card-driver-name-using-javascript-browser-side
+ * @returns {Object}
+ */
+function getVideoCardInfo(context = 'webgl') {
+  const gl = document.createElement('canvas').getContext(context)
+  if (!gl) {
+    return {
+      error: 'no webgl'
+    }
+  }
+  const debugInfo = gl.getExtension('WEBGL_debug_renderer_info')
+  if (debugInfo) {
+    return {
+      vendor: gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL),
+      renderer: gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+    }
+  }
+  return {
+    error: 'no WEBGL_debug_renderer_info'
+  }
+}
+
+test('stealth: handles WebGLRenderingContext', async t => {
+  const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
+  const browser = await puppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const videoCardInfo = await page.evaluate(getVideoCardInfo, 'webgl')
+  t.is(videoCardInfo.error, undefined)
+  t.is(videoCardInfo.vendor, 'Intel Inc.')
+  t.is(videoCardInfo.renderer, 'Intel Iris OpenGL Engine')
+})
+
+test('stealth: handles WebGL2RenderingContext', async t => {
+  const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
+  const browser = await puppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const videoCardInfo = await page.evaluate(getVideoCardInfo, 'webgl2')
+  t.is(videoCardInfo.error, undefined)
+  t.is(videoCardInfo.vendor, 'Intel Inc.')
+  t.is(videoCardInfo.renderer, 'Intel Iris OpenGL Engine')
 })
