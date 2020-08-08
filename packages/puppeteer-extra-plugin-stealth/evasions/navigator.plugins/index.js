@@ -1,6 +1,7 @@
 'use strict'
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+const args = require('../shared')
 
 /**
  * In headless mode `navigator.mimeTypes` and `navigator.plugins` are empty.
@@ -17,42 +18,17 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   async onPageCreated(page) {
-    await page.evaluateOnNewDocument(() => {
+    await page.evaluateOnNewDocument(args => {
+      const utils = Object.fromEntries(
+        Object.entries(args).map(([key, value]) => [key, eval(value)]) // eslint-disable-line no-eval
+      )
+
+      const { redefineGetter } = utils.getFunctionMockers()
+
+      const mockedFns = []
+
       function mockPluginsAndMimeTypes() {
         /* global MimeType MimeTypeArray PluginArray */
-
-        // Disguise custom functions as being native
-        const makeFnsNative = (fns = []) => {
-          const oldCall = Function.prototype.call
-          function call() {
-            return oldCall.apply(this, arguments)
-          }
-          // eslint-disable-next-line
-          Function.prototype.call = call
-
-          const nativeToStringFunctionString = Error.toString().replace(
-            /Error/g,
-            'toString'
-          )
-          const oldToString = Function.prototype.toString
-
-          function functionToString() {
-            for (const fn of fns) {
-              if (this === fn.ref) {
-                return `function ${fn.name}() { [native code] }`
-              }
-            }
-
-            if (this === functionToString) {
-              return nativeToStringFunctionString
-            }
-            return oldCall.call(oldToString, this)
-          }
-          // eslint-disable-next-line
-          Function.prototype.toString = functionToString
-        }
-
-        const mockedFns = []
 
         const fakeData = {
           mimeTypes: [
@@ -152,13 +128,18 @@ class Plugin extends PuppeteerExtraPlugin {
           arr.namedItem = fakeData.fns.namedItem('MimeTypeArray')
           arr.item = fakeData.fns.item('MimeTypeArray')
 
-          return Object.setPrototypeOf(arr, MimeTypeArray.prototype)
+          return Object.create(
+            MimeTypeArray.prototype,
+            Object.getOwnPropertyDescriptors(arr)
+          )
         }
 
         const mimeTypeArray = generateMimeTypeArray()
-        Object.defineProperty(Object.getPrototypeOf(navigator), 'mimeTypes', {
-          get: () => mimeTypeArray
-        })
+        redefineGetter(
+          Object.getPrototypeOf(navigator),
+          'mimeTypes',
+          () => mimeTypeArray
+        )
 
         function generatePluginArray() {
           const arr = fakeData.plugins
@@ -184,7 +165,7 @@ class Plugin extends PuppeteerExtraPlugin {
             })
             .map(obj => Object.setPrototypeOf(obj, Plugin.prototype))
           arr.forEach(obj => {
-            arr[obj.name] = obj
+            arr[obj.name] = obj // TODO Define property descriptors correctly
           })
 
           // Mock functions
@@ -192,16 +173,18 @@ class Plugin extends PuppeteerExtraPlugin {
           arr.item = fakeData.fns.item('PluginArray')
           arr.refresh = fakeData.fns.refresh('PluginArray')
 
-          return Object.setPrototypeOf(arr, PluginArray.prototype)
+          return Object.create(
+            PluginArray.prototype,
+            Object.getOwnPropertyDescriptors(arr)
+          )
         }
 
         const pluginArray = generatePluginArray()
-        Object.defineProperty(Object.getPrototypeOf(navigator), 'plugins', {
-          get: () => pluginArray
-        })
-
-        // Make mockedFns toString() representation resemble a native function
-        makeFnsNative(mockedFns)
+        redefineGetter(
+          Object.getPrototypeOf(navigator),
+          'plugins',
+          () => pluginArray
+        )
       }
       try {
         const isPluginArray = navigator.plugins instanceof PluginArray
@@ -211,7 +194,7 @@ class Plugin extends PuppeteerExtraPlugin {
         }
         mockPluginsAndMimeTypes()
       } catch (err) {}
-    })
+    }, args)
   }
 }
 

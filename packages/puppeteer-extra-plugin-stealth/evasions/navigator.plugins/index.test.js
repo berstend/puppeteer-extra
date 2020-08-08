@@ -17,7 +17,6 @@ test('vanilla: empty plugins, empty mimetypes', async t => {
 test('vanilla: will not have modifications', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
-
   const test1 = await page.evaluate(() => ({
     mimeTypes: Object.getOwnPropertyDescriptor(navigator, 'mimeTypes'), // Must be undefined if native
     plugins: Object.getOwnPropertyDescriptor(navigator, 'plugins') // Must be undefined if native
@@ -35,6 +34,12 @@ test('stealth: has plugin, has mimetypes', async t => {
   const { plugins, mimeTypes } = await getStealthFingerPrint(Plugin)
   t.is(plugins.length, 3)
   t.is(mimeTypes.length, 4)
+})
+
+test('stealth: plugin, mimetypes are not Arrays', async t => {
+  const { plugins, mimeTypes } = await getStealthFingerPrint(Plugin)
+  t.false(Array.isArray(plugins))
+  t.false(Array.isArray(mimeTypes))
 })
 
 test('stealth: will not leak modifications', async t => {

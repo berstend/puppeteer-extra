@@ -11,12 +11,30 @@ test('vanilla: navigator.webdriver is defined', async t => {
   t.is(data, true)
 })
 
-test('stealth: navigator.webdriver is undefined', async t => {
+test('vanilla: navigator.__proto__.webdriver is defined', async t => {
+  const browser = await vanillaPuppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const data = await page.evaluate(() =>
+    Object.getOwnPropertyDescriptor(
+      Object.getPrototypeOf(navigator),
+      'webdriver'
+    )
+  )
+  t.truthy(data)
+})
+
+test('stealth: navigator.__proto__.webdriver is not defined', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
-  const data = await page.evaluate(() => navigator.webdriver)
+  const data = await page.evaluate(() =>
+    Object.getOwnPropertyDescriptor(
+      Object.getPrototypeOf(navigator),
+      'webdriver'
+    )
+  )
   t.is(data, undefined)
 })
 

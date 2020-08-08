@@ -1,6 +1,7 @@
 'use strict'
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+const args = require('../shared')
 
 /**
  * Fix Chromium not reporting "probably" to codecs like `videoEl.canPlayType('video/mp4; codecs="avc1.42E01E"')`.
@@ -16,7 +17,12 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   async onPageCreated(page) {
-    await page.evaluateOnNewDocument(() => {
+    await page.evaluateOnNewDocument(args => {
+      const utils = Object.fromEntries(
+        Object.entries(args).map(([key, value]) => [key, eval(value)]) // eslint-disable-line no-eval
+      )
+
+      const { redefineFunction } = utils.getFunctionMockers(window)
       try {
         /**
          * Input might look funky, we need to normalize it so e.g. whitespace isn't an issue for our spoofing.
@@ -45,20 +51,11 @@ class Plugin extends PuppeteerExtraPlugin {
         }
 
         /* global HTMLMediaElement */
-        const canPlayType = {
-          // Make toString() native
-          get(target, key) {
-            // Mitigate Chromium bug (#130)
-            if (typeof target[key] === 'function') {
-              return target[key].bind(target)
-            }
-            return Reflect.get(target, key)
-          },
-          // Intercept certain requests
-          apply: function(target, ctx, args) {
-            if (!args || !args.length) {
-              return target.apply(ctx, args)
-            }
+        const oldCanPlayType = HTMLMediaElement.prototype.canPlayType
+        redefineFunction(
+          HTMLMediaElement.prototype,
+          'canPlayType',
+          function(target, thisArg, args) {
             const { mime, codecs } = parseInput(args[0])
             // This specific mp4 codec is missing in Chromium
             if (mime === 'video/mp4') {
@@ -76,15 +73,14 @@ class Plugin extends PuppeteerExtraPlugin {
               return 'probably'
             }
             // Everything else as usual
-            return target.apply(ctx, args)
+            return oldCanPlayType.apply(this, args)
+          },
+          {
+            isTrapStyle: true
           }
-        }
-        HTMLMediaElement.prototype.canPlayType = new Proxy(
-          HTMLMediaElement.prototype.canPlayType,
-          canPlayType
         )
       } catch (err) {}
-    })
+    }, args)
   }
 }
 

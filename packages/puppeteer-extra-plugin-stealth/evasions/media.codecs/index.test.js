@@ -19,7 +19,6 @@ test('vanilla: doesnt support proprietary codecs', async t => {
     aac: ''
   })
 })
-
 test('vanilla: will not have modifications', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
@@ -78,4 +77,10 @@ test('stealth: will not leak modifications', async t => {
     return audioElt.canPlayType('audio/aac')
   })
   t.is(test3, 'probably') // empty in Chromium without stealth plugin
+
+  const test4 = await page.evaluate(() => {
+    const audioElt = document.createElement('audio')
+    return audioElt.canPlayType.toString.toString()
+  })
+  t.is(test4, 'function toString() { [native code] }')
 })
