@@ -47,7 +47,7 @@ class Plugin extends PuppeteerExtraPlugin {
 
     await page.evaluateOnNewDocument(v => {
       // Overwrite the `vendor` property to use a custom getter.
-      Object.defineProperty(navigator, 'vendor', {
+      Object.defineProperty(Object.getPrototypeOf(navigator), 'vendor', {
         get: () => v
       })
     }, this.opts.vendor || 'Google Inc.')

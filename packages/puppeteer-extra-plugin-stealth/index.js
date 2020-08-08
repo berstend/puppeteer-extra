@@ -81,13 +81,13 @@ class StealthPlugin extends PuppeteerExtraPlugin {
   get defaults() {
     const availableEvasions = new Set([
       'chrome.runtime',
-      'console.debug',
       'iframe.contentWindow',
       'media.codecs',
       'navigator.languages',
       'navigator.permissions',
       'navigator.plugins',
       'navigator.webdriver',
+      'sourceurl',
       'user-agent-override',
       'webgl.vendor',
       'window.outerdimensions'
