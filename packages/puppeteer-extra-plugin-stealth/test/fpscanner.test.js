@@ -38,6 +38,8 @@ test('stealth: will not fail a single fpscanner test', async t => {
     val => val.consistent < 3
   )
 
+  console.log('FP', failedChecks)
+
   if (failedChecks.length) {
     console.warn('The following fingerprints failed:', failedChecks)
   }

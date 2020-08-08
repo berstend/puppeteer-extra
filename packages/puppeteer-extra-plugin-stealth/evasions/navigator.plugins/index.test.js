@@ -36,12 +36,6 @@ test('stealth: has plugin, has mimetypes', async t => {
   t.is(mimeTypes.length, 4)
 })
 
-test('stealth: plugin, mimetypes are not Arrays', async t => {
-  const { plugins, mimeTypes } = await getStealthFingerPrint(Plugin)
-  t.false(Array.isArray(plugins))
-  t.false(Array.isArray(mimeTypes))
-})
-
 test('stealth: will not leak modifications', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
@@ -58,4 +52,11 @@ test('stealth: will not leak modifications', async t => {
     () => Object.getOwnPropertyNames(navigator) // Must be an empty array if native
   )
   t.deepEqual(test2, [])
+
+  const test3 = await page.evaluate(() => ({
+    mimeTypes: Array.isArray(navigator.plugins),
+    plugins: Array.isArray(navigator.mimeTypes)
+  }))
+  t.false(test3.mimeTypes)
+  t.false(test3.plugins)
 })

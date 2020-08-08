@@ -18,9 +18,9 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   async onPageCreated(page) {
-    await page.evaluateOnNewDocument(args => {
+    await page.evaluateOnNewDocument(({ fns }) => {
       const utils = Object.fromEntries(
-        Object.entries(args).map(([key, value]) => [key, eval(value)]) // eslint-disable-line no-eval
+        Object.entries(fns).map(([key, value]) => [key, eval(value)]) // eslint-disable-line no-eval
       )
 
       const { redefineGetter } = utils.getFunctionMockers()

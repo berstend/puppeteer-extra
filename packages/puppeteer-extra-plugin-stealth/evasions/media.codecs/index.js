@@ -17,12 +17,13 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   async onPageCreated(page) {
-    await page.evaluateOnNewDocument(args => {
+    await page.evaluateOnNewDocument(({ fns }) => {
       const utils = Object.fromEntries(
-        Object.entries(args).map(([key, value]) => [key, eval(value)]) // eslint-disable-line no-eval
+        Object.entries(fns).map(([key, value]) => [key, eval(value)]) // eslint-disable-line no-eval
       )
 
       const { redefineFunction } = utils.getFunctionMockers(window)
+
       try {
         /**
          * Input might look funky, we need to normalize it so e.g. whitespace isn't an issue for our spoofing.
@@ -51,7 +52,6 @@ class Plugin extends PuppeteerExtraPlugin {
         }
 
         /* global HTMLMediaElement */
-        const oldCanPlayType = HTMLMediaElement.prototype.canPlayType
         redefineFunction(
           HTMLMediaElement.prototype,
           'canPlayType',
@@ -73,7 +73,7 @@ class Plugin extends PuppeteerExtraPlugin {
               return 'probably'
             }
             // Everything else as usual
-            return oldCanPlayType.apply(this, args)
+            return Reflect.apply(target, thisArg, args)
           },
           {
             isTrapStyle: true
