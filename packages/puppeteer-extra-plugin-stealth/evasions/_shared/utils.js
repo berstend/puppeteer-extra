@@ -5,7 +5,7 @@ const utils = {}
 /**
  * Wraps a JS Proxy Handler and strips it's presence from error stacks, in case the traps throw.
  *
- * The presence of a JS Porxy can be revealed as it shows up in error stack traces.
+ * The presence of a JS Proxy can be revealed as it shows up in error stack traces.
  *
  * @param {object} handler - The JS Proxy handler to wrap
  */
@@ -166,8 +166,16 @@ module.exports = {
 /**
  * In order for our utility functions to survive being evaluated on the page we need to stringify them and rematerialize them later.
  */
+// Object.fromEntries() ponyfill (in 6 lines) - supported only in Node v12+
+// https://github.com/feross/fromentries
+function fromEntries(iterable) {
+  return [...iterable].reduce((obj, [key, val]) => {
+    obj[key] = val
+    return obj
+  }, {})
+}
 function stringifyFns() {
-  return Object.fromEntries(
+  return (Object.fromEntries || fromEntries)(
     Object.entries(utils)
       .filter(([key, value]) => typeof value === 'function')
       .map(([key, value]) => [key, value.toString()]) // eslint-disable-line no-eval
