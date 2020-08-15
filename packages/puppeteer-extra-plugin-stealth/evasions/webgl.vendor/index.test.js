@@ -157,3 +157,37 @@ test('stealth: handles WebGL2RenderingContext', async t => {
   t.is(videoCardInfo.vendor, 'Intel Inc.')
   t.is(videoCardInfo.renderer, 'Intel Iris OpenGL Engine')
 })
+
+test('vanilla: normal toString stuff', async t => {
+  const browser = await vanillaPuppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const test1 = await page.evaluate(() => {
+    return WebGLRenderingContext.prototype.getParameter.toString + ''
+  })
+  t.is(test1, 'function toString() { [native code] }')
+})
+
+test('stealth: will not leak toString stuff', async t => {
+  const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
+  const browser = await puppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const test1 = await page.evaluate(() => {
+    return WebGLRenderingContext.prototype.getParameter.toString + ''
+  })
+  t.is(test1, 'function toString() { [native code] }') // returns function () { [native code] }
+})
+
+test('stealth: sets user opts correctly', async t => {
+  const puppeteer = addExtra(vanillaPuppeteer).use(
+    Plugin({ vendor: 'alice', renderer: 'bob' })
+  )
+  const browser = await puppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const videoCardInfo = await page.evaluate(getVideoCardInfo, 'webgl')
+  t.is(videoCardInfo.error, undefined)
+  t.is(videoCardInfo.vendor, 'alice')
+  t.is(videoCardInfo.renderer, 'bob')
+})
