@@ -73,9 +73,32 @@ test('stealth: will not leak modifications', async t => {
   t.is(test2, 'canPlayType')
 
   // Double check the plugin is active and spoofing e.g. the aac codec results
-  const test3 = await page.evaluate(() => {
+  const isWorkingTest = await page.evaluate(() => {
     const audioElt = document.createElement('audio')
-    return audioElt.canPlayType('audio/aac')
+    return audioElt.canPlayType('audio/aac') === 'probably' // empty in Chromium without stealth plugin
   })
-  t.is(test3, 'probably') // empty in Chromium without stealth plugin
+  t.true(isWorkingTest)
+})
+
+test('vanilla: normal toString stuff', async t => {
+  const browser = await vanillaPuppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const test1 = await page.evaluate(() => {
+    const audioElt = document.createElement('audio')
+    return audioElt.canPlayType.toString + ''
+  })
+  t.is(test1, 'function toString() { [native code] }')
+})
+
+test('stealth: will not leak toString stuff', async t => {
+  const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
+  const browser = await puppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const test1 = await page.evaluate(() => {
+    const audioElt = document.createElement('audio')
+    return audioElt.canPlayType.toString + ''
+  })
+  t.is(test1, 'function toString() { [native code] }') // returns function () { [native code] }
 })
