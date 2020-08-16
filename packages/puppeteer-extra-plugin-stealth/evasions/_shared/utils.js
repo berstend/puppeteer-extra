@@ -134,14 +134,13 @@ utils.replaceWithProxy = (objPath, handler) => {
   const { objName, propName } = utils.splitObjPath(objPath)
   const obj = eval(objName) // eslint-disable-line no-eval
 
+  const originalStr = obj[propName] + '' // Cache original toString result before applying the proxy
+
   utils.replaceProperty(obj, propName, {
     value: new Proxy(obj[propName], utils.stripProxyFromErrors(handler))
   })
   // Patching `toString` must be done after replacing the property with the proxy
-  // Note: It's currently sufficient to generate the result based on the `.name` of the proxied object
-  // there might be differences in how other browsers return `toString()` for native browser APIs.
-  // Alternatively we could cache the `toString()` result from the vanilla object before setting the proxy and pass it here.
-  utils.patchToString(obj[propName])
+  utils.patchToString(obj[propName], originalStr)
 
   // Part of the reason to require an `objPath` as parameter is what we're doing now.
   // We're patching again but against the `window.parent` version of the object, in case we're in an iframe.
@@ -149,7 +148,7 @@ utils.replaceWithProxy = (objPath, handler) => {
   // e.g. `iframe.contentWindow.Function.prototype.toString.call(HTMLMediaElement.prototype.canPlayType)`
   if (window.frameElement) {
     // Check if we're running in a same-origin iframe
-    utils.patchToString(eval(`window.parent.${objPath}`)) // eslint-disable-line no-eval
+    utils.patchToString(eval(`window.parent.${objPath}`), originalStr) // eslint-disable-line no-eval
   }
   return true
 }

@@ -166,6 +166,11 @@ test('vanilla: normal toString stuff', async t => {
     return WebGLRenderingContext.prototype.getParameter.toString + ''
   })
   t.is(test1, 'function toString() { [native code] }')
+
+  const test2 = await page.evaluate(() => {
+    return WebGLRenderingContext.prototype.getParameter.toString()
+  })
+  t.is(test2, 'function getParameter() { [native code] }')
 })
 
 test('stealth: will not leak toString stuff', async t => {
@@ -177,6 +182,11 @@ test('stealth: will not leak toString stuff', async t => {
     return WebGLRenderingContext.prototype.getParameter.toString + ''
   })
   t.is(test1, 'function toString() { [native code] }') // returns function () { [native code] }
+
+  const test2 = await page.evaluate(() => {
+    return WebGLRenderingContext.prototype.getParameter.toString()
+  })
+  t.is(test2, 'function getParameter() { [native code] }')
 })
 
 test('stealth: sets user opts correctly', async t => {
