@@ -23,18 +23,48 @@ utils.stripProxyFromErrors = (handler = {}) => {
         if (!err || !err.stack || !err.stack.includes(`at `)) {
           throw err
         }
-        const blacklist = [
-          `at Reflect.${trap} `, // e.g. Reflect.get or Reflect.apply
-          `at Object.${trap} `, // e.g. Object.get or Object.apply
-          `at Object.newHandler.<computed> [as ${trap}] ` // caused by this very wrapper :-)
-        ]
-        err.stack = err.stack
-          .split('\n')
-          // Always remove the first (file) line in the stack (guaranteed to be our proxy)
-          .filter((line, index) => index !== 1)
-          // Check if the line starts with one of our blacklisted strings
-          .filter(line => !blacklist.some(bl => line.trim().startsWith(bl)))
-          .join('\n')
+
+        // When something throws within one of our traps the Proxy will show up in error stacks
+        // An earlier implementation of this code would simply strip lines with a blacklist,
+        // but it makes sense to be more surgical here and only remove lines related to our Proxy.
+        // We try to use a known "anchor" line for that and strip it with everything above it.
+        // If the anchor line cannot be found for some reason we fall back to our blacklist approach.
+
+        const stripWithBlacklist = stack => {
+          const blacklist = [
+            `at Reflect.${trap} `, // e.g. Reflect.get or Reflect.apply
+            `at Object.${trap} `, // e.g. Object.get or Object.apply
+            `at Object.newHandler.<computed> [as ${trap}] ` // caused by this very wrapper :-)
+          ]
+          return (
+            err.stack
+              .split('\n')
+              // Always remove the first (file) line in the stack (guaranteed to be our proxy)
+              .filter((line, index) => index !== 1)
+              // Check if the line starts with one of our blacklisted strings
+              .filter(line => !blacklist.some(bl => line.trim().startsWith(bl)))
+              .join('\n')
+          )
+        }
+
+        const stripWithAnchor = stack => {
+          const stackArr = stack.split('\n')
+          const anchor = `at Object.newHandler.<computed> [as ${trap}] ` // Known first Proxy line in chromium
+          const anchorIndex = stackArr.findIndex(line =>
+            line.trim().startsWith(anchor)
+          )
+          if (anchorIndex === -1) {
+            return false // 404, anchor not found
+          }
+          // Strip everything from the top until we reach the anchor line
+          // Note: We're keeping the 1st line (zero index) as it's unrelated (e.g. `TypeError`)
+          stackArr.splice(1, anchorIndex)
+          return stackArr.join('\n')
+        }
+
+        // Try using the anchor method, fallback to blacklist if necessary
+        err.stack = stripWithAnchor(err.stack) || stripWithBlacklist(err.stack)
+
         throw err // Re-throw our now sanitized error
       }
     }
