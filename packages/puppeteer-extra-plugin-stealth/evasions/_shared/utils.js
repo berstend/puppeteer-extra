@@ -92,7 +92,7 @@ utils.stripProxyFromErrors = (handler = {}) => {
 utils.replaceProperty = (obj, propName, descriptorOverrides = {}) => {
   return Object.defineProperty(obj, propName, {
     // Copy over the existing descriptors (writable, enumerable, configurable, etc)
-    ...(Object.getOwnPropertyDescriptors(obj) || {})[propName],
+    ...(Object.getOwnPropertyDescriptor(obj, propName) || {}),
     // Add our overrides (e.g. value, get())
     ...descriptorOverrides
   })
