@@ -101,6 +101,8 @@ utils.replaceProperty = (obj, propName, descriptorOverrides = {}) => {
 /**
  * Helper function to modify the `toString()` result of the provided object.
  *
+ * Note: Use `utils.redirectToString` instead when possible.
+ *
  * There's a quirk in JS Proxies that will cause the `toString()` result to differ from the vanilla Object.
  * If no string is provided we will generate a `[native code]` thing based on the name of the property object.
  *
@@ -131,6 +133,49 @@ utils.patchToString = (obj, str = '') => {
 }
 
 /**
+ * Redirect toString requests from one object to another.
+ *
+ * @param {object} proxyObj - The object that toString will be called on
+ * @param {object} originalObj - The object which toString result we wan to return
+ */
+utils.redirectToString = (proxyObj, originalObj) => {
+  const toStringProxy = new Proxy(Function.prototype.toString, {
+    apply: function(target, ctx) {
+      // This fixes e.g. `HTMLMediaElement.prototype.canPlayType.toString + ""`
+      if (ctx === Function.prototype.toString) {
+        return 'function toString() { [native code] }'
+      }
+
+      // `toString` targeted at our proxied Object detected
+      if (ctx === proxyObj) {
+        const fallback = () =>
+          originalObj && originalObj.name
+            ? `function ${originalObj.name}() { [native code] }`
+            : `function ${proxyObj.name}() { [native code] }`
+
+        // Return the toString representation of our original object if possible
+        return originalObj + '' || fallback()
+      }
+
+      // Check if the toString protype of the context is the same as the global prototype,
+      // if not indicates that we are doing a check across different windows., e.g. the iframeWithdirect` test case
+      const hasSameProto = Object.getPrototypeOf(
+        Function.prototype.toString
+      ).isPrototypeOf(ctx.toString) // eslint-disable-line no-prototype-builtins
+      if (!hasSameProto) {
+        // Pass the call on to the local Function.prototype.toString instead
+        return ctx.toString()
+      }
+
+      return target.call(ctx)
+    }
+  })
+  utils.replaceProperty(Function.prototype, 'toString', {
+    value: toStringProxy
+  })
+}
+
+/**
  * Helper function to split a full path to an Object into the first part and property.
  *
  * @example
@@ -152,7 +197,7 @@ utils.splitObjPath = objPath => ({
 /**
  * Convenience method to replace a property with a JS Proxy using the provided Proxy handler with traps.
  *
- * Will stealthify these aspects (strip error stack traces, patch toString, etc).
+ * Will stealthify these aspects (strip error stack traces, redirect toString, etc).
  * Note: This is meant to modify native Browser APIs and works best with prototype objects.
  *
  * We use a full path (dot notation) to the object as string here, to make followup things easier.
@@ -163,23 +208,13 @@ utils.splitObjPath = objPath => ({
 utils.replaceWithProxy = (objPath, handler) => {
   const { objName, propName } = utils.splitObjPath(objPath)
   const obj = eval(objName) // eslint-disable-line no-eval
+  const originalObj = obj[propName]
 
-  const originalStr = obj[propName] + '' // Cache original toString result before applying the proxy
+  const proxyObj = new Proxy(obj[propName], utils.stripProxyFromErrors(handler))
 
-  utils.replaceProperty(obj, propName, {
-    value: new Proxy(obj[propName], utils.stripProxyFromErrors(handler))
-  })
-  // Patching `toString` must be done after replacing the property with the proxy
-  utils.patchToString(obj[propName], originalStr)
+  utils.replaceProperty(obj, propName, { value: proxyObj })
+  utils.redirectToString(proxyObj, originalObj)
 
-  // Part of the reason to require an `objPath` as parameter is what we're doing now.
-  // We're patching again but against the `window.parent` version of the object, in case we're in an iframe.
-  // The reason for that is that a `toString` function from an iframe can be used in the main window and the normal object comparison would fail otherwise:
-  // e.g. `iframe.contentWindow.Function.prototype.toString.call(HTMLMediaElement.prototype.canPlayType)`
-  if (window.frameElement) {
-    // Check if we're running in a same-origin iframe
-    utils.patchToString(eval(`window.parent.${objPath}`), originalStr) // eslint-disable-line no-eval
-  }
   return true
 }
 

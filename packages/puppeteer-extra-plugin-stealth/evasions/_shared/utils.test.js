@@ -4,7 +4,7 @@ const { vanillaPuppeteer } = require('../../test/util')
 
 const utils = require('./utils')
 
-/* global HTMLMediaElement */
+/* global HTMLMediaElement WebGLRenderingContext */
 
 test('splitObjPath: will do what it says', async t => {
   const { objName, propName } = utils.splitObjPath(
@@ -12,6 +12,120 @@ test('splitObjPath: will do what it says', async t => {
   )
   t.is(objName, 'HTMLMediaElement.prototype')
   t.is(propName, 'canPlayType')
+})
+
+test('replaceWithProxy: will work correctly', async t => {
+  const browser = await vanillaPuppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const test1 = await utils.withUtils.evaluate(page, utils => {
+    const dummyProxyHandler = {
+      get(target, param) {
+        if (param && param === 'ping') {
+          return 'pong'
+        }
+        return Reflect.get(...(arguments || []))
+      },
+      apply() {
+        return Reflect.apply(...arguments)
+      }
+    }
+    utils.replaceWithProxy(
+      'HTMLMediaElement.prototype.canPlayType',
+      dummyProxyHandler
+    )
+    return {
+      toString: HTMLMediaElement.prototype.canPlayType.toString(),
+      ping: HTMLMediaElement.prototype.canPlayType.ping
+    }
+  })
+  t.deepEqual(test1, {
+    toString: 'function canPlayType() { [native code] }',
+    ping: 'pong'
+  })
+})
+
+test('redirectToString: is battle hardened', async t => {
+  const browser = await vanillaPuppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  // Patch all documents including iframes
+  await utils.withUtils.evaluateOnNewDocument(page, utils => {
+    // We redirect toString calls targeted at `canPlayType` to `getParameter`,
+    // so if everything works correctly we expect `getParameter` as response.
+    const proxyObj = HTMLMediaElement.prototype.canPlayType
+    const originalObj = WebGLRenderingContext.prototype.getParameter
+
+    utils.redirectToString(proxyObj, originalObj)
+  })
+  await page.goto('about:blank')
+
+  const result = await utils.withUtils.evaluate(page, utils => {
+    const iframe = document.createElement('iframe')
+    document.body.appendChild(iframe)
+
+    return {
+      target: {
+        raw: HTMLMediaElement.prototype.canPlayType + '',
+        rawiframe:
+          iframe.contentWindow.HTMLMediaElement.prototype.canPlayType + '',
+        raw2: HTMLMediaElement.prototype.canPlayType.toString(),
+        rawiframe2: iframe.contentWindow.HTMLMediaElement.prototype.canPlayType.toString(),
+        direct: Function.prototype.toString.call(
+          HTMLMediaElement.prototype.canPlayType
+        ),
+        directWithiframe: iframe.contentWindow.Function.prototype.toString.call(
+          HTMLMediaElement.prototype.canPlayType
+        ),
+        iframeWithdirect: Function.prototype.toString.call(
+          iframe.contentWindow.HTMLMediaElement.prototype.canPlayType
+        ),
+        iframeWithiframe: iframe.contentWindow.Function.prototype.toString.call(
+          iframe.contentWindow.HTMLMediaElement.prototype.canPlayType
+        )
+      },
+      toString: {
+        obj: HTMLMediaElement.prototype.canPlayType.toString + '',
+        objiframe:
+          iframe.contentWindow.HTMLMediaElement.prototype.canPlayType.toString +
+          '',
+        raw: Function.prototype.toString + '',
+        rawiframe: iframe.contentWindow.Function.prototype.toString + '',
+        direct: Function.prototype.toString.call(Function.prototype.toString),
+        directWithiframe: iframe.contentWindow.Function.prototype.toString.call(
+          Function.prototype.toString
+        ),
+        iframeWithdirect: Function.prototype.toString.call(
+          iframe.contentWindow.Function.prototype.toString
+        ),
+        iframeWithiframe: iframe.contentWindow.Function.prototype.toString.call(
+          iframe.contentWindow.Function.prototype.toString
+        )
+      }
+    }
+  })
+  t.deepEqual(result, {
+    target: {
+      raw: 'function getParameter() { [native code] }',
+      raw2: 'function getParameter() { [native code] }',
+      rawiframe: 'function getParameter() { [native code] }',
+      rawiframe2: 'function getParameter() { [native code] }',
+      direct: 'function getParameter() { [native code] }',
+      directWithiframe: 'function getParameter() { [native code] }',
+      iframeWithdirect: 'function getParameter() { [native code] }',
+      iframeWithiframe: 'function getParameter() { [native code] }'
+    },
+    toString: {
+      obj: 'function toString() { [native code] }',
+      objiframe: 'function toString() { [native code] }',
+      raw: 'function toString() { [native code] }',
+      rawiframe: 'function toString() { [native code] }',
+      direct: 'function toString() { [native code] }',
+      directWithiframe: 'function toString() { [native code] }',
+      iframeWithdirect: 'function toString() { [native code] }',
+      iframeWithiframe: 'function toString() { [native code] }'
+    }
+  })
 })
 
 test('patchToString: will work correctly', async t => {
