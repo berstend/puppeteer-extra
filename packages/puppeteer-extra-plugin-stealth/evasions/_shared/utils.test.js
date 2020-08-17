@@ -40,6 +40,38 @@ test('replaceWithProxy: will work correctly', async t => {
       }
     }
     utils.replaceWithProxy(
+      HTMLMediaElement.prototype,
+      'canPlayType',
+      dummyProxyHandler
+    )
+    return {
+      toString: HTMLMediaElement.prototype.canPlayType.toString(),
+      ping: HTMLMediaElement.prototype.canPlayType.ping
+    }
+  })
+  t.deepEqual(test1, {
+    toString: 'function canPlayType() { [native code] }',
+    ping: 'pong'
+  })
+})
+
+test('replaceObjPathWithProxy: will work correctly', async t => {
+  const browser = await vanillaPuppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const test1 = await utils.withUtils.evaluate(page, utils => {
+    const dummyProxyHandler = {
+      get(target, param) {
+        if (param && param === 'ping') {
+          return 'pong'
+        }
+        return Reflect.get(...(arguments || []))
+      },
+      apply() {
+        return Reflect.apply(...arguments)
+      }
+    }
+    utils.replaceObjPathWithProxy(
       'HTMLMediaElement.prototype.canPlayType',
       dummyProxyHandler
     )

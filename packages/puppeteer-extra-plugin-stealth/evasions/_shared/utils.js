@@ -214,6 +214,29 @@ utils.redirectToString = (proxyObj, originalObj) => {
 }
 
 /**
+ * All-in-one method to replace a property with a JS Proxy using the provided Proxy handler with traps.
+ *
+ * Will stealthify these aspects (strip error stack traces, redirect toString, etc).
+ * Note: This is meant to modify native Browser APIs and works best with prototype objects.
+ *
+ * @example
+ * replaceWithProxy(WebGLRenderingContext.prototype, 'getParameter', proxyHandler)
+ *
+ * @param {object} obj - The object which has the property to replace
+ * @param {string} propName - The name of the property to replace
+ * @param {object} handler - The JS Proxy handler to used
+ */
+utils.replaceWithProxy = (obj, propName, handler) => {
+  const originalObj = obj[propName]
+  const proxyObj = new Proxy(obj[propName], utils.stripProxyFromErrors(handler))
+
+  utils.replaceProperty(obj, propName, { value: proxyObj })
+  utils.redirectToString(proxyObj, originalObj)
+
+  return true
+}
+
+/**
  * Helper function to split a full path to an Object into the first part and property.
  *
  * @example
@@ -233,27 +256,20 @@ utils.splitObjPath = objPath => ({
 })
 
 /**
- * Convenience method to replace a property with a JS Proxy using the provided Proxy handler with traps.
+ * Convenience method to replace a property with a JS Proxy using the provided objPath.
  *
- * Will stealthify these aspects (strip error stack traces, redirect toString, etc).
- * Note: This is meant to modify native Browser APIs and works best with prototype objects.
+ * Supports a full path (dot notation) to the object as string here, in case that makes it easier.
  *
- * We use a full path (dot notation) to the object as string here, to make followup things easier.
+ * @example
+ * replaceObjPathWithProxy('WebGLRenderingContext.prototype.getParameter', proxyHandler)
  *
  * @param {string} objPath - The full path to an object (dot notation string) to replace
  * @param {object} handler - The JS Proxy handler to used
  */
-utils.replaceWithProxy = (objPath, handler) => {
+utils.replaceObjPathWithProxy = (objPath, handler) => {
   const { objName, propName } = utils.splitObjPath(objPath)
   const obj = eval(objName) // eslint-disable-line no-eval
-  const originalObj = obj[propName]
-
-  const proxyObj = new Proxy(obj[propName], utils.stripProxyFromErrors(handler))
-
-  utils.replaceProperty(obj, propName, { value: proxyObj })
-  utils.redirectToString(proxyObj, originalObj)
-
-  return true
+  return utils.replaceWithProxy(obj, propName, handler)
 }
 
 module.exports = {

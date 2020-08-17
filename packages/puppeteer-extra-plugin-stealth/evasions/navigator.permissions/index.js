@@ -37,7 +37,8 @@ class Plugin extends PuppeteerExtraPlugin {
         }
 
         utils.replaceWithProxy(
-          'window.navigator.permissions.__proto__.query',
+          window.navigator.permissions.__proto__, // eslint-disable-line no-proto
+          'query',
           handler
         )
       },

@@ -76,8 +76,10 @@ class Plugin extends PuppeteerExtraPlugin {
         }
       }
 
+      /* global HTMLMediaElement */
       utils.replaceWithProxy(
-        'HTMLMediaElement.prototype.canPlayType',
+        HTMLMediaElement.prototype,
+        'canPlayType',
         canPlayType
       )
     })
