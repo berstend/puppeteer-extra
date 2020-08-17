@@ -124,6 +124,15 @@ utils.patchToString = (obj, str = '') => {
         // We either return the optional string verbatim or derive the most desired result automatically
         return str || `function ${obj.name}() { [native code] }`
       }
+      // Check if the toString protype of the context is the same as the global prototype,
+      // if not indicates that we are doing a check across different windows., e.g. the iframeWithdirect` test case
+      const hasSameProto = Object.getPrototypeOf(
+        Function.prototype.toString
+      ).isPrototypeOf(ctx.toString) // eslint-disable-line no-prototype-builtins
+      if (!hasSameProto) {
+        // Pass the call on to the local Function.prototype.toString instead
+        return ctx.toString()
+      }
       return target.call(ctx)
     }
   })

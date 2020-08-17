@@ -243,6 +243,9 @@ test('patchToString: vanilla has iframe issues', async t => {
       directWithiframe: iframe.contentWindow.Function.prototype.toString.call(
         HTMLMediaElement.prototype.canPlayType
       ),
+      iframeWithdirect: Function.prototype.toString.call(
+        iframe.contentWindow.HTMLMediaElement.prototype.canPlayType
+      ),
       iframeWithiframe: iframe.contentWindow.Function.prototype.toString.call(
         iframe.contentWindow.HTMLMediaElement.prototype.canPlayType
       )
@@ -251,6 +254,7 @@ test('patchToString: vanilla has iframe issues', async t => {
   t.deepEqual(result, {
     direct: 'bob',
     directWithiframe: 'function canPlayType() { [native code] }',
+    iframeWithdirect: 'function canPlayType() { [native code] }',
     iframeWithiframe: 'function canPlayType() { [native code] }'
   })
 })
@@ -259,13 +263,9 @@ test('patchToString: stealth has no iframe issues', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
-  // Patch all documents and `window.parent` as well
+  // Patch all documents including iframes
   await utils.withUtils.evaluateOnNewDocument(page, utils => {
     utils.patchToString(HTMLMediaElement.prototype.canPlayType, 'alice')
-    utils.patchToString(
-      window.parent.HTMLMediaElement.prototype.canPlayType,
-      'ebola'
-    )
   })
   await page.goto('about:blank')
 
@@ -279,14 +279,18 @@ test('patchToString: stealth has no iframe issues', async t => {
       directWithiframe: iframe.contentWindow.Function.prototype.toString.call(
         HTMLMediaElement.prototype.canPlayType
       ),
+      iframeWithdirect: Function.prototype.toString.call(
+        iframe.contentWindow.HTMLMediaElement.prototype.canPlayType
+      ),
       iframeWithiframe: iframe.contentWindow.Function.prototype.toString.call(
         iframe.contentWindow.HTMLMediaElement.prototype.canPlayType
       )
     }
   })
   t.deepEqual(result, {
-    direct: 'ebola',
-    directWithiframe: 'ebola',
+    direct: 'alice',
+    directWithiframe: 'alice',
+    iframeWithdirect: 'alice',
     iframeWithiframe: 'alice'
   })
 })
