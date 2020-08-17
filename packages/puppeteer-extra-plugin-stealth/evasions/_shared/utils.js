@@ -169,6 +169,15 @@ utils.patchToString = (obj, str = '') => {
 }
 
 /**
+ * Make all nested functions of an object native.
+ *
+ * @param {object} obj
+ */
+utils.patchToStringNested = (obj = {}) => {
+  return utils.execRecursively(obj, ['function'], utils.patchToString)
+}
+
+/**
  * Redirect toString requests from one object to another.
  *
  * @param {object} proxyObj - The object that toString will be called on
@@ -293,6 +302,32 @@ utils.replaceObjPathWithProxy = (objPath, handler) => {
   const { objName, propName } = utils.splitObjPath(objPath)
   const obj = eval(objName) // eslint-disable-line no-eval
   return utils.replaceWithProxy(obj, propName, handler)
+}
+
+/**
+ * Traverse nested properties of an object recursively and apply the given function on a whitelist of value types.
+ *
+ * @param {object} obj
+ * @param {array} typeFilter - e.g. `['function']`
+ * @param {Function} fn - e.g. `utils.patchToString`
+ */
+utils.execRecursively = (obj = {}, typeFilter = [], fn) => {
+  function recurse(obj) {
+    for (const key in obj) {
+      if (obj[key] === undefined) {
+        continue
+      }
+      if (obj[key] && typeof obj[key] === 'object') {
+        recurse(obj[key])
+      } else {
+        if (obj[key] && typeFilter.includes(typeof obj[key])) {
+          fn.call(this, obj[key])
+        }
+      }
+    }
+  }
+  recurse(obj)
+  return obj
 }
 
 module.exports = {
