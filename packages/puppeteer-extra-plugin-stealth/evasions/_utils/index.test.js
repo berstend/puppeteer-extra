@@ -2,7 +2,7 @@ const test = require('ava')
 
 const { vanillaPuppeteer } = require('../../test/util')
 
-const utils = require('./utils')
+const utils = require('.')
 
 /* global HTMLMediaElement WebGLRenderingContext */
 
