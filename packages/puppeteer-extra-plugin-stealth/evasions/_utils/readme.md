@@ -14,6 +14,7 @@ Just remove the `module.exports` and everything below it, the rest can be copy p
 - [utils()](#utils)
   - [.stripProxyFromErrors(handler)](#stripproxyfromerrorshandler)
   - [.replaceProperty(obj, propName, descriptorOverrides)](#replacepropertyobj-propname-descriptoroverrides)
+  - [.preloadCache()](#preloadcache)
   - [.makeNativeString(name?)](#makenativestringname)
   - [.patchToString(obj, str)](#patchtostringobj-str)
   - [.patchToStringNested(obj)](#patchtostringnestedobj)
@@ -26,11 +27,11 @@ Just remove the `module.exports` and everything below it, the rest can be copy p
 - [evaluate(page, fn, args)](#evaluatepage-fn-args)
 - [evaluateOnNewDocument(page, fn, args)](#evaluateonnewdocumentpage-fn-args)
 
-### [utils()](https://github.com/berstend/puppeteer-extra/blob/c50c865610d6ac89f632d48e15cf8e0df8e3ffc3/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L395-L397)
+### [utils()](https://github.com/berstend/puppeteer-extra/blob/8d034bdf078a9e88e343ca5b898702f3c6a46a5c/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L419-L421)
 
 ---
 
-#### .[stripProxyFromErrors(handler)](https://github.com/berstend/puppeteer-extra/blob/c50c865610d6ac89f632d48e15cf8e0df8e3ffc3/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L20-L81)
+#### .[stripProxyFromErrors(handler)](https://github.com/berstend/puppeteer-extra/blob/8d034bdf078a9e88e343ca5b898702f3c6a46a5c/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L20-L81)
 
 - `handler` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The JS Proxy handler to wrap (optional, default `{}`)
 
@@ -40,7 +41,7 @@ The presence of a JS Proxy can be revealed as it shows up in error stack traces.
 
 ---
 
-#### .[replaceProperty(obj, propName, descriptorOverrides)](https://github.com/berstend/puppeteer-extra/blob/c50c865610d6ac89f632d48e15cf8e0df8e3ffc3/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L100-L107)
+#### .[replaceProperty(obj, propName, descriptorOverrides)](https://github.com/berstend/puppeteer-extra/blob/8d034bdf078a9e88e343ca5b898702f3c6a46a5c/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L100-L107)
 
 - `obj` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The object which has the property to replace
 - `propName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The property name to replace
@@ -67,7 +68,18 @@ replaceProperty(Object.getPrototypeOf(navigator), 'languages', {
 
 ---
 
-#### .[makeNativeString(name?)](https://github.com/berstend/puppeteer-extra/blob/c50c865610d6ac89f632d48e15cf8e0df8e3ffc3/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L126-L132)
+#### .[preloadCache()](https://github.com/berstend/puppeteer-extra/blob/8d034bdf078a9e88e343ca5b898702f3c6a46a5c/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L117-L130)
+
+Preload a cache of function copies and data.
+
+For a determined enough observer it would be possible to overwrite and sniff usage of functions
+we use in our internal Proxies, to combat that we use a cached copy of those functions.
+
+This is evaluated once per execution context (e.g. window)
+
+---
+
+#### .[makeNativeString(name?)](https://github.com/berstend/puppeteer-extra/blob/8d034bdf078a9e88e343ca5b898702f3c6a46a5c/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L149-L153)
 
 - `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Optional function name (optional, default `''`)
 
@@ -80,7 +92,7 @@ The only advantage we have over the other team is that our JS runs first, hence 
 of the native toString result once, so they cannot spoof it afterwards and reveal that we're using it.
 
 Note: Whenever we add a `Function.prototype.toString` proxy we should preload the cache before,
-by executing `utils.makeNativeString()` before the proxy is applied (so we don't cause recursive lookups).
+by executing `utils.preloadCache()` before the proxy is applied (so we don't cause recursive lookups).
 
 Example:
 
@@ -90,7 +102,7 @@ makeNativeString('foobar') // => `function foobar() { [native code] }`
 
 ---
 
-#### .[patchToString(obj, str)](https://github.com/berstend/puppeteer-extra/blob/c50c865610d6ac89f632d48e15cf8e0df8e3ffc3/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L148-L177)
+#### .[patchToString(obj, str)](https://github.com/berstend/puppeteer-extra/blob/8d034bdf078a9e88e343ca5b898702f3c6a46a5c/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L169-L198)
 
 - `obj` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The object for which to modify the `toString()` representation
 - `str` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Optional string used as a return value (optional, default `''`)
@@ -113,7 +125,7 @@ patchToString(
 
 ---
 
-#### .[patchToStringNested(obj)](https://github.com/berstend/puppeteer-extra/blob/c50c865610d6ac89f632d48e15cf8e0df8e3ffc3/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L184-L186)
+#### .[patchToStringNested(obj)](https://github.com/berstend/puppeteer-extra/blob/8d034bdf078a9e88e343ca5b898702f3c6a46a5c/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L205-L207)
 
 - `obj` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** (optional, default `{}`)
 
@@ -121,7 +133,7 @@ Make all nested functions of an object native.
 
 ---
 
-#### .[redirectToString(proxyObj, originalObj)](https://github.com/berstend/puppeteer-extra/blob/c50c865610d6ac89f632d48e15cf8e0df8e3ffc3/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L194-L231)
+#### .[redirectToString(proxyObj, originalObj)](https://github.com/berstend/puppeteer-extra/blob/8d034bdf078a9e88e343ca5b898702f3c6a46a5c/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L215-L252)
 
 - `proxyObj` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The object that toString will be called on
 - `originalObj` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The object which toString result we wan to return
@@ -130,7 +142,7 @@ Redirect toString requests from one object to another.
 
 ---
 
-#### .[replaceWithProxy(obj, propName, handler)](https://github.com/berstend/puppeteer-extra/blob/c50c865610d6ac89f632d48e15cf8e0df8e3ffc3/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L246-L254)
+#### .[replaceWithProxy(obj, propName, handler)](https://github.com/berstend/puppeteer-extra/blob/8d034bdf078a9e88e343ca5b898702f3c6a46a5c/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L267-L276)
 
 - `obj` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The object which has the property to replace
 - `propName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The name of the property to replace
@@ -149,7 +161,7 @@ replaceWithProxy(WebGLRenderingContext.prototype, 'getParameter', proxyHandler)
 
 ---
 
-#### .[mockWithProxy(obj, propName, pseudoTarget, handler)](https://github.com/berstend/puppeteer-extra/blob/c50c865610d6ac89f632d48e15cf8e0df8e3ffc3/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L269-L276)
+#### .[mockWithProxy(obj, propName, pseudoTarget, handler)](https://github.com/berstend/puppeteer-extra/blob/8d034bdf078a9e88e343ca5b898702f3c6a46a5c/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L291-L299)
 
 - `obj` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The object which has the property to replace
 - `propName` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The name of the property to replace or create
@@ -173,7 +185,7 @@ mockWithProxy(
 
 ---
 
-#### .[splitObjPath(objPath)](https://github.com/berstend/puppeteer-extra/blob/c50c865610d6ac89f632d48e15cf8e0df8e3ffc3/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L287-L295)
+#### .[splitObjPath(objPath)](https://github.com/berstend/puppeteer-extra/blob/8d034bdf078a9e88e343ca5b898702f3c6a46a5c/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L310-L318)
 
 - `objPath` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The full path to an object as dot notation string
 
@@ -188,7 +200,7 @@ splitObjPath(`HTMLMediaElement.prototype.canPlayType`)
 
 ---
 
-#### .[replaceObjPathWithProxy(objPath, handler)](https://github.com/berstend/puppeteer-extra/blob/c50c865610d6ac89f632d48e15cf8e0df8e3ffc3/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L308-L312)
+#### .[replaceObjPathWithProxy(objPath, handler)](https://github.com/berstend/puppeteer-extra/blob/8d034bdf078a9e88e343ca5b898702f3c6a46a5c/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L331-L335)
 
 - `objPath` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** The full path to an object (dot notation string) to replace
 - `handler` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** The JS Proxy handler to use
@@ -208,7 +220,7 @@ replaceObjPathWithProxy(
 
 ---
 
-#### .[execRecursively(obj, typeFilter, fn)](https://github.com/berstend/puppeteer-extra/blob/c50c865610d6ac89f632d48e15cf8e0df8e3ffc3/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L321-L338)
+#### .[execRecursively(obj, typeFilter, fn)](https://github.com/berstend/puppeteer-extra/blob/8d034bdf078a9e88e343ca5b898702f3c6a46a5c/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L344-L361)
 
 - `obj` **[object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** (optional, default `{}`)
 - `typeFilter` **[array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)** e.g. `['function']` (optional, default `[]`)
@@ -218,7 +230,7 @@ Traverse nested properties of an object recursively and apply the given function
 
 ---
 
-### [evaluate(page, fn, args)](https://github.com/berstend/puppeteer-extra/blob/c50c865610d6ac89f632d48e15cf8e0df8e3ffc3/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L376-L386)
+### [evaluate(page, fn, args)](https://github.com/berstend/puppeteer-extra/blob/8d034bdf078a9e88e343ca5b898702f3c6a46a5c/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L399-L410)
 
 - `page`
 - `fn`
@@ -228,7 +240,7 @@ Simple `page.evaluate` replacement to preload utils
 
 ---
 
-### [evaluateOnNewDocument(page, fn, args)](https://github.com/berstend/puppeteer-extra/blob/c50c865610d6ac89f632d48e15cf8e0df8e3ffc3/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L391-L402)
+### [evaluateOnNewDocument(page, fn, args)](https://github.com/berstend/puppeteer-extra/blob/8d034bdf078a9e88e343ca5b898702f3c6a46a5c/packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js#L415-L427)
 
 - `page`
 - `fn`

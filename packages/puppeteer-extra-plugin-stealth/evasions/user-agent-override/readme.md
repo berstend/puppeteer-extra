@@ -6,7 +6,7 @@
 
 - [class: Plugin](#class-plugin)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/c50c865610d6ac89f632d48e15cf8e0df8e3ffc3/packages/puppeteer-extra-plugin-stealth/evasions/user-agent-override/index.js#L41-L77)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/8d034bdf078a9e88e343ca5b898702f3c6a46a5c/packages/puppeteer-extra-plugin-stealth/evasions/user-agent-override/index.js#L41-L77)
 
 - `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Options (optional, default `{}`)
   - `opts.userAgent` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The user agent to use (default: browser.userAgent())

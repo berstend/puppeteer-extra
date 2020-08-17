@@ -6,7 +6,7 @@
 
 - [class: Plugin](#class-plugin)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/c50c865610d6ac89f632d48e15cf8e0df8e3ffc3/packages/puppeteer-extra-plugin-stealth/evasions/navigator.vendor/index.js#L28-L55)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/8d034bdf078a9e88e343ca5b898702f3c6a46a5c/packages/puppeteer-extra-plugin-stealth/evasions/navigator.vendor/index.js#L28-L55)
 
 - `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Options (optional, default `{}`)
   - `opts.vendor` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The vendor to use in `navigator.vendor` (default: `Google Inc.`)
