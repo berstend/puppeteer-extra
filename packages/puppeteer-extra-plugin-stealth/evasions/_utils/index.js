@@ -5,6 +5,8 @@
  *
  * Note: If for whatever reason you need to use this outside of `puppeteer-extra`:
  * Just remove the `module.exports` and evertyhing below it, the rest can be copy pasted into any browser context.
+ *
+ * @ignore
  */
 const utils = {}
 
@@ -255,13 +257,12 @@ utils.replaceWithProxy = (obj, propName, handler) => {
  * All-in-one method to mock a non-existing property with a JS Proxy using the provided Proxy handler with traps.
  *
  * Will stealthify these aspects (strip error stack traces, redirect toString, etc).
- * Note: This is meant to modify native Browser APIs and works best with prototype objects.
  *
  * @example
  * mockWithProxy(chrome.runtime, 'sendMessage', function sendMessage() {}, proxyHandler)
  *
  * @param {object} obj - The object which has the property to replace
- * @param {string} propName - The name of the property to replace
+ * @param {string} propName - The name of the property to replace or create
  * @param {object} pseudoTarget - The JS Proxy target to use as a basis
  * @param {object} handler - The JS Proxy handler to use
  */
@@ -350,6 +351,8 @@ module.exports = {
 
 /**
  * In order for our utility functions to survive being evaluated on the page we need to stringify them and rematerialize them later.
+ *
+ * @ignore
  */
 function stringifyFns() {
   // Object.fromEntries() ponyfill (in 6 lines) - supported only in Node v12+

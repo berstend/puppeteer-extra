@@ -6,7 +6,7 @@
 
 - [class: Plugin](#class-plugin)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/82f01dc4709071b6f186598ccd70345ae4e00c5d/packages/puppeteer-extra-plugin-stealth/evasions/webgl.vendor/index.js#L16-L58)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/c50c865610d6ac89f632d48e15cf8e0df8e3ffc3/packages/puppeteer-extra-plugin-stealth/evasions/webgl.vendor/index.js#L16-L58)
 
 - `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Options (optional, default `{}`)
   - `opts.vendor` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The vendor string to use (default: `Intel Inc.`)
