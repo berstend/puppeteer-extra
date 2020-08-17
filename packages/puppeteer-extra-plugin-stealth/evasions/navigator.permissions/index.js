@@ -2,9 +2,12 @@
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
+const utils = require('../_shared/utils')
+
 /**
  * Pass the Permissions Test.
  */
+
 class Plugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
     super(opts)
@@ -14,41 +17,33 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/navigator.permissions'
   }
 
+  /* global Notification PermissionStatus */
   async onPageCreated(page) {
-    await page.evaluateOnNewDocument(() => {
-      const originalQuery = window.navigator.permissions.query
-      // eslint-disable-next-line
-      window.navigator.permissions.__proto__.query = parameters =>
-        parameters.name === 'notifications'
-          ? Promise.resolve({ state: Notification.permission }) //eslint-disable-line
-          : originalQuery(parameters)
+    await utils.withUtils.evaluateOnNewDocument(
+      page,
+      (utils, opts) => {
+        const handler = {
+          apply: function(target, ctx, args) {
+            const param = (args || [])[0]
 
-      // Inspired by: https://github.com/ikarienator/phantomjs_hide_and_seek/blob/master/5.spoofFunctionBind.js
-      const oldCall = Function.prototype.call
-      function call() {
-        return oldCall.apply(this, arguments)
-      }
-      // eslint-disable-next-line
-      Function.prototype.call = call
+            if (param && param.name && param.name === 'notifications') {
+              const result = { state: Notification.permission }
+              Object.setPrototypeOf(result, PermissionStatus.prototype)
+              return Promise.resolve(result)
+            }
 
-      const nativeToStringFunctionString = Error.toString().replace(
-        /Error/g,
-        'toString'
-      )
-      const oldToString = Function.prototype.toString
-
-      function functionToString() {
-        if (this === window.navigator.permissions.query) {
-          return 'function query() { [native code] }'
+            return Reflect.apply(...arguments)
+          }
         }
-        if (this === functionToString) {
-          return nativeToStringFunctionString
-        }
-        return oldCall.call(oldToString, this)
-      }
-      // eslint-disable-next-line
-      Function.prototype.toString = functionToString
-    })
+
+        utils.replaceWithProxy(
+          window.navigator.permissions.__proto__, // eslint-disable-line no-proto
+          'query',
+          handler
+        )
+      },
+      this.opts
+    )
   }
 }
 

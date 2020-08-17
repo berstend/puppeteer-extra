@@ -2,6 +2,8 @@
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
+const utils = require('../_shared/utils')
+
 /**
  * Fix WebGL Vendor/Renderer being set to Google in headless mode
  *
@@ -22,31 +24,11 @@ class Plugin extends PuppeteerExtraPlugin {
 
   /* global WebGLRenderingContext WebGL2RenderingContext */
   async onPageCreated(page) {
-    // Chrome returns undefined, Firefox false
-    await page.evaluateOnNewDocument(opts => {
-      try {
-        // Remove traces of our Proxy ;-)
-        var stripErrorStack = stack =>
-          stack
-            .split('\n')
-            .filter(line => !line.includes(`at Object.apply`))
-            .filter(line => !line.includes(`at Object.get`))
-            .join('\n')
-
+    await utils.withUtils.evaluateOnNewDocument(
+      page,
+      (utils, opts) => {
         const getParameterProxyHandler = {
-          get(target, key) {
-            try {
-              // Mitigate Chromium bug (#130)
-              if (typeof target[key] === 'function') {
-                return target[key].bind(target)
-              }
-              return Reflect.get(target, key)
-            } catch (err) {
-              err.stack = stripErrorStack(err.stack)
-              throw err
-            }
-          },
-          apply: function(target, thisArg, args) {
+          apply: function(target, ctx, args) {
             const param = (args || [])[0]
             // UNMASKED_VENDOR_WEBGL
             if (param === 37445) {
@@ -56,33 +38,22 @@ class Plugin extends PuppeteerExtraPlugin {
             if (param === 37446) {
               return opts.renderer || 'Intel Iris OpenGL Engine' // default in headless: Google SwiftShader
             }
-            try {
-              return Reflect.apply(target, thisArg, args)
-            } catch (err) {
-              err.stack = stripErrorStack(err.stack)
-              throw err
-            }
+            return Reflect.apply(target, ctx, args)
           }
         }
 
         // There's more than one WebGL rendering context
         // https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext#Browser_compatibility
         // To find out the original values here: Object.getOwnPropertyDescriptors(WebGLRenderingContext.prototype.getParameter)
-        const addProxy = (proto, param) => {
-          Object.defineProperty(proto, param, {
-            configurable: true,
-            enumerable: false,
-            writable: false,
-            value: new Proxy(proto[param], getParameterProxyHandler)
-          })
+        const addProxy = (obj, propName) => {
+          utils.replaceWithProxy(obj, propName, getParameterProxyHandler)
         }
         // For whatever weird reason loops don't play nice with Object.defineProperty, here's the next best thing:
         addProxy(WebGLRenderingContext.prototype, 'getParameter')
         addProxy(WebGL2RenderingContext.prototype, 'getParameter')
-      } catch (err) {
-        console.warn(err)
-      }
-    }, this.opts)
+      },
+      this.opts
+    )
   }
 }
 
