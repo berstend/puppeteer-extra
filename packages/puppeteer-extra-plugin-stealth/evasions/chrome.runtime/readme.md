@@ -5,18 +5,27 @@
 #### Table of Contents
 
 - [class: Plugin](#class-plugin)
+- [sendMessageHandler()](#sendmessagehandler)
+- [connectHandler()](#connecthandler)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/6bfc3b948eb95f9591a6aedf8199f91a60e06294/packages/puppeteer-extra-plugin-stealth/evasions/chrome.runtime/index.js#L15-L44)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/82f01dc4709071b6f186598ccd70345ae4e00c5d/packages/puppeteer-extra-plugin-stealth/evasions/chrome.runtime/index.js#L14-L218)
 
 - `opts` (optional, default `{}`)
 
 **Extends: PuppeteerExtraPlugin**
 
-Pass the Chrome Test.
+Mock the `chrome.runtime` object if not available (e.g. when running headless) and on a secure site.
 
-This will work for iframes as well, except for `srcdoc` iframes:
-<https://github.com/puppeteer/puppeteer/issues/1106>
+---
 
-Could be mocked further.
+### [sendMessageHandler()](https://github.com/berstend/puppeteer-extra/blob/82f01dc4709071b6f186598ccd70345ae4e00c5d/packages/puppeteer-extra-plugin-stealth/evasions/chrome.runtime/index.js#L82-L125)
+
+Mock `chrome.runtime.sendMessage`
+
+---
+
+### [connectHandler()](https://github.com/berstend/puppeteer-extra/blob/82f01dc4709071b6f186598ccd70345ae4e00c5d/packages/puppeteer-extra-plugin-stealth/evasions/chrome.runtime/index.js#L134-L177)
+
+Mock `chrome.runtime.connect`
 
 ---
