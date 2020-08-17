@@ -224,7 +224,7 @@ utils.redirectToString = (proxyObj, originalObj) => {
  *
  * @param {object} obj - The object which has the property to replace
  * @param {string} propName - The name of the property to replace
- * @param {object} handler - The JS Proxy handler to used
+ * @param {object} handler - The JS Proxy handler to use
  */
 utils.replaceWithProxy = (obj, propName, handler) => {
   const originalObj = obj[propName]
@@ -232,6 +232,29 @@ utils.replaceWithProxy = (obj, propName, handler) => {
 
   utils.replaceProperty(obj, propName, { value: proxyObj })
   utils.redirectToString(proxyObj, originalObj)
+
+  return true
+}
+
+/**
+ * All-in-one method to mock a non-existing property with a JS Proxy using the provided Proxy handler with traps.
+ *
+ * Will stealthify these aspects (strip error stack traces, redirect toString, etc).
+ * Note: This is meant to modify native Browser APIs and works best with prototype objects.
+ *
+ * @example
+ * mockWithProxy(chrome.runtime, 'sendMessage', function sendMessage() {}, proxyHandler)
+ *
+ * @param {object} obj - The object which has the property to replace
+ * @param {string} propName - The name of the property to replace
+ * @param {object} pseudoTarget - The JS Proxy target to use as a basis
+ * @param {object} handler - The JS Proxy handler to use
+ */
+utils.mockWithProxy = (obj, propName, pseudoTarget, handler) => {
+  const proxyObj = new Proxy(pseudoTarget, utils.stripProxyFromErrors(handler))
+
+  utils.replaceProperty(obj, propName, { value: proxyObj })
+  utils.patchToString(proxyObj)
 
   return true
 }
@@ -264,7 +287,7 @@ utils.splitObjPath = objPath => ({
  * replaceObjPathWithProxy('WebGLRenderingContext.prototype.getParameter', proxyHandler)
  *
  * @param {string} objPath - The full path to an object (dot notation string) to replace
- * @param {object} handler - The JS Proxy handler to used
+ * @param {object} handler - The JS Proxy handler to use
  */
 utils.replaceObjPathWithProxy = (objPath, handler) => {
   const { objName, propName } = utils.splitObjPath(objPath)
