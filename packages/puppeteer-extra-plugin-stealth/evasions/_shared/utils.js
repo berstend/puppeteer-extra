@@ -99,6 +99,31 @@ utils.replaceProperty = (obj, propName, descriptorOverrides = {}) => {
 }
 
 /**
+ * Utility function to generate a cross-browser `toString` result representing native code.
+ *
+ * There's small differences: Chromium uses a single line, whereas FF & Webkit uses multiline strings.
+ * To future-proof this we use an existing native toString result as the basis.
+ *
+ * The only advantage we have over the other team is that our JS runs first, hence we cache the result
+ * of the native toString result once, so they cannot spoof it afterwards and reveal that we're using it.
+ *
+ * Note: Whenever we add a `Function.prototype.toString` proxy we should preload the cache before,
+ * by executing `utils.makeNativeString()` before the proxy is applied (so we don't cause recursive lookups).
+ *
+ * @example
+ * makeNativeString('foobar') // => `function foobar() { [native code] }`
+ *
+ * @param {string} [name] - Optional function name
+ */
+utils.makeNativeString = (name = '') => {
+  // Cache (per-window) the original native toString or use that if available
+  if (!utils._nativeToStringStr) {
+    utils._nativeToStringStr = Function.toString + '' // => `function toString() { [native code] }`
+  }
+  return utils._nativeToStringStr.replace('toString', name || '')
+}
+
+/**
  * Helper function to modify the `toString()` result of the provided object.
  *
  * Note: Use `utils.redirectToString` instead when possible.
@@ -113,16 +138,18 @@ utils.replaceProperty = (obj, propName, descriptorOverrides = {}) => {
  * @param {string} str - Optional string used as a return value
  */
 utils.patchToString = (obj, str = '') => {
+  utils.makeNativeString() // Preload `toString` cache before we set a `Function.prototype.toString` proxy
+
   const toStringProxy = new Proxy(Function.prototype.toString, {
     apply: function(target, ctx) {
       // This fixes e.g. `HTMLMediaElement.prototype.canPlayType.toString + ""`
       if (ctx === Function.prototype.toString) {
-        return 'function toString() { [native code] }'
+        return utils.makeNativeString('toString')
       }
       // `toString` targeted at our proxied Object detected
       if (ctx === obj) {
         // We either return the optional string verbatim or derive the most desired result automatically
-        return str || `function ${obj.name}() { [native code] }`
+        return str || utils.makeNativeString(obj.name)
       }
       // Check if the toString protype of the context is the same as the global prototype,
       // if not indicates that we are doing a check across different windows., e.g. the iframeWithdirect` test case
@@ -148,19 +175,21 @@ utils.patchToString = (obj, str = '') => {
  * @param {object} originalObj - The object which toString result we wan to return
  */
 utils.redirectToString = (proxyObj, originalObj) => {
+  utils.makeNativeString() // Preload `toString` cache before we set a `Function.prototype.toString` proxy
+
   const toStringProxy = new Proxy(Function.prototype.toString, {
     apply: function(target, ctx) {
       // This fixes e.g. `HTMLMediaElement.prototype.canPlayType.toString + ""`
       if (ctx === Function.prototype.toString) {
-        return 'function toString() { [native code] }'
+        return utils.makeNativeString('toString')
       }
 
       // `toString` targeted at our proxied Object detected
       if (ctx === proxyObj) {
         const fallback = () =>
           originalObj && originalObj.name
-            ? `function ${originalObj.name}() { [native code] }`
-            : `function ${proxyObj.name}() { [native code] }`
+            ? utils.makeNativeString(originalObj.name)
+            : utils.makeNativeString(proxyObj.name)
 
         // Return the toString representation of our original object if possible
         return originalObj + '' || fallback()

@@ -14,6 +14,15 @@ test('splitObjPath: will do what it says', async t => {
   t.is(propName, 'canPlayType')
 })
 
+test('makeNativeString: will do what it says', async t => {
+  t.is(utils.makeNativeString('bob'), 'function bob() { [native code] }')
+  t.is(
+    utils.makeNativeString('toString'),
+    'function toString() { [native code] }'
+  )
+  t.is(utils.makeNativeString(), 'function () { [native code] }')
+})
+
 test('replaceWithProxy: will work correctly', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
