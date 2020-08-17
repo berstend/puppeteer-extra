@@ -4,8 +4,6 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
 const utils = require('../_utils')
 
-// const { getChromeRuntimeMock } = require('../shared')
-
 const STATIC_DATA = require('./staticData.json')
 
 /**
