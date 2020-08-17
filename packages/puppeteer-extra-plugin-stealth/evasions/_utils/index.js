@@ -1,5 +1,11 @@
-// A set of shared utility functions specifically for the purpose of modifying native browser APIs without leaving traces.
-// Meant to be passed down in puppeteer and used in the context of the page.
+/**
+ * A set of shared utility functions specifically for the purpose of modifying native browser APIs without leaving traces.
+ *
+ * Meant to be passed down in puppeteer and used in the context of the page.
+ *
+ * Note: If for whatever reason you need to use this outside of `puppeteer-extra`:
+ * Just remove the `module.exports` and evertyhing below it, the rest can be copy pasted into any browser context.
+ */
 const utils = {}
 
 /**
@@ -330,6 +336,9 @@ utils.execRecursively = (obj = {}, typeFilter = [], fn) => {
   return obj
 }
 
+// --
+// Stuff starting below this line is NodeJS specific.
+// --
 module.exports = {
   ...utils,
   stringifyFns,
@@ -342,15 +351,15 @@ module.exports = {
 /**
  * In order for our utility functions to survive being evaluated on the page we need to stringify them and rematerialize them later.
  */
-// Object.fromEntries() ponyfill (in 6 lines) - supported only in Node v12+
-// https://github.com/feross/fromentries
-function fromEntries(iterable) {
-  return [...iterable].reduce((obj, [key, val]) => {
-    obj[key] = val
-    return obj
-  }, {})
-}
 function stringifyFns() {
+  // Object.fromEntries() ponyfill (in 6 lines) - supported only in Node v12+
+  // https://github.com/feross/fromentries
+  function fromEntries(iterable) {
+    return [...iterable].reduce((obj, [key, val]) => {
+      obj[key] = val
+      return obj
+    }, {})
+  }
   return (Object.fromEntries || fromEntries)(
     Object.entries(utils)
       .filter(([key, value]) => typeof value === 'function')
