@@ -2,7 +2,7 @@
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
-const utils = require('../_shared/utils')
+const utils = require('../_utils')
 
 // const { getChromeRuntimeMock } = require('../shared')
 

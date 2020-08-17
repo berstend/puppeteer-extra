@@ -2,7 +2,7 @@
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
-const utils = require('../_shared/utils')
+const utils = require('../_utils')
 
 /**
  * Fix WebGL Vendor/Renderer being set to Google in headless mode
