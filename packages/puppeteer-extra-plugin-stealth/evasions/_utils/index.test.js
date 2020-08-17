@@ -33,10 +33,10 @@ test('replaceWithProxy: will work correctly', async t => {
         if (param && param === 'ping') {
           return 'pong'
         }
-        return Reflect.get(...(arguments || []))
+        return utils.cache.Reflect.get(...(arguments || []))
       },
       apply() {
-        return Reflect.apply(...arguments)
+        return utils.cache.Reflect.apply(...arguments)
       }
     }
     utils.replaceWithProxy(
@@ -65,10 +65,10 @@ test('replaceObjPathWithProxy: will work correctly', async t => {
         if (param && param === 'ping') {
           return 'pong'
         }
-        return Reflect.get(...(arguments || []))
+        return utils.cache.Reflect.get(...(arguments || []))
       },
       apply() {
-        return Reflect.apply(...arguments)
+        return utils.cache.Reflect.apply(...arguments)
       }
     }
     utils.replaceObjPathWithProxy(
@@ -352,10 +352,10 @@ test('stripProxyFromErrors: will work correctly', async t => {
     /** We need traps to show up in the error stack */
     const dummyProxyHandler = {
       get() {
-        return Reflect.get(...(arguments || []))
+        return utils.cache.Reflect.get(...(arguments || []))
       },
       apply() {
-        return Reflect.apply(...arguments)
+        return utils.cache.Reflect.apply(...arguments)
       }
     }
     const vanillaProxy = new Proxy(
@@ -401,4 +401,47 @@ test('replaceProperty: will work without traces', async t => {
     }
   })
   t.is(results.propNamesLength, 0)
+})
+
+test('cache: will prevent leaks through overriding methods', async t => {
+  const browser = await vanillaPuppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const results = await utils.withUtils.evaluate(page, utils => {
+    const sniffResults = {
+      vanilla: false,
+      stealth: false
+    }
+
+    const vanillaProxy = new Proxy(
+      {},
+      {
+        get() {
+          return Reflect.get(...arguments)
+        }
+      }
+    )
+    Reflect.get = () => (sniffResults.vanilla = true)
+    // trigger get trap
+    vanillaProxy.foo // eslint-disable-line
+
+    const stealthProxy = new Proxy(
+      {},
+      {
+        get() {
+          return utils.cache.Reflect.get(...arguments) // using cached copy
+        }
+      }
+    )
+    Reflect.get = () => (sniffResults.stealth = true)
+    // trigger get trap
+    stealthProxy.foo // eslint-disable-line
+
+    return sniffResults
+  })
+
+  t.deepEqual(results, {
+    vanilla: true,
+    stealth: false
+  })
 })

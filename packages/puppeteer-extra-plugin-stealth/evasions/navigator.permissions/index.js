@@ -32,7 +32,7 @@ class Plugin extends PuppeteerExtraPlugin {
               return Promise.resolve(result)
             }
 
-            return Reflect.apply(...arguments)
+            return utils.cache.Reflect.apply(...arguments)
           }
         }
 

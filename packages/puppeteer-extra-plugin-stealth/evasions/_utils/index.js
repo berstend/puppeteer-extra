@@ -107,6 +107,29 @@ utils.replaceProperty = (obj, propName, descriptorOverrides = {}) => {
 }
 
 /**
+ * Preload a cache of function copies and data.
+ *
+ * For a determined enough observer it would be possible to overwrite and sniff usage of functions
+ * we use in our internal Proxies, to combat that we use a cached copy of those functions.
+ *
+ * This is evaluated once per execution context (e.g. window)
+ */
+utils.preloadCache = () => {
+  if (utils.cache) {
+    return
+  }
+  utils.cache = {
+    // Used in our proxies
+    Reflect: {
+      get: Reflect.get.bind(Reflect),
+      apply: Reflect.apply.bind(Reflect)
+    },
+    // Used in `makeNativeString`
+    nativeToStringStr: Function.toString + '' // => `function toString() { [native code] }`
+  }
+}
+
+/**
  * Utility function to generate a cross-browser `toString` result representing native code.
  *
  * There's small differences: Chromium uses a single line, whereas FF & Webkit uses multiline strings.
@@ -116,7 +139,7 @@ utils.replaceProperty = (obj, propName, descriptorOverrides = {}) => {
  * of the native toString result once, so they cannot spoof it afterwards and reveal that we're using it.
  *
  * Note: Whenever we add a `Function.prototype.toString` proxy we should preload the cache before,
- * by executing `utils.makeNativeString()` before the proxy is applied (so we don't cause recursive lookups).
+ * by executing `utils.preloadCache()` before the proxy is applied (so we don't cause recursive lookups).
  *
  * @example
  * makeNativeString('foobar') // => `function foobar() { [native code] }`
@@ -125,10 +148,8 @@ utils.replaceProperty = (obj, propName, descriptorOverrides = {}) => {
  */
 utils.makeNativeString = (name = '') => {
   // Cache (per-window) the original native toString or use that if available
-  if (!utils._nativeToStringStr) {
-    utils._nativeToStringStr = Function.toString + '' // => `function toString() { [native code] }`
-  }
-  return utils._nativeToStringStr.replace('toString', name || '')
+  utils.preloadCache()
+  return utils.cache.nativeToStringStr.replace('toString', name || '')
 }
 
 /**
@@ -146,7 +167,7 @@ utils.makeNativeString = (name = '') => {
  * @param {string} str - Optional string used as a return value
  */
 utils.patchToString = (obj, str = '') => {
-  utils.makeNativeString() // Preload `toString` cache before we set a `Function.prototype.toString` proxy
+  utils.preloadCache()
 
   const toStringProxy = new Proxy(Function.prototype.toString, {
     apply: function(target, ctx) {
@@ -192,7 +213,7 @@ utils.patchToStringNested = (obj = {}) => {
  * @param {object} originalObj - The object which toString result we wan to return
  */
 utils.redirectToString = (proxyObj, originalObj) => {
-  utils.makeNativeString() // Preload `toString` cache before we set a `Function.prototype.toString` proxy
+  utils.preloadCache()
 
   const toStringProxy = new Proxy(Function.prototype.toString, {
     apply: function(target, ctx) {
@@ -244,6 +265,7 @@ utils.redirectToString = (proxyObj, originalObj) => {
  * @param {object} handler - The JS Proxy handler to use
  */
 utils.replaceWithProxy = (obj, propName, handler) => {
+  utils.preloadCache()
   const originalObj = obj[propName]
   const proxyObj = new Proxy(obj[propName], utils.stripProxyFromErrors(handler))
 
@@ -267,6 +289,7 @@ utils.replaceWithProxy = (obj, propName, handler) => {
  * @param {object} handler - The JS Proxy handler to use
  */
 utils.mockWithProxy = (obj, propName, pseudoTarget, handler) => {
+  utils.preloadCache()
   const proxyObj = new Proxy(pseudoTarget, utils.stripProxyFromErrors(handler))
 
   utils.replaceProperty(obj, propName, { value: proxyObj })
@@ -379,6 +402,7 @@ async function evaluate(page, fn, args = {}) {
       const utils = Object.fromEntries(
         Object.entries(_utilsFns).map(([key, value]) => [key, eval(value)]) // eslint-disable-line no-eval
       )
+      utils.preloadCache()
       return eval(_fn)(utils, _args) // eslint-disable-line no-eval
     },
     { _utilsFns: stringifyFns(), _fn: fn.toString(), _args: args }
@@ -395,6 +419,7 @@ async function evaluateOnNewDocument(page, fn, args = {}) {
       const utils = Object.fromEntries(
         Object.entries(_utilsFns).map(([key, value]) => [key, eval(value)]) // eslint-disable-line no-eval
       )
+      utils.preloadCache()
       return eval(_fn)(utils, _args) // eslint-disable-line no-eval
     },
     { _utilsFns: stringifyFns(), _fn: fn.toString(), _args: args }

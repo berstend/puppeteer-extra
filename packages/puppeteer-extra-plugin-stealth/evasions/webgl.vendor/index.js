@@ -38,7 +38,7 @@ class Plugin extends PuppeteerExtraPlugin {
             if (param === 37446) {
               return opts.renderer || 'Intel Iris OpenGL Engine' // default in headless: Google SwiftShader
             }
-            return Reflect.apply(target, ctx, args)
+            return utils.cache.Reflect.apply(target, ctx, args)
           }
         }
 
