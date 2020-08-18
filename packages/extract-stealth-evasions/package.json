@@ -1,0 +1,27 @@
+{
+  "name": "extract-stealth-evasions",
+  "version": "2.2.12",
+  "description": "Extract stealth evasions from puppeteer-extra-stealth",
+  "main": "index.js",
+  "repository": "berstend/puppeteer-extra",
+  "author": "berstend",
+  "license": "MIT",
+  "engines": {
+    "node": ">=8"
+  },
+  "keywords": [
+    "puppeteer",
+    "puppeteer-extra",
+    "puppeteer-extra-plugin",
+    "chrome",
+    "headless",
+    "pupeteer"
+  ],
+  "devDependencies": {
+    "puppeteer": "latest",
+    "puppeteer-extra": "latest",
+    "puppeteer-extra-plugin-stealth": "latest",
+    "terser": "^5.1.0",
+    "yargs": "^15.4.1"
+  }
+}
