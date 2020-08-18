@@ -1,6 +1,6 @@
 {
   "name": "extract-stealth-evasions",
-  "version": "2.2.12",
+  "version": "2.2.13",
   "description": "Extract stealth evasions from puppeteer-extra-stealth",
   "main": "index.js",
   "repository": "berstend/puppeteer-extra",
@@ -19,8 +19,8 @@
   ],
   "devDependencies": {
     "puppeteer": "*",
-    "puppeteer-extra": "*",
-    "puppeteer-extra-plugin-stealth": "*",
+    "puppeteer-extra": "^3.1.14",
+    "puppeteer-extra-plugin-stealth": "^2.5.1",
     "terser": "^5.1.0",
     "yargs": "^15.4.1"
   }
