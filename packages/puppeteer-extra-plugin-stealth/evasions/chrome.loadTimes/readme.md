@@ -6,7 +6,7 @@
 
 - [class: Plugin](#class-plugin)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/8470567a4ea8fe0eb677d16e6b32e817a3ea726c/packages/puppeteer-extra-plugin-stealth/evasions/chrome.loadTimes/index.js#L22-L164)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/ceca9c6fed0a9f39d6c80b71fd413f3656ebb704/packages/puppeteer-extra-plugin-stealth/evasions/chrome.loadTimes/index.js#L22-L164)
 
 - `opts` (optional, default `{}`)
 
