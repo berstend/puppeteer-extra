@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const puppeteer = require('puppeteer-extra')
 const stealth = require('puppeteer-extra-plugin-stealth')()
 const { minify } = require('terser')
