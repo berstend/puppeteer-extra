@@ -5,7 +5,7 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 const utils = require('../_utils')
 
 /**
- * Mock the `chrome.app` object if not available (e.g. when running headless) and on a secure site.
+ * Mock the `chrome.app` object if not available (e.g. when running headless).
  */
 class Plugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
@@ -36,10 +36,10 @@ class Plugin extends PuppeteerExtraPlugin {
 
       const makeError = {
         ErrorInInvocation: fn => {
-          const err = new TypeError(`Error in invocation of ${fn}`)
+          const err = new TypeError(`Error in invocation of app.${fn}()`)
           return utils.stripErrorWithAnchor(
             err,
-            'at getDetails (eval at <anonymous>'
+            `at ${fn} (eval at <anonymous>`
           )
         }
       }
@@ -73,19 +73,19 @@ class Plugin extends PuppeteerExtraPlugin {
 
         getDetails: function getDetails() {
           if (arguments.length) {
-            throw makeError.ErrorInInvocation(`app.getDetails()`)
+            throw makeError.ErrorInInvocation(`getDetails`)
           }
           return null
         },
         getIsInstalled: function getDetails() {
           if (arguments.length) {
-            throw makeError.ErrorInInvocation(`app.getIsInstalled()`)
+            throw makeError.ErrorInInvocation(`getIsInstalled`)
           }
           return false
         },
         runningState: function getDetails() {
           if (arguments.length) {
-            throw makeError.ErrorInInvocation(`app.runningState()`)
+            throw makeError.ErrorInInvocation(`runningState`)
           }
           return 'cannot_run'
         }
