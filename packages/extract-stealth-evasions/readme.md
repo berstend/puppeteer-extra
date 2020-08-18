@@ -24,13 +24,13 @@ Use the resulting `stealth.min.js` file however you like.
 #### Options
 
 ```bash
-$ node index -h
-Usage: index [options]
+$ npx extract-stealth-evasions -h
+Usage: extract-stealth-evasions [options]
 
 Options:
   --version      Show version number                                   [boolean]
-  -e, --exclude  Exclude evasion (repeat for multuple)
-  -i, --include  Include evasion (repeat for multuple)
+  -e, --exclude  Exclude evasion (repeat for multiple)
+  -i, --include  Include evasion (repeat for multiple)
   -l, --list     List available evasions
-  -h, --help     Show help                                             [boolean]
+  -h, --help     Show help                                             [boolean]                                          [boolean]
 ```
