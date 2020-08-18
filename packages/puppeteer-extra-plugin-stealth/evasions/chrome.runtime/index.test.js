@@ -158,7 +158,24 @@ test('stealth: will add convincing chrome.runtime.connect', async t => {
         singleArg: catchErr(chrome.runtime.connect, ''),
         tooManyArg: catchErr(chrome.runtime.connect, '', '', '', '', '', ''),
         incorrectArg: catchErr(chrome.runtime.connect, '', '', {}, ''),
-        noValidID: catchErr(chrome.runtime.connect, 'foo', '')
+        noValidID: catchErr(chrome.runtime.connect, 'foo', ''),
+        connectInfoFirst: {
+          emptyObject: catchErr(chrome.runtime.connect, {}),
+          tooManyArg: catchErr(chrome.runtime.connect, {}, {}),
+          unexpectedProp: catchErr(chrome.runtime.connect, { wtf: true }),
+          invalidName: catchErr(chrome.runtime.connect, { name: 666 }),
+          invalidTLS: catchErr(chrome.runtime.connect, {
+            includeTlsChannelId: 777
+          }),
+          invalidBoth: catchErr(chrome.runtime.connect, {
+            name: 666,
+            includeTlsChannelId: 777
+          }),
+          missingExtensionId: catchErr(chrome.runtime.connect, {
+            name: 'bob',
+            includeTlsChannelId: false
+          })
+        }
       }
     }
   })
@@ -177,7 +194,16 @@ test('stealth: will add convincing chrome.runtime.connect', async t => {
       singleArg: `${bla}: chrome.runtime.connect() called from a webpage must specify an Extension ID (string) for its first argument.`,
       tooManyArg: `${bla}: No matching signature.`,
       incorrectArg: `${bla}: No matching signature.`,
-      noValidID: `${bla}: Invalid extension id: 'foo'`
+      noValidID: `${bla}: Invalid extension id: 'foo'`,
+      connectInfoFirst: {
+        emptyObject: `${bla}: chrome.runtime.connect() called from a webpage must specify an Extension ID (string) for its first argument.`,
+        tooManyArg: `${bla}: No matching signature.`,
+        unexpectedProp: `${bla}: Unexpected property: 'wtf'.`,
+        invalidName: `${bla}: Error at property 'name': Invalid type: expected string, found number.`,
+        invalidTLS: `${bla}: Error at property 'includeTlsChannelId': Invalid type: expected boolean, found number.`,
+        invalidBoth: `${bla}: Error at property 'name': Invalid type: expected string, found number.`,
+        missingExtensionId: `${bla}: chrome.runtime.connect() called from a webpage must specify an Extension ID (string) for its first argument.`
+      }
     }
   })
 })

@@ -128,7 +128,11 @@ class Plugin extends PuppeteerExtraPlugin {
           sendMessageHandler
         )
 
-        /** Mock `chrome.runtime.connect` */
+        /**
+         * Mock `chrome.runtime.connect`
+         *
+         * @see https://developer.chrome.com/apps/runtime#method-connect
+         */
         const connectHandler = {
           apply: function(target, ctx, args) {
             const [extensionId, connectInfo] = args || []
@@ -149,24 +153,55 @@ class Plugin extends PuppeteerExtraPlugin {
             }
 
             const tooManyArguments = args.length > 2
-            const incorrectConnectInfo =
+            const incorrectConnectInfoType =
               connectInfo && typeof connectInfo !== 'object'
-            const extensionIdIsString = typeof extensionId === 'string'
 
-            if (
-              tooManyArguments ||
-              incorrectConnectInfo ||
-              !extensionIdIsString
-            ) {
+            if (tooManyArguments || incorrectConnectInfoType) {
               throw Errors.NoMatchingSignature
             }
 
-            if (extensionId === '') {
+            const extensionIdIsString = typeof extensionId === 'string'
+            if (extensionIdIsString && extensionId === '') {
               throw Errors.MustSpecifyExtensionID
             }
-
-            if (!isValidExtensionID(extensionId)) {
+            if (extensionIdIsString && !isValidExtensionID(extensionId)) {
               throw Errors.InvalidExtensionID
+            }
+
+            // There's another edge-case here: extensionId is optional so we might find a connectInfo object as first param, which we need to validate
+            const validateConnectInfo = ci => {
+              // More than a first param connectInfo as been provided
+              if (args.length > 1) {
+                throw Errors.NoMatchingSignature
+              }
+              // An empty connectInfo has been provided
+              if (Object.keys(ci).length === 0) {
+                throw Errors.MustSpecifyExtensionID
+              }
+              // Loop over all connectInfo props an check them
+              Object.entries(ci).forEach(([k, v]) => {
+                const isExpected = ['name', 'includeTlsChannelId'].includes(k)
+                if (!isExpected) {
+                  throw new TypeError(
+                    errorPreamble + `Unexpected property: '${k}'.`
+                  )
+                }
+                const MismatchError = (propName, expected, found) =>
+                  TypeError(
+                    errorPreamble +
+                      `Error at property '${propName}': Invalid type: expected ${expected}, found ${found}.`
+                  )
+                if (k === 'name' && typeof v !== 'string') {
+                  throw MismatchError(k, 'string', typeof v)
+                }
+                if (k === 'includeTlsChannelId' && typeof v !== 'boolean') {
+                  throw MismatchError(k, 'boolean', typeof v)
+                }
+              })
+            }
+            if (typeof extensionId === 'object') {
+              validateConnectInfo(extensionId)
+              throw Errors.MustSpecifyExtensionID
             }
 
             // Unfortunately even when the connect fails Chrome will return an object with methods we need to mock as well
