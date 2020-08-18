@@ -132,7 +132,6 @@ test('stealth: will add convincing chrome.runtime.connect', async t => {
   )
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
-  //
 
   const results = await page.evaluate(() => {
     const catchErr = (fn, ...args) => {
@@ -250,4 +249,37 @@ test('stealth: will add convincing chrome.runtime.connect response', async t => 
       noReturn: true
     }
   })
+})
+
+test('stealth: error stack is fine', async t => {
+  const puppeteer = addExtra(vanillaPuppeteer).use(
+    Plugin({
+      runOnInsecureOrigins: true // for testing
+    })
+  )
+  const browser = await puppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const result = await page.evaluate(() => {
+    const catchErr = (fn, ...args) => {
+      try {
+        return fn.apply(this, args)
+      } catch ({ name, message, stack }) {
+        return {
+          name,
+          message,
+          stack
+        }
+      }
+    }
+    return catchErr(chrome.runtime.connect, '').stack
+  })
+
+  /**
+   * OK:
+TypeError: Error in invocation of runtime.connect(optional string extensionId, optional object connectInfo): chrome.runtime.connect() called from a webpage must specify an Extension ID (string) for its first argument.␊
+  -       at catchErr (__puppeteer_evaluation_script__:4:19)␊
+  -       at __puppeteer_evaluation_script__:18:12
+   */
+  t.is(result.split('\n').length, 3)
 })
