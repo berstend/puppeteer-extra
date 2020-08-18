@@ -336,9 +336,7 @@ browserless
 - Allows setting custom Chrome/Chromium user preferences.
 - Has itself a plugin interface which is used by e.g. [`puppeteer-extra-plugin-font-size`](/packages/puppeteer-extra-plugin-font-size).
 
-
 > Check out the [packages folder](/packages/) for more plugins.
-
 
 ### Community Plugins
 
@@ -614,7 +612,7 @@ puppeteer.use(...)
 
 ## License
 
-Copyright © 2019, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](mailto:github@berstend.com?subject=[GitHub]%20PuppeteerExtra). Released under the MIT License.
+Copyright © 2020, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](mailto:github@berstend.com?subject=[GitHub]%20PuppeteerExtra). Released under the MIT License.
 
 <!-- Markdown footnotes (for links) -->
 

@@ -2,7 +2,7 @@
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
-const utils = require('../_shared/utils')
+const utils = require('../_utils')
 
 /**
  * Pass the Permissions Test.
@@ -32,7 +32,7 @@ class Plugin extends PuppeteerExtraPlugin {
               return Promise.resolve(result)
             }
 
-            return Reflect.apply(...arguments)
+            return utils.cache.Reflect.apply(...arguments)
           }
         }
 

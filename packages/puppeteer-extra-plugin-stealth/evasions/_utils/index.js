@@ -1,5 +1,13 @@
-// A set of shared utility functions specifically for the purpose of modifying native browser APIs without leaving traces.
-// Meant to be passed down in puppeteer and used in the context of the page.
+/**
+ * A set of shared utility functions specifically for the purpose of modifying native browser APIs without leaving traces.
+ *
+ * Meant to be passed down in puppeteer and used in the context of the page.
+ *
+ * Note: If for whatever reason you need to use this outside of `puppeteer-extra`:
+ * Just remove the `module.exports` and evertyhing below it, the rest can be copy pasted into any browser context.
+ *
+ * @ignore
+ */
 const utils = {}
 
 /**
@@ -73,6 +81,25 @@ utils.stripProxyFromErrors = (handler = {}) => {
 }
 
 /**
+ * Strip error lines from stack traces until (and including) a known line the stack.
+ *
+ * @param {object} err - The error to sanitize
+ * @param {string} anchor - The string the anchor line starts with
+ */
+utils.stripErrorWithAnchor = (err, anchor) => {
+  const stackArr = err.stack.split('\n')
+  const anchorIndex = stackArr.findIndex(line => line.trim().startsWith(anchor))
+  if (anchorIndex === -1) {
+    return err // 404, anchor not found
+  }
+  // Strip everything from the top until we reach the anchor line (remove anchor line as well)
+  // Note: We're keeping the 1st line (zero index) as it's unrelated (e.g. `TypeError`)
+  stackArr.splice(1, anchorIndex)
+  err.stack = stackArr.join('\n')
+  return err
+}
+
+/**
  * Replace the property of an object in a stealthy way.
  *
  * Note: You also want to work on the prototype of an object most often,
@@ -99,6 +126,29 @@ utils.replaceProperty = (obj, propName, descriptorOverrides = {}) => {
 }
 
 /**
+ * Preload a cache of function copies and data.
+ *
+ * For a determined enough observer it would be possible to overwrite and sniff usage of functions
+ * we use in our internal Proxies, to combat that we use a cached copy of those functions.
+ *
+ * This is evaluated once per execution context (e.g. window)
+ */
+utils.preloadCache = () => {
+  if (utils.cache) {
+    return
+  }
+  utils.cache = {
+    // Used in our proxies
+    Reflect: {
+      get: Reflect.get.bind(Reflect),
+      apply: Reflect.apply.bind(Reflect)
+    },
+    // Used in `makeNativeString`
+    nativeToStringStr: Function.toString + '' // => `function toString() { [native code] }`
+  }
+}
+
+/**
  * Utility function to generate a cross-browser `toString` result representing native code.
  *
  * There's small differences: Chromium uses a single line, whereas FF & Webkit uses multiline strings.
@@ -108,7 +158,7 @@ utils.replaceProperty = (obj, propName, descriptorOverrides = {}) => {
  * of the native toString result once, so they cannot spoof it afterwards and reveal that we're using it.
  *
  * Note: Whenever we add a `Function.prototype.toString` proxy we should preload the cache before,
- * by executing `utils.makeNativeString()` before the proxy is applied (so we don't cause recursive lookups).
+ * by executing `utils.preloadCache()` before the proxy is applied (so we don't cause recursive lookups).
  *
  * @example
  * makeNativeString('foobar') // => `function foobar() { [native code] }`
@@ -117,10 +167,8 @@ utils.replaceProperty = (obj, propName, descriptorOverrides = {}) => {
  */
 utils.makeNativeString = (name = '') => {
   // Cache (per-window) the original native toString or use that if available
-  if (!utils._nativeToStringStr) {
-    utils._nativeToStringStr = Function.toString + '' // => `function toString() { [native code] }`
-  }
-  return utils._nativeToStringStr.replace('toString', name || '')
+  utils.preloadCache()
+  return utils.cache.nativeToStringStr.replace('toString', name || '')
 }
 
 /**
@@ -138,7 +186,7 @@ utils.makeNativeString = (name = '') => {
  * @param {string} str - Optional string used as a return value
  */
 utils.patchToString = (obj, str = '') => {
-  utils.makeNativeString() // Preload `toString` cache before we set a `Function.prototype.toString` proxy
+  utils.preloadCache()
 
   const toStringProxy = new Proxy(Function.prototype.toString, {
     apply: function(target, ctx) {
@@ -169,13 +217,22 @@ utils.patchToString = (obj, str = '') => {
 }
 
 /**
+ * Make all nested functions of an object native.
+ *
+ * @param {object} obj
+ */
+utils.patchToStringNested = (obj = {}) => {
+  return utils.execRecursively(obj, ['function'], utils.patchToString)
+}
+
+/**
  * Redirect toString requests from one object to another.
  *
  * @param {object} proxyObj - The object that toString will be called on
  * @param {object} originalObj - The object which toString result we wan to return
  */
 utils.redirectToString = (proxyObj, originalObj) => {
-  utils.makeNativeString() // Preload `toString` cache before we set a `Function.prototype.toString` proxy
+  utils.preloadCache()
 
   const toStringProxy = new Proxy(Function.prototype.toString, {
     apply: function(target, ctx) {
@@ -224,14 +281,38 @@ utils.redirectToString = (proxyObj, originalObj) => {
  *
  * @param {object} obj - The object which has the property to replace
  * @param {string} propName - The name of the property to replace
- * @param {object} handler - The JS Proxy handler to used
+ * @param {object} handler - The JS Proxy handler to use
  */
 utils.replaceWithProxy = (obj, propName, handler) => {
+  utils.preloadCache()
   const originalObj = obj[propName]
   const proxyObj = new Proxy(obj[propName], utils.stripProxyFromErrors(handler))
 
   utils.replaceProperty(obj, propName, { value: proxyObj })
   utils.redirectToString(proxyObj, originalObj)
+
+  return true
+}
+
+/**
+ * All-in-one method to mock a non-existing property with a JS Proxy using the provided Proxy handler with traps.
+ *
+ * Will stealthify these aspects (strip error stack traces, redirect toString, etc).
+ *
+ * @example
+ * mockWithProxy(chrome.runtime, 'sendMessage', function sendMessage() {}, proxyHandler)
+ *
+ * @param {object} obj - The object which has the property to replace
+ * @param {string} propName - The name of the property to replace or create
+ * @param {object} pseudoTarget - The JS Proxy target to use as a basis
+ * @param {object} handler - The JS Proxy handler to use
+ */
+utils.mockWithProxy = (obj, propName, pseudoTarget, handler) => {
+  utils.preloadCache()
+  const proxyObj = new Proxy(pseudoTarget, utils.stripProxyFromErrors(handler))
+
+  utils.replaceProperty(obj, propName, { value: proxyObj })
+  utils.patchToString(proxyObj)
 
   return true
 }
@@ -264,7 +345,7 @@ utils.splitObjPath = objPath => ({
  * replaceObjPathWithProxy('WebGLRenderingContext.prototype.getParameter', proxyHandler)
  *
  * @param {string} objPath - The full path to an object (dot notation string) to replace
- * @param {object} handler - The JS Proxy handler to used
+ * @param {object} handler - The JS Proxy handler to use
  */
 utils.replaceObjPathWithProxy = (objPath, handler) => {
   const { objName, propName } = utils.splitObjPath(objPath)
@@ -272,6 +353,35 @@ utils.replaceObjPathWithProxy = (objPath, handler) => {
   return utils.replaceWithProxy(obj, propName, handler)
 }
 
+/**
+ * Traverse nested properties of an object recursively and apply the given function on a whitelist of value types.
+ *
+ * @param {object} obj
+ * @param {array} typeFilter - e.g. `['function']`
+ * @param {Function} fn - e.g. `utils.patchToString`
+ */
+utils.execRecursively = (obj = {}, typeFilter = [], fn) => {
+  function recurse(obj) {
+    for (const key in obj) {
+      if (obj[key] === undefined) {
+        continue
+      }
+      if (obj[key] && typeof obj[key] === 'object') {
+        recurse(obj[key])
+      } else {
+        if (obj[key] && typeFilter.includes(typeof obj[key])) {
+          fn.call(this, obj[key])
+        }
+      }
+    }
+  }
+  recurse(obj)
+  return obj
+}
+
+// --
+// Stuff starting below this line is NodeJS specific.
+// --
 module.exports = {
   ...utils,
   stringifyFns,
@@ -283,16 +393,18 @@ module.exports = {
 
 /**
  * In order for our utility functions to survive being evaluated on the page we need to stringify them and rematerialize them later.
+ *
+ * @ignore
  */
-// Object.fromEntries() ponyfill (in 6 lines) - supported only in Node v12+
-// https://github.com/feross/fromentries
-function fromEntries(iterable) {
-  return [...iterable].reduce((obj, [key, val]) => {
-    obj[key] = val
-    return obj
-  }, {})
-}
 function stringifyFns() {
+  // Object.fromEntries() ponyfill (in 6 lines) - supported only in Node v12+
+  // https://github.com/feross/fromentries
+  function fromEntries(iterable) {
+    return [...iterable].reduce((obj, [key, val]) => {
+      obj[key] = val
+      return obj
+    }, {})
+  }
   return (Object.fromEntries || fromEntries)(
     Object.entries(utils)
       .filter(([key, value]) => typeof value === 'function')
@@ -309,6 +421,7 @@ async function evaluate(page, fn, args = {}) {
       const utils = Object.fromEntries(
         Object.entries(_utilsFns).map(([key, value]) => [key, eval(value)]) // eslint-disable-line no-eval
       )
+      utils.preloadCache()
       return eval(_fn)(utils, _args) // eslint-disable-line no-eval
     },
     { _utilsFns: stringifyFns(), _fn: fn.toString(), _args: args }
@@ -325,6 +438,7 @@ async function evaluateOnNewDocument(page, fn, args = {}) {
       const utils = Object.fromEntries(
         Object.entries(_utilsFns).map(([key, value]) => [key, eval(value)]) // eslint-disable-line no-eval
       )
+      utils.preloadCache()
       return eval(_fn)(utils, _args) // eslint-disable-line no-eval
     },
     { _utilsFns: stringifyFns(), _fn: fn.toString(), _args: args }

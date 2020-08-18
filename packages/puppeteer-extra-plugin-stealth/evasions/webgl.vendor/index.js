@@ -2,7 +2,7 @@
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
-const utils = require('../_shared/utils')
+const utils = require('../_utils')
 
 /**
  * Fix WebGL Vendor/Renderer being set to Google in headless mode
@@ -38,7 +38,7 @@ class Plugin extends PuppeteerExtraPlugin {
             if (param === 37446) {
               return opts.renderer || 'Intel Iris OpenGL Engine' // default in headless: Google SwiftShader
             }
-            return Reflect.apply(target, ctx, args)
+            return utils.cache.Reflect.apply(target, ctx, args)
           }
         }
 
