@@ -171,6 +171,7 @@ test('stealth: will add convincing chrome.runtime.connect', async t => {
             name: 666,
             includeTlsChannelId: 777
           }),
+          validName: catchErr(chrome.runtime.connect, { name: 'foo' }),
           missingExtensionId: catchErr(chrome.runtime.connect, {
             name: 'bob',
             includeTlsChannelId: false
@@ -202,6 +203,7 @@ test('stealth: will add convincing chrome.runtime.connect', async t => {
         invalidName: `${bla}: Error at property 'name': Invalid type: expected string, found number.`,
         invalidTLS: `${bla}: Error at property 'includeTlsChannelId': Invalid type: expected boolean, found number.`,
         invalidBoth: `${bla}: Error at property 'name': Invalid type: expected string, found number.`,
+        validName: `${bla}: chrome.runtime.connect() called from a webpage must specify an Extension ID (string) for its first argument.`,
         missingExtensionId: `${bla}: chrome.runtime.connect() called from a webpage must specify an Extension ID (string) for its first argument.`
       }
     }
