@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra",
-  "version": "3.1.14",
+  "version": "3.1.15",
   "description": "Teach puppeteer new tricks through plugins.",
   "repository": "berstend/puppeteer-extra",
   "author": "berstend",
@@ -45,7 +45,7 @@
     "npm-run-all": "^4.1.5",
     "puppeteer": "^2.0.0",
     "puppeteer-extra-plugin": "^3.1.7",
-    "puppeteer-extra-plugin-anonymize-ua": "^2.2.13",
+    "puppeteer-extra-plugin-anonymize-ua": "^2.2.14",
     "puppeteer-firefox": "^0.5.0",
     "rimraf": "^3.0.0",
     "rollup": "^1.27.5",
