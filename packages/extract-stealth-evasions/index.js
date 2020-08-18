@@ -57,7 +57,8 @@ puppeteer
 
     fs.writeFile(
       file,
-      (await minify(scripts, { toplevel: true })).code,
+      '/* Auto-generated... do not update manually */\n' +
+        (await minify(scripts, { toplevel: true })).code,
       err => {
         if (err) throw err
         console.log(`File ${file} written!`)
@@ -71,7 +72,7 @@ puppeteer
 
 function patchEval(f, args) {
   // Check if there are options supplied
-  if (typeof args != 'undefined') {
+  if (typeof args !== 'undefined') {
     scripts += '(' + f.toString() + ')(' + JSON.stringify(args) + ');\n'
   } else {
     scripts += '(' + f.toString() + ')();\n'
