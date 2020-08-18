@@ -1,8 +1,12 @@
 {
   "name": "extract-stealth-evasions",
   "version": "2.2.13",
-  "description": "Extract stealth evasions from puppeteer-extra-stealth",
+  "description": "Extract stealth evasions from puppeteer-extra-plugin-stealth",
   "main": "index.js",
+  "bin": {
+    "extract-stealth-evasions": "./index.js"
+  },
+  "homepage": "https://github.com/berstend/puppeteer-extra/tree/master/packages/extract-stealth-evasions#readme",
   "repository": "berstend/puppeteer-extra",
   "author": "berstend",
   "license": "MIT",
@@ -19,8 +23,8 @@
   ],
   "devDependencies": {
     "puppeteer": "*",
-    "puppeteer-extra": "^3.1.14",
-    "puppeteer-extra-plugin-stealth": "^2.5.1",
+    "puppeteer-extra": "*",
+    "puppeteer-extra-plugin-stealth": "*",
     "terser": "^5.1.0",
     "yargs": "^15.4.1"
   }
