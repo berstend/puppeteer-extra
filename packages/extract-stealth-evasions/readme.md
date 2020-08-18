@@ -32,5 +32,5 @@ Options:
   -e, --exclude  Exclude evasion (repeat for multiple)
   -i, --include  Include evasion (repeat for multiple)
   -l, --list     List available evasions
-  -h, --help     Show help                                             [boolean]                                          [boolean]
+  -h, --help     Show help                                             [boolean]
 ```
