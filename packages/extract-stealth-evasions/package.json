@@ -21,10 +21,10 @@
     "headless",
     "pupeteer"
   ],
-  "devDependencies": {
+  "dependencies": {
     "puppeteer": "*",
-    "puppeteer-extra": "^3.1.15",
-    "puppeteer-extra-plugin-stealth": "^2.6.0",
+    "puppeteer-extra": "*",
+    "puppeteer-extra-plugin-stealth": "*",
     "terser": "^5.1.0",
     "yargs": "^15.4.1"
   }
