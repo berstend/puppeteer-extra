@@ -26,7 +26,7 @@ if (argv.exclude) {
   }
 } else if (argv.include) {
   if (typeof argv.include === 'string') {
-    stealth.enabledEvasions = argv.include
+    stealth.enabledEvasions = [argv.include]
   } else {
     stealth.enabledEvasions = [];
     argv.include.forEach(e => {
