@@ -81,6 +81,25 @@ utils.stripProxyFromErrors = (handler = {}) => {
 }
 
 /**
+ * Strip error lines from stack traces until (and including) a known line the stack.
+ *
+ * @param {object} err - The error to sanitize
+ * @param {string} anchor - The string the anchor line starts with
+ */
+utils.stripErrorWithAnchor = (err, anchor) => {
+  const stackArr = err.stack.split('\n')
+  const anchorIndex = stackArr.findIndex(line => line.trim().startsWith(anchor))
+  if (anchorIndex === -1) {
+    return err // 404, anchor not found
+  }
+  // Strip everything from the top until we reach the anchor line (remove anchor line as well)
+  // Note: We're keeping the 1st line (zero index) as it's unrelated (e.g. `TypeError`)
+  stackArr.splice(1, anchorIndex)
+  err.stack = stackArr.join('\n')
+  return err
+}
+
+/**
  * Replace the property of an object in a stealthy way.
  *
  * Note: You also want to work on the prototype of an object most often,
