@@ -18,9 +18,9 @@
     "pupeteer"
   ],
   "devDependencies": {
-    "puppeteer": "latest",
-    "puppeteer-extra": "latest",
-    "puppeteer-extra-plugin-stealth": "latest",
+    "puppeteer": "*",
+    "puppeteer-extra": "*",
+    "puppeteer-extra-plugin-stealth": "*",
     "terser": "^5.1.0",
     "yargs": "^15.4.1"
   }

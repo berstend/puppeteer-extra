@@ -34,7 +34,7 @@ if (argv.exclude) {
     });
   }
 } else if (argv.list) {
-  console.log('Available evasions:', stealth.availableEvasions);
+  console.log('Available evasions:', [...stealth.availableEvasions].join(', '));
   process.exit(0);
 }
 
@@ -56,7 +56,8 @@ puppeteer
 
     fs.writeFile(file, (await minify(scripts, { toplevel: true })).code, (err) => {
       if (err) throw err;
-      console.log(`File ${file} written!`)
+      console.log(`File ${file} written!`);
+      console.log('Included evasions: ', [...stealth.enabledEvasions].join(', '));
     });
   });
 
