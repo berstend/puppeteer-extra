@@ -2,7 +2,7 @@
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
-const utils = require('../_shared/utils')
+const utils = require('../_utils')
 
 /**
  * Fix Chromium not reporting "probably" to codecs like `videoEl.canPlayType('video/mp4; codecs="avc1.42E01E"')`.
