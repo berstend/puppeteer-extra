@@ -12,6 +12,14 @@ npx extract-stealth-evasions
 
 Will create a `stealth.min.js` file in the current folder.
 
+#### Using the CDN version
+
+You can also fetch the latest version from [gitCDN](https://gitcdn.xyz/repo/berstend/puppeteer-extra/stealth-js/stealth.min.js). For example, paste this one-liner in your browser devtools console:
+
+```js
+document.body.appendChild(Object.assign(document.createElement('script'), {src: 'https://gitcdn.xyz/repo/berstend/puppeteer-extra/stealth-js/stealth.min.js'}))
+```
+
 #### How to use locally
 
 ```bash

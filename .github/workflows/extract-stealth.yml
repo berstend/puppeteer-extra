@@ -19,12 +19,14 @@ jobs:
           cd packages/extract-stealth-evasions
           npm install
           node index.js
+          cp stealth.min.js ../../
 
       - name: Commit stealth.min.js
         uses: EndBug/add-and-commit@v4
         with:
-          add: 'packages/extract-stealth-evasions/stealth.min.js'
+          add: 'stealth.min.js'
           force: true
+          ref: 'stealth-js'
           message: 'Auto-updated stealth.min.js with newest evasions'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
