@@ -2,7 +2,7 @@
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
-const utils = require('../_utils')
+const withUtils = require('../_utils/withUtils')
 
 /**
  * Fix Chromium not reporting "probably" to codecs like `videoEl.canPlayType('video/mp4; codecs="avc1.42E01E"')`.
@@ -18,7 +18,7 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   async onPageCreated(page) {
-    await utils.withUtils.evaluateOnNewDocument(page, utils => {
+    await withUtils(page).evaluateOnNewDocument(utils => {
       /**
        * Input might look funky, we need to normalize it so e.g. whitespace isn't an issue for our spoofing.
        *

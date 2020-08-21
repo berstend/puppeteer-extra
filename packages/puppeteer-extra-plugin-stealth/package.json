@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-stealth",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "description": "Stealth mode: Applies various techniques to make detection of headless puppeteer harder.",
   "main": "index.js",
   "typings": "index.d.ts",
@@ -9,7 +9,7 @@
   "author": "berstend",
   "license": "MIT",
   "scripts": {
-    "docs": "run-s docs-for-plugin docs-for-evasions types",
+    "docs": "run-s docs-for-plugin postdocs-for-plugin docs-for-evasions postdocs-for-evasions types",
     "docs-for-plugin": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API index.js",
     "postdocs-for-plugin": "npx prettier --write readme.md",
     "docs-for-evasions": "cd ./evasions && loop \"documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API index.js\"",
