@@ -6,14 +6,20 @@
 
 - [class: Plugin](#class-plugin)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/ceca9c6fed0a9f39d6c80b71fd413f3656ebb704/packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/index.js#L10-L216)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/e6133619b051febed630ada35241664eba59b9fa/packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/index.js#L26-L88)
 
 - `opts` (optional, default `{}`)
 
 **Extends: PuppeteerExtraPlugin**
 
 In headless mode `navigator.mimeTypes` and `navigator.plugins` are empty.
-This plugin quite emulates both of these to match regular headful Chrome.
-We even go so far as to mock functional methods, instance types and `.toString` properties. :D
+This plugin emulates both of these with functional mocks to match regular headful Chrome.
+
+Note: mimeTypes and plugins cross-reference each other, so it makes sense to do them at the same time.
+
+- **See: <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorPlugins/mimeTypes>**
+- **See: <https://developer.mozilla.org/en-US/docs/Web/API/MimeTypeArray>**
+- **See: <https://developer.mozilla.org/en-US/docs/Web/API/NavigatorPlugins/plugins>**
+- **See: <https://developer.mozilla.org/en-US/docs/Web/API/PluginArray>**
 
 ---

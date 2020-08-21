@@ -6,12 +6,12 @@
 
 - [class: Plugin](#class-plugin)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/ceca9c6fed0a9f39d6c80b71fd413f3656ebb704/packages/puppeteer-extra-plugin-stealth/evasions/chrome.app/index.js#L10-L96)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/e6133619b051febed630ada35241664eba59b9fa/packages/puppeteer-extra-plugin-stealth/evasions/chrome.app/index.js#L11-L97)
 
 - `opts` (optional, default `{}`)
 
 **Extends: PuppeteerExtraPlugin**
 
-Mock the `chrome.app` object if not available (e.g. when running headless) and on a secure site.
+Mock the `chrome.app` object if not available (e.g. when running headless).
 
 ---

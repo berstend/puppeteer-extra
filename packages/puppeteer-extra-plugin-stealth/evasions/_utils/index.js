@@ -1,12 +1,13 @@
 /**
  * A set of shared utility functions specifically for the purpose of modifying native browser APIs without leaving traces.
  *
- * Meant to be passed down in puppeteer and used in the context of the page (everything in here runs in Node as well as a browser).
+ * Meant to be passed down in puppeteer and used in the context of the page (everything in here runs in NodeJS as well as a browser).
  *
  * Note: If for whatever reason you need to use this outside of `puppeteer-extra`:
  * Just remove the `module.exports` statement at the very bottom, the rest can be copy pasted into any browser context.
  *
- * @ignore
+ * Alternatively take a look at the `extract-stealth-evasions` package to create a finished bundle which includes these utilities.
+ *
  */
 const utils = {}
 
