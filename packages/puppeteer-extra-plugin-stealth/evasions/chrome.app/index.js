@@ -2,7 +2,7 @@
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
-const utils = require('../_utils')
+const withUtils = require('../_utils/withUtils')
 
 /**
  * Mock the `chrome.app` object if not available (e.g. when running headless).
@@ -17,7 +17,7 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   async onPageCreated(page) {
-    await utils.withUtils.evaluateOnNewDocument(page, utils => {
+    await withUtils(page).evaluateOnNewDocument(utils => {
       if (!window.chrome) {
         // Use the exact property descriptor found in headful Chrome
         // fetch it via `Object.getOwnPropertyDescriptor(window, 'chrome')`
