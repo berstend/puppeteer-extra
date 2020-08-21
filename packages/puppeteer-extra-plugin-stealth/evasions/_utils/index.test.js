@@ -3,6 +3,7 @@ const test = require('ava')
 const { vanillaPuppeteer } = require('../../test/util')
 
 const utils = require('.')
+const withUtils = require('./withUtils')
 
 /* global HTMLMediaElement WebGLRenderingContext */
 
@@ -27,7 +28,7 @@ test('replaceWithProxy: will work correctly', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
-  const test1 = await utils.withUtils.evaluate(page, utils => {
+  const test1 = await withUtils(page).evaluate(utils => {
     const dummyProxyHandler = {
       get(target, param) {
         if (param && param === 'ping') {
@@ -59,7 +60,7 @@ test('replaceObjPathWithProxy: will work correctly', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
-  const test1 = await utils.withUtils.evaluate(page, utils => {
+  const test1 = await withUtils(page).evaluate(utils => {
     const dummyProxyHandler = {
       get(target, param) {
         if (param && param === 'ping') {
@@ -91,7 +92,7 @@ test('redirectToString: is battle hardened', async t => {
   const page = await browser.newPage()
 
   // Patch all documents including iframes
-  await utils.withUtils.evaluateOnNewDocument(page, utils => {
+  await withUtils(page).evaluateOnNewDocument(utils => {
     // We redirect toString calls targeted at `canPlayType` to `getParameter`,
     // so if everything works correctly we expect `getParameter` as response.
     const proxyObj = HTMLMediaElement.prototype.canPlayType
@@ -101,7 +102,7 @@ test('redirectToString: is battle hardened', async t => {
   })
   await page.goto('about:blank')
 
-  const result = await utils.withUtils.evaluate(page, utils => {
+  const result = await withUtils(page).evaluate(utils => {
     const iframe = document.createElement('iframe')
     document.body.appendChild(iframe)
 
@@ -174,21 +175,21 @@ test('patchToString: will work correctly', async t => {
   const page = await browser.newPage()
 
   // Test verbatim string replacement
-  const test1 = await utils.withUtils.evaluate(page, utils => {
+  const test1 = await withUtils(page).evaluate(utils => {
     utils.patchToString(HTMLMediaElement.prototype.canPlayType, 'bob')
     return HTMLMediaElement.prototype.canPlayType.toString()
   })
   t.is(test1, 'bob')
 
   // Test automatic mode derived from `.name`
-  const test2 = await utils.withUtils.evaluate(page, utils => {
+  const test2 = await withUtils(page).evaluate(utils => {
     utils.patchToString(HTMLMediaElement.prototype.canPlayType)
     return HTMLMediaElement.prototype.canPlayType.toString()
   })
   t.is(test2, 'function canPlayType() { [native code] }')
 
   // Make sure automatic mode derived from `.name` works with proxies
-  const test3 = await utils.withUtils.evaluate(page, utils => {
+  const test3 = await withUtils(page).evaluate(utils => {
     HTMLMediaElement.prototype.canPlayType = new Proxy(
       HTMLMediaElement.prototype.canPlayType,
       {}
@@ -199,7 +200,7 @@ test('patchToString: will work correctly', async t => {
   t.is(test3, 'function canPlayType() { [native code] }')
 
   // Actually verify there's an issue when using vanilla Proxies
-  const test4 = await utils.withUtils.evaluate(page, utils => {
+  const test4 = await withUtils(page).evaluate(utils => {
     HTMLMediaElement.prototype.canPlayType = new Proxy(
       HTMLMediaElement.prototype.canPlayType,
       {}
@@ -239,7 +240,7 @@ test('patchToString: passes all toString tests', async t => {
   const toStringStealth = await (async function() {
     const browser = await vanillaPuppeteer.launch({ headless: true })
     const page = await browser.newPage()
-    await utils.withUtils.evaluate(page, utils => {
+    await withUtils(page).evaluate(utils => {
       HTMLMediaElement.prototype.canPlayType = function canPlayType() {}
       utils.patchToString(HTMLMediaElement.prototype.canPlayType)
     })
@@ -272,7 +273,7 @@ test('patchToString: vanilla has iframe issues', async t => {
   const page = await browser.newPage()
 
   // Only patch the main window
-  const result = await utils.withUtils.evaluate(page, utils => {
+  const result = await withUtils(page).evaluate(utils => {
     utils.patchToString(HTMLMediaElement.prototype.canPlayType, 'bob')
 
     const iframe = document.createElement('iframe')
@@ -305,12 +306,12 @@ test('patchToString: stealth has no iframe issues', async t => {
   const page = await browser.newPage()
 
   // Patch all documents including iframes
-  await utils.withUtils.evaluateOnNewDocument(page, utils => {
+  await withUtils(page).evaluateOnNewDocument(utils => {
     utils.patchToString(HTMLMediaElement.prototype.canPlayType, 'alice')
   })
   await page.goto('about:blank')
 
-  const result = await utils.withUtils.evaluate(page, utils => {
+  const result = await withUtils(page).evaluate(utils => {
     const iframe = document.createElement('iframe')
     document.body.appendChild(iframe)
     return {
@@ -340,7 +341,7 @@ test('stripProxyFromErrors: will work correctly', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
-  const results = await utils.withUtils.evaluate(page, utils => {
+  const results = await withUtils(page).evaluate(utils => {
     const getStack = prop => {
       try {
         prop.caller() // Will throw (HTMLMediaElement.prototype.canPlayType.caller)
@@ -392,7 +393,7 @@ test('replaceProperty: will work without traces', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
-  const results = await utils.withUtils.evaluate(page, utils => {
+  const results = await withUtils(page).evaluate(utils => {
     utils.replaceProperty(Object.getPrototypeOf(navigator), 'languages', {
       get: () => ['de-DE']
     })
@@ -407,7 +408,7 @@ test('cache: will prevent leaks through overriding methods', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
-  const results = await utils.withUtils.evaluate(page, utils => {
+  const results = await withUtils(page).evaluate(utils => {
     const sniffResults = {
       vanilla: false,
       stealth: false
