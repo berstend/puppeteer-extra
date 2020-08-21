@@ -2,7 +2,6 @@
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
-const utils = require('../_utils')
 const withUtils = require('../_utils/withUtils')
 
 const STATIC_DATA = require('./staticData.json')
