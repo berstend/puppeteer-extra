@@ -1,10 +1,10 @@
 /**
  * A set of shared utility functions specifically for the purpose of modifying native browser APIs without leaving traces.
  *
- * Meant to be passed down in puppeteer and used in the context of the page.
+ * Meant to be passed down in puppeteer and used in the context of the page (everything in here runs in Node as well as a browser).
  *
  * Note: If for whatever reason you need to use this outside of `puppeteer-extra`:
- * Just remove the `module.exports` and evertyhing below it, the rest can be copy pasted into any browser context.
+ * Just remove the `module.exports` statement at the very bottom, the rest can be copy pasted into any browser context.
  *
  * @ignore
  */
@@ -318,6 +318,27 @@ utils.mockWithProxy = (obj, propName, pseudoTarget, handler) => {
 }
 
 /**
+ * All-in-one method to create a new JS Proxy with stealth tweaks.
+ *
+ * This is meant to be used whenever we need a JS Proxy but don't want to replace or mock an existing known property.
+ *
+ * Will stealthify certain aspects of the Proxy (strip error stack traces, redirect toString, etc).
+ *
+ * @example
+ * createProxy(navigator.mimeTypes.__proto__.namedItem, proxyHandler) // => Proxy
+ *
+ * @param {object} pseudoTarget - The JS Proxy target to use as a basis
+ * @param {object} handler - The JS Proxy handler to use
+ */
+utils.createProxy = (pseudoTarget, handler) => {
+  utils.preloadCache()
+  const proxyObj = new Proxy(pseudoTarget, utils.stripProxyFromErrors(handler))
+  utils.patchToString(proxyObj)
+
+  return proxyObj
+}
+
+/**
  * Helper function to split a full path to an Object into the first part and property.
  *
  * @example
@@ -379,25 +400,21 @@ utils.execRecursively = (obj = {}, typeFilter = [], fn) => {
   return obj
 }
 
-// --
-// Stuff starting below this line is NodeJS specific.
-// --
-module.exports = {
-  ...utils,
-  stringifyFns,
-  withUtils: {
-    evaluate,
-    evaluateOnNewDocument
-  }
-}
-
 /**
- * In order for our utility functions to survive being evaluated on the page we need to stringify them and rematerialize them later.
+ * Everything we run through e.g. `page.evaluate` runs in the browser context, not the NodeJS one.
+ * That means we cannot just use reference variables and functions from outside code, we need to pass everything as a parameter.
  *
- * @ignore
+ * Unfortunately the data we can pass is only allowed to be of primitive types, regular functions don't survive the built-in serialization process.
+ * This utility function will take an object with functions and stringify them, so we can pass them down unharmed as strings.
+ *
+ * We use this to pass down our utility functions as well as any other functions (to be able to split up code better).
+ *
+ * @see utils.materializeFns
+ *
+ * @param {object} fnObj - An object containing functions as properties
  */
-function stringifyFns() {
-  // Object.fromEntries() ponyfill (in 6 lines) - supported only in Node v12+
+utils.stringifyFns = (fnObj = { hello: () => 'world' }) => {
+  // Object.fromEntries() ponyfill (in 6 lines) - supported only in Node v12+, modern browsers are fine
   // https://github.com/feross/fromentries
   function fromEntries(iterable) {
     return [...iterable].reduce((obj, [key, val]) => {
@@ -406,41 +423,33 @@ function stringifyFns() {
     }, {})
   }
   return (Object.fromEntries || fromEntries)(
-    Object.entries(utils)
+    Object.entries(fnObj)
       .filter(([key, value]) => typeof value === 'function')
       .map(([key, value]) => [key, value.toString()]) // eslint-disable-line no-eval
   )
 }
 
 /**
- * Simple `page.evaluate` replacement to preload utils
+ * Utility function to reverse the process of `utils.stringifyFns`.
+ * Will materialize an object with stringified functions (supports classic and fat arrow functions).
+ *
+ * @param {object} fnStrObj - An object containing stringified functions as properties
  */
-async function evaluate(page, fn, args = {}) {
-  return page.evaluate(
-    ({ _utilsFns, _fn, _args }) => {
-      const utils = Object.fromEntries(
-        Object.entries(_utilsFns).map(([key, value]) => [key, eval(value)]) // eslint-disable-line no-eval
-      )
-      utils.preloadCache()
-      return eval(_fn)(utils, _args) // eslint-disable-line no-eval
-    },
-    { _utilsFns: stringifyFns(), _fn: fn.toString(), _args: args }
+utils.materializeFns = (fnStrObj = { hello: "() => 'world'" }) => {
+  return Object.fromEntries(
+    Object.entries(fnStrObj).map(([key, value]) => {
+      if (value.startsWith('function')) {
+        // some trickery is needed to make oldschool functions work :-)
+        return [key, eval(`() => ${value}`)()] // eslint-disable-line no-eval
+      } else {
+        // arrow functions just work
+        return [key, eval(value)] // eslint-disable-line no-eval
+      }
+    })
   )
 }
 
-/**
- * Simple `page.evaluateOnNewDocument` replacement to preload utils
- */
-async function evaluateOnNewDocument(page, fn, args = {}) {
-  return page.evaluateOnNewDocument(
-    ({ _utilsFns, _fn, _args }) => {
-      /** @type{typeof utils} */
-      const utils = Object.fromEntries(
-        Object.entries(_utilsFns).map(([key, value]) => [key, eval(value)]) // eslint-disable-line no-eval
-      )
-      utils.preloadCache()
-      return eval(_fn)(utils, _args) // eslint-disable-line no-eval
-    },
-    { _utilsFns: stringifyFns(), _fn: fn.toString(), _args: args }
-  )
-}
+// --
+// Stuff starting below this line is NodeJS specific.
+// --
+module.exports = utils
