@@ -1,0 +1,32 @@
+name: Extract stealth.min.js
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'packages/puppeteer-extra-plugin-stealth/**' 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Extract stealth.min.js
+        run: |
+          cd packages/extract-stealth-evasions
+          npm install
+          node index.js
+          cp stealth.min.js ../../
+
+      - name: Commit stealth.min.js
+        uses: EndBug/add-and-commit@v4
+        with:
+          add: 'stealth.min.js'
+          force: true
+          ref: 'stealth-js'
+          message: 'Auto-updated stealth.min.js with newest evasions'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
