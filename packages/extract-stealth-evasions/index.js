@@ -11,6 +11,8 @@ const argv = require('yargs')
   .describe('i', 'Include evasion (repeat for multiple)')
   .alias('l', 'list')
   .describe('l', 'List available evasions')
+  .alias('nominify', 'nominify')
+  .describe('nominify', 'Disable minify')
   .help('h')
   .alias('h', 'help').argv
 const fs = require('fs')
@@ -63,7 +65,7 @@ puppeteer
  * Generated on: ${new Date().toUTCString()}
  * License: MIT
  */
-` + (await minify(scripts, { toplevel: true })).code,
+` + (nominify?scripts:(await minify(scripts, { toplevel: true })).code),
       err => {
         if (err) throw err
         console.log(`File ${file} written!`)

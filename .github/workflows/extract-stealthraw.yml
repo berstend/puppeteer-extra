@@ -18,7 +18,7 @@ jobs:
         run: |
           cd packages/extract-stealth-evasions
           npm install
-          node index.js
+          node index.js --nominify
           cp stealth.js ../../
 
       - name: Commit stealth.js
