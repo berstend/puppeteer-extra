@@ -1,5 +1,5 @@
-import * as pw from './types/playwright'
-import * as pptr from './types/puppeteer'
+import type * as pw from './types/playwright'
+import type * as pptr from './types/puppeteer'
 
 export type SupportedDrivers = 'playwright' | 'puppeteer'
 

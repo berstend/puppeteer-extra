@@ -1,7 +1,7 @@
 {
-  "name": "automation-extra",
+  "name": "playwright-extra",
   "version": "4.1.0",
-  "description": "Teach playwright and puppeteer new tricks through plugins.",
+  "description": "Teach playwright new tricks through plugins.",
   "repository": "berstend/puppeteer-extra",
   "author": "berstend",
   "license": "MIT",
@@ -21,7 +21,7 @@
     "postdocs": "npx prettier --write readme.md",
     "test:ts": "ava -v --config ava.config-ts.js",
     "test:js": "ava -v --serial --concurrency 1 --fail-fast",
-    "test": "run-p test:js test:ts",
+    "test": "run-p test:ts",
     "test-ci": "run-s test"
   },
   "keywords": [
@@ -54,10 +54,9 @@
   "dependencies": {
     "@types/debug": "^4.1.0",
     "@types/puppeteer": "^3.0.1",
-    "automation-extra-plugin": "*",
+    "automation-extra": "*",
     "debug": "^4.1.1",
     "deepmerge": "^4.2.2",
-    "playwright-core": "*",
-    "puppeteer-extra-plugin": "*"
+    "playwright-core": "*"
   }
 }

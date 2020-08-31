@@ -1,12 +1,16 @@
-import * as types from './types'
+import type * as types from './types'
 
 import { PlaywrightExtra } from './playwright'
 import { PuppeteerExtra } from './puppeteer'
 
 // Re-export stuff
-export * from './playwright'
-export * from './puppeteer'
-export * from './types'
+export * as Playwright from './playwright'
+export * as Puppeteer from './puppeteer'
+export * as types from './types'
+
+export { PlaywrightExtra } from './playwright'
+export { PuppeteerExtra } from './puppeteer'
+export { AutomationExtraBase } from './base'
 
 /**
  * Augment a Puppeteer or Playwright API compatible browser launcher with plugin functionality.
@@ -75,23 +79,3 @@ export const addExtraPlaywright = (
 export const addExtraPuppeteer = (
   launcher: types.PuppeteerBrowserLauncher
 ): PuppeteerExtra => addExtra(launcher) as PuppeteerExtra
-
-// import playwrightCore from 'playwright-core'
-export const playwrightModule = (() => {
-  const playwrightCore = require('playwright-core')
-
-  const makeProduct = (name: types.PlaywrightBrowsers) => {
-    const launcher = new PlaywrightExtra()
-    launcher.productName = name // So we know what to require later
-    return launcher
-  }
-  return {
-    chromium: makeProduct('chromium'),
-    firefox: makeProduct('firefox'),
-    webkit: makeProduct('webkit'),
-
-    errors: playwrightCore.errors,
-    selectors: playwrightCore.selectors,
-    devices: playwrightCore.devices
-  }
-})()

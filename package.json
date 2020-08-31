@@ -32,7 +32,7 @@
     "eslint-plugin-standard": "^4.0.1",
     "lerna": "^3.19.0",
     "lerna-update-wizard": "^0.17.5",
-    "prettier": "^1.19.1",
+    "prettier": "^2.1.1",
     "prettier-config-standard": "^1.0.1"
   },
   "optionalDependencies": {

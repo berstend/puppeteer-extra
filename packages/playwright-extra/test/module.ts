@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import { playwrightModule as pwModule } from '../src/index'
+import pwModule from '../src/index'
 
 test('is an object', async t => {
   t.is(typeof pwModule, 'object')

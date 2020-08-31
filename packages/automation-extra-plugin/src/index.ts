@@ -202,13 +202,37 @@ export class PluginLifecycleMethods {
   async onDisconnected(browser: Browser) {}
 }
 
+/**
+ * AutomationExtraPlugin - Meant to be used as a base class and it's methods overridden.
+ *
+ * Implements all `PluginLifecycleMethods`.
+ *
+ * @example
+ *   class Plugin extends AutomationExtraPlugin {
+ *     constructor(opts = {}) {
+ *       super(opts)
+ *     }
+ *
+ *     get name() {
+ *       return 'foobar'
+ *     }
+ *
+ *     async beforeLaunch(options) {
+ *       options.headless = false
+ *       return options
+ *     }
+ *   }
+ */
 export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
   /** @private */
   private _debugBase: Debugger
   /** @private */
   private _opts: PluginOptions
 
-  /** Contains info regarding the launcher environment the plugin runs in */
+  /**
+   * Contains info regarding the launcher environment the plugin runs in
+   * @see LauncherEnv
+   */
   public env: LauncherEnv
 
   constructor(opts?: PluginOptions) {
@@ -363,9 +387,23 @@ export type BrowserEngines = 'chromium' | 'firefox' | 'webkit'
 export class LauncherEnv {
   // The browser might not be known from the very start, as we might lazy require the vanilla packages.
   // Also puppeteer supports defining the browser during launch()
+
+  /**
+   * The name of the browser engine currently in use: `"chromium" | "firefox" | "webkit"`.
+   */
   public browserName: BrowserEngines | 'unknown' = 'unknown'
 
-  constructor(public driverName: SupportedDrivers | 'unknown' = 'unknown') {}
+  /**
+   * The name of the driver currently in use: `"playwright" | "puppeteer"`.
+   */
+  public driverName: SupportedDrivers | 'unknown' = 'unknown'
+
+  /** @private */
+  constructor(driverName?: SupportedDrivers | 'unknown') {
+    if (driverName) {
+      this.driverName = driverName
+    }
+  }
 
   // Helper methods for convenience
   get isPuppeteer() {
@@ -389,27 +427,51 @@ export class LauncherEnv {
 
   // Type guards work by discriminating against properties only found in that specific type
 
-  /** Type guard, will make TypeScript understand which type we're working with */
+  /**
+   * Type guard, will make TypeScript understand which type we're working with.
+   * @param obj - The object to test
+   * @returns {boolean}
+   */
   isPuppeteerPage(obj: any): obj is Puppeteer.Page {
     return 'setUserAgent' in (obj as Puppeteer.Page)
   }
-  /** Type guard, will make TypeScript understand which type we're working with */
+  /**
+   * Type guard, will make TypeScript understand which type we're working with.
+   * @param obj - The object to test
+   * @returns {boolean}
+   */
   isPuppeteerBrowser(obj: any): obj is Puppeteer.Browser {
     return 'createIncognitoBrowserContext' in (obj as Puppeteer.Browser)
   }
-  /** Type guard, will make TypeScript understand which type we're working with */
+  /**
+   * Type guard, will make TypeScript understand which type we're working with.
+   * @param obj - The object to test
+   * @returns {boolean}
+   */
   isPuppeteerBrowserContext(obj: any): obj is Puppeteer.BrowserContext {
     return 'clearPermissionOverrides' in (obj as Puppeteer.BrowserContext)
   }
-  /** Type guard, will make TypeScript understand which type we're working with */
+  /**
+   * Type guard, will make TypeScript understand which type we're working with.
+   * @param obj - The object to test
+   * @returns {boolean}
+   */
   isPlaywrightPage(obj: any): obj is Playwright.Page {
     return 'unroute' in (obj as Playwright.Page)
   }
-  /** Type guard, will make TypeScript understand which type we're working with */
+  /**
+   * Type guard, will make TypeScript understand which type we're working with.
+   * @param obj - The object to test
+   * @returns {boolean}
+   */
   isPlaywrightBrowser(obj: any): obj is Playwright.Browser {
     return 'newContext' in (obj as Playwright.Browser)
   }
-  /** Type guard, will make TypeScript understand which type we're working with */
+  /**
+   * Type guard, will make TypeScript understand which type we're working with.
+   * @param obj - The object to test
+   * @returns {boolean}
+   */
   isPlaywrightBrowserContext(obj: any): obj is Playwright.BrowserContext {
     return 'addCookies' in (obj as Playwright.BrowserContext)
   }
