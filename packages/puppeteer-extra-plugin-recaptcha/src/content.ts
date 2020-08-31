@@ -28,6 +28,9 @@ export class RecaptchaContentScript {
   private _pick = (props: any[]) => (o: any) =>
     props.reduce((a, e) => ({ ...a, [e]: o[e] }), {})
 
+  // make sure the element is visible - this is equivalent to jquery's is(':visible')
+  private _isVisible = (elem: any) => !!( elem.offsetWidth || elem.offsetHeight || (typeof elem.getClientRects === 'function' && elem.getClientRects().length )))
+
   // Recaptcha client is a nested, circular object with object keys that seem generated
   // We flatten that object a couple of levels deep for easy access to certain keys we're interested in.
   private _flattenObject(item: any, levels = 2, ignoreHTML = true) {
@@ -125,7 +128,7 @@ export class RecaptchaContentScript {
   private getVisibleIframesIds() {
     // Find all visible recaptcha boxes through their iframes
     return this._findVisibleIframeNodes()
-      .filter($f => !$f.src.includes('invisible'))
+      .filter($f => this._isVisible($f))
       .map($f => this._paintCaptchaBusy($f))
       .filter($f => $f && $f.getAttribute('name'))
       .map($f => $f.getAttribute('name') || '') // a-841543e13666
