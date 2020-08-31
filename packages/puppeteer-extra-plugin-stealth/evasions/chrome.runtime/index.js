@@ -77,7 +77,7 @@ class Plugin extends PuppeteerExtraPlugin {
 
         /** Mock `chrome.runtime.sendMessage` */
         const sendMessageHandler = {
-          apply: function(target, ctx, args) {
+          apply: function (target, ctx, args) {
             const [extensionId, options, responseCallback] = args || []
 
             // Define custom errors
@@ -133,7 +133,7 @@ class Plugin extends PuppeteerExtraPlugin {
          * @see https://developer.chrome.com/apps/runtime#method-connect
          */
         const connectHandler = {
-          apply: function(target, ctx, args) {
+          apply: function (target, ctx, args) {
             const [extensionId, connectInfo] = args || []
 
             // Define custom errors
@@ -249,6 +249,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
+module.exports = function (pluginConfig) {
   return new Plugin(pluginConfig)
 }

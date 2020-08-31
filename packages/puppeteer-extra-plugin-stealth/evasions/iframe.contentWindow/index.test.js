@@ -283,7 +283,7 @@ test('regression: old method indeed did break recaptcha popup', async t => {
   await page.evaluateOnNewDocument(() => {
     // eslint-disable-next-line
     Object.defineProperty(HTMLIFrameElement.prototype, 'contentWindow', {
-      get: function() {
+      get: function () {
         return window
       }
     })

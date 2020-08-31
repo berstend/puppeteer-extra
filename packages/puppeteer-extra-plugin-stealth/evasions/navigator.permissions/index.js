@@ -21,7 +21,7 @@ class Plugin extends PuppeteerExtraPlugin {
   async onPageCreated(page) {
     await withUtils(page).evaluateOnNewDocument((utils, opts) => {
       const handler = {
-        apply: function(target, ctx, args) {
+        apply: function (target, ctx, args) {
           const param = (args || [])[0]
 
           if (param && param.name && param.name === 'notifications') {
@@ -43,6 +43,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
+module.exports = function (pluginConfig) {
   return new Plugin(pluginConfig)
 }

@@ -20,8 +20,8 @@
       }
 
       function overrideFunction(item) {
-        item.obj[item.propName] = (function(orig) {
-          return function() {
+        item.obj[item.propName] = (function (orig) {
+          return function () {
             test()
             return orig.apply(this, arguments)
           }

@@ -51,7 +51,7 @@ class Plugin extends PuppeteerExtraPlugin {
 
       const canPlayType = {
         // Intercept certain requests
-        apply: function(target, ctx, args) {
+        apply: function (target, ctx, args) {
           if (!args || !args.length) {
             return target.apply(ctx, args)
           }
@@ -86,6 +86,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
+module.exports = function (pluginConfig) {
   return new Plugin(pluginConfig)
 }

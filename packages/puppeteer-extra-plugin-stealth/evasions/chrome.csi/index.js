@@ -55,7 +55,7 @@ class Plugin extends PuppeteerExtraPlugin {
 
       const { timing } = window.performance
 
-      window.chrome.csi = function() {
+      window.chrome.csi = function () {
         return {
           onloadT: timing.domContentLoadedEventEnd,
           startE: timing.navigationStart,
@@ -68,6 +68,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
+module.exports = function (pluginConfig) {
   return new Plugin(pluginConfig)
 }

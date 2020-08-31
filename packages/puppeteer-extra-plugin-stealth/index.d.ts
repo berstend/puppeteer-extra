@@ -1,8 +1,8 @@
-export = defaultExport;
+export = defaultExport
 declare function defaultExport(opts?: {
-    enabledEvasions?: Set<string>;
-}): StealthPlugin;
-declare const StealthPlugin_base: typeof import("puppeteer-extra-plugin").PuppeteerExtraPlugin;
+  enabledEvasions?: Set<string>
+}): StealthPlugin
+declare const StealthPlugin_base: typeof import('puppeteer-extra-plugin').PuppeteerExtraPlugin
 /**
  * Stealth mode: Applies various techniques to make detection of headless puppeteer harder. 💯
  *
@@ -71,41 +71,41 @@ declare const StealthPlugin_base: typeof import("puppeteer-extra-plugin").Puppet
  *
  */
 declare class StealthPlugin extends StealthPlugin_base {
-    constructor(opts?: {});
-    get defaults(): {
-        availableEvasions: Set<string>;
-        enabledEvasions: Set<any>;
-    };
-    /**
-     * Get all available evasions.
-     *
-     * Please look into the [evasions directory](./evasions/) for an up to date list.
-     *
-     * @type {Set<string>} - A Set of all available evasions.
-     *
-     * @example
-     * const pluginStealth = require('puppeteer-extra-plugin-stealth')()
-     * console.log(pluginStealth.availableEvasions) // => Set { 'user-agent', 'console.debug' }
-     * puppeteer.use(pluginStealth)
-     */
-    get availableEvasions(): Set<string>;
-    /**
-     * @private
-     */
-    set enabledEvasions(arg: Set<string>);
-    /**
-     * Get all enabled evasions.
-     *
-     * Enabled evasions can be configured either through `opts` or by modifying this property.
-     *
-     * @type {Set<string>} - A Set of all enabled evasions.
-     *
-     * @example
-     * // Remove specific evasion from enabled ones dynamically
-     * const pluginStealth = require('puppeteer-extra-plugin-stealth')()
-     * pluginStealth.enabledEvasions.delete('console.debug')
-     * puppeteer.use(pluginStealth)
-     */
-    get enabledEvasions(): Set<string>;
-    onBrowser(browser: any): Promise<void>;
+  constructor(opts?: {})
+  get defaults(): {
+    availableEvasions: Set<string>
+    enabledEvasions: Set<any>
+  }
+  /**
+   * Get all available evasions.
+   *
+   * Please look into the [evasions directory](./evasions/) for an up to date list.
+   *
+   * @type {Set<string>} - A Set of all available evasions.
+   *
+   * @example
+   * const pluginStealth = require('puppeteer-extra-plugin-stealth')()
+   * console.log(pluginStealth.availableEvasions) // => Set { 'user-agent', 'console.debug' }
+   * puppeteer.use(pluginStealth)
+   */
+  get availableEvasions(): Set<string>
+  /**
+   * @private
+   */
+  set enabledEvasions(arg: Set<string>)
+  /**
+   * Get all enabled evasions.
+   *
+   * Enabled evasions can be configured either through `opts` or by modifying this property.
+   *
+   * @type {Set<string>} - A Set of all enabled evasions.
+   *
+   * @example
+   * // Remove specific evasion from enabled ones dynamically
+   * const pluginStealth = require('puppeteer-extra-plugin-stealth')()
+   * pluginStealth.enabledEvasions.delete('console.debug')
+   * puppeteer.use(pluginStealth)
+   */
+  get enabledEvasions(): Set<string>
+  onBrowser(browser: any): Promise<void>
 }

@@ -11,7 +11,7 @@ test('stealth: will have convincing mimeTypes', async t => {
 
   const results = await page.evaluate(() => {
     // We need to help serializing the error or it won't survive being sent back from `page.evaluate`
-    const catchErr = function(fn, ...args) {
+    const catchErr = function (fn, ...args) {
       try {
         return fn.apply(this, args)
       } catch ({ name, message, stack }) {
@@ -40,11 +40,11 @@ test('stealth: will have convincing mimeTypes', async t => {
           'length'
         ),
         keys: JSON.stringify(Object.keys(navigator.mimeTypes)),
-        namedPropsAuthentic: (function() {
+        namedPropsAuthentic: (function () {
           navigator.mimeTypes.alice = 'bob'
           return navigator.mimeTypes.namedItem('alice') === null // true on chrome
         })(),
-        loopResult: (function() {
+        loopResult: (function () {
           let res = ''
           for (var bK = 0; bK < window.navigator.mimeTypes.length; bK++)
             bK === window.navigator.mimeTypes.length - 1
