@@ -142,7 +142,7 @@ async function detectHeadless() {
   await test('toString', _ => {
     let gotYou = 0
     const spooky = /./
-    spooky.toString = function() {
+    spooky.toString = function () {
       gotYou++
       return 'spooky'
     }

@@ -23,7 +23,7 @@ utils.stripProxyFromErrors = (handler = {}) => {
   // We wrap each trap in the handler in a try/catch and modify the error stack if they throw
   const traps = Object.getOwnPropertyNames(handler)
   traps.forEach(trap => {
-    newHandler[trap] = function() {
+    newHandler[trap] = function () {
       try {
         // Forward the call to the defined proxy handler
         return handler[trap].apply(this, arguments || [])
@@ -190,7 +190,7 @@ utils.patchToString = (obj, str = '') => {
   utils.preloadCache()
 
   const toStringProxy = new Proxy(Function.prototype.toString, {
-    apply: function(target, ctx) {
+    apply: function (target, ctx) {
       // This fixes e.g. `HTMLMediaElement.prototype.canPlayType.toString + ""`
       if (ctx === Function.prototype.toString) {
         return utils.makeNativeString('toString')
@@ -236,7 +236,7 @@ utils.redirectToString = (proxyObj, originalObj) => {
   utils.preloadCache()
 
   const toStringProxy = new Proxy(Function.prototype.toString, {
-    apply: function(target, ctx) {
+    apply: function (target, ctx) {
       // This fixes e.g. `HTMLMediaElement.prototype.canPlayType.toString + ""`
       if (ctx === Function.prototype.toString) {
         return utils.makeNativeString('toString')
@@ -350,10 +350,7 @@ utils.createProxy = (pseudoTarget, handler) => {
  */
 utils.splitObjPath = objPath => ({
   // Remove last dot entry (property) ==> `HTMLMediaElement.prototype`
-  objName: objPath
-    .split('.')
-    .slice(0, -1)
-    .join('.'),
+  objName: objPath.split('.').slice(0, -1).join('.'),
   // Extract last dot entry ==> `canPlayType`
   propName: objPath.split('.').slice(-1)[0]
 })

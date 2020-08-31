@@ -5,13 +5,13 @@ import RecaptchaPlugin from './index'
 
 // import { Puppeteer } from './puppeteer-mods'
 
-import { addExtra } from 'puppeteer-extra'
+import { addExtraPuppeteer } from 'automation-extra'
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
 test('will detect captchas', async (t) => {
   // const puppeteer = require('puppeteer-extra')
-  const puppeteer = addExtra(require('puppeteer'))
+  const puppeteer = addExtraPuppeteer(require('puppeteer'))
   const recaptchaPlugin = RecaptchaPlugin()
   puppeteer.use(recaptchaPlugin)
 
