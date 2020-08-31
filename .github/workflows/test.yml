@@ -45,8 +45,6 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - uses: microsoft/playwright-github-action@v1
-
       - name: 'Fix for: error fsevents@2.1.2: The platform "linux" is incompatible with this module.'
         run: npx json -I -f package.json -e 'this.resolutions={}'
 
@@ -71,6 +69,7 @@ jobs:
           file node_modules/puppeteer-extra/dist/index.cjs.js
 
       - name: test
+        uses: microsoft/playwright-github-action@v1
         run: xfvb-run --auto-servernum -- yarn test-ci
         # uses: GabrielBB/xvfb-action@v1.2
         # env:
