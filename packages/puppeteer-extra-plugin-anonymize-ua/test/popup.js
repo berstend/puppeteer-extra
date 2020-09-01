@@ -4,7 +4,7 @@ const test = require('ava')
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
-const waitEvent = function(emitter, eventName) {
+const waitEvent = function (emitter, eventName) {
   return new Promise(resolve => emitter.once(eventName, resolve))
 }
 

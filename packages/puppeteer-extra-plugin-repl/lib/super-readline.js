@@ -73,7 +73,7 @@ class SuperInterface extends Interface {
   }
 }
 
-const createSuperInterface = function(options) {
+const createSuperInterface = function (options) {
   return new SuperInterface(options)
 }
 
