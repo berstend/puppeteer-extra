@@ -13,7 +13,7 @@ env:
 
 jobs:
   test:
-    name: Node@${{ matrix.node }} pptr@${{ matrix.puppeteer_version }} on ${{ matrix.os }}
+    name: Node@${{ matrix.node }} pup@${{ matrix.puppeteer_version }} on ${{ matrix.os }}
 
     runs-on: ${{ matrix.os }}
 
@@ -69,11 +69,16 @@ jobs:
           file node_modules/puppeteer-extra/dist/index.cjs.js
 
       - uses: microsoft/playwright-github-action@v1
-      - run: xfvb-run --auto-servernum -- yarn test-ci
-      # - name: test
-      #   run: xfvb-run --auto-servernum -- yarn test-ci
-      # uses: GabrielBB/xvfb-action@v1.2
-      # env:
-      #   DISPLAY: ":99.0"
-      # with:
-      #   run: yarn test-ci
+
+      - name: test
+        uses: GabrielBB/xvfb-action@v1
+        env:
+          DISPLAY: ":99.0"
+        with:
+          run: yarn test-ci
+        # run: xfvb-run --auto-servernum -- yarn test-ci
+        # uses: GabrielBB/xvfb-action@v1.2
+        # env:
+        #   DISPLAY: ":99.0"
+        # with:
+        #   run: yarn test-ci
