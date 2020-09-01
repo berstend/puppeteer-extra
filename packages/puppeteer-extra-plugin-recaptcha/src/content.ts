@@ -29,7 +29,7 @@ export class RecaptchaContentScript {
     props.reduce((a, e) => ({ ...a, [e]: o[e] }), {})
 
   // make sure the element is visible - this is equivalent to jquery's is(':visible')
-  private _isVisible = (elem: any) => !!( elem.offsetWidth || elem.offsetHeight || (typeof elem.getClientRects === 'function' && elem.getClientRects().length )))
+  private _isVisible = (elem: any) => !!( elem.offsetWidth || elem.offsetHeight || (typeof elem.getClientRects === 'function' && elem.getClientRects().length )));
 
   // Recaptcha client is a nested, circular object with object keys that seem generated
   // We flatten that object a couple of levels deep for easy access to certain keys we're interested in.
@@ -329,3 +329,4 @@ export class RecaptchaContentScript {
     "error": null
 }
 */
+p
