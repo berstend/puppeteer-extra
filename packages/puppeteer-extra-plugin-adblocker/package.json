@@ -22,7 +22,7 @@
     "docs": "node -e 0",
     "test": "ava -v --config ava.config-ts.js",
     "pretest-ci": "run-s build",
-    "test-ci": "ava --fail-fast -v"
+    "test-ci": "ava --serial --fail-fast -v"
   },
   "engines": {
     "node": ">=8"
