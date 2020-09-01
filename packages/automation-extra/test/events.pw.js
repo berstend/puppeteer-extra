@@ -2,8 +2,6 @@
 
 const test = require('ava')
 
-const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
-
 const playwright = require('playwright')
 const { addExtraPlaywright } = require('automation-extra')
 
@@ -83,7 +81,7 @@ const factory = (
     t.true(!PLUGIN_EVENTS.includes('beforeLaunch'))
     t.true(!PLUGIN_EVENTS.includes('afterLaunch'))
   } else {
-    browser = await launcher.launch({ args: PUPPETEER_ARGS })
+    browser = await launcher.launch()
     t.true(PLUGIN_EVENTS.includes('beforeLaunch'))
     t.true(PLUGIN_EVENTS.includes('afterLaunch'))
     t.true(!PLUGIN_EVENTS.includes('beforeConnect'))
