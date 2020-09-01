@@ -15,7 +15,7 @@
     "docs-for-evasions": "cd ./evasions && loop \"documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API index.js\"",
     "postdocs-for-evasions": "cd ./evasions && loop \"npx prettier --write readme.md\"",
     "lint": "eslint --ext .js .",
-    "test:js": "ava --concurrency 2 -v",
+    "test:js": "ava --serial --concurrency 2 -v",
     "test": "run-p test:js lint",
     "test-ci": "run-s test",
     "types": "npx --package typescript@3.7 tsc --emitDeclarationOnly --declaration --allowJs index.js"
