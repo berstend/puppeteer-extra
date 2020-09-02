@@ -9,7 +9,7 @@ import { addExtra } from 'puppeteer-extra'
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
-test('will detect captchas', async t => {
+test('will detect captchas', async (t) => {
   // const puppeteer = require('puppeteer-extra')
   const puppeteer = addExtra(require('puppeteer'))
   const recaptchaPlugin = RecaptchaPlugin()
@@ -17,14 +17,14 @@ test('will detect captchas', async t => {
 
   const browser = await puppeteer.launch({
     args: PUPPETEER_ARGS,
-    headless: true
+    headless: true,
   })
   const page = await browser.newPage()
 
   const url = 'https://www.google.com/recaptcha/api2/demo'
   await page.goto(url, { waitUntil: 'networkidle0' })
 
-  const { captchas, error } = await page.findRecaptchas()
+  const { captchas, error } = await (page as any).findRecaptchas()
   t.is(error, null)
   t.is(captchas.length, 1)
 
