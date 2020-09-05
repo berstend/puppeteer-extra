@@ -90,6 +90,7 @@ class StealthPlugin extends PuppeteerExtraPlugin {
       'navigator.permissions',
       'navigator.plugins',
       'navigator.webdriver',
+      'navigator.hardwareConcurrency',
       'sourceurl',
       'user-agent-override',
       'webgl.vendor',
