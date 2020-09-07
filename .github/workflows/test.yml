@@ -13,12 +13,15 @@ env:
 
 jobs:
   test:
-    name: Node@${{ matrix.node }} pup@${{ matrix.puppeteer_version }} on ${{ matrix.os }}
+    name: node v${{ matrix.node }}, pptr ${{ matrix.puppeteer_version }}, ${{ matrix.os }}
 
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
+        node:
+          - 14
+          - 12
         puppeteer_version:
           - 5.0.0
           - 2.1.1 # Chromium 79.0.3942.0, Oct 24 2019
@@ -27,14 +30,11 @@ jobs:
           # - 1.15.0 # Chromium 75.0.3765.0, Apr 26 2019
           # - 1.9.0 # Chromium 71.0.3563.0, Oct 4, 2018
           # - 1.6.2 # Chromium 69.0.3494.0, Aug 1, 2018
-        node:
-          - 10
-          - 12
-          - 14
+
         os:
           - ubuntu-latest
-#           - macOS-latest
-          # - windows-latest
+    #           - macOS-latest
+    # - windows-latest
 
     steps:
       - name: Checkout
@@ -67,9 +67,10 @@ jobs:
         run: |
           yarn list --pattern "puppeteer|puppeteer-extra"
           file node_modules/puppeteer-extra/dist/index.cjs.js
+      - uses: microsoft/playwright-github-action@v1
 
       - name: test
-        uses: GabrielBB/xvfb-action@v1.2
+        uses: GabrielBB/xvfb-action@v1
         env:
           DISPLAY: ":99.0"
         with:
