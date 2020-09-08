@@ -41,4 +41,5 @@ Options:
   -i, --include  Include evasion (repeat for multiple)
   -l, --list     List available evasions
   -h, --help     Show help                                             [boolean]
+  -m, --minify   Minify the output                     [boolean] [default: true]
 ```

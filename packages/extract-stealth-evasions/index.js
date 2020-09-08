@@ -11,11 +11,15 @@ const argv = require('yargs')
   .describe('i', 'Include evasion (repeat for multiple)')
   .alias('l', 'list')
   .describe('l', 'List available evasions')
+  .alias('m', 'minify')
+  .describe('minify', 'Minify the output')
+  .boolean('m')
+  .default('m', true)
   .help('h')
   .alias('h', 'help').argv
 const fs = require('fs')
 
-const file = 'stealth.min.js'
+const file = 'stealth' + (argv.minify === true ? '.min' : '') + '.js'
 
 if (argv.exclude) {
   if (typeof argv.exclude === 'string') {
@@ -63,7 +67,10 @@ puppeteer
  * Generated on: ${new Date().toUTCString()}
  * License: MIT
  */
-` + (await minify(scripts, { toplevel: true })).code,
+` +
+        (argv.minify === true
+          ? (await minify(scripts, { toplevel: true })).code
+          : scripts),
       err => {
         if (err) throw err
         console.log(`File ${file} written!`)
