@@ -63,4 +63,15 @@ test('stealth: will not leak modifications', async t => {
     _ => navigator.mimeTypes['application/pdf'].enabledPlugin // should not throw an error
   )
   t.deepEqual(test4, { '0': {} })
+
+  const test5 = await page.evaluate(
+    _ => navigator.plugins[0].length
+  )
+  t.deepEqual(test5, 1)
+
+  const test6 = await page.evaluate(
+    _ => navigator.mimeTypes[0].length
+  )
+  t.is(test6, undefined)
+
 })
