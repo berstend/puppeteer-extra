@@ -1,4 +1,4 @@
-/* global MimeType MimeTypeArray PluginArray  */
+/* global MimeType MimeTypeArray Plugin PluginArray  */
 
 /**
  * Generate a convincing and functional MimeType or Plugin array from scratch.
@@ -34,7 +34,7 @@ module.exports.generateMagicArray = (utils, fns) =>
 
       // navigator.plugins[i].length should always be 1
       if (itemProto === Plugin.prototype) {
-        defineProp(item, "length", 1)
+        defineProp(item, 'length', 1)
       }
 
       // We need to spoof a specific `MimeType` or `Plugin` object
