@@ -37,6 +37,20 @@ test('stealth: has plugin, has mimetypes', async t => {
   t.is(mimeTypes.length, 4)
 })
 
+test('stealth: enabledPlugin works', async t => {
+  const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
+  const browser = await puppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const test = await page.evaluate(_ => {
+    try {
+      return navigator.mimeTypes[0].enabledPlugin
+    } catch (e) {}
+  })
+
+  t.deepEqual(test, { '0': {} })
+})
+
 test('stealth: will not leak modifications', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })

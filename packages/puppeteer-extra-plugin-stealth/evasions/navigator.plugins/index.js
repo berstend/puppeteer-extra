@@ -52,7 +52,7 @@ class Plugin extends PuppeteerExtraPlugin {
           pluginData.__mimeTypes.forEach((type, index) => {
             plugins[pluginData.name][index] = mimeTypes[type]
             plugins[type] = mimeTypes[type]
-            Object.defineProperty(mimeTypes[type], 'enabledPlugins', {
+            Object.defineProperty(mimeTypes[type], 'enabledPlugin', {
               value: JSON.parse(JSON.stringify(plugins[pluginData.name])),
               writable: false,
               enumerable: false, // Important: `JSON.stringify(navigator.plugins)`
