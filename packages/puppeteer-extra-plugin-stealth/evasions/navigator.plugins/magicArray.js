@@ -34,7 +34,7 @@ module.exports.generateMagicArray = (utils, fns) =>
 
       // navigator.plugins[i].length should always be 1
       if (itemProto === Plugin.prototype) {
-        defineProp(item, 'length', 1)
+        defineProp(item, 'length', data.__mimeTypes.length)
       }
 
       // We need to spoof a specific `MimeType` or `Plugin` object
