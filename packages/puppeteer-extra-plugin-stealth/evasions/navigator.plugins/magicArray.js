@@ -32,7 +32,7 @@ module.exports.generateMagicArray = (utils, fns) =>
         defineProp(item, prop, data[prop])
       }
 
-      // navigator.plugins[i].length should always be 1
+      // navigator.plugins[i].length should always be the length of the mimeTypes array
       if (itemProto === Plugin.prototype) {
         defineProp(item, 'length', data.__mimeTypes.length)
       }
