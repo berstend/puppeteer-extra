@@ -69,4 +69,7 @@ test('stealth: will not leak modifications', async t => {
 
   const test6 = await page.evaluate(_ => navigator.mimeTypes[0].length)
   t.is(test6, undefined)
+
+  const test7 = await page.evaluate(_ => Object.getOwnPropertyDescriptor(navigator.plugins[0], 'length'))
+  t.is(test7, undefined)
 })
