@@ -151,9 +151,10 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    * @param options - See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions).
    */
   async launch(options?: Puppeteer.LaunchOptions): Promise<Puppeteer.Browser> {
-    // Ensure there are certain properties (e.g. the `options.args` array)
-    const defaultLaunchOptions = { args: [] }
-    options = merge(defaultLaunchOptions, options || {} as any)
+    // Ensure there are certain properties (e.g. the `options.args` array)	
+    if ( !options ) options = {};
+    if ( !( "args" in options ) ) options.args = [];
+
     this.resolvePluginDependencies()
     this.orderPlugins()
 
