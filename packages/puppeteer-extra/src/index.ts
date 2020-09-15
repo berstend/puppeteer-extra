@@ -3,8 +3,6 @@ import * as Puppeteer from './puppeteer'
 import Debug from 'debug'
 const debug = Debug('puppeteer-extra')
 
-import merge from 'deepmerge'
-
 /**
  * Original Puppeteer API
  * @private
