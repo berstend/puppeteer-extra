@@ -17,13 +17,12 @@ class Plugin extends PuppeteerExtraPlugin {
 
 
     async onPageCreated(page) {
-    let cores = this.opts.cores || false;
         await page.evaluateOnNewDocument((cores) => {
             let originalCores = navigator.hardwareConcurrency;
              cores = cores || originalCores;
             delete Object.getPrototypeOf(navigator).hardwareConcurrency;
             Object.getPrototypeOf(navigator).hardwareConcurrency = cores || originalCores;
-        },  cores)
+        }, this.opts.cores)
     }
 }
 
