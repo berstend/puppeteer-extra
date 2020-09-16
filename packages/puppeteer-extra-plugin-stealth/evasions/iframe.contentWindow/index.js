@@ -37,6 +37,10 @@ class Plugin extends PuppeteerExtraPlugin {
               if (key === 'self') {
                 return this
               }
+              // iframe.contentWindow.document === iframe.contentDocument // must be true
+              if (key === 'document') {
+                return iframe.contentDocument || iframe.contentWindow.document
+              }
               // iframe.contentWindow.frameElement === iframe // must be true
               if (key === 'frameElement') {
                 return iframe

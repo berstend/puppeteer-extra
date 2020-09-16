@@ -7,9 +7,8 @@ const {
   vanillaPuppeteer,
   addExtra
 } = require('../../test/util')
-// const Plugin = require('.')
 // NOTE: We're using the full plugin for testing here as `iframe.contentWindow` uses data set by `chrome.runtime`
-const Plugin = require('puppeteer-extra-plugin-stealth')
+const Plugin = require('../..')
 
 // Fix CI issues with old versions
 const isOldPuppeteerVersion = () => {
@@ -44,14 +43,18 @@ test('stealth: will not break iframes', async t => {
     body.appendChild(iframe)
   }, testFuncReturnValue)
   const realReturn = await page.evaluate(
-    () => document.querySelector('iframe').contentWindow.mySuperFunction() // eslint-disable-line
+    _ => document.querySelector('iframe').contentWindow.mySuperFunction() // eslint-disable-line
+  )
+  const realText = await page.evaluate(
+    _ => document.querySelector('iframe').contentWindow.document.body.innerText
   )
   await browser.close()
 
   t.is(realReturn, 'TESTSTRING')
+  t.is(realText, 'foobar')
 })
 
-test('vanilla: will not have chrome runtine in any frame', async t => {
+test('vanilla: will not have chrome runtime in any frame', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
