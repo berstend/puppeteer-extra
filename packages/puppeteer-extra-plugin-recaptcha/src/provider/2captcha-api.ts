@@ -125,6 +125,10 @@ export const decode = function(base64, options, callback) {
       )
     })
   })
+  request.on('error', function(e){
+    request.destroy()
+    callback(e)
+  })
   request.write(postData)
   request.end()
 }
@@ -186,6 +190,10 @@ export const decodeReCaptcha = function(captcha, pageUrl, options, callback) {
       )
     })
   })
+  request.on('error', function(e){
+    request.destroy()
+    callback(e)
+  })
   request.write(postData)
   request.end()
 }
@@ -211,6 +219,10 @@ export const decodeUrl = function(uri, options, callback) {
     response.on('end', function() {
       decode(body, options, callback)
     })
+  })
+  request.on('error', function(e){
+    request.destroy()
+    callback(e)
   })
   request.end()
 }
