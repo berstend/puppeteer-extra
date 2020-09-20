@@ -65,7 +65,9 @@
   "dependencies": {
     "@types/debug": "^4.1.0",
     "@types/puppeteer": "*",
-    "debug": "^4.1.1"
+    "debug": "^4.1.1",
+    "deepmerge": "^4.2.2",
+    "is-plain-object": "^5.0.0"
   },
   "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }

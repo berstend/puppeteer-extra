@@ -3,6 +3,9 @@ import * as Puppeteer from './puppeteer'
 import Debug from 'debug'
 const debug = Debug('puppeteer-extra')
 
+import merge from 'deepmerge'
+import isPlainObject from 'is-plain-object'
+
 /**
  * Original Puppeteer API
  * @private
@@ -149,9 +152,9 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    * @param options - See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions).
    */
   async launch(options?: Puppeteer.LaunchOptions): Promise<Puppeteer.Browser> {
-    // Ensure there are certain properties (e.g. the `options.args` array)	
-    if ( !options ) options = {};
-    if ( !( "args" in options ) ) options.args = [];
+    // Ensure there are certain properties (e.g. the `options.args` array)
+    const defaultLaunchOptions = { args: [] }
+    options = merge(defaultLaunchOptions, options || {} as any, { isMergeableObject: isPlainObject })
 
     this.resolvePluginDependencies()
     this.orderPlugins()
