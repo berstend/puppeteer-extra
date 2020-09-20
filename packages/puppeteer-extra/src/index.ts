@@ -154,7 +154,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
   async launch(options?: Puppeteer.LaunchOptions): Promise<Puppeteer.Browser> {
     // Ensure there are certain properties (e.g. the `options.args` array)
     const defaultLaunchOptions = { args: [] }
-    options = merge(defaultLaunchOptions, options || {} as any)
+    options = merge(defaultLaunchOptions, options || {} as any, { "isMergeableObject": isPlainObject })
 
     this.resolvePluginDependencies()
     this.orderPlugins()
