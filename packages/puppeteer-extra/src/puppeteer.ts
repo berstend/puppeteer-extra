@@ -3,6 +3,7 @@
 
 export { Browser } from 'puppeteer'
 export { Page } from 'puppeteer'
+export { ElementHandle } from 'puppeteer'
 export { ConnectOptions } from 'puppeteer'
 export { ChromeArgOptions } from 'puppeteer'
 export { LaunchOptions } from 'puppeteer'
