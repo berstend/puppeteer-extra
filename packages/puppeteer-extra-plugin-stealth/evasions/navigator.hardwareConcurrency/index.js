@@ -19,9 +19,7 @@ class Plugin extends PuppeteerExtraPlugin {
     async onPageCreated(page) {
         await page.evaluateOnNewDocument((cores) => {
             let originalCores = navigator.hardwareConcurrency;
-             cores = cores || originalCores;
-            delete Object.getPrototypeOf(navigator).hardwareConcurrency;
-            Object.getPrototypeOf(navigator).hardwareConcurrency = cores || originalCores;
+            Object.defineProperty(Object.getPrototypeOf(navigator), 'hardwareConcurrency', { get: () => cores || originalCores });
         }, this.opts.cores)
     }
 }
