@@ -85,6 +85,8 @@ If something new comes up or you experience a problem, please do your homework a
 
 ## Changelog
 
+🎁 **Note:** Until we've automated changelog updates in readmes please follow the `#announcements` channel in our [discord server](https://discord.gg/vz7PeKk) for updates and changelog info.
+
 #### `v2.4.7`
 
 - New: `user-agent-override` - Used to set a stealthy UA string, language & platform. This also fixes issues with the prior method of setting the `Accept-Language` header through request interception ([#104](https://github.com/berstend/puppeteer-extra/pull/104), kudos to [@Niek](https://github.com/Niek))
