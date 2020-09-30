@@ -73,8 +73,6 @@ Please check out the [main documentation](https://github.com/berstend/puppeteer-
 
 ## Status
 
-_January 2020_
-
 - ✅ **`puppeeteer-extra` with stealth passes all public bot tests.**
 
 Please note: I consider this a friendly competition in a rather interesting cat and mouse game. If the other team (👋) wants to detect headless chromium there are still ways to do that (at least I noticed a few, which I'll tackle in future updates).
@@ -85,7 +83,9 @@ If something new comes up or you experience a problem, please do your homework a
 
 ## Changelog
 
-🎁 **Note:** Until we've automated changelog updates in readmes please follow the `#announcements` channel in our [discord server](https://discord.gg/vz7PeKk) for updates and changelog info.
+🎁 **Note:** Until we've automated changelog updates in markdown files please follow the `#announcements` channel in our [discord server](https://discord.gg/vz7PeKk) for the latest updates and changelog info.
+
+_Older changelog:_
 
 #### `v2.4.7`
 
