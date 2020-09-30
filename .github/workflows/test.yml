@@ -67,7 +67,6 @@ jobs:
         run: |
           yarn list --pattern "puppeteer|puppeteer-extra"
           file node_modules/puppeteer-extra/dist/index.cjs.js
-
       - uses: microsoft/playwright-github-action@v1
 
       - name: test
