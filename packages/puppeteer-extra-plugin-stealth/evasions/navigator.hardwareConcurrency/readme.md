@@ -12,8 +12,6 @@
 
 **Extends: PuppeteerExtraPlugin**
 
-Allows faking CPU core number. This allows creating different profiles.
-Will overwrite `navigator.hardwareConcurrency` property.
 
 ####Usage:
 
