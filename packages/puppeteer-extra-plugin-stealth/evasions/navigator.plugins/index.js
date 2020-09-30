@@ -51,12 +51,18 @@ class Plugin extends PuppeteerExtraPlugin {
         for (const pluginData of data.plugins) {
           pluginData.__mimeTypes.forEach((type, index) => {
             plugins[pluginData.name][index] = mimeTypes[type]
-            plugins[type] = mimeTypes[type]
-            Object.defineProperty(mimeTypes[type], 'enabledPlugins', {
-              value: JSON.parse(JSON.stringify(plugins[pluginData.name])),
+
+            Object.defineProperty(plugins[pluginData.name], type, {
+              value: mimeTypes[type],
+              writable: false,
+              enumerable: false, // Not enumerable
+              configurable: true
+            })
+            Object.defineProperty(mimeTypes[type], 'enabledPlugin', {
+              value: new Proxy(plugins[pluginData.name], {}), // Prevent circular references
               writable: false,
               enumerable: false, // Important: `JSON.stringify(navigator.plugins)`
-              configurable: false
+              configurable: true
             })
           })
         }
@@ -87,6 +93,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
+module.exports = function (pluginConfig) {
   return new Plugin(pluginConfig)
 }

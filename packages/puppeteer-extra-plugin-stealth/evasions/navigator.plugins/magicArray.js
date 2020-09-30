@@ -1,4 +1,4 @@
-/* global MimeType MimeTypeArray PluginArray  */
+/* global MimeType MimeTypeArray Plugin PluginArray  */
 
 /**
  * Generate a convincing and functional MimeType or Plugin array from scratch.
@@ -7,7 +7,7 @@
  * Note: This is meant to be run in the context of the page.
  */
 module.exports.generateMagicArray = (utils, fns) =>
-  function(
+  function (
     dataArray = [],
     proto = MimeTypeArray.prototype,
     itemProto = MimeType.prototype,
@@ -19,7 +19,7 @@ module.exports.generateMagicArray = (utils, fns) =>
         value,
         writable: false,
         enumerable: false, // Important for mimeTypes & plugins: `JSON.stringify(navigator.mimeTypes)`
-        configurable: false
+        configurable: true
       })
 
     // Loop over our fake data and construct items
@@ -31,8 +31,42 @@ module.exports.generateMagicArray = (utils, fns) =>
         }
         defineProp(item, prop, data[prop])
       }
+      return patchItem(item, data)
+    }
+
+    const patchItem = (item, data) => {
+      let descriptor = Object.getOwnPropertyDescriptors(item)
+
+      // Special case: Plugins have a magic length property which is not enumerable
+      // e.g. `navigator.plugins[i].length` should always be the length of the assigned mimeTypes
+      if (itemProto === Plugin.prototype) {
+        descriptor = {
+          ...descriptor,
+          length: {
+            value: data.__mimeTypes.length,
+            writable: false,
+            enumerable: false,
+            configurable: true // Important to be able to use the ownKeys trap in a Proxy to strip `length`
+          }
+        }
+      }
+
       // We need to spoof a specific `MimeType` or `Plugin` object
-      return Object.create(itemProto, Object.getOwnPropertyDescriptors(item))
+      const obj = Object.create(itemProto, descriptor)
+
+      // Virtually all property keys are not enumerable in vanilla
+      const blacklist = [...Object.keys(data), 'length', 'enabledPlugin']
+      return new Proxy(obj, {
+        ownKeys(target) {
+          return Reflect.ownKeys(target).filter(k => !blacklist.includes(k))
+        },
+        getOwnPropertyDescriptor(target, prop) {
+          if (blacklist.includes(prop)) {
+            return undefined
+          }
+          return Reflect.getOwnPropertyDescriptor(target, prop)
+        }
+      })
     }
 
     const magicArray = []
@@ -97,6 +131,12 @@ module.exports.generateMagicArray = (utils, fns) =>
         typeProps.forEach((_, i) => keys.push(`${i}`))
         typeProps.forEach(propName => keys.push(propName))
         return keys
+      },
+      getOwnPropertyDescriptor(target, prop) {
+        if (prop === 'length') {
+          return undefined
+        }
+        return Reflect.getOwnPropertyDescriptor(target, prop)
       }
     })
 

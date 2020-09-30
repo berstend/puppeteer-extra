@@ -11,7 +11,7 @@ test('stealth: will have convincing mimeTypes', async t => {
 
   const results = await page.evaluate(() => {
     // We need to help serializing the error or it won't survive being sent back from `page.evaluate`
-    const catchErr = function(fn, ...args) {
+    const catchErr = function (fn, ...args) {
       try {
         return fn.apply(this, args)
       } catch ({ name, message, stack }) {
@@ -33,6 +33,10 @@ test('stealth: will have convincing mimeTypes', async t => {
         json: JSON.stringify(navigator.mimeTypes),
         hasPropPush: 'push' in navigator.mimeTypes,
         hasPropLength: 'length' in navigator.mimeTypes,
+        hasLengthDescriptor: !!Object.getOwnPropertyDescriptor(
+          navigator.mimeTypes,
+          'length'
+        ),
         propertyNames: JSON.stringify(
           Object.getOwnPropertyNames(navigator.mimeTypes)
         ),
@@ -40,11 +44,11 @@ test('stealth: will have convincing mimeTypes', async t => {
           'length'
         ),
         keys: JSON.stringify(Object.keys(navigator.mimeTypes)),
-        namedPropsAuthentic: (function() {
+        namedPropsAuthentic: (function () {
           navigator.mimeTypes.alice = 'bob'
           return navigator.mimeTypes.namedItem('alice') === null // true on chrome
         })(),
-        loopResult: (function() {
+        loopResult: (function () {
           let res = ''
           for (var bK = 0; bK < window.navigator.mimeTypes.length; bK++)
             bK === window.navigator.mimeTypes.length - 1
@@ -104,6 +108,7 @@ test('stealth: will have convincing mimeTypes', async t => {
     exists: true,
     hasPropPush: false,
     hasPropLength: true,
+    hasLengthDescriptor: false,
     isArray: false,
     json: `{"0":{},"1":{},"2":{},"3":{}}`,
     keys: `["0","1","2","3"]`,
@@ -164,13 +169,40 @@ test('stealth: will have convincing mimeType entry', async t => {
       exists: !!navigator.mimeTypes[0],
       toString: navigator.mimeTypes[0].toString(),
       toStringProto: navigator.mimeTypes[0].__proto__.toString(), // eslint-disable-line no-proto
-      protoSymbol: navigator.mimeTypes[0].__proto__[Symbol.toStringTag] // eslint-disable-line no-proto
+      protoSymbol: navigator.mimeTypes[0].__proto__[Symbol.toStringTag], // eslint-disable-line no-proto
+      enabledPlugin: !!navigator.mimeTypes[0].enabledPlugin, // should not throw
+      enabledPlugin2: !!navigator.mimeTypes['application/pdf'].enabledPlugin, // should not throw
+      enabledPlugins: !!navigator.mimeTypes[0].enabledPlugins, // regression: should not exist (anymore)
+      pdfPlugin: JSON.stringify(
+        navigator.mimeTypes['application/pdf'].enabledPlugin
+      ),
+      length: !!navigator.mimeTypes[0].length, // should not throw and return mimeTypes length
+      lengthDescriptor: !!Object.getOwnPropertyDescriptor(
+        navigator.mimeTypes[0],
+        'length'
+      ),
+      json: JSON.stringify(navigator.mimeTypes[0]),
+      propertyNames: JSON.stringify(
+        Object.getOwnPropertyNames(navigator.mimeTypes[0])
+      ),
+      nested:
+        navigator.mimeTypes['application/pdf'].enabledPlugin[0].enabledPlugin[0]
+          .enabledPlugin[0].enabledPlugin[0].enabledPlugin[0].suffixes
     }
   }))
   t.deepEqual(results.mimeType, {
     exists: true,
     protoSymbol: 'MimeType',
     toString: '[object MimeType]',
-    toStringProto: '[object MimeType]'
+    toStringProto: '[object MimeType]',
+    enabledPlugin: true,
+    enabledPlugin2: true,
+    enabledPlugins: false,
+    pdfPlugin: '{"0":{}}',
+    length: false,
+    lengthDescriptor: false,
+    json: '{}',
+    propertyNames: '[]',
+    nested: 'pdf'
   })
 })
