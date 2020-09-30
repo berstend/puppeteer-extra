@@ -33,6 +33,10 @@ test('stealth: will have convincing plugins', async t => {
         json: JSON.stringify(navigator.plugins),
         hasPropPush: 'push' in navigator.plugins,
         hasPropLength: 'length' in navigator.plugins,
+        hasLengthDescriptor: !!Object.getOwnPropertyDescriptor(
+          navigator.plugins,
+          'length'
+        ),
         propertyNames: JSON.stringify(
           Object.getOwnPropertyNames(navigator.plugins)
         ),
@@ -89,6 +93,7 @@ test('stealth: will have convincing plugins', async t => {
   t.deepEqual(results.plugins, {
     exists: true,
     hasPropLength: true,
+    hasLengthDescriptor: false,
     hasPropPush: false,
     isArray: false,
     json: `{"0":{"0":{}},"1":{"0":{}},"2":{"0":{},"1":{}}}`,
@@ -143,17 +148,37 @@ test('stealth: will have convincing plugin entry', async t => {
   const page = await browser.newPage()
 
   const results = await page.evaluate(() => ({
-    mimeType: {
+    plugins: {
       exists: !!navigator.plugins[0],
       toString: navigator.plugins[0].toString(),
       toStringProto: navigator.plugins[0].__proto__.toString(), // eslint-disable-line no-proto
-      protoSymbol: navigator.plugins[0].__proto__[Symbol.toStringTag] // eslint-disable-line no-proto
+      protoSymbol: navigator.plugins[0].__proto__[Symbol.toStringTag], // eslint-disable-line no-proto
+      length: navigator.plugins[0].length, // should not throw and return mimeTypes length
+      lengthDescriptor: Object.getOwnPropertyDescriptor(
+        navigator.plugins[0],
+        'length'
+      )
+    },
+    plugin: {
+      mtIndex: !!navigator.plugins[0][0], // mimeType should be accessible through index
+      mtNamed: !!navigator.plugins[0]['application/x-google-chrome-pdf'], // mimeType should be accessible through name
+      json: JSON.stringify(navigator.plugins[0]),
+      propertyNames: JSON.stringify(
+        Object.getOwnPropertyNames(navigator.plugins[0])
+      )
     }
   }))
-  t.deepEqual(results.mimeType, {
+  t.deepEqual(results.plugins, {
     exists: true,
     protoSymbol: 'Plugin',
     toString: '[object Plugin]',
-    toStringProto: '[object Plugin]'
+    toStringProto: '[object Plugin]',
+    length: 1
+  })
+  t.deepEqual(results.plugin, {
+    mtIndex: true,
+    mtNamed: true,
+    json: '{"0":{}}',
+    propertyNames: '["0","application/x-google-chrome-pdf"]'
   })
 })
