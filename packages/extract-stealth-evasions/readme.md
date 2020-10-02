@@ -44,4 +44,3 @@ Options:
   -l, --list     List available evasions
   -h, --help     Show help                                             [boolean]
   -m, --minify   Minify the output                     [boolean] [default: true]
-```
