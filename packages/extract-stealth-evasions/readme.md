@@ -27,7 +27,9 @@ yarn install
 node index.js
 ```
 
-Use the resulting `stealth.min.js` file however you like.
+Use the resulting `stealth.min.js` file however you like. The file will be minified.
+You can also use ``node index.js --minify false`` to generate a non minified file `stealth.js`.
+
 
 #### Options
 
