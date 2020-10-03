@@ -17,9 +17,12 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   async onPageCreated(page) {
+    if (!this.opts.cores || !Number.isInteger(this.opts.cores)) {
+      return
+    }
     await page.evaluateOnNewDocument((cores) => {
       Object.defineProperty(Object.getPrototypeOf(navigator), 'hardwareConcurrency', {get: () => cores});
-    }, this.opts.cores || navigator.hardwareConcurrency)
+    }, this.opts.cores)
   }
 }
 
