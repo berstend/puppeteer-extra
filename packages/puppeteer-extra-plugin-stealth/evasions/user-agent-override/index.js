@@ -50,7 +50,7 @@ class Plugin extends PuppeteerExtraPlugin {
   get defaults() {
     return {
       userAgent: null,
-      acceptLanguage: 'en-US,en',
+      locale: 'en-US,en',
       platform: 'Win32'
     }
   }
