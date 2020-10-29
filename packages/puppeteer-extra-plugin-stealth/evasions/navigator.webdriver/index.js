@@ -15,10 +15,16 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/navigator.webdriver'
   }
 
+  // Pre Chrome 88.0.4291.0
   async onPageCreated(page) {
     await page.evaluateOnNewDocument(() => {
       delete Object.getPrototypeOf(navigator).webdriver
     })
+  }
+
+  // Post Chrome 88.0.4291.0
+  async beforeLaunch(options) {
+    options.args.push(`--disable-blink-features=AutomationControlled`)
   }
 }
 
