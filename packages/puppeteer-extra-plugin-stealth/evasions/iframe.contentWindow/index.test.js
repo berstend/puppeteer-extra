@@ -225,6 +225,16 @@ test('stealth: it will emulate advanved contentWindow features correctly', async
       return iframe.contentWindow.frameElement === iframe
     })()
 
+    results.StackTraces = (() => {
+      try {
+        // eslint-disable-next-line
+        document['createElement'](0)
+      } catch (e) {
+        return e.stack
+      }
+      return false
+    })()
+
     return results
   })
 
@@ -243,6 +253,7 @@ test('stealth: it will emulate advanved contentWindow features correctly', async
   t.true(results.SelfIsNotWindow)
   t.true(results.SelfIsNotWindowTop)
   t.true(results.TopIsNotSame)
+  t.false(results.StackTraces.includes(`at Object.apply`))
 })
 
 test('regression: new method will not break recaptcha popup', async t => {
