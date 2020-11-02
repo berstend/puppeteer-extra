@@ -86,6 +86,7 @@ class StealthPlugin extends PuppeteerExtraPlugin {
       'chrome.runtime',
       'iframe.contentWindow',
       'media.codecs',
+      'navigator.hardwareConcurrency',
       'navigator.languages',
       'navigator.permissions',
       'navigator.plugins',
