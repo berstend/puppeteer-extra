@@ -115,6 +115,26 @@ export class RecaptchaContentScript {
     )
   }
 
+  private _hideChallengeWindowIfPresent(id?: string) {
+    let frame: HTMLElement | null = document.querySelector<HTMLIFrameElement>(
+      `iframe[src^='https://www.google.com/recaptcha/api2/bframe'][name^="c-${id ||
+        ''}"]`
+    )
+    if (!frame) {
+      return
+    }
+    while (
+      frame &&
+      frame.parentElement &&
+      frame.parentElement !== document.body
+    ) {
+      frame = frame.parentElement
+    }
+    if (frame) {
+      frame.style.visibility = 'hidden'
+    }
+  }
+
   private getClients() {
     // Bail out early if there's no indication of recaptchas
     if (!window || !window.__google_recaptcha_client) return
@@ -251,6 +271,8 @@ export class RecaptchaContentScript {
             solved.error = `Solution not found for id '${solved.id}'`
             return solved
           }
+          // Hide if present challenge window
+          this._hideChallengeWindowIfPresent(solved.id);
           // Enter solution in response textarea
           const $input = this.getResponseInputById(solved.id)
           if ($input) {
