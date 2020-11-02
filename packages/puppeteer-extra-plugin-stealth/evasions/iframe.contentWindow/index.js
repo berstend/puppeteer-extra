@@ -2,6 +2,8 @@
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
+const withUtils = require('../_utils/withUtils')
+
 /**
  * Fix for the HEADCHR_IFRAME detection (iframe.contentWindow.chrome), hopefully this time without breaking iframes.
  * Note: Only `srcdoc` powered iframes cause issues due to a chromium bug:
@@ -23,7 +25,7 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   async onPageCreated(page) {
-    await page.evaluateOnNewDocument(() => {
+    await withUtils(page).evaluateOnNewDocument((utils, opts) => {
       try {
         // Adds a contentWindow proxy to the provided iframe element
         const addContentWindowProxy = iframe => {
@@ -92,7 +94,7 @@ class Plugin extends PuppeteerExtraPlugin {
         // Adds a hook to intercept iframe creation events
         const addIframeCreationSniffer = () => {
           /* global document */
-          const createElement = {
+          const createElementHandler = {
             // Make toString() native
             get(target, key) {
               return Reflect.get(target, key)
@@ -109,9 +111,10 @@ class Plugin extends PuppeteerExtraPlugin {
             }
           }
           // All this just due to iframes with srcdoc bug
-          document.createElement = new Proxy(
-            document.createElement,
-            createElement
+          utils.replaceWithProxy(
+            document,
+            'createElement',
+            createElementHandler
           )
         }
 
@@ -124,6 +127,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
+module.exports = function (pluginConfig) {
   return new Plugin(pluginConfig)
 }
