@@ -23,6 +23,12 @@ npm install puppeteer puppeteer-extra puppeteer-extra-plugin-recaptcha
 <details>
  <summary><strong>Changelog</strong></summary>
 
+##### Latest
+
+> 🎁 **Note:** Until we've automated changelog updates in markdown files please follow the `#announcements` channel in our [discord server](https://discord.gg/vz7PeKk) for the latest updates and changelog info.
+
+_Older changelog:_
+
 ##### `3.1.9`
 
 - Support reCAPTCHAs not in forms ([#57](https://github.com/berstend/puppeteer-extra/issues/57))
@@ -67,14 +73,14 @@ puppeteer.use(
   RecaptchaPlugin({
     provider: {
       id: '2captcha',
-      token: 'XXXXXXX' // REPLACE THIS WITH YOUR OWN 2CAPTCHA API KEY ⚡
+      token: 'XXXXXXX', // REPLACE THIS WITH YOUR OWN 2CAPTCHA API KEY ⚡
     },
-    visualFeedback: true // colorize reCAPTCHAs (violet = detected, green = solved)
+    visualFeedback: true, // colorize reCAPTCHAs (violet = detected, green = solved)
   })
 )
 
 // puppeteer usage as normal
-puppeteer.launch({ headless: true }).then(async browser => {
+puppeteer.launch({ headless: true }).then(async (browser) => {
   const page = await browser.newPage()
   await page.goto('https://www.google.com/recaptcha/api2/demo')
 
@@ -83,7 +89,7 @@ puppeteer.launch({ headless: true }).then(async browser => {
 
   await Promise.all([
     page.waitForNavigation(),
-    page.click(`#recaptcha-demo-submit`)
+    page.click(`#recaptcha-demo-submit`),
   ])
   await page.screenshot({ path: 'response.png', fullPage: true })
   await browser.close()
@@ -104,13 +110,13 @@ puppeteer.use(
   RecaptchaPlugin({
     provider: {
       id: '2captcha',
-      token: 'ENTER_YOUR_2CAPTCHA_API_KEY_HERE'
-    }
+      token: 'ENTER_YOUR_2CAPTCHA_API_KEY_HERE',
+    },
   })
 )
 
 // Puppeteer usage as normal (headless is "false" just for this demo)
-puppeteer.launch({ headless: false }).then(async browser => {
+puppeteer.launch({ headless: false }).then(async (browser) => {
   const page = await browser.newPage()
   await page.goto('https://www.google.com/recaptcha/api2/demo')
 
@@ -119,7 +125,7 @@ puppeteer.launch({ headless: false }).then(async browser => {
 
   await Promise.all([
     page.waitForNavigation(),
-    page.click(`#recaptcha-demo-submit`)
+    page.click(`#recaptcha-demo-submit`),
   ])
   await page.screenshot({ path: 'response.png', fullPage: true })
   await browser.close()

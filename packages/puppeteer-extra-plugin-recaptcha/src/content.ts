@@ -1,11 +1,11 @@
 import * as types from './types'
 
 export const ContentScriptDefaultOpts: types.ContentScriptOpts = {
-  visualFeedback: true
+  visualFeedback: true,
 }
 
 export const ContentScriptDefaultData: types.ContentScriptData = {
-  solutions: []
+  solutions: [],
 }
 
 /**
@@ -29,7 +29,13 @@ export class RecaptchaContentScript {
     props.reduce((a, e) => ({ ...a, [e]: o[e] }), {})
 
   // make sure the element is visible - this is equivalent to jquery's is(':visible')
-  private _isVisible = (elem: any) => !!( elem.offsetWidth || elem.offsetHeight || (typeof elem.getClientRects === 'function' && elem.getClientRects().length ));
+  private _isVisible = (elem: any) =>
+    !!(
+      elem.offsetWidth ||
+      elem.offsetHeight ||
+      (typeof elem.getClientRects === 'function' &&
+        elem.getClientRects().length)
+    )
 
   // Recaptcha client is a nested, circular object with object keys that seem generated
   // We flatten that object a couple of levels deep for easy access to certain keys we're interested in.
@@ -39,10 +45,10 @@ export class RecaptchaContentScript {
     let newObj = {} as any
     for (let i = 0; i < levels; i++) {
       item = Object.keys(newObj).length ? newObj : item
-      Object.keys(item).forEach(key => {
+      Object.keys(item).forEach((key) => {
         if (ignoreHTML && isHTML(item[key])) return
         if (isObject(item[key])) {
-          Object.keys(item[key]).forEach(innerKey => {
+          Object.keys(item[key]).forEach((innerKey) => {
             if (ignoreHTML && isHTML(item[key][innerKey])) return
             const keyName = isObject(item[key][innerKey])
               ? `obj_${key}_${innerKey}`
@@ -59,11 +65,11 @@ export class RecaptchaContentScript {
 
   // Helper function to return an object based on a well known value
   private _getKeyByValue(object: any, value: any) {
-    return Object.keys(object).find(key => object[key] === value)
+    return Object.keys(object).find((key) => object[key] === value)
   }
 
   private async _waitUntilDocumentReady() {
-    return new Promise(function(resolve) {
+    return new Promise(function (resolve) {
       if (!document || !window) return resolve()
       const loadedAlready = /^loaded|^i|^c/.test(document.readyState)
       if (loadedAlready) return resolve()
@@ -110,15 +116,17 @@ export class RecaptchaContentScript {
   }
   private _findVisibleIframeNodeById(id?: string) {
     return document.querySelector<HTMLIFrameElement>(
-      `iframe[src^='https://www.google.com/recaptcha/api2/anchor'][name^="a-${id ||
-        ''}"]`
+      `iframe[src^='https://www.google.com/recaptcha/api2/anchor'][name^="a-${
+        id || ''
+      }"]`
     )
   }
 
   private _hideChallengeWindowIfPresent(id?: string) {
     let frame: HTMLElement | null = document.querySelector<HTMLIFrameElement>(
-      `iframe[src^='https://www.google.com/recaptcha/api2/bframe'][name^="c-${id ||
-        ''}"]`
+      `iframe[src^='https://www.google.com/recaptcha/api2/bframe'][name^="c-${
+        id || ''
+      }"]`
     )
     if (!frame) {
       return
@@ -148,14 +156,14 @@ export class RecaptchaContentScript {
   private getVisibleIframesIds() {
     // Find all visible recaptcha boxes through their iframes
     return this._findVisibleIframeNodes()
-      .filter($f => this._isVisible($f))
-      .map($f => this._paintCaptchaBusy($f))
-      .filter($f => $f && $f.getAttribute('name'))
-      .map($f => $f.getAttribute('name') || '') // a-841543e13666
+      .filter(($f) => this._isVisible($f))
+      .map(($f) => this._paintCaptchaBusy($f))
+      .filter(($f) => $f && $f.getAttribute('name'))
+      .map(($f) => $f.getAttribute('name') || '') // a-841543e13666
       .map(
-        rawId => rawId.split('-').slice(-1)[0] // a-841543e13666 => 841543e13666
+        (rawId) => rawId.split('-').slice(-1)[0] // a-841543e13666 => 841543e13666
       )
-      .filter(id => id)
+      .filter((id) => id)
   }
 
   private getResponseInputById(id?: string) {
@@ -178,7 +186,7 @@ export class RecaptchaContentScript {
     const clients = this.getClients()
     // Lookup captcha "client" info using extracted id
     let client: any = Object.values(clients || {})
-      .filter(obj => this._getKeyByValue(obj, id))
+      .filter((obj) => this._getKeyByValue(obj, id))
       .shift() // returns first entry in array or undefined
     if (!client) return
     client = this._flattenObject(client) as any
@@ -192,6 +200,7 @@ export class RecaptchaContentScript {
     const info: types.CaptchaInfo = this._pick(['sitekey', 'callback'])(client)
     if (!info.sitekey) return
     info.id = client.id
+    info.s = client.s // google site specific
     info.widgetId = client.widgetId
     info.display = this._pick([
       'size',
@@ -199,7 +208,7 @@ export class RecaptchaContentScript {
       'left',
       'width',
       'height',
-      'theme'
+      'theme',
     ])(client)
     // callbacks can be strings or funtion refs
     if (info.callback && typeof info.callback === 'function') {
@@ -212,22 +221,22 @@ export class RecaptchaContentScript {
   public async findRecaptchas() {
     const result = {
       captchas: [] as (types.CaptchaInfo | undefined)[],
-      error: null as any
+      error: null as any,
     }
     try {
       await this._waitUntilDocumentReady()
       const clients = this.getClients()
       if (!clients) return result
       result.captchas = this.getVisibleIframesIds()
-        .map(id => this.getClientById(id))
-        .map(client => this.extractInfoFromClient(client))
-        .map(info => {
+        .map((id) => this.getClientById(id))
+        .map((client) => this.extractInfoFromClient(client))
+        .map((info) => {
           if (!info) return
           const $input = this.getResponseInputById(info.id)
           info.hasResponseElement = !!$input
           return info
         })
-        .filter(info => info)
+        .filter((info) => info)
     } catch (error) {
       result.error = error
       return result
@@ -238,7 +247,7 @@ export class RecaptchaContentScript {
   public async enterRecaptchaSolutions() {
     const result = {
       solved: [] as (types.CaptchaSolved | undefined)[],
-      error: null as any
+      error: null as any,
     }
     try {
       await this._waitUntilDocumentReady()
@@ -254,25 +263,25 @@ export class RecaptchaContentScript {
       }
 
       result.solved = this.getVisibleIframesIds()
-        .map(id => this.getClientById(id))
-        .map(client => {
+        .map((id) => this.getClientById(id))
+        .map((client) => {
           const solved: types.CaptchaSolved = {
             id: client.id,
             responseElement: false,
-            responseCallback: false
+            responseCallback: false,
           }
           const $iframe = this._findVisibleIframeNodeById(solved.id)
           if (!$iframe) {
             solved.error = `Iframe not found for id '${solved.id}'`
             return solved
           }
-          const solution = solutions.find(s => s.id === solved.id)
+          const solution = solutions.find((s) => s.id === solved.id)
           if (!solution || !solution.text) {
             solved.error = `Solution not found for id '${solved.id}'`
             return solved
           }
           // Hide if present challenge window
-          this._hideChallengeWindowIfPresent(solved.id);
+          this._hideChallengeWindowIfPresent(solved.id)
           // Enter solution in response textarea
           const $input = this.getResponseInputById(solved.id)
           if ($input) {
