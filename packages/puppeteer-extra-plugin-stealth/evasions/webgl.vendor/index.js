@@ -39,8 +39,6 @@ class Plugin extends PuppeteerExtraPlugin {
       } else {
         vendor = 'Google Inc.';
       }
-      const parser = require('ua-parser-js');
-      const machine = parser(this._settings.device.userAgent);
       const rand = function (min, max) {
         return Math.floor(Math.random() * (max - min) + min);
       };
@@ -64,22 +62,22 @@ class Plugin extends PuppeteerExtraPlugin {
       if (userAgent.includes('(windows')) {
         this._session['s7936'] = 'Mozilla';
         this._session['s7937'] = 'Mozilla';
-        this._session['s37445'] = opts.vendor || vendor;
-        this._session['s37446'] = opts.renderer || WEBGL_RENDERERS_DESKTOP[Math.floor(Math.random() * WEBGL_RENDERERS_DESKTOP.length)];
+        this._session['s37445'] = this.opts.vendor || vendor;
+        this._session['s37446'] = this.opts.renderer || WEBGL_RENDERERS_DESKTOP[Math.floor(Math.random() * WEBGL_RENDERERS_DESKTOP.length)];
       }
       else if (userAgent.includes('(android')) {
-        this._session['s37445'] = opts.vendor || WEBGL_VENDORS_ANDROID[Math.floor(Math.random() * WEBGL_VENDORS_ANDROID.length)];
-        this._session['s37446'] = opts.renderer || WEBGL_RENDERERS_ANDROID[Math.floor(Math.random() * WEBGL_RENDERERS_ANDROID.length)];
+        this._session['s37445'] = this.opts.vendor || WEBGL_VENDORS_ANDROID[Math.floor(Math.random() * WEBGL_VENDORS_ANDROID.length)];
+        this._session['s37446'] = this.opts.renderer || WEBGL_RENDERERS_ANDROID[Math.floor(Math.random() * WEBGL_RENDERERS_ANDROID.length)];
       }
       else if (userAgent.includes('(linux')) {
-        this._session['s37445'] = opts.vendor || vendor;
-        this._session['s37446'] = opts.renderer || WEBGL_RENDERERS_DESKTOP[Math.floor(Math.random() * WEBGL_RENDERERS_DESKTOP.length)];
+        this._session['s37445'] = this.opts.vendor || vendor;
+        this._session['s37446'] = this.opts.renderer || WEBGL_RENDERERS_DESKTOP[Math.floor(Math.random() * WEBGL_RENDERERS_DESKTOP.length)];
       }
       else if (userAgent.includes('(iphone') || userAgent.includes('(ipad') || (userAgent.includes('(macintosh') && userAgent.includes('safari') && !userAgent.includes('chrome'))) {
         this._session['s7938'] = 'WebGL 1.0';
         this._session['s35724'] = 'WebGL GLSL ES 1.0 (1.0)';
-        this._session['s37445'] = opts.vendor || 'Apple Inc.';
-        this._session['s37446'] = opts.renderer || 'Apple GPU';
+        this._session['s37445'] = this.opts.vendor || 'Apple Inc.';
+        this._session['s37446'] = this.opts.renderer || 'Apple GPU';
         this._session['s36347'] = 512;
         this._session['s36348'] = 15;
         this._session['s34852'] = 1;
@@ -90,18 +88,22 @@ class Plugin extends PuppeteerExtraPlugin {
         this._session['s35661'] = 32;
         this._session['webgl2'] = false;
       }
-      else if (machine.os.name.toLowerCase().includes('(macintosh')) {
-        this._session['s37445'] = opts.vendor || 'Intel Inc.';
-        this._session['s37446'] = opts.renderer || 'Intel HD Graphics 4000 OpenGL Engine';
+      else if (userAgent.includes('(macintosh')) {
+        this._session['s37445'] = this.opts.vendor || 'Intel Inc.';
+        this._session['s37446'] = this.opts.renderer || 'Intel HD Graphics 4000 OpenGL Engine';
       }
       else {
-        this._session['s37445'] = opts.vendor || vendor;
-        this._session['s37446'] = opts.renderer || 'Google SwiftShader';
+        this._session['s37445'] = this.opts.vendor || vendor;
+        this._session['s37446'] = this.opts.renderer || 'Google SwiftShader';
       }
       this._session['offset'] = Math.random();
     }
     await withUtils(page).evaluateOnNewDocument((utils, session) => {
-      let changeMap = {};
+      let safeOverwrite = (obj, prop, newVal) => {
+        let props = Object.getOwnPropertyDescriptor(obj, prop);
+        props["value"] = newVal;
+        return props;
+      }
       let paramChanges = {
         3379: 16384,
         3386: session['s3386'],
@@ -131,13 +133,14 @@ class Plugin extends PuppeteerExtraPlugin {
         33901: session['s33901'],
         34852: session['s34852']
       };
-      changeMap = Object.assign(changeMap, paramChanges);
+      let changeMap = Object.assign({}, paramChanges);
       ["WebGLRenderingContext", "WebGL2RenderingContext"].forEach(function (ctx) {
         if (!window[ctx]) return;
+
         // Modify getParameter
         let oldParam = window[ctx].prototype.getParameter;
         Object.defineProperty(window[ctx].prototype, "getParameter",
-          utils.replaceWithProxy(window[ctx].prototype, "getParameter", function (param) {
+          safeOverwrite(window[ctx].prototype, "getParameter", function (param) {
             if (changeMap[param]) return changeMap[param];
             return oldParam.apply(this, arguments);
           })
@@ -146,7 +149,7 @@ class Plugin extends PuppeteerExtraPlugin {
         // Modify bufferData (this updates the image hash)
         let oldBuffer = window[ctx].prototype.bufferData;
         Object.defineProperty(window[ctx].prototype, "bufferData",
-          utils.replaceWithProxy(window[ctx].prototype, "bufferData", function () {
+          safeOverwrite(window[ctx].prototype, "bufferData", function () {
             for (let i = 0; i < arguments[1].length; i++) {
               arguments[1][i] += session['offset'] * 1e-3;
             }
@@ -163,7 +166,7 @@ class Plugin extends PuppeteerExtraPlugin {
         });
         let oldParam = WebGL2RenderingContext.prototype.getParameter;
         Object.defineProperty(WebGL2RenderingContext.prototype, "getParameter",
-          utils.replaceWithProxy(WebGL2RenderingContext.prototype, "getParameter", function (param) {
+          safeOverwrite(WebGL2RenderingContext.prototype, "getParameter", function (param) {
             if (paramChanges[param]) return paramChanges[param];
             return oldParam.apply(this, arguments);
           })
