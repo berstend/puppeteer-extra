@@ -29,8 +29,8 @@ class Plugin extends PuppeteerExtraPlugin {
   /* global WebGLRenderingContext WebGL2RenderingContext */
   async onPageCreated(page) {
     if (!this._session) {
+      const userAgent = (await page.browser().userAgent()).toLowerCase();
       this._session = {};
-      const userAgent = (await page.evaluate(() => navigator.userAgent)).toLowerCase();
       let vendor;
       if (userAgent.includes('ipad') || userAgent.includes('iphone') || userAgent.includes('macintosh')) {
         vendor = 'Apple Computer, Inc.';
@@ -98,12 +98,7 @@ class Plugin extends PuppeteerExtraPlugin {
       }
       this._session['offset'] = Math.random();
     }
-    await withUtils(page).evaluateOnNewDocument((utils, session) => {
-      let safeOverwrite = (obj, prop, newVal) => {
-        let props = Object.getOwnPropertyDescriptor(obj, prop);
-        props["value"] = newVal;
-        return props;
-      }
+    await withUtils(page).evaluateOnNewDocument((utils, opts, session) => {
       let paramChanges = {
         3379: 16384,
         3386: session['s3386'],
@@ -134,29 +129,37 @@ class Plugin extends PuppeteerExtraPlugin {
         34852: session['s34852']
       };
       let changeMap = Object.assign({}, paramChanges);
-      ["WebGLRenderingContext", "WebGL2RenderingContext"].forEach(function (ctx) {
-        if (!window[ctx]) return;
-
-        // Modify getParameter
-        let oldParam = window[ctx].prototype.getParameter;
-        Object.defineProperty(window[ctx].prototype, "getParameter",
-          safeOverwrite(window[ctx].prototype, "getParameter", function (param) {
-            if (changeMap[param]) return changeMap[param];
-            return oldParam.apply(this, arguments);
-          })
-        );
-
-        // Modify bufferData (this updates the image hash)
-        let oldBuffer = window[ctx].prototype.bufferData;
-        Object.defineProperty(window[ctx].prototype, "bufferData",
-          safeOverwrite(window[ctx].prototype, "bufferData", function () {
-            for (let i = 0; i < arguments[1].length; i++) {
-              arguments[1][i] += session['offset'] * 1e-3;
-            }
-            return oldBuffer.apply(this, arguments);
-          })
-        );
-      });
+      const getParameterProxyHandler = {
+        apply: function (target, ctx, args) {
+          const param = (args || [])[0]
+          if (changeMap[param]) return changeMap[param];
+          return utils.cache.Reflect.apply(target, ctx, args)
+        }
+      }
+      // //Modify bufferData(this updates the image hash)
+      let safeOverwrite = (obj, prop, newVal) => {
+        let props = Object.getOwnPropertyDescriptor(obj, prop);
+        props["value"] = newVal;
+        return props;
+      }
+      let WebGLRenderingContextoldBuffer = WebGLRenderingContext.prototype.bufferData;
+      Object.defineProperty(WebGLRenderingContext.prototype, "bufferData",
+        safeOverwrite(WebGLRenderingContext.prototype, "bufferData", function () {
+          for (let i = 0; i < arguments[1].length; i++) {
+            arguments[1][i] += session['offset'] * 1e-3;
+          }
+          return WebGLRenderingContextoldBuffer.apply(this, arguments);
+        })
+      );
+      let WebGL2RenderingContextoldBuffer = WebGL2RenderingContext.prototype.bufferData;
+      Object.defineProperty(WebGL2RenderingContext.prototype, "bufferData",
+        safeOverwrite(WebGL2RenderingContext.prototype, "bufferData", function () {
+          for (let i = 0; i < arguments[1].length; i++) {
+            arguments[1][i] += session['offset'] * 1e-3;
+          }
+          return WebGL2RenderingContextoldBuffer.apply(this, arguments);
+        })
+      );
       if (!session['webgl2']) {
         paramChanges = {};
         Object.getOwnPropertyNames(WebGL2RenderingContext).forEach(property => {
@@ -179,33 +182,17 @@ class Plugin extends PuppeteerExtraPlugin {
         }(HTMLCanvasElement.prototype.getContext)
         HTMLCanvasElement.prototype.getContext.toString = () => 'function getContext() { [native code] }';
       }
-    }, this._session);
-    // await withUtils(page).evaluateOnNewDocument((utils, opts) => {
-    //   const getParameterProxyHandler = {
-    //     apply: function (target, ctx, args) {
-    //       const param = (args || [])[0]
-    //       // UNMASKED_VENDOR_WEBGL
-    //       if (param === 37445) {
-    //         return opts.vendor || 'Intel Inc.' // default in headless: Google Inc.
-    //       }
-    //       // UNMASKED_RENDERER_WEBGL
-    //       if (param === 37446) {
-    //         return opts.renderer || 'Intel Iris OpenGL Engine' // default in headless: Google SwiftShader
-    //       }
-    //       return utils.cache.Reflect.apply(target, ctx, args)
-    //     }
-    //   }
-
-    //   // There's more than one WebGL rendering context
-    //   // https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext#Browser_compatibility
-    //   // To find out the original values here: Object.getOwnPropertyDescriptors(WebGLRenderingContext.prototype.getParameter)
-    //   const addProxy = (obj, propName) => {
-    //     utils.replaceWithProxy(obj, propName, getParameterProxyHandler)
-    //   }
-    //   // For whatever weird reason loops don't play nice with Object.defineProperty, here's the next best thing:
-    //   addProxy(WebGLRenderingContext.prototype, 'getParameter')
-    //   addProxy(WebGL2RenderingContext.prototype, 'getParameter')
-    // }, this.opts)
+      // There's more than one WebGL rendering context
+      // https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext#Browser_compatibility
+      // To find out the original values here: Object.getOwnPropertyDescriptors(WebGLRenderingContext.prototype.getParameter)
+      const addProxy = (obj, propName, proxy) => {
+        utils.replaceWithProxy(obj, propName, proxy)
+      }
+      // For whatever weird reason loops don't play nice with Object.defineProperty, here's the next best thing:
+      addProxy(WebGLRenderingContext.prototype, 'getParameter', getParameterProxyHandler);
+      if (session['webgl2'])
+        addProxy(WebGL2RenderingContext.prototype, 'getParameter', getParameterProxyHandler);
+    }, this.opts, this._session)
   }
 }
 
