@@ -69,11 +69,9 @@ puppeteer
 
 </details><br>
 
-Please check out the [main documentation](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra) to learn more about `puppeteer-extra` (Firefox usage, other Plugins, etc).
+> Please check out the [main documentation](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra) to learn more about `puppeteer-extra` (Firefox usage, other Plugins, etc).
 
 ## Status
-
-_January 2020_
 
 - ✅ **`puppeeteer-extra` with stealth passes all public bot tests.**
 
@@ -84,6 +82,10 @@ It's probably impossible to prevent all ways to detect headless chromium, but it
 If something new comes up or you experience a problem, please do your homework and create a PR in a respectful way (this is Github, not reddit) or I might not be motivated to help. :)
 
 ## Changelog
+
+> 🎁 **Note:** Until we've automated changelog updates in markdown files please follow the `#announcements` channel in our [discord server](https://discord.gg/vz7PeKk) for the latest updates and changelog info.
+
+_Older changelog:_
 
 #### `v2.4.7`
 

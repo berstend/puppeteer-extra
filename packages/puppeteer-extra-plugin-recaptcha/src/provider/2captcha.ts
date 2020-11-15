@@ -20,14 +20,15 @@ async function decodeRecaptchaAsync(
   token: string,
   sitekey: string,
   url: string,
+  extraData: any,
   opts = { pollingInterval: 2000 }
 ): Promise<DecodeRecaptchaAsyncResult> {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const cb = (err: any, result: any, invalid: any) =>
       resolve({ err, result, invalid })
     try {
       solver.setApiKey(token)
-      solver.decodeReCaptcha(sitekey, url, opts, cb)
+      solver.decodeReCaptcha(sitekey, url, extraData, opts, cb)
     } catch (error) {
       return resolve({ err: error })
     }
@@ -39,9 +40,9 @@ export async function getSolutions(
   token?: string
 ): Promise<types.GetSolutionsResult> {
   const solutions = await Promise.all(
-    captchas.map(c => getSolution(c, token || ''))
+    captchas.map((c) => getSolution(c, token || ''))
   )
-  return { solutions, error: solutions.find(s => !!s.error) }
+  return { solutions, error: solutions.find((s) => !!s.error) }
 }
 
 async function getSolution(
@@ -49,7 +50,7 @@ async function getSolution(
   token: string
 ): Promise<types.CaptchaSolution> {
   const solution: types.CaptchaSolution = {
-    provider: PROVIDER_ID
+    provider: PROVIDER_ID,
   }
   try {
     if (!captcha || !captcha.sitekey || !captcha.url || !captcha.id) {
@@ -58,10 +59,15 @@ async function getSolution(
     solution.id = captcha.id
     solution.requestAt = new Date()
     debug('Requesting solution..', solution)
+    const extraData = {}
+    if (captcha.s) {
+      extraData['data-s'] = captcha.s // google site specific property
+    }
     const { err, result, invalid } = await decodeRecaptchaAsync(
       token,
       captcha.sitekey,
-      captcha.url
+      captcha.url,
+      extraData
     )
     debug('Got response', { err, result, invalid })
     if (err) throw new Error(`${PROVIDER_ID} error: ${err}`)

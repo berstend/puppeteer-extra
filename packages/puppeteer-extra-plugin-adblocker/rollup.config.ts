@@ -42,8 +42,8 @@ export default {
     ...Object.keys(pkg.dependencies || {}),
     ...Object.keys(pkg.peerDependencies || {}),
     'fs',
-    'path',
     'os',
+    'path'
   ],
   watch: {
     include: 'src/**',

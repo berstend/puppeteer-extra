@@ -57,6 +57,7 @@ export interface CaptchaInfo {
   id?: string // captcha id
   widgetId?: number
   sitekey?: string
+  s?: string // new google site specific property
   callback?: string | Function
   hasResponseElement?: boolean
   url?: string

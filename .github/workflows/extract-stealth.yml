@@ -5,12 +5,17 @@ on:
     branches:
       - master
     paths:
-      - 'packages/puppeteer-extra-plugin-stealth/**' 
+      - "packages/puppeteer-extra-plugin-stealth/**"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Sleep for 60 seconds
+        uses: jakejarvis/wait-action@master
+        with:
+          time: "60s"
+
       - name: Checkout
         uses: actions/checkout@v2
 
@@ -24,9 +29,9 @@ jobs:
       - name: Commit stealth.min.js
         uses: EndBug/add-and-commit@v4
         with:
-          add: 'stealth.min.js'
+          add: "stealth.min.js"
           force: true
-          ref: 'stealth-js'
-          message: 'Auto-updated stealth.min.js with newest evasions'
+          ref: "stealth-js"
+          message: "Auto-updated stealth.min.js with newest evasions"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
