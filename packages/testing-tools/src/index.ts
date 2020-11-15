@@ -6,13 +6,34 @@ export * as playwright from 'playwright'
 
 import { addExtra } from 'automation-extra'
 
-export type Browsers = 'chromium' | 'firefox' | 'webkit'
-export type DriverShortNames = 'pw' | 'pptr'
+export type Browser = 'chromium' | 'firefox' | 'webkit'
+export type DriverShortName = 'pw' | 'pptr'
 
-const getHelper = (driver: DriverShortNames, browser: Browsers) => {
+export type TestCasesPlaywright =
+  | 'pw:all'
+  | 'pw:chromium'
+  | 'pw:firefox'
+  | 'pw:webkit'
+export type TestCasesPuppeteer = 'pptr:all' | 'pptr:chromium' | 'pptr:firefox'
+
+export type TestCases = TestCasesPlaywright | TestCasesPuppeteer
+
+export const availableBrowsersPlaywright: Browser[] = [
+  'chromium',
+  'firefox',
+  'webkit'
+]
+export const availableBrowsersPuppeteer: Browser[] = ['chromium', 'firefox']
+
+const getHelper = (driver: DriverShortName, browser: Browser) => {
   const getLauncher = () => {
     console.log({ driver, browser })
     if (driver === 'pptr') {
+      if (browser === 'firefox') {
+        // TODO: Test this actually works
+        process.env.PUPPETEER_PRODUCT = 'firefox'
+      }
+      console.log((puppeteer as any).product)
       return puppeteer
     }
     if (driver === 'pw') {
@@ -48,8 +69,8 @@ const getHelper = (driver: DriverShortNames, browser: Browsers) => {
 }
 
 export const driver = (
-  driver: DriverShortNames = 'pptr',
-  browser: Browsers = 'chromium'
+  driver: DriverShortName = 'pptr',
+  browser: Browser = 'chromium'
 ) => getHelper(driver, browser)
 
 export const makeTest = (testFn: any) => {
@@ -67,24 +88,28 @@ export const withDriver = (
   ava(title, testFn, driverName)
 }
 
-export type TestCasesPlaywright =
-  | 'pw:all'
-  | 'pw:chromium'
-  | 'pw:firefox'
-  | 'pw:webkit'
-export type TestCasesPuppeteer = 'pptr:all' | 'pptr:chromium' | 'pptr:firefox'
-
-export type TestCases = TestCasesPlaywright | TestCasesPuppeteer
-
 export const wrap = (ava: any) => (cases: TestCases) => (
   title: string,
   testFn: any
 ) => {
-  const driverName = cases.split(':')[0] as DriverShortNames
-  const browserName = cases.split(':')[1] as Browsers
+  const driverName = cases.split(':')[0] as DriverShortName
+  const browserName = cases.split(':')[1] as Browser | 'all'
 
-  testFn.title = (title = '', cases = '') =>
-    `${driverName}(${browserName}): ${title}`
+  let browsers: Browser[] = []
+  if (browserName === 'all') {
+    if (driverName === 'pw') {
+      browsers = availableBrowsersPlaywright
+    }
+    if (driverName === 'pptr') {
+      browsers = availableBrowsersPuppeteer
+    }
+  } else {
+    browsers = [browserName]
+  }
 
-  ava(title, testFn, driver(driverName, browserName))
+  for (const browser of browsers) {
+    testFn.title = (title = '', cases = '') =>
+      `${driverName}(${browser}): ${title}`
+    ava(title, testFn, driver(driverName, browser))
+  }
 }
