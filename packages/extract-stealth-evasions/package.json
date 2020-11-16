@@ -22,7 +22,7 @@
     "pupeteer"
   ],
   "dependencies": {
-    "puppeteer": "*",
+    "puppeteer": "5.4.1",
     "puppeteer-extra": "*",
     "puppeteer-extra-plugin-stealth": "^2.6.5",
     "terser": "^5.1.0",
