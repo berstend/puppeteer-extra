@@ -25,7 +25,7 @@ export class PluginList {
    * @member {Array<string>}
    * @private
    */
-  get pluginNames() {
+  get names() {
     return this._plugins.map(p => p.name)
   }
 
@@ -52,6 +52,10 @@ export class PluginList {
 
     if ('onPluginRegistered' in plugin) {
       plugin.onPluginRegistered()
+    }
+
+    if (plugin.requirements.has('dataFromPlugins')) {
+      plugin.getDataFromPlugins = this.getData.bind(this)
     }
 
     this._plugins.push(plugin)
@@ -157,7 +161,7 @@ export class PluginList {
    * @private
    */
   order() {
-    debug('order:before', this.pluginNames)
+    debug('order:before', this.names)
     const runLast = this._plugins
       .filter(p => p.requirements.has('runLast'))
       .map(p => p.name)
@@ -165,7 +169,7 @@ export class PluginList {
       const index = this._plugins.findIndex(p => p.name === name)
       this._plugins.push(this._plugins.splice(index, 1)[0])
     }
-    debug('order:after', this.pluginNames)
+    debug('order:after', this.names)
   }
 
   /**
@@ -196,6 +200,27 @@ export class PluginList {
         }
       }
     }
+  }
+
+  /**
+   * Collects the exposed `data` property of all registered plugins.
+   * Will be reduced/flattened to a single array.
+   *
+   * Can be accessed by plugins that listed the `dataFromPlugins` requirement.
+   *
+   * Implemented mainly for plugins that need data from other plugins (e.g. `user-preferences`).
+   *
+   * @see [PuppeteerExtraPlugin]/data
+   * @param name - Filter data by optional name
+   *
+   * @private
+   */
+  getData(name?: string) {
+    const data = this._plugins
+      .filter((p: any) => !!p.data)
+      .map((p: any) => (Array.isArray(p.data) ? p.data : [p.data]))
+      .reduce((acc, arr) => [...acc, ...arr], [])
+    return name ? data.filter((d: any) => d.name === name) : data
   }
 
   /**
@@ -237,7 +262,7 @@ export class PluginList {
     for (const [name, opts] of [...missingDeps]) {
       // Check if the dependency hasn't been registered as plugin already.
       // This might happen when multiple plugins have nested dependencies.
-      if (this.pluginNames.includes(name)) {
+      if (this.names.includes(name)) {
         debug(`ignoring dependency '${name}', which has been required already.`)
         continue
       }

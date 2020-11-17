@@ -3,9 +3,10 @@ import * as pptr from './types/puppeteer'
 
 import { AutomationExtraBase } from './base'
 
-export class PuppeteerExtra extends AutomationExtraBase
+export class PuppeteerExtra
+  extends AutomationExtraBase
   implements types.PuppeteerBrowserLauncher {
-  public vanillaLauncher = this.launcher as types.PuppeteerBrowserLauncher
+  protected vanillaLauncher = this.launcher as types.PuppeteerBrowserLauncher
 
   constructor(_launcher?: types.PuppeteerBrowserLauncher) {
     super('puppeteer', _launcher)

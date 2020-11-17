@@ -3,9 +3,10 @@ import * as pw from './types/playwright'
 
 import { AutomationExtraBase } from './base'
 
-export class PlaywrightExtra extends AutomationExtraBase
+export class PlaywrightExtra
+  extends AutomationExtraBase
   implements types.PlaywrightBrowserLauncher {
-  public vanillaLauncher = this.launcher as types.PlaywrightBrowserLauncher
+  protected vanillaLauncher = this.launcher as types.PlaywrightBrowserLauncher
 
   constructor(_launcher?: types.PlaywrightBrowserLauncher) {
     super('playwright', _launcher)

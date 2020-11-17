@@ -9,35 +9,16 @@ import Debug from 'debug'
 const debug = Debug('automation-extra')
 
 export class AutomationExtraBase {
-  public env: LauncherEnv
+  protected env: LauncherEnv
   public plugins: PluginList
-
   public productName?: types.PlaywrightBrowsers
 
   constructor(
     driverName: types.SupportedDrivers,
-    public _launcher?: types.BrowserLauncher
+    protected _launcher?: types.BrowserLauncher
   ) {
     this.env = new LauncherEnv(driverName)
     this.plugins = new PluginList(this.env)
-  }
-
-  /**
-   * In order to support a default export which will require vanilla puppeteer or playwright automatically,
-   * as well as named exports to patch the provided launcher, we need to so some gymnastics here unfortunately.
-   *
-   * If we just do e.g. `require('puppeteer')` in our default export this would throw immediately,
-   * even when only using the `addExtra` export in combination with `puppeteer-core`. :-/
-   *
-   * The solution is to make the vanilla launcher optional and only throw once we try to effectively use and can't find it.
-   */
-  get launcher(): types.BrowserLauncher {
-    if (!this._launcher) {
-      const launcher = this._requireLauncherOrThrow()
-      // In case we're running with Playwright we need to add the product name to the import
-      this._launcher = this.productName ? launcher[this.productName] : launcher
-    }
-    return this._launcher as types.BrowserLauncher
   }
 
   /**
@@ -53,7 +34,7 @@ export class AutomationExtraBase {
    *
    * @return The same `PuppeteerExtra` or `PlaywrightExtra` instance (for optional chaining)
    */
-  use(plugin: types.Plugin): this {
+  public use(plugin: types.Plugin): this {
     if (!plugin || typeof plugin !== 'object') {
       throw new Error('A plugin must be provided to .use()')
     }
@@ -64,15 +45,37 @@ export class AutomationExtraBase {
     return this
   }
 
-  async _connect(options: types.ConnectOptions = {}): Promise<types.Browser> {
+  /**
+   * In order to support a default export which will require vanilla puppeteer or playwright automatically,
+   * as well as named exports to patch the provided launcher, we need to so some gymnastics here unfortunately.
+   *
+   * If we just do e.g. `require('puppeteer')` in our default export this would throw immediately,
+   * even when only using the `addExtra` export in combination with `puppeteer-core`. :-/
+   *
+   * The solution is to make the vanilla launcher optional and only throw once we try to effectively use and can't find it.
+   */
+  protected get launcher(): types.BrowserLauncher {
+    if (!this._launcher) {
+      const launcher = this._requireLauncherOrThrow()
+      // In case we're running with Playwright we need to add the product name to the import
+      this._launcher = this.productName ? launcher[this.productName] : launcher
+    }
+    return this._launcher as types.BrowserLauncher
+  }
+
+  protected async _connect(
+    options: types.ConnectOptions = {}
+  ): Promise<types.Browser> {
     return this._launchOrConnect('connect', options)
   }
 
-  async _launch(options: types.LaunchOptions = {}): Promise<types.Browser> {
+  protected async _launch(
+    options: types.LaunchOptions = {}
+  ): Promise<types.Browser> {
     return this._launchOrConnect('launch', options)
   }
 
-  async _launchOrConnect(
+  protected async _launchOrConnect(
     method: 'launch' | 'connect',
     options: types.LaunchOptions | types.ConnectOptions = {}
   ): Promise<types.Browser> {
@@ -137,7 +140,7 @@ export class AutomationExtraBase {
     return browser
   }
 
-  async _bindPuppeteerBrowserEvents(browser: pptr.Browser) {
+  protected async _bindPuppeteerBrowserEvents(browser: pptr.Browser) {
     debug('_bindPuppeteerBrowserEvents')
 
     browser.on('disconnected', () => {
@@ -166,7 +169,7 @@ export class AutomationExtraBase {
     })
   }
 
-  async _bindPlaywrightBrowserEvents(browser: pw.Browser) {
+  protected async _bindPlaywrightBrowserEvents(browser: pw.Browser) {
     debug('_bindPlaywrightBrowserEvents')
 
     browser.on('disconnected', () => {
@@ -255,8 +258,8 @@ export class AutomationExtraBase {
       return
     }
 
-    browser._createPageInContext = (function(originalMethod, context) {
-      return async function() {
+    browser._createPageInContext = (function (originalMethod, context) {
+      return async function () {
         const page = await originalMethod.apply(context, arguments as any)
         await page.goto('about:blank')
         return page
