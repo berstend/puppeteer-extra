@@ -8,7 +8,7 @@ import playwrightCore from 'playwright-core'
 /**
  * Augment the provided Playwright browser launcher with plugin functionality.
  *
- * Using `addExtra` will always create a fresh PuppeteerExtra instance.
+ * Using `addExtra` will always create a fresh PlaywrightExtra instance.
  *
  * @example
  * import playwright from 'playwright'
