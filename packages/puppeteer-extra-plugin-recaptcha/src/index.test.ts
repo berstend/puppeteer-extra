@@ -37,4 +37,25 @@ test('will detect captchas', async (t) => {
   await browser.close()
 })
 
+test('will not throw when no captchas are found', async (t) => {
+  const puppeteer = addExtra(require('puppeteer'))
+  const recaptchaPlugin = RecaptchaPlugin()
+  puppeteer.use(recaptchaPlugin)
+
+  const browser = await puppeteer.launch({
+    args: PUPPETEER_ARGS,
+    headless: true,
+  })
+  const page = await browser.newPage()
+
+  const url = 'https://www.example.com'
+  await page.goto(url, { waitUntil: 'networkidle0' })
+
+  const { captchas, error } = await (page as any).findRecaptchas()
+  t.is(error, null)
+  t.is(captchas.length, 0)
+
+  await browser.close()
+})
+
 // TODO: test/mock the rest
