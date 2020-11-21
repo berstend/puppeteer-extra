@@ -541,7 +541,7 @@ export abstract class PuppeteerExtraPlugin {
         }
       }
     } catch (err) {
-      this.debug(`_onTargetCreated: caught error: ${err.message}`}
+      this.debug(`_onTargetCreated: caught error: ${err.message}`);
     }
   }
 
