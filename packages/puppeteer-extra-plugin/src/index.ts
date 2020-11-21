@@ -531,13 +531,17 @@ export abstract class PuppeteerExtraPlugin {
    * @private
    */
   async _onTargetCreated(target: Puppeteer.Target) {
-    if (this.onTargetCreated) await this.onTargetCreated(target)
-    // Pre filter pages for plugin developers convenience
-    if (target.type() === 'page') {
-      const page = await target.page()
-      if (this.onPageCreated) {
-        await this.onPageCreated(page)
+    try {
+      if (this.onTargetCreated) await this.onTargetCreated(target)
+      // Pre filter pages for plugin developers convenience
+      if (target.type() === 'page') {
+        const page = await target.page()
+        if (this.onPageCreated) {
+          await this.onPageCreated(page)
+        }
       }
+    } catch (err) {
+      this.debug(`_onTargetCreated: caught error: ${err.message}`}
     }
   }
 
