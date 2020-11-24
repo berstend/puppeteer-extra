@@ -23,7 +23,7 @@ jobs:
           - 14
           - 12
         puppeteer_version:
-          - 5.0.0
+          - 5.5.0
           - 2.1.1 # Chromium 79.0.3942.0, Oct 24 2019
           # - 2.0.0 # Chromium 79.0.3942.0, Oct 24 2019
           # - 1.20.0 # Chromium 78.0.3882.0, Sep 13 2019
