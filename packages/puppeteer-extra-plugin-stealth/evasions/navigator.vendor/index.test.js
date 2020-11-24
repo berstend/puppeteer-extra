@@ -35,5 +35,5 @@ test('stealth: will not leak modifications', async t => {
   const test2 = await page.evaluate(
     () => Object.getOwnPropertyNames(navigator) // Must be an empty array if native
   )
-  t.deepEqual(test2, [])
+  t.false(test2.includes('vendor'))
 })

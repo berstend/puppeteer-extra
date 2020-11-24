@@ -399,10 +399,10 @@ test('replaceProperty: will work without traces', async t => {
       get: () => ['de-DE']
     })
     return {
-      propNamesLength: Object.getOwnPropertyNames(navigator).length
+      propNames: Object.getOwnPropertyNames(navigator)
     }
   })
-  t.is(results.propNamesLength, 0)
+  t.false(results.propNames.includes('languages'))
 })
 
 test('cache: will prevent leaks through overriding methods', async t => {
