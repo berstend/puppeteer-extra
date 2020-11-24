@@ -1,6 +1,15 @@
 const fs = require('fs')
 const path = require('path')
 
+try {
+  require('puppeteer/lib/cjs/puppeteer/node/BrowserFetcher.js')
+} catch (err) {
+  console.log(
+    'Error importing BrowserFetcher, this means puppeteer is not installed or an old version is used. Skipping.'
+  )
+  process.exit(0)
+}
+
 const {
   BrowserFetcher
 } = require('puppeteer/lib/cjs/puppeteer/node/BrowserFetcher.js')
