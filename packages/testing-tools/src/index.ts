@@ -93,6 +93,14 @@ export const wrap = (ava: any) => (
   if (process.env.TEST_CASE) {
     cases = process.env.TEST_CASE as TestCases
   }
+  if (!isPuppeteerFirefoxSupported()) {
+    opts = opts || { exclude: [] }
+    opts.exclude?.push('puppeteer:firefox')
+    console.log(
+      'Puppeteer Firefox is not supported with this version, skipping.',
+      process.env.PUPPETEER_VERSION
+    )
+  }
   const entries = Array.isArray(cases) ? cases : [cases]
   for (const entry of entries) {
     const driverName = entry.split(':')[0] as DriverName
@@ -134,4 +142,14 @@ function getFirefoxExecutablePath() {
     }
   )
   return browserFetcher.revisionInfo('latest').executablePath
+}
+
+// Puppeteer's Firefox support really only starts working in v5 and higher
+function isPuppeteerFirefoxSupported() {
+  try {
+    require('puppeteer/lib/cjs/puppeteer/node/BrowserFetcher.js')
+  } catch (err) {
+    return false
+  }
+  return true
 }
