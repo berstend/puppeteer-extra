@@ -198,8 +198,8 @@ class DevToolsTunnel extends DevToolsCommon {
     }
     debug('list body:before', body)
     body = body.replace(new RegExp(this.wsHost, 'g'), `${this.tunnelHost}`)
-    body = body.replace(new RegExp('ws=', 'g'), 'wss=')
-    body = body.replace(new RegExp('ws://', 'g'), 'wss://')
+    body = body.replace(new RegExp('ws=', 'g'), 'wss=') // eslint-disable-line prefer-regex-literals
+    body = body.replace(new RegExp('ws://', 'g'), 'wss://') // eslint-disable-line prefer-regex-literals
     debug('list body:after', body)
     return body
   }
