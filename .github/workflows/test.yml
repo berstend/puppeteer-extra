@@ -57,9 +57,6 @@ jobs:
       - name: install puppeteer@${{ matrix.puppeteer_version }}
         run: yarn lerna add --dev puppeteer@${{ matrix.puppeteer_version }}
 
-      - name: download firefox (puppeteer)
-        run: yarn download-firefox
-
       - name: lerna link
         run: yarn lerna link
 
@@ -71,6 +68,9 @@ jobs:
           yarn list --pattern "puppeteer|puppeteer-extra"
           file node_modules/puppeteer-extra/dist/index.cjs.js
       - uses: microsoft/playwright-github-action@v1
+
+      - name: download firefox (puppeteer)
+        run: yarn download-firefox
 
       - name: test
         uses: GabrielBB/xvfb-action@v1
