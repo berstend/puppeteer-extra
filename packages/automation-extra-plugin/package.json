@@ -67,6 +67,6 @@
     "debug": "^4.1.1",
     "deepmerge": "^4.2.2",
     "is-plain-object": "^5.0.0",
-    "playwright-core": "*"
+    "playwright-core": "1.6.2"
   }
 }

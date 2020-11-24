@@ -8138,10 +8138,10 @@ pkg-dir@^4.1.0, pkg-dir@^4.2.0:
   dependencies:
     find-up "^4.0.0"
 
-playwright-core@*:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.4.2.tgz#e364c06d5fc4a0a4289a7a93ad994de723e0575f"
-  integrity sha512-YXDhBti5hADm8daZ2Js4vmAIqhIW4fwXI6aXrY4JlbLy+OacdDInkcxqKc56RQxGNFH6hwylrwe7hdBifLp4MA==
+playwright-core@1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.6.2.tgz#71080db6e33d6ff33746fbeee1e1d07537fcc853"
+  integrity sha512-A8tDBwgMWY2WoxNsI6tCbKVr0QLUFWwuRpLYFVZQiEoep5vn1VVEnFA6bGdvbxvWVcA5E6vx8BkVcABCAzXhww==
   dependencies:
     debug "^4.1.1"
     extract-zip "^2.0.1"
@@ -8150,6 +8150,7 @@ playwright-core@*:
     mime "^2.4.6"
     pngjs "^5.0.0"
     progress "^2.0.3"
+    proper-lockfile "^4.1.1"
     proxy-from-env "^1.1.0"
     rimraf "^3.0.2"
     ws "^7.3.1"
