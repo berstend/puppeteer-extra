@@ -11,11 +11,9 @@ wrap(test)(['playwright:all', 'puppeteer:all'], {
   const pluginName = 'hello-world'
 
   class Plugin extends AutomationExtraPlugin {
+    static id = pluginName
     constructor(opts = {}) {
       super(opts)
-    }
-    get name() {
-      return pluginName
     }
 
     async onPageCreated(page) {

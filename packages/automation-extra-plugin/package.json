@@ -25,7 +25,7 @@
     "test-ci": "ava --fail-fast -v"
   },
   "engines": {
-    "node": ">=9.11.2"
+    "node": ">=12"
   },
   "prettier": {
     "printWidth": 80,

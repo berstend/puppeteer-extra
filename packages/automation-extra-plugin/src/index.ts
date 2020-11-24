@@ -211,12 +211,9 @@ export class PluginLifecycleMethods {
  *
  * @example
  *   class Plugin extends AutomationExtraPlugin {
+ *     static id = 'foobar'
  *     constructor(opts = {}) {
  *       super(opts)
- *     }
- *
- *     get name() {
- *       return 'foobar'
  *     }
  *
  *     async beforeLaunch(options) {
@@ -227,9 +224,23 @@ export class PluginLifecycleMethods {
  */
 export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
   /** @private */
+  ['constructor']: typeof AutomationExtraPlugin
+  /** @private */
   private _debugBase: Debugger
   /** @private */
   private _opts: PluginOptions
+
+  /**
+   * Plugin id/name (required)
+   *
+   * Convention:
+   * - Package: `automation-extra-plugin-anonymize-ua`
+   * - Name: `anonymize-ua`
+   *
+   * @example
+   * static id = 'anonymize-ua';
+   */
+  static id = 'base-plugin'
 
   /**
    * Contains info regarding the launcher environment the plugin runs in
@@ -239,13 +250,32 @@ export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
 
   constructor(opts?: PluginOptions) {
     super()
-    this._debugBase = debug(`automation-extra-plugin:base:${this.name}`)
-
+    this._debugBase = debug(`automation-extra-plugin:base:${this.id}`)
     this._opts = merge(this.defaults, opts || {}, mergeOptions)
-
     this.env = new LauncherEnv()
-
     this._debugBase('Initialized.')
+  }
+
+  /**
+   * Access the static id property of the Plugin in an instance.
+   *
+   * @example
+   * static id = 'anonymize-ua';
+   * @private
+   */
+  get id() {
+    if (this.constructor.id === 'base-plugin') {
+      throw new Error('Plugin must override "id"') // If you encountered this: Add `static id = 'foobar'` to your class
+    }
+    return this.constructor.id
+  }
+  /**
+   * Backwards compatibility, use a `static id` property instead.
+   * @deprecated
+   * @private
+   */
+  get name() {
+    return this.id
   }
 
   /** Unified Page methods for Playwright & Puppeteer */
@@ -255,20 +285,6 @@ export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
       return new PageShim(this.env, obj)
     }
     throw new Error(`Unsupported shim: (isPage: ${this.env.isPage(obj)})`)
-  }
-
-  /**
-   * Plugin name (required).
-   *
-   * Convention:
-   * - Package: `automation-extra-plugin-anonymize-ua`
-   * - Name: `anonymize-ua`
-   *
-   * @example
-   * get name () { return 'anonymize-ua' }
-   */
-  get name(): string {
-    throw new Error('Plugin must override "name"')
   }
 
   /**
@@ -368,7 +384,7 @@ export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
    *
    *  ```bash
    *  # toggle output using environment variables
-   *  DEBUG=automation-extra-plugin:<plugin_name> node foo.js
+   *  DEBUG=automation-extra-plugin:<plugin_id> node foo.js
    *  # to debug all the things:
    *  DEBUG=automation-extra,automation-extra-plugin:* node foo.js
    *  ```
@@ -378,7 +394,7 @@ export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
    * // will output e.g. 'automation-extra-plugin:anonymize-ua hello world'
    */
   get debug(): Debugger {
-    return debug(`automation-extra-plugin:${this.name}`)
+    return debug(`automation-extra-plugin:${this.id}`)
   }
 
   /**

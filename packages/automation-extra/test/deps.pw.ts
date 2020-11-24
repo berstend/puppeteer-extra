@@ -8,11 +8,10 @@ import { AutomationExtraPlugin } from 'automation-extra-plugin'
 
 test('will resolve plugin dependencies correctly', async t => {
   class Plugin extends AutomationExtraPlugin {
+    static id = 'foobar'
+
     constructor(opts = {}) {
       super(opts)
-    }
-    get name() {
-      return 'foobar'
     }
 
     get dependencies() {
@@ -30,11 +29,10 @@ test('will resolve plugin dependencies correctly', async t => {
 })
 test('will resolve plugin dependencies as Map correctly', async t => {
   class Plugin extends AutomationExtraPlugin {
+    static id = 'foobar'
+
     constructor(opts = {}) {
       super(opts)
-    }
-    get name() {
-      return 'foobar'
     }
 
     get dependencies() {

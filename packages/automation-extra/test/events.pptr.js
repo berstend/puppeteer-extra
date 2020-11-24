@@ -22,11 +22,10 @@ const factory = (testConnect = false) => async t => {
   const pluginName = 'hello-world'
 
   class Plugin extends AutomationExtraPlugin {
+    static id = pluginName
+
     constructor(opts = {}) {
       super(opts)
-    }
-    get name() {
-      return pluginName
     }
 
     onPluginRegistered() {

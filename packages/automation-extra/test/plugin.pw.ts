@@ -17,11 +17,9 @@ test('will be able to modify launch options', async t => {
   let FINAL_OPTIONS = null
 
   class Plugin extends AutomationExtraPlugin {
+    static id = 'foobar'
     constructor(opts = {}) {
       super(opts)
-    }
-    get name() {
-      return 'foobar'
     }
 
     async beforeLaunch(options: LaunchOptions) {
@@ -60,11 +58,9 @@ test('will set env correctly', async t => {
   let result = null
 
   class Plugin extends AutomationExtraPlugin {
+    static id = 'foobar'
     constructor(opts = {}) {
       super(opts)
-    }
-    get name() {
-      return 'foobar'
     }
 
     async onPageCreated(page: Page) {
@@ -90,11 +86,9 @@ test('will set env correctly', async t => {
 
 test('will overwrite user-agent correctly', async t => {
   class Plugin extends AutomationExtraPlugin {
+    static id = 'foobar'
     constructor(opts = {}) {
       super(opts)
-    }
-    get name() {
-      return 'foobar'
     }
 
     async beforeContext(options: Playwright.BrowserContextOptions) {
