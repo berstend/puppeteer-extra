@@ -8,7 +8,7 @@ wrap(test)('pptr:chromium')(
   'will remove headless from the user-agent',
   async (t, driver) => {
     const plugin = require('puppeteer-extra-plugin-anonymize-ua')()
-    const { browser, page } = await driver.getPageWithPlugin(plugin)
+    const { browser, page } = await driver.getPage(plugin)
 
     await page.goto('https://httpbin.org/headers', {
       waitUntil: 'domcontentloaded'
@@ -27,7 +27,7 @@ wrap(test)('pptr:chromium')(
   'will remove headless from the user-agent in incognito page',
   async (t, driver) => {
     const plugin = require('puppeteer-extra-plugin-anonymize-ua')()
-    const browser = await driver.getBrowserWithPlugin(plugin)
+    const browser = await driver.getBrowser(plugin)
 
     // Requires puppeteer@next currrently
     if (browser.createIncognitoBrowserContext) {
@@ -53,7 +53,7 @@ wrap(test)('pptr:chromium')(
     const plugin = require('puppeteer-extra-plugin-anonymize-ua')({
       customFn: ua => 'MyCoolAgent/' + ua.replace('Chrome', 'Beer')
     })
-    const { browser, page } = await driver.getPageWithPlugin(plugin)
+    const { browser, page } = await driver.getPage(plugin)
 
     await page.goto('https://httpbin.org/headers', {
       waitUntil: 'domcontentloaded'
