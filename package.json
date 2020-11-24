@@ -15,7 +15,8 @@
     "test": "lerna run test --concurrency 1 --stream",
     "test-ci": "lerna run test-ci --concurrency 1 --stream",
     "prepare": "lerna run prepare",
-    "release": "lerna publish --npm-client npm"
+    "release": "lerna publish --npm-client npm",
+    "download-firefox": "node packages/testing-tools/download-firefox.js"
   },
   "workspaces": [
     "packages/*"

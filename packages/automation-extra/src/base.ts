@@ -177,6 +177,15 @@ export class AutomationExtraBase {
     })
 
     const bindContextEvents = (context: pw.BrowserContext) => {
+      // Make sure things like `addInitScript` show an effect on the very first page as well
+      context.newPage = ((originalMethod, ctx) => {
+        return async () => {
+          const page = await originalMethod.call(ctx)
+          await page.goto('about:blank')
+          return page
+        }
+      })(context.newPage, context)
+
       context.on('close', () => {
         this.plugins.dispatch('onContextClose', context)
       })

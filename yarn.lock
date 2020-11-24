@@ -1086,30 +1086,30 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@cliqz/adblocker-content@^1.18.3":
-  version "1.18.3"
-  resolved "https://registry.yarnpkg.com/@cliqz/adblocker-content/-/adblocker-content-1.18.3.tgz#c9511f9857614303d61d5f4c37f2979cfa6f3865"
-  integrity sha512-mCLlGg4B8P2VWtJpSAJStR9HeRNt5Jo4D0MIOdXIkdSFjCWcXUSwqlUtu5GBvA8iFp9cGgHC/EYeyUW1SbuvYg==
+"@cliqz/adblocker-content@^1.18.6":
+  version "1.18.6"
+  resolved "https://registry.yarnpkg.com/@cliqz/adblocker-content/-/adblocker-content-1.18.6.tgz#a65dd518f3e6d1f2e9fee36ca5ae5615ba7b4cfd"
+  integrity sha512-OXrca20n+cMn9Ase+6oeX3fTmkauQMSb//lMLs56pHyra4foxN5o1rNiBG7qNIypdGQBFiTtGG7Vbp7YO5RQMw==
 
-"@cliqz/adblocker-puppeteer@^1.4.0":
-  version "1.18.3"
-  resolved "https://registry.yarnpkg.com/@cliqz/adblocker-puppeteer/-/adblocker-puppeteer-1.18.3.tgz#b5b5a6740983d9e71aeaa7f90f710902c363d9b7"
-  integrity sha512-2JkMzGeC2+s2t7oZHZLiBt7b3RTyo5kC3Uewih9CapRo/3xWUugIqBvmik0Q+Pr1/DE3x7YB36GuyLwxbt1yZg==
+"@cliqz/adblocker-puppeteer@^1.18.6":
+  version "1.18.6"
+  resolved "https://registry.yarnpkg.com/@cliqz/adblocker-puppeteer/-/adblocker-puppeteer-1.18.6.tgz#471dfa36e2146f4ee2d9898aacadf7008c874aa3"
+  integrity sha512-6EB+ycmaNSduySKQMUXkIr2wBphmssFr3w5eJ/geTqRTt2tw8DAjnA0dDLvbnvmWZUJDikJ5OYMIGZC/B0i30w==
   dependencies:
-    "@cliqz/adblocker" "^1.18.3"
-    "@cliqz/adblocker-content" "^1.18.3"
+    "@cliqz/adblocker" "^1.18.6"
+    "@cliqz/adblocker-content" "^1.18.6"
     tldts-experimental "^5.6.21"
 
-"@cliqz/adblocker@^1.18.3":
-  version "1.18.3"
-  resolved "https://registry.yarnpkg.com/@cliqz/adblocker/-/adblocker-1.18.3.tgz#a1a2022f6a8d093d1c31167d4bdb5a03e0b57002"
-  integrity sha512-fkGky+ffAsXw9WIS+cV9zm8EMzdjRKU/uO196yCFHYICByZyREBie3lMNNKQ6RVSUeEVFOx1JlEKkY9Bze/9xQ==
+"@cliqz/adblocker@^1.18.6":
+  version "1.18.6"
+  resolved "https://registry.yarnpkg.com/@cliqz/adblocker/-/adblocker-1.18.6.tgz#07d075c45017db7cd2aff19afe466ad53217d318"
+  integrity sha512-+ro8DoqBaMt9nmfjJF+0Om03/9hdDhRx6NJKzwmW7Pfvd/XhqJ+NiDtdusABSERhCE3nUXCWdu5j09X9HiX6Vg==
   dependencies:
     "@remusao/guess-url-type" "^1.1.2"
     "@remusao/small" "^1.1.2"
     "@remusao/smaz" "^1.7.1"
-    "@types/chrome" "^0.0.123"
-    "@types/firefox-webext-browser" "^78.0.0"
+    "@types/chrome" "^0.0.126"
+    "@types/firefox-webext-browser" "^82.0.0"
     tldts-experimental "^5.6.21"
 
 "@concordance/react@^2.0.0":
@@ -2080,10 +2080,10 @@
   dependencies:
     "@types/filesystem" "*"
 
-"@types/chrome@^0.0.123":
-  version "0.0.123"
-  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.123.tgz#3bd094ae3b3920e8210ca63e6b5927358fafc1a5"
-  integrity sha512-fG6GPreuSY+Z+0e3dtBz5MJ5qyZ2feOZISG8udxBiuwUYqykK1q4NxkjfzL2F5I05LqK2ojP7ZR08Gcfo3ubHQ==
+"@types/chrome@^0.0.126":
+  version "0.0.126"
+  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.126.tgz#f9f3436712f0c7c12ea9798abc9b95575ad7b23a"
+  integrity sha512-191z7uoyfbGU+z7/m45j9XbWugWqVHVPMM4hJV5cZ+3YzGCT9wFjMUHO3Wr3Xvo8aVodvRNu28u7lvEaAnfbzg==
   dependencies:
     "@types/filesystem" "*"
     "@types/har-format" "*"
@@ -2115,10 +2115,10 @@
   resolved "https://registry.yarnpkg.com/@types/filewriter/-/filewriter-0.0.28.tgz#c054e8af4d9dd75db4e63abc76f885168714d4b3"
   integrity sha1-wFTor02d11205jq8dviFFocU1LM=
 
-"@types/firefox-webext-browser@^78.0.0":
-  version "78.0.1"
-  resolved "https://registry.yarnpkg.com/@types/firefox-webext-browser/-/firefox-webext-browser-78.0.1.tgz#9c3b929c65a8263facac03ab930b0fb0f8addfbb"
-  integrity sha512-0d7oiI9K6Y4efP4Crl3JB88zYl7vaRdLtumqz8v6axMF8RCnK0NaGUjL4DnyQ7GLPo98b+s0BSRalaxAXgvPAQ==
+"@types/firefox-webext-browser@^82.0.0":
+  version "82.0.0"
+  resolved "https://registry.yarnpkg.com/@types/firefox-webext-browser/-/firefox-webext-browser-82.0.0.tgz#4d0f5cfebd7321d2cbf0ccfb6032570f0138b958"
+  integrity sha512-zKHePkjMx42KIUUZCPcUiyu1tpfQXH9VR4iDYfns3HvmKVJzt/TAFT+DFVroos8BI9RH78YgF3Hi/wlC6R6cKA==
 
 "@types/glob@^7.1.1":
   version "7.1.3"
@@ -2171,10 +2171,10 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
   integrity sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
 
-"@types/puppeteer@*", "@types/puppeteer@^3.0.1":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@types/puppeteer/-/puppeteer-3.0.2.tgz#20085220593b560c7332b6d46aecaf81ae263540"
-  integrity sha512-JRuHPSbHZBadOxxFwpyZPeRlpPTTeMbQneMdpFd8LXdyNfFSiX950CGewdm69g/ipzEAXAmMyFF1WOWJOL/nKw==
+"@types/puppeteer@5.4.0":
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/@types/puppeteer/-/puppeteer-5.4.0.tgz#1ef860bd7a9dcf0c4633aac8c0ec21f75b431868"
+  integrity sha512-zTYDLjnHjgzokrwKt7N0rgn7oZPYo1J0m8Ghu+gXqzLCEn8RWbELa2uprE2UFJ0jU/Sk0x9jXXdOH/5QQLFHhQ==
   dependencies:
     "@types/node" "*"
 
@@ -8240,6 +8240,16 @@ punycode@^2.1.0, punycode@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
+
+puppeteer-extra@^3.1.15:
+  version "3.1.15"
+  resolved "https://registry.yarnpkg.com/puppeteer-extra/-/puppeteer-extra-3.1.15.tgz#a2ec4f5fc0bed837cc983a25b7d18c37161233cb"
+  integrity sha512-TFKcluoNSYCT3xmZjDcqOkBuxZePbwvaL5mrW5Gvp5c9QsJEei5TYixoenMQaB3QZuRW0Aura4yyjVrJDNlWFA==
+  dependencies:
+    "@types/debug" "^4.1.0"
+    "@types/puppeteer" "^2.0.0"
+    debug "^4.1.1"
+    deepmerge "^4.2.2"
 
 puppeteer-firefox@^0.5.0:
   version "0.5.1"

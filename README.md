@@ -53,6 +53,9 @@ yarn lerna add fs-extra --scope=puppeteer-extra-plugin-user-data-dir
 # https://github.com/lerna/lerna/issues/833
 yarn lerna exec --concurrency 1 'yarn remove fs-extra; echo 0'
 
+# Make sure firefox is installed and symlinked
+yarn download-firefox
+
 # Run test in all packages
 yarn test
 

@@ -246,6 +246,15 @@ export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
     this._debugBase('Initialized.')
   }
 
+  /** Unified Page methods for Playwright & Puppeteer */
+  public shim(page: Page): PageShim
+  public shim(obj: unknown): unknown {
+    if (this.env.isPage(obj)) {
+      return new PageShim(this.env, obj)
+    }
+    throw new Error(`Unsupported shim: (isPage: ${this.env.isPage(obj)})`)
+  }
+
   /**
    * Plugin name (required).
    *
@@ -381,52 +390,25 @@ export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
 export type SupportedDrivers = 'playwright' | 'puppeteer'
 export type BrowserEngines = 'chromium' | 'firefox' | 'webkit'
 
-/**
- * Store environment specific info and make lookups easy
- */
-export class LauncherEnv {
-  // The browser might not be known from the very start, as we might lazy require the vanilla packages.
-  // Also puppeteer supports defining the browser during launch()
-
-  /**
-   * The name of the browser engine currently in use: `"chromium" | "firefox" | "webkit"`.
-   */
-  public browserName: BrowserEngines | 'unknown' = 'unknown'
-
-  /**
-   * The name of the driver currently in use: `"playwright" | "puppeteer"`.
-   */
-  public driverName: SupportedDrivers | 'unknown' = 'unknown'
-
-  /** @private */
-  constructor(driverName?: SupportedDrivers | 'unknown') {
-    if (driverName) {
-      this.driverName = driverName
-    }
-  }
-
-  // Helper methods for convenience
-  get isPuppeteer() {
-    return this.driverName === 'puppeteer'
-  }
-  get isPlaywright() {
-    return this.driverName === 'playwright'
-  }
-  get isChromium() {
-    return this.browserName === 'chromium'
-  }
-  get isFirefox() {
-    return this.browserName === 'firefox'
-  }
-  get isWebkit() {
-    return this.browserName === 'webkit'
-  }
-  get isBrowserKnown() {
-    return this.browserName !== 'unknown'
-  }
-
+export abstract class TypeGuards {
   // Type guards work by discriminating against properties only found in that specific type
 
+  /**
+   * Type guard, will make TypeScript understand which type we're working with.
+   * @param obj - The object to test
+   * @returns {boolean}
+   */
+  isPage(obj: any): obj is Puppeteer.Page | Playwright.Page {
+    return 'goto' in obj && 'url' in obj
+  }
+  /**
+   * Type guard, will make TypeScript understand which type we're working with.
+   * @param obj - The object to test
+   * @returns {boolean}
+   */
+  isBrowser(obj: any): obj is Puppeteer.Browser | Playwright.Browser {
+    return 'newPage' in obj && 'close' in obj
+  }
   /**
    * Type guard, will make TypeScript understand which type we're working with.
    * @param obj - The object to test
@@ -474,5 +456,89 @@ export class LauncherEnv {
    */
   isPlaywrightBrowserContext(obj: any): obj is Playwright.BrowserContext {
     return 'addCookies' in (obj as Playwright.BrowserContext)
+  }
+}
+
+/**
+ * Store environment specific info and make lookups easy
+ */
+export class LauncherEnv extends TypeGuards {
+  // The browser might not be known from the very start, as we might lazy require the vanilla packages.
+  // Also puppeteer supports defining the browser during launch()
+
+  /**
+   * The name of the browser engine currently in use: `"chromium" | "firefox" | "webkit"`.
+   * Note: The browser will only be known once a browser object is available.
+   */
+  public browserName: BrowserEngines | 'unknown' = 'unknown'
+
+  /**
+   * The name of the driver currently in use: `"playwright" | "puppeteer"`.
+   */
+  public driverName: SupportedDrivers | 'unknown' = 'unknown'
+
+  /** @private */
+  constructor(driverName?: SupportedDrivers | 'unknown') {
+    super()
+    if (driverName) {
+      this.driverName = driverName
+    }
+  }
+
+  // Helper methods for convenience
+  get isPuppeteer() {
+    return this.driverName === 'puppeteer'
+  }
+  get isPlaywright() {
+    return this.driverName === 'playwright'
+  }
+  get isChromium() {
+    return this.browserName === 'chromium'
+  }
+  get isFirefox() {
+    return this.browserName === 'firefox'
+  }
+  get isWebkit() {
+    return this.browserName === 'webkit'
+  }
+  get isBrowserKnown() {
+    return this.browserName !== 'unknown'
+  }
+}
+
+/**
+ * Can be converted to JSON
+ */
+type Serializable = {}
+
+/** Unified Page methods for Playwright & Puppeteer */
+export class PageShim {
+  private unsupportedShimError: Error
+  constructor(private env: LauncherEnv, private page: Page) {
+    this.unsupportedShimError = new Error(
+      `Unsupported shim: ${this.env.driverName}/${this.env.browserName}`
+    )
+  }
+
+  /**
+   * Adds a script which would be evaluated in one of the following scenarios:
+   *
+   * Whenever the page is navigated.
+   * Whenever the child frame is attached or navigated. In this case, the script is evaluated in the context of the newly attached frame.
+   *
+   * The script is evaluated after the document was created but before any of its scripts were run.
+   *
+   * @see
+   * **Playwright:** `addInitScript`
+   * **Puppeteer:** `evaluateOnNewDocument`
+   */
+  async addScript(script: string | Function, arg?: Serializable) {
+    if (this.env.isPuppeteerPage(this.page)) {
+      return this.page.evaluateOnNewDocument(script as any, arg as any)
+    }
+    if (this.env.isPlaywrightPage(this.page)) {
+      return this.page.addInitScript(script, arg)
+    }
+    throw this.unsupportedShimError
   }
 }

@@ -57,6 +57,9 @@ jobs:
       - name: install puppeteer@${{ matrix.puppeteer_version }}
         run: yarn lerna add --dev puppeteer@${{ matrix.puppeteer_version }}
 
+      - name: download firefox (puppeteer)
+        run: yarn download-firefox
+
       - name: lerna link
         run: yarn lerna link
 
