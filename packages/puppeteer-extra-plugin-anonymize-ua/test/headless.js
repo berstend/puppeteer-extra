@@ -4,7 +4,7 @@ const test = require('ava')
 
 const { wrap } = require('testing-tools')
 
-wrap(test)('pptr:chromium')(
+wrap(test)('puppeteer:chromium')(
   'will remove headless from the user-agent',
   async (t, driver) => {
     const plugin = require('puppeteer-extra-plugin-anonymize-ua')()
@@ -23,7 +23,7 @@ wrap(test)('pptr:chromium')(
   }
 )
 
-wrap(test)('pptr:chromium')(
+wrap(test)('puppeteer:chromium')(
   'will remove headless from the user-agent in incognito page',
   async (t, driver) => {
     const plugin = require('puppeteer-extra-plugin-anonymize-ua')()
@@ -47,7 +47,7 @@ wrap(test)('pptr:chromium')(
   }
 )
 
-wrap(test)('pptr:chromium')(
+wrap(test)('puppeteer:chromium')(
   'will use a custom fn to modify the user-agent',
   async (t, driver) => {
     const plugin = require('puppeteer-extra-plugin-anonymize-ua')({
