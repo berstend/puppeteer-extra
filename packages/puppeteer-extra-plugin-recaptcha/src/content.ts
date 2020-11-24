@@ -70,12 +70,12 @@ export class RecaptchaContentScript {
 
   private async _waitUntilDocumentReady() {
     return new Promise(function (resolve) {
-      if (!document || !window) return resolve()
+      if (!document || !window) return resolve(null)
       const loadedAlready = /^loaded|^i|^c/.test(document.readyState)
-      if (loadedAlready) return resolve()
+      if (loadedAlready) return resolve(null)
 
       function onReady() {
-        resolve()
+        resolve(null)
         document.removeEventListener('DOMContentLoaded', onReady)
         window.removeEventListener('load', onReady)
       }
