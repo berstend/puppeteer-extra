@@ -27,7 +27,7 @@ wrap(test)('puppeteer:chromium')(
   'will remove headless from the user-agent in incognito page',
   async (t, driver) => {
     const plugin = require('puppeteer-extra-plugin-anonymize-ua')()
-    const browser = await driver.getBrowser(plugin)
+    const { browser } = await driver.getBrowser(plugin)
 
     // Requires puppeteer@next currrently
     if (browser.createIncognitoBrowserContext) {
