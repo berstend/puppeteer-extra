@@ -2,17 +2,17 @@ import test from 'ava'
 
 import { AutomationExtraPlugin } from '.'
 
-test('is a function', async t => {
+test('is a function', async (t) => {
   t.is(typeof AutomationExtraPlugin, 'function')
 })
 
-test('will throw without a name', async t => {
+test('will throw without a name', async (t) => {
   class Derived extends AutomationExtraPlugin {}
   const error = await t.throws(() => new Derived())
   t.is(error.message, `Plugin must override "name"`)
 })
 
-test('should have the basic class members', async t => {
+test('should have the basic class members', async (t) => {
   const pluginName = 'hello-world'
   class Plugin extends AutomationExtraPlugin {
     constructor(opts = {}) {
@@ -33,7 +33,7 @@ test('should have the basic class members', async t => {
   t.true(instance._isAutomationExtraPlugin)
 })
 
-test('should have the public class members', async t => {
+test('should have the public class members', async (t) => {
   const pluginName = 'hello-world'
   class Plugin extends AutomationExtraPlugin {
     constructor(opts = {}) {
@@ -59,7 +59,7 @@ test('should have the public class members', async t => {
   t.true(instance.onPluginRegistered instanceof Function)
 })
 
-test('should merge opts with defaults automatically', async t => {
+test('should merge opts with defaults automatically', async (t) => {
   const pluginName = 'hello-world'
   const pluginDefaults = { foo: 'bar', foo2: 'bar2', extra1: 123 }
   const userOpts = { foo2: 'bob', extra2: 666 }
@@ -84,7 +84,42 @@ test('should merge opts with defaults automatically', async t => {
   t.is(instance.opts.extra2, userOpts.extra2)
 })
 
-test('should have opts when defaults is not defined', async t => {
+test('should merge opts with Sets correctly', async (t) => {
+  const pluginName = 'hello-world'
+  const pluginDefaults = {
+    x1: false,
+    x2: true,
+    x3: ['foo'],
+    x4: new Set(['alice', 'bob', 'francis']),
+  }
+  const userOpts = {
+    x2: false,
+    x3: ['bar'],
+    x4: new Set(['alice', 'bob', 'frank']),
+  }
+
+  class Plugin extends AutomationExtraPlugin {
+    constructor(opts = {}) {
+      super(opts)
+    }
+    get name() {
+      return pluginName
+    }
+    get defaults() {
+      return pluginDefaults
+    }
+  }
+  const instance = new Plugin(userOpts)
+
+  t.deepEqual(instance.opts, {
+    x1: false,
+    x2: false,
+    x3: ['bar'],
+    x4: new Set(['alice', 'bob', 'frank']),
+  })
+})
+
+test('should have opts when defaults is not defined', async (t) => {
   const pluginName = 'hello-world'
   const userOpts = { foo2: 'bob', extra2: 666 }
 

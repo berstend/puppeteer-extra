@@ -8,7 +8,9 @@ export { Puppeteer, Playwright } // Re-export
 /* tslint:disable:no-empty */
 
 /** @private */
-const merge = require('merge-deep')
+import merge from 'deepmerge'
+import { isPlainObject } from 'is-plain-object'
+const mergeOptions = { isMergeableObject: isPlainObject }
 
 export interface PluginOptions {
   [key: string]: any
@@ -239,7 +241,7 @@ export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
     super()
     this._debugBase = debug(`automation-extra-plugin:base:${this.name}`)
 
-    this._opts = merge(this.defaults, opts || {})
+    this._opts = merge(this.defaults, opts || {}, mergeOptions)
 
     this.env = new LauncherEnv()
 
@@ -272,7 +274,7 @@ export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
   /**
    * Plugin defaults (optional).
    *
-   * If defined will be ([deep-](https://github.com/jonschlinkert/merge-deep))merged with the (optional) user supplied options (supplied during plugin instantiation).
+   * If defined will be ([deep-](https://github.com/TehShrike/deepmerge))merged with the (optional) user supplied options (supplied during plugin instantiation).
    *
    * The result of merging defaults with user supplied options can be accessed through `this.opts`.
    *
