@@ -35,12 +35,13 @@ export class AutomationExtraBase {
    * @return The same `PuppeteerExtra` or `PlaywrightExtra` instance (for optional chaining)
    */
   public use(plugin: types.Plugin): this {
-    if (!plugin || typeof plugin !== 'object') {
+    const isValid = plugin && 'name' in plugin
+    if (!isValid) {
       throw new Error('A plugin must be provided to .use()')
     }
 
     this.plugins.add(plugin)
-    debug('Plugin registered', plugin.name)
+    debug('Plugin registered', plugin.name) /* tslint:disable-line */
 
     return this
   }
@@ -131,9 +132,9 @@ export class AutomationExtraBase {
     await this.plugins.dispatchBlocking('onBrowser', browser, launchContext)
 
     if (this.env.isPuppeteerBrowser(browser)) {
-      this._bindPuppeteerBrowserEvents(browser)
+      await this._bindPuppeteerBrowserEvents(browser)
     } else {
-      this._bindPlaywrightBrowserEvents(browser)
+      await this._bindPlaywrightBrowserEvents(browser)
     }
 
     await this.plugins.dispatchBlocking(afterEvent, browser, launchContext)

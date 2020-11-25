@@ -21,8 +21,11 @@
     "postdocs": "npx prettier --write readme.md",
     "test:ts": "ava -v --config ava.config-ts.js",
     "test:js": "ava -v --serial --concurrency 1 --fail-fast",
-    "test": "run-p test:ts",
-    "test-ci": "run-s test"
+    "test": "run-p test:js test:ts",
+    "test-ci": "run-p lint test",
+    "lint:js": "eslint --no-error-on-unmatched-pattern --ext .js src/ test/",
+    "lint:ts": "tslint --project tsconfig.json",
+    "lint": "run-p lint:js lint:ts"
   },
   "keywords": [
     "playwright",

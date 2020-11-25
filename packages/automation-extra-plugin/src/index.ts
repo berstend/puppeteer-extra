@@ -239,6 +239,10 @@ export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
    *
    * @example
    * static id = 'anonymize-ua';
+   * // or
+   * static get id() {
+   *   return 'anonymize-ua'
+   * }
    */
   static id = 'base-plugin'
 
@@ -271,7 +275,6 @@ export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
   }
   /**
    * Backwards compatibility, use a `static id` property instead.
-   * @deprecated
    * @private
    */
   get name() {

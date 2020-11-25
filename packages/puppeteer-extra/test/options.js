@@ -32,6 +32,7 @@ test('will modify puppeteer launch options through plugins', async t => {
       return pluginData
     }
     beforeLaunch(options) {
+      options.args = options.args || []
       options.args.push('--foobar=true')
       options.timeout = 60 * 1000
       options.headless = true
@@ -43,16 +44,15 @@ test('will modify puppeteer launch options through plugins', async t => {
   const instance = new Plugin()
   puppeteer.use(instance)
   const browser = await puppeteer.launch({
-    args: PUPPETEER_ARGS,
+    args: [...PUPPETEER_ARGS],
     headless: false
   })
 
   t.deepEqual(FINAL_OPTIONS, {
     headless: true,
     timeout: 60000,
-    args: [].concat(PUPPETEER_ARGS, ['--foobar=true'])
+    args: [...PUPPETEER_ARGS, '--foobar=true']
   })
-
   await browser.close()
   t.true(true)
 })
@@ -63,7 +63,7 @@ test('will modify puppeteer connect options through plugins', async t => {
   // Launch vanilla puppeteer browser with no plugins
   const puppeteerVanilla = require('puppeteer')
   const browserVanilla = await puppeteerVanilla.launch({
-    args: PUPPETEER_ARGS
+    args: [...PUPPETEER_ARGS]
   })
   const browserWSEndpoint = browserVanilla.wsEndpoint()
 

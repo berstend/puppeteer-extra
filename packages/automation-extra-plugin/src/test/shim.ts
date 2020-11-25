@@ -5,11 +5,10 @@ import { AutomationExtraPlugin, Page } from '../.'
 test('should have the public class members', async (t) => {
   const pluginName = 'hello-world'
   class Plugin extends AutomationExtraPlugin {
+    static id = pluginName
+
     constructor(opts = {}) {
       super(opts)
-    }
-    get name() {
-      return pluginName
     }
 
     async onPageCreated(page: Page) {

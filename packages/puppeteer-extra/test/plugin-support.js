@@ -48,14 +48,14 @@ test('will launch puppeteer with plugin support', async t => {
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
   const page = await browser.newPage()
 
-  t.is(puppeteer.plugins.length, 1)
-  t.is(puppeteer.plugins[0].name, pluginName)
-  t.is(puppeteer.pluginNames.length, 1)
-  t.is(puppeteer.pluginNames[0], pluginName)
-  t.is(puppeteer.getPluginData().length, 1)
-  t.deepEqual(puppeteer.getPluginData()[0], pluginData[0])
-  t.deepEqual(puppeteer.getPluginData('foo')[0], pluginData[0])
-  t.is(puppeteer.getPluginData('not-existing').length, 0)
+  t.is(puppeteer.plugins.list.length, 1)
+  t.is(puppeteer.plugins.list[0].name, pluginName)
+  t.is(puppeteer.plugins.names.length, 1)
+  t.is(puppeteer.plugins.names[0], pluginName)
+  t.is(puppeteer.plugins.getData().length, 1)
+  t.deepEqual(puppeteer.plugins.getData()[0], pluginData[0])
+  t.deepEqual(puppeteer.plugins.getData('foo')[0], pluginData[0])
+  t.is(puppeteer.plugins.getData('not-existing').length, 0)
 
   await page.goto('http://example.com', {
     waitUntil: 'domcontentloaded',

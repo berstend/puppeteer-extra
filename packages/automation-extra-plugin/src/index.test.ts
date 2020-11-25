@@ -8,7 +8,7 @@ test('is a function', async (t) => {
 
 test('will throw without an id', async (t) => {
   class Derived extends AutomationExtraPlugin {}
-  const error = await t.throws(() => new Derived().name)
+  const error = t.throws(() => new Derived().id)
   t.is(error.message, `Plugin must override "id"`)
 })
 
@@ -23,7 +23,8 @@ test('should have the basic class members', async (t) => {
   }
   const instance = new Plugin()
 
-  t.is(instance.name, pluginName)
+  t.is(instance.id, pluginName)
+  t.is(instance.name, pluginName) /* tslint:disable-line */
   t.true(instance.requirements instanceof Set)
   t.true(instance.dependencies instanceof Set)
   t.true(instance.defaults instanceof Object)
@@ -36,6 +37,27 @@ test('should have an id', async (t) => {
   const pluginName = 'hello-world'
   class Plugin extends AutomationExtraPlugin {
     static id = pluginName
+
+    constructor(opts = {}) {
+      super(opts)
+    }
+    get name() {
+      return pluginName
+    }
+  }
+
+  t.is(Plugin.id, pluginName)
+  const instance = new Plugin()
+  t.is(instance.id, pluginName)
+  t.is(instance.debug.namespace, `automation-extra-plugin:${pluginName}`)
+})
+
+test('should have an id with getter', async (t) => {
+  const pluginName = 'hello-world2'
+  class Plugin extends AutomationExtraPlugin {
+    static get id() {
+      return pluginName
+    }
 
     constructor(opts = {}) {
       super(opts)

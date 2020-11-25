@@ -83,4 +83,4 @@ export type LegacyPluginMethodFn<
   TName extends LegacyPluginMethodNames
 > = PropType<PuppeteerExtraPlugin, TName>
 
-export type Plugin = AutomationExtraPlugin | PuppeteerExtraPlugin
+export type Plugin = PuppeteerExtraPlugin | AutomationExtraPlugin

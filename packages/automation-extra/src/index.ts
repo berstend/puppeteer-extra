@@ -21,6 +21,7 @@ export const addExtra = (
   launcher: types.PuppeteerBrowserLauncher | types.PlaywrightBrowserLauncher
 ): PuppeteerExtra | PlaywrightExtra => {
   // General checks
+  /* tslint:disable-next-line */
   if (!launcher || typeof launcher !== 'object') {
     throw new Error('Invalid browser launcher: Expected object.')
   }

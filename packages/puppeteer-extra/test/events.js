@@ -171,5 +171,5 @@ test('will bind connected browser events to plugins', async t => {
   t.true(PLUGIN_EVENTS.includes('onTargetDestroyed'))
   await browser.close().catch(console.log)
   t.true(PLUGIN_EVENTS.includes('onDisconnected'))
-  t.true(!PLUGIN_EVENTS.includes('onClose'))
+  t.true(PLUGIN_EVENTS.includes('onClose'))
 })

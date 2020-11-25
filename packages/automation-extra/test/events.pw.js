@@ -24,7 +24,9 @@ const factory = (
   const pluginName = 'hello-world'
 
   class Plugin extends AutomationExtraPlugin {
-    static id = pluginName
+    static get id() {
+      return pluginName
+    }
     constructor(opts = {}) {
       super(opts)
     }
