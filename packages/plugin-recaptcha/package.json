@@ -1,0 +1,73 @@
+{
+  "name": "@extra/recaptcha",
+  "version": "4.2.2",
+  "description": "A plugin for playwright & puppeteer to solve reCAPTCHAs automatically.",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": "berstend/puppeteer-extra",
+  "homepage": "https://github.com/berstend/puppeteer-extra/tree/master/packages/plugin-recaptcha",
+  "author": "berstend",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf dist/*",
+    "tscheck": "tsc --pretty --noEmit",
+    "prebuild": "run-s clean",
+    "build": "run-s build:tsc build:rollup ambient-dts",
+    "build:tsc": "tsc --project tsconfig.json --module commonjs",
+    "build:rollup": "rollup -c rollup.config.ts",
+    "docs": "node -e 0",
+    "predocs2": "rimraf docs/*",
+    "docs2": "typedoc --module commonjs --readme none --target ES6 --theme markdown --excludeNotExported --excludeExternals --excludePrivate --out docs --mode file src/index.ts",
+    "test": "ava -v --config ava.config-ts.js",
+    "pretest-ci": "run-s build",
+    "test-ci": "run-p lint test",
+    "ambient-dts": "run-s ambient-dts-copy ambient-dts-fix-path",
+    "ambient-dts-copy": "copyfiles -u 1 \"src/**/*.d.ts\" dist",
+    "ambient-dts-fix-path": "replace-in-files --string='/// <reference path=\"../src/' --replacement='/// <reference path=\"../dist/' 'dist/**/*.d.ts'",
+    "lint:js": "eslint --no-error-on-unmatched-pattern --ext .js src/ test/",
+    "lint:ts": "tslint --project tsconfig.json",
+    "lint": "run-p lint:js lint:ts"
+  },
+  "engines": {
+    "node": ">=9.11.2"
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": false,
+    "singleQuote": true
+  },
+  "keywords": [
+    "puppeteer",
+    "playwright",
+    "puppeteer-extra",
+    "playwright-extra",
+    "automation-extra",
+    "automation-extra-plugin",
+    "recaptcha",
+    "captcha",
+    "2captcha"
+  ],
+  "devDependencies": {
+    "@types/debug": "^4.1.5",
+    "@types/node": "^13.1.4",
+    "ava": "2.4.0",
+    "copyfiles": "^2.1.1",
+    "npm-run-all": "^4.1.5",
+    "puppeteer": "5.4.1",
+    "replace-in-files-cli": "^0.3.1",
+    "rimraf": "^3.0.0",
+    "ts-node": "^8.5.4",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-config-standard": "^9.0.0",
+    "typescript": "4.1.2"
+  },
+  "dependencies": {
+    "automation-extra-plugin": "*",
+    "debug": "^4.1.1"
+  }
+}
