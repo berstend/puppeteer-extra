@@ -53,7 +53,10 @@ export type SolveRecaptchasResult = FindRecaptchasResult &
   EnterRecaptchaSolutionsResult &
   GetSolutionsResult
 
+export type CaptchaVendor = 'recaptcha' | 'hcaptcha'
+
 export interface CaptchaInfo {
+  _vendor: CaptchaVendor
   id?: string // captcha id
   widgetId?: number
   sitekey?: string
@@ -72,6 +75,7 @@ export interface CaptchaInfo {
 }
 
 export interface CaptchaSolution {
+  _vendor: CaptchaVendor
   id?: string // captcha id
   provider?: string
   providerCaptchaId?: string
@@ -84,6 +88,7 @@ export interface CaptchaSolution {
 }
 
 export interface CaptchaSolved {
+  _vendor: CaptchaVendor
   id?: string // captcha id
   responseElement?: boolean
   responseCallback?: boolean

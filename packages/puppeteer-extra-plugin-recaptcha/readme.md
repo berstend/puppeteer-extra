@@ -1,6 +1,6 @@
 # puppeteer-extra-plugin-recaptcha [![Build Status](https://travis-ci.org/berstend/puppeteer-extra.svg?branch=master)](https://travis-ci.org/berstend/puppeteer-extra) [![npm](https://img.shields.io/npm/v/puppeteer-extra-plugin-recaptcha.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin-recaptcha)
 
-> A [puppeteer-extra](https://github.com/berstend/puppeteer-extra) plugin to solve reCAPTCHAs automatically.
+> A [puppeteer-extra](https://github.com/berstend/puppeteer-extra) plugin to solve reCAPTCHAs and hCaptchas automatically.
 
 ![](https://i.imgur.com/SWrIQw0.gif)
 
@@ -150,6 +150,8 @@ The stated reasons for this omnipresent captcha plague vary from site owners hav
 
 In any case I strongly feel that captchas in their current form have failed. They're a much bigger obstacle and annoyance to humans than to robots, which renders them useless. My anarchist contribution to this discussion is to demonstrate this absurdity, with a plugin for robots with which **a single line of code is all it takes to bypass reCAPTCHAs on any site**.
 
+> Note: Since `v3.3.0` the plugin will solve [hCaptchas](https://www.hcaptcha.com/) as well, as they've gained significant marketshare through their Cloudflare partnership.
+
 ## Provider
 
 I thought about having the plugin solve captchas directly (e.g. using the [audio challenge](https://github.com/dessant/buster) and speech-to-text APIs), but external solution providers are so cheap and reliable that there is really no benefit in doing that. ¯\\\_(ツ)\_/¯
@@ -160,7 +162,7 @@ _Please note:_ You need a provider configured for this plugin to do it's magic. 
 
 Currently the only builtin solution provider as it's the cheapest and most reliable, from my experience. If you'd like to throw some free captcha credit my way feel free to [signup here](https://2captcha.com?from=6690177) (referral link, allows me to write automated tests against their API).
 
-- Cost: 1000 reCAPTCHAs for 3 USD
+- Cost: 1000 reCAPTCHAs (and hCaptchas) for 3 USD
 - Delay: Solving a reCAPTCHA takes between 10 to 60 seconds
 - Error rate (incorrect solutions): Very rare
 
@@ -172,7 +174,7 @@ You can easily use your own provider as well, by providing the plugin a function
 
 ### How does this work?
 
-- When summoned with `page.solveRecaptchas()` the plugin will attempt to find any visible reCAPTCHAs, extract their configuration, pass that on to the specified solutions provider, take the solutions and put them back into the page (triggering any callback that might be required).
+- When summoned with `page.solveRecaptchas()` the plugin will attempt to find any active reCAPTCHAs & hCaptchas, extract their configuration, pass that on to the specified solutions provider, take the solutions and put them back into the page (triggering any callback that might be required).
 
 ### How do reCAPTCHAs work?
 
@@ -182,15 +184,17 @@ You can easily use your own provider as well, by providing the plugin a function
 
 ### Are ordinary image captchas supported as well?
 
-- No. This plugin focusses on reCAPTCHAs exclusively, with the benefit of being fully automatic. 🔮
+- No. This plugin focusses on reCAPTCHAs and hCaptchas exclusively, with the benefit of being fully automatic. 🔮
 
 ### What about invisible reCAPTCHAs?
 
-- [Invisible reCAPTCHAs](https://developers.google.com/recaptcha/docs/invisible) are a different beast. They're basically used to compute a score of how likely the user is a bot. Based on that score the site owner can block access to resources or (most often) present the user with a reCAPTCHA challenge (which this plugin can solve). The [stealth plugin](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth) might be of interest here, as it masks the usage of puppeteer.
+- [Invisible reCAPTCHAs](https://developers.google.com/recaptcha/docs/invisible) are supported. They're basically used to compute a score of how likely the user is a bot. Based on that score the site owner can block access to resources or (most often) present the user with a reCAPTCHA challenge (which this plugin can solve). The [stealth plugin](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth) might be of interest here, as it masks the usage of puppeteer.
+- Technically speaking the plugin supports: reCAPTCHA v2, reCAPTCHA v3, invisible reCAPTCHA, hCaptcha, invisible hCaptcha. All of those (multiple as well) are solved when `page.solveRecaptchas()` is called.
 
 ### When should I call `page.solveRecaptchas()`?
 
 - reCAPTCHAs will be solved automatically whenever they **are visible** (_aka their "I'm not a robot" iframe in the DOM_). It's your responsibility to do any required actions to trigger the captcha being shown, if needed.
+  - Note about "invisible" versions of reCAPTCHA/hCaptchas: They don't feature a visible checkbox iframe, the plugin will then solve any open challenge popups instead. :-)
 - If you summon the plugin immediately after navigating to a page it's got your back and will wait automatically until the reCAPTCHA script (if any) has been loaded and initialized.
 - If you call `page.solveRecaptchas()` on a page that has no reCAPTCHAs nothing bad will happen (😄) but the promise will resolve and the rest of your code executes as normal.
 - After solving the reCAPTCHAs the plugin will automatically detect and trigger their [optional callback](https://developers.google.com/recaptcha/docs/display#render_param). This might result in forms being submitted and page navigations to occur, depending on how the site owner implemented the reCAPTCHA.
