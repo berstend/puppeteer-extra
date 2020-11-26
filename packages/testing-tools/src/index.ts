@@ -82,6 +82,9 @@ export const driver = (
   browser: BrowserName = 'chromium'
 ) => getHelper(driver, browser)
 
+export type Driver = typeof driver
+export type DriverContext = ReturnType<Driver>
+
 interface WrapOpts {
   exclude?: TestCases[]
 }

@@ -5,6 +5,7 @@
 
 export type { Browser } from 'puppeteer'
 export type { Page } from 'puppeteer'
+export type { Frame } from 'puppeteer'
 export type { Target } from 'puppeteer'
 export type { ConnectOptions } from 'puppeteer'
 export type { ChromeArgOptions } from 'puppeteer'

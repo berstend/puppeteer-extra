@@ -5,6 +5,7 @@
 export type { Browser } from 'playwright-core'
 export type { BrowserServer } from 'playwright-core'
 export type { Page } from 'playwright-core'
+export type { Frame } from 'playwright-core'
 export type { BrowserContextOptions } from 'playwright-core'
 export type { LaunchOptions } from 'playwright-core'
 export type { BrowserContext } from 'playwright-core'
