@@ -48,7 +48,7 @@ test('will detect hCAPTCHAs', async (t) => {
   })
   const page = await browser.newPage()
 
-  const url = 'https://tinytiger.cf/anything?action=captcha'
+  const url = 'http://democaptcha.com/demo-form-eng/hcaptcha.html'
   await page.goto(url, { waitUntil: 'networkidle0' })
 
   const { captchas, error } = await (page as any).findRecaptchas()
