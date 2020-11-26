@@ -70,12 +70,16 @@ export class RecaptchaContentScript {
 
   private async _waitUntilDocumentReady() {
     return new Promise(function (resolve) {
-      if (!document || !window) return resolve()
+      if (!document || !window) {
+        return resolve(null)
+      }
       const loadedAlready = /^loaded|^i|^c/.test(document.readyState)
-      if (loadedAlready) return resolve()
+      if (loadedAlready) {
+        return resolve(null)
+      }
 
       function onReady() {
-        resolve()
+        resolve(null)
         document.removeEventListener('DOMContentLoaded', onReady)
         window.removeEventListener('load', onReady)
       }
@@ -228,6 +232,7 @@ export class RecaptchaContentScript {
     if (!client) return
     const info: types.CaptchaInfo = this._pick(['sitekey', 'callback'])(client)
     if (!info.sitekey) return
+    info._vendor = 'recaptcha'
     info.id = client.id
     info.s = client.s // google site specific
     info.widgetId = client.widgetId
@@ -295,6 +300,7 @@ export class RecaptchaContentScript {
         .map((id) => this.getClientById(id))
         .map((client) => {
           const solved: types.CaptchaSolved = {
+            _vendor: 'recaptcha',
             id: client.id,
             responseElement: false,
             responseCallback: false,
