@@ -28,7 +28,7 @@ npm install @extra/recaptcha
 | **[Playwright](#Playwright)** |                                                                               ✅                                                                               |                                                                                 ✅                                                                                 |                                                                               ✅                                                                               |
 | **[Puppeteer](#Puppeteer)**   |                                                                               ✅                                                                               |                                                      [🕒](https://github.com/puppeteer/puppeteer/issues/6163)                                                      |                                                                               -                                                                                |
 
-> Learn more about their differences in [Playwright vs Puppeteer](https://github.com/berstend/puppeteer-extra/wiki/Playwright-vs-Puppeteer)
+> Confused? Learn more at [Playwright vs Puppeteer](https://github.com/berstend/puppeteer-extra/wiki/Playwright-vs-Puppeteer)
 
 ## Usage
 
