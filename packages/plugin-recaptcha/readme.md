@@ -1,4 +1,4 @@
-# @extra/recaptcha [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test/master)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](https://discord.gg/vz7PeKk) [![npm](https://img.shields.io/npm/v/@extra/recaptcha.svg)](https://www.npmjs.com/package/@extra/recaptcha)
+# @extra/recaptcha [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test/master)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](https://github.com/berstend/puppeteer-extra/wiki/Scraping-Chat) [![npm](https://img.shields.io/npm/v/@extra/recaptcha.svg)](https://www.npmjs.com/package/@extra/recaptcha)
 
 > A plugin for [playwright-extra] & [puppeteer-extra] to solve reCAPTCHAs and hCaptchas automatically.
 
@@ -15,18 +15,20 @@ npm install @extra/recaptcha
 <details>
  <summary><strong>Changelog</strong></summary>
 
-##### Latest
+#### Latest
 
 > 🎁 **Note:** Until we've automated changelog updates in markdown files please follow the `#announcements` channel in our [discord server](https://discord.gg/vz7PeKk) for the latest updates and changelog info.
 
 </details>
 
-### Support
+## Support
 
 | 💫                            | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](#)<br/>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](#)<br/>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Webkit" width="24px" height="24px" />](#)<br/>Webkit |
 | ----------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 | **[Playwright](#Playwright)** |                                                                               ✅                                                                               |                                                                                 ✅                                                                                 |                                                                               ✅                                                                               |
 | **[Puppeteer](#Puppeteer)**   |                                                                               ✅                                                                               |                                                      [🕒](https://github.com/puppeteer/puppeteer/issues/6163)                                                      |                                                                               -                                                                                |
+
+> Learn more about their differences in [Playwright vs Puppeteer](https://github.com/berstend/puppeteer-extra/wiki/Playwright-vs-Puppeteer)
 
 ## Usage
 
@@ -43,7 +45,40 @@ npm install playwright playwright-extra @extra/recaptcha
 ```
 
 ```js
-// TODO: Add playwright demo code
+// playwright-extra is a drop-in replacement for playwright,
+// it augments the installed playwright with plugin functionality
+// Note: Instead of chromium you can use firefox and webkit as well.
+const { chromium } = require('playwright-extra')
+
+// add recaptcha plugin and provide it your 2captcha token (= their apiKey)
+// 2captcha is the builtin solution provider but others would work as well.
+// Please note: You need to add funds to your 2captcha account for this to work
+const RecaptchaPlugin = require('@extra/recaptcha')
+chromium.use(
+  RecaptchaPlugin({
+    visualFeedback: true, // colorize reCAPTCHAs (violet = detected, green = solved)
+    provider: {
+      id: '2captcha',
+      token: 'XXXXXXX', // REPLACE THIS WITH YOUR OWN 2CAPTCHA API KEY ⚡
+    },
+  })
+)
+
+// playwright usage as normal
+chromium.launch({ headless: true }).then(async (browser) => {
+  const page = await browser.newPage()
+  await page.goto('https://www.google.com/recaptcha/api2/demo')
+
+  // That's it, a single line of code to solve reCAPTCHAs 🎉
+  await page.solveRecaptchas()
+
+  await Promise.all([
+    page.waitForNavigation(),
+    page.click(`#recaptcha-demo-submit`),
+  ])
+  await page.screenshot({ path: 'response.png', fullPage: true })
+  await browser.close()
+})
 ```
 
 ### Puppeteer
