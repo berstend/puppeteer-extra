@@ -1,5 +1,6 @@
 import test, { ExecutionContext } from 'ava'
 import { DriverContext, wrap } from 'testing-tools'
+
 import type { Playwright } from 'automation-extra-plugin'
 
 import RecaptchaPlugin from '../src/index'
