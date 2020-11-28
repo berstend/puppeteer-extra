@@ -2,10 +2,16 @@ name: Test
 
 on:
   pull_request:
+    branches:
+      - '*'
     types:
       - opened
       - synchronize
       - reopened
+  push:
+    branches:
+      - master
+      - 'test/*'
 
 env:
   CI: 'true'
