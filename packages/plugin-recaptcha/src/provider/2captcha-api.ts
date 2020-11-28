@@ -12,7 +12,6 @@ var apiKey
 var apiInUrl = 'http://2captcha.com/in.php'
 var apiResUrl = 'http://2captcha.com/res.php'
 var apiMethod = 'base64'
-var apiMethodRecaptcha = 'userrecaptcha'
 var SOFT_ID = '2589'
 
 var defaultOptions = {
@@ -136,6 +135,7 @@ export const decode = function (base64, options, callback) {
 }
 
 export const decodeReCaptcha = function (
+  captchaMethod,
   captcha,
   pageUrl,
   extraData,
@@ -150,12 +150,18 @@ export const decodeReCaptcha = function (
   httpRequestOptions.method = 'POST'
 
   var postData = {
-    method: apiMethodRecaptcha,
+    method: captchaMethod,
     key: apiKey,
     soft_id: SOFT_ID,
-    googlekey: captcha,
+    // googlekey: captcha,
     pageurl: pageUrl,
     ...extraData,
+  }
+  if (captchaMethod === 'userrecaptcha') {
+    postData.googlekey = captcha
+  }
+  if (captchaMethod === 'hcaptcha') {
+    postData.sitekey = captcha
   }
 
   postData = querystring.stringify(postData)
@@ -190,7 +196,14 @@ export const decodeReCaptcha = function (
           }
           if (this.options.retries > 1) {
             this.options.retries = this.options.retries - 1
-            decode(captcha, this.options, callback)
+            decodeReCaptcha(
+              captchaMethod,
+              captcha,
+              pageUrl,
+              extraData,
+              this.options,
+              callback
+            )
           } else {
             callbackToInitialCallback('CAPTCHA_FAILED_TOO_MANY_TIMES')
           }

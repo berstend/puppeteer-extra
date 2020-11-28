@@ -18,6 +18,7 @@ export interface DecodeRecaptchaAsyncResult {
 
 async function decodeRecaptchaAsync(
   token: string,
+  vendor: types.CaptchaVendor,
   sitekey: string,
   url: string,
   extraData: any,
@@ -28,7 +29,11 @@ async function decodeRecaptchaAsync(
       resolve({ err, result, invalid })
     try {
       solver.setApiKey(token)
-      solver.decodeReCaptcha(sitekey, url, extraData, opts, cb)
+      let method = 'userrecaptcha'
+      if (vendor === 'hcaptcha') {
+        method = 'hcaptcha'
+      }
+      solver.decodeReCaptcha(method, sitekey, url, extraData, opts, cb)
     } catch (error) {
       return resolve({ err: error })
     }
@@ -50,6 +55,7 @@ async function getSolution(
   token: string
 ): Promise<types.CaptchaSolution> {
   const solution: types.CaptchaSolution = {
+    _vendor: captcha._vendor,
     provider: PROVIDER_ID,
   }
   try {
@@ -65,6 +71,7 @@ async function getSolution(
     }
     const { err, result, invalid } = await decodeRecaptchaAsync(
       token,
+      captcha._vendor,
       captcha.sitekey,
       captcha.url,
       extraData

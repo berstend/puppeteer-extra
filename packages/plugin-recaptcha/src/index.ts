@@ -2,7 +2,9 @@ import { AutomationExtraPlugin } from 'automation-extra-plugin'
 
 import * as types from './types'
 
-import { RecaptchaContentScript } from './content'
+import { HcaptchaContentScript } from './content-hcaptcha'
+import { RecaptchaContentScript } from './content-recaptcha'
+
 import * as TwoCaptcha from './provider/2captcha'
 
 export const BuiltinSolutionProviders: types.SolutionProvider[] = [
@@ -38,16 +40,22 @@ export class RecaptchaPlugin extends AutomationExtraPlugin {
   }
 
   private _generateContentScript(
+    vendor: types.CaptchaVendor,
     fn: 'findRecaptchas' | 'enterRecaptchaSolutions',
     data?: any
   ) {
-    this.debug('_generateContentScript', fn, data)
+    this.debug('_generateContentScript', vendor, fn, data)
+    let scriptSource = RecaptchaContentScript.toString()
+    let scriptName = 'RecaptchaContentScript'
+    if (vendor === 'hcaptcha') {
+      scriptSource = HcaptchaContentScript.toString()
+      scriptName = 'HcaptchaContentScript'
+    }
     return `(async() => {
       const DATA = ${JSON.stringify(data || null)}
       const OPTS = ${JSON.stringify(this.contentScriptOpts)}
-
-      ${RecaptchaContentScript.toString()}
-      const script = new RecaptchaContentScript(OPTS, DATA)
+      ${scriptSource}
+      const script = new ${scriptName}(OPTS, DATA)
       return script.${fn}()
     })()`
   }
@@ -72,11 +80,36 @@ export class RecaptchaPlugin extends AutomationExtraPlugin {
       )
       this.debug('waitForRecaptchaClient - end', new Date()) // used as timer
     }
-    // Even without a recaptcha script tag we're trying, just in case.
-    const evaluateReturn = await (page as types.Playwright.Page).evaluate(
-      this._generateContentScript('findRecaptchas')
+
+    const hasHcaptchaScriptTag = await page.$(
+      `script[src*="//hcaptcha.com/1/api.js"]`
     )
-    const response: types.FindRecaptchasResult = evaluateReturn as any
+    this.debug('hasHcaptchaScriptTag', !!hasHcaptchaScriptTag)
+    if (hasHcaptchaScriptTag) {
+      this.debug('wait:hasHcaptchaScriptTag - start', new Date())
+      await (page as types.Playwright.Page).waitForFunction(
+        `
+        (function() {
+          return window.hcaptcha
+        })()
+      `,
+        { polling: 200, timeout: 10 * 1000 }
+      )
+      this.debug('wait:hasHcaptchaScriptTag - end', new Date()) // used as timer
+    }
+    // Even without a recaptcha script tag we're trying, just in case.
+    const resultRecaptcha: types.FindRecaptchasResult = (await (page as types.Playwright.Page).evaluate(
+      this._generateContentScript('recaptcha', 'findRecaptchas')
+    )) as any
+    const resultHcaptcha: types.FindRecaptchasResult = (await (page as types.Playwright.Page).evaluate(
+      this._generateContentScript('hcaptcha', 'findRecaptchas')
+    )) as any
+
+    const response: types.FindRecaptchasResult = {
+      captchas: [...resultRecaptcha.captchas, ...resultHcaptcha.captchas],
+      error: resultRecaptcha.error || resultHcaptcha.error,
+    }
+
     this.debug('findRecaptchas', response)
     if (this.opts.throwOnError && response.error) {
       throw new Error(response.error)
@@ -131,13 +164,30 @@ export class RecaptchaPlugin extends AutomationExtraPlugin {
     solutions: types.CaptchaSolution[]
   ) {
     this.debug('enterRecaptchaSolutions')
-    const evaluateReturn = await (page as types.Playwright.Page).evaluate(
-      this._generateContentScript('enterRecaptchaSolutions', {
-        solutions,
-      })
-    )
-    const response: types.EnterRecaptchaSolutionsResult = evaluateReturn as any
+
+    const hasRecaptcha = !!solutions.find((s) => s._vendor === 'recaptcha')
+    const solvedRecaptcha: types.EnterRecaptchaSolutionsResult = hasRecaptcha
+      ? ((await (page as types.Playwright.Page).evaluate(
+          this._generateContentScript('recaptcha', 'enterRecaptchaSolutions', {
+            solutions,
+          })
+        )) as any)
+      : { solved: [] }
+    const hasHcaptcha = !!solutions.find((s) => s._vendor === 'hcaptcha')
+    const solvedHcaptcha: types.EnterRecaptchaSolutionsResult = hasHcaptcha
+      ? ((await (page as types.Playwright.Page).evaluate(
+          this._generateContentScript('hcaptcha', 'enterRecaptchaSolutions', {
+            solutions,
+          })
+        )) as any)
+      : { solved: [] }
+
+    const response: types.EnterRecaptchaSolutionsResult = {
+      solved: [...solvedRecaptcha.solved, ...solvedHcaptcha.solved],
+      error: solvedRecaptcha.error || solvedHcaptcha.error,
+    }
     response.error = response.error || response.solved.find((s) => !!s.error)
+
     this.debug('enterRecaptchaSolutions', response)
     if (this.opts.throwOnError && response.error) {
       throw new Error(response.error)

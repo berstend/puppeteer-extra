@@ -9,7 +9,7 @@ import { addExtra } from 'puppeteer-extra'
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
-test('will detect captchas', async (t) => {
+test('will detect reCAPTCHAs', async (t) => {
   // const puppeteer = require('puppeteer-extra')
   const puppeteer = addExtra(require('puppeteer'))
   const recaptchaPlugin = RecaptchaPlugin()
@@ -29,6 +29,7 @@ test('will detect captchas', async (t) => {
   t.is(captchas.length, 1)
 
   const c = captchas[0]
+  t.is(c._vendor, 'recaptcha')
   t.is(c.callback, 'onSuccess')
   t.is(c.hasResponseElement, true)
   t.is(c.url, url)

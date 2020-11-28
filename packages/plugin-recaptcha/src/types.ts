@@ -21,7 +21,7 @@ export type Page = Playwright.Page | Puppeteer.Page
 export type Frame = Playwright.Frame | Puppeteer.Frame
 
 export type RecaptchaPluginPageAdditions = {
-  /** Attempt to find all reCAPTCHAs on this page. */
+  /** Attempt to find all reCAPTCHAs and hCaptchas on this page. */
   findRecaptchas: () => Promise<FindRecaptchasResult>
 
   getRecaptchaSolutions: (
@@ -33,7 +33,7 @@ export type RecaptchaPluginPageAdditions = {
     solutions: CaptchaSolution[]
   ) => Promise<EnterRecaptchaSolutionsResult>
 
-  /** Attempt to detect and solve reCAPTCHAs on this page automatically. 🔮 */
+  /** Attempt to detect and solve reCAPTCHAs and hCaptchas on this page automatically. 🔮 */
   solveRecaptchas: () => Promise<SolveRecaptchasResult>
 }
 
@@ -60,7 +60,10 @@ export type SolveRecaptchasResult = FindRecaptchasResult &
   EnterRecaptchaSolutionsResult &
   GetSolutionsResult
 
+export type CaptchaVendor = 'recaptcha' | 'hcaptcha'
+
 export interface CaptchaInfo {
+  _vendor: CaptchaVendor
   id?: string // captcha id
   widgetId?: number
   sitekey?: string
@@ -79,6 +82,7 @@ export interface CaptchaInfo {
 }
 
 export interface CaptchaSolution {
+  _vendor: CaptchaVendor
   id?: string // captcha id
   provider?: string
   providerCaptchaId?: string
@@ -91,6 +95,7 @@ export interface CaptchaSolution {
 }
 
 export interface CaptchaSolved {
+  _vendor: CaptchaVendor
   id?: string // captcha id
   responseElement?: boolean
   responseCallback?: boolean

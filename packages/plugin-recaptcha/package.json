@@ -1,7 +1,7 @@
 {
   "name": "@extra/recaptcha",
   "version": "4.2.2",
-  "description": "A plugin for playwright & puppeteer to solve reCAPTCHAs automatically.",
+  "description": "A plugin for playwright & puppeteer to solve reCAPTCHAs and hCaptchas automatically.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "typings": "dist/index.d.ts",
@@ -23,6 +23,7 @@
     "predocs2": "rimraf docs/*",
     "docs2": "typedoc --module commonjs --readme none --target ES6 --theme markdown --excludeNotExported --excludeExternals --excludePrivate --out docs --mode file src/index.ts",
     "test": "ava -v --config ava.config-ts.js",
+    "test:solve": "ava -v --config ava.config-ts.js ./test/solve.ts",
     "pretest-ci": "run-s build",
     "test-ci": "run-p lint test",
     "ambient-dts": "run-s ambient-dts-copy ambient-dts-fix-path",
@@ -48,6 +49,7 @@
     "automation-extra",
     "automation-extra-plugin",
     "recaptcha",
+    "hcaptcha",
     "captcha",
     "2captcha"
   ],

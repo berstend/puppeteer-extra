@@ -228,6 +228,7 @@ export class RecaptchaContentScript {
     if (!client) return
     const info: types.CaptchaInfo = this._pick(['sitekey', 'callback'])(client)
     if (!info.sitekey) return
+    info._vendor = 'recaptcha'
     info.id = client.id
     info.s = client.s // google site specific
     info.widgetId = client.widgetId
@@ -295,6 +296,7 @@ export class RecaptchaContentScript {
         .map((id) => this.getClientById(id))
         .map((client) => {
           const solved: types.CaptchaSolved = {
+            _vendor: 'recaptcha',
             id: client.id,
             responseElement: false,
             responseCallback: false,

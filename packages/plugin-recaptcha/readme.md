@@ -1,8 +1,8 @@
-# @extra/recaptcha [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test)](https://travis-ci.org/berstend/puppeteer-extra) [![npm](https://img.shields.io/npm/v/@extra/recaptcha.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin-recaptcha) [![Discord](https://img.shields.io/discord/737009125862408274)](https://discord.gg/vz7PeKk)
+# @extra/recaptcha [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test)](https://travis-ci.org/berstend/puppeteer-extra) [![Discord](https://img.shields.io/discord/737009125862408274)](https://discord.gg/vz7PeKk) [![npm](https://img.shields.io/npm/v/@extra/recaptcha.svg)](https://www.npmjs.com/package/@extra/recaptcha)
 
-> A plugin for [playwright-extra](https://github.com/berstend/puppeteer-extra) & [puppeteer-extra](https://github.com/berstend/puppeteer-extra) to solve reCAPTCHAs automatically.
+> A plugin for [playwright-extra] & [puppeteer-extra] to solve reCAPTCHAs and hCaptchas automatically.
 
-![](https://i.imgur.com/SWrIQw0.gif)
+![#](https://i.imgur.com/SWrIQw0.gif)
 
 ## Install
 
@@ -12,20 +12,12 @@ yarn add @extra/recaptcha
 npm install @extra/recaptcha
 ```
 
-If this is your first [playwright-extra](https://github.com/berstend/puppeteer-extra) plugin here's everything you need:
+### Support
 
-```bash
-yarn add playwright playwright-extra @extra/recaptcha
-# - or -
-npm install playwright playwright-extra @extra/recaptcha
-```
-
-### Browser support
-
-| 💫             | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](#)<br/>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](#)<br/>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Webkit" width="24px" height="24px" />](#)<br/>Webkit |
-| -------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| **Playwright** |                                                                               ✅                                                                               |                                                                                 ✅                                                                                 |                                                                               ✅                                                                               |
-| **Puppeteer**  |                                                                               ✅                                                                               |                                                    [#6163](https://github.com/puppeteer/puppeteer/issues/6163)                                                     |                                                                               -                                                                                |
+| 💫                            | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](#)<br/>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](#)<br/>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Webkit" width="24px" height="24px" />](#)<br/>Webkit |
+| ----------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| **[Playwright](#Playwright)** |                                                                               ✅                                                                               |                                                                                 ✅                                                                                 |                                                                               ✅                                                                               |
+| **[Puppeteer](#Puppeteer)**   |                                                                               ✅                                                                               |                                                      [🕒](https://github.com/puppeteer/puppeteer/issues/6163)                                                      |                                                                               -                                                                                |
 
 <details>
  <summary><strong>Changelog</strong></summary>
@@ -34,42 +26,29 @@ npm install playwright playwright-extra @extra/recaptcha
 
 > 🎁 **Note:** Until we've automated changelog updates in markdown files please follow the `#announcements` channel in our [discord server](https://discord.gg/vz7PeKk) for the latest updates and changelog info.
 
-_Older changelog:_
-
-##### `3.1.9`
-
-- Support reCAPTCHAs not in forms ([#57](https://github.com/berstend/puppeteer-extra/issues/57))
-- Make script detection more fuzzy ([#48](https://github.com/berstend/puppeteer-extra/issues/48))
-
-##### `3.1.6`
-
-- We'll now add our custom methods to any existing pages and frames in the browser instance.
-- Fixed reference import path for our ambient declarations.
-
-##### `3.1.5`
-
-- Solving reCAPTCHAs in frames is now supported as well, if need be:
-
-```js
-for (const frame of page.mainFrame().childFrames()) {
-  await frame.solveRecaptchas()
-}
-```
-
-##### `3.1.4`
-
-- Improved TypeScript experience: I found a way to make your TypeScript compiler automatically aware of the additions to the `Page` and `Frame` object (e.g. `page.solveRecaptchas()`).
-- We now print a warning if the provider throws an error (e.g. invalid api key)
-
 </details>
 
 ## Usage
 
 The plugin essentially provides a mighty `page.solveRecaptchas()` method that does everything needed automagically.
 
+### Playwright
+
+If this is your first [playwright-extra] plugin here's everything you need:
+
+```bash
+yarn add playwright playwright-extra @extra/recaptcha
+# - or -
+npm install playwright playwright-extra @extra/recaptcha
+```
+
+```js
+// TODO: Add playwright demo code
+```
+
 ### Puppeteer
 
-If this is your first [puppeteer-extra](https://github.com/berstend/puppeteer-extra) plugin here's everything you need:
+If this is your first [puppeteer-extra] plugin here's everything you need:
 
 ```bash
 yarn add puppeteer puppeteer-extra @extra/recaptcha
@@ -85,7 +64,7 @@ const puppeteer = require('puppeteer-extra')
 // add recaptcha plugin and provide it your 2captcha token (= their apiKey)
 // 2captcha is the builtin solution provider but others would work as well.
 // Please note: You need to add funds to your 2captcha account for this to work
-const RecaptchaPlugin = require('puppeteer-extra-plugin-recaptcha')
+const RecaptchaPlugin = require('@extra/recaptcha')
 puppeteer.use(
   RecaptchaPlugin({
     provider: {
@@ -117,7 +96,7 @@ puppeteer.launch({ headless: true }).then(async (browser) => {
  <summary><strong>TypeScript usage</strong></summary>
 
 ```ts
-// `puppeteer-extra` and the recaptcha plugin are written in TS,
+// The recaptcha plugin is written in TS,
 // hence you get perfect type support out of the box :)
 
 import puppeteer from 'puppeteer-extra'
@@ -154,14 +133,14 @@ puppeteer.launch({ headless: false }).then(async (browser) => {
 If you'd like to see debug output just run your script like so:
 
 ```bash
-DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node myscript.js
+DEBUG=automation-extra,automation-extra-plugin:* node myscript.js
 ```
 
 _**Tip:** The recaptcha plugin works really well together with the [stealth plugin](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth)._
 
 ## Motivation 🏴
 
-These days [captchas](https://en.wikipedia.org/wiki/CAPTCHA) are unfortunately everywhere, with [reCAPTCHA](https://developers.google.com/recaptcha/) having the biggest "market share" in that space (> 80%). The situation got really bad, with privacy minded users (tracking blocker, VPNs) being penalized heavily and having to solve a lot of reCAPTCHA challenges constantly while browsing the web.
+These days [captchas](https://en.wikipedia.org/wiki/CAPTCHA) are unfortunately everywhere, with [reCAPTCHA](https://developers.google.com/recaptcha/) having the biggest "market share" in that space (> 80%) and [hCaptcha](https://www.hcaptcha.com/) being a fast growing contender. The situation got really bad, with privacy minded users (tracking blocker, VPNs) being penalized heavily and having to solve a lot of reCAPTCHA challenges constantly while browsing the web.
 
 The stated reasons for this omnipresent captcha plague vary from site owners having to protect themselves against increasingly malicious actors to some believing that we're essentially forced into free labour to train Google's various machine learning endeavours.
 
@@ -177,8 +156,8 @@ _Please note:_ You need a provider configured for this plugin to do it's magic. 
 
 Currently the only builtin solution provider as it's the cheapest and most reliable, from my experience. If you'd like to throw some free captcha credit my way feel free to [signup here](https://2captcha.com?from=6690177) (referral link, allows me to write automated tests against their API).
 
-- Cost: 1000 reCAPTCHAs for 3 USD
-- Delay: Solving a reCAPTCHA takes between 10 to 60 seconds
+- Cost: 1000 reCAPTCHAs (and hCaptchas) for 3 USD
+- Delay: Solving a captcha takes between 10 to 60 seconds
 - Error rate (incorrect solutions): Very rare
 
 #### Other providers
@@ -189,33 +168,35 @@ You can easily use your own provider as well, by providing the plugin a function
 
 ### How does this work?
 
-- When summoned with `page.solveRecaptchas()` the plugin will attempt to find any visible reCAPTCHAs, extract their configuration, pass that on to the specified solutions provider, take the solutions and put them back into the page (triggering any callback that might be required).
+- When summoned with `page.solveRecaptchas()` the plugin will attempt to find any active reCAPTCHAs & hCaptchas, extract their configuration, pass that on to the specified solutions provider, take the solutions and put them back into the page (triggering any callback that might be required).
 
 ### How do reCAPTCHAs work?
 
-- reCAPTCHAs use a per-site `sitekey`. Interestingly enough the response token after solving a challenge is (currently) not tied to a specific session or IP and can be passed on to others (until they expire). This is how the external solutions provider work: They're being given a `sitekey` and URL, solve the challenge and respond with a response token.
+- reCAPTCHAs (and hCaptchas) use a per-site `sitekey`. Interestingly enough the response token after solving a challenge is (currently) not tied to a specific session or IP and can be passed on to others (until they expire). This is how the external solutions provider work: They're being given a `sitekey` and URL, solve the challenge and respond with a response token.
 
 - This plugin automates all these steps in a generic way (detecting captchas, extracting their config and `sitekey`) as well as triggering the (optional) response callback the site owner might have specified.
 
 ### Are ordinary image captchas supported as well?
 
-- No. This plugin focusses on reCAPTCHAs exclusively, with the benefit of being fully automatic. 🔮
+- No. This plugin focusses on reCAPTCHAs and hCaptchas exclusively, with the benefit of being fully automatic. 🔮
 
 ### What about invisible reCAPTCHAs?
 
-- [Invisible reCAPTCHAs](https://developers.google.com/recaptcha/docs/invisible) are a different beast. They're basically used to compute a score of how likely the user is a bot. Based on that score the site owner can block access to resources or (most often) present the user with a reCAPTCHA challenge (which this plugin can solve). The [stealth plugin](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth) might be of interest here, as it masks the usage of puppeteer.
+- [Invisible reCAPTCHAs](https://developers.google.com/recaptcha/docs/invisible) are supported. They're basically used to compute a score of how likely the user is a bot. Based on that score the site owner can block access to resources or (most often) present the user with a reCAPTCHA challenge (which this plugin can solve). The [stealth plugin](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth) might be of interest here, as it masks the usage of puppeteer.
+- Technically speaking the plugin supports: reCAPTCHA v2, reCAPTCHA v3, invisible reCAPTCHA, hCaptcha, invisible hCaptcha. All of those (any number of them) are solved when `page.solveRecaptchas()` is called.
 
 ### When should I call `page.solveRecaptchas()`?
 
 - reCAPTCHAs will be solved automatically whenever they **are visible** (_aka their "I'm not a robot" iframe in the DOM_). It's your responsibility to do any required actions to trigger the captcha being shown, if needed.
-- If you summon the plugin immediately after navigating to a page it's got your back and will wait automatically until the reCAPTCHA script (if any) has been loaded and initialized.
-- If you call `page.solveRecaptchas()` on a page that has no reCAPTCHAs nothing bad will happen (😄) but the promise will resolve and the rest of your code executes as normal.
+  - Note about the "invisible" captcha versions: They don't feature a visible checkbox but can result in an active challenge popup, which the plugin will solve instead. :-)
+- If you summon the plugin immediately after navigating to a page it's got your back and will wait automatically until the captcha script (if any) has been loaded and initialized.
+- If you call `page.solveRecaptchas()` on a page that has no captchas nothing bad will happen (😄) but the promise will resolve and the rest of your code executes as normal.
 - After solving the reCAPTCHAs the plugin will automatically detect and trigger their [optional callback](https://developers.google.com/recaptcha/docs/display#render_param). This might result in forms being submitted and page navigations to occur, depending on how the site owner implemented the reCAPTCHA.
 
 ## Debug
 
 ```bash
-DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node myscript.js
+DEBUG=automation-extra,automation-extra-plugin:* node myscript.js
 ```
 
 ## Fine grained control
@@ -246,15 +227,30 @@ let { solutions, error } = await page.getRecaptchaSolutions(captchas)
 let { solved, error } = await page.enterRecaptchaSolutions(solutions)
 ```
 
+## Troubleshooting
+
 ### Solving captchas in iframes
 
-By default the plugin will only solve reCAPTCHAs showing up on the immediate page. In case you encounter captchas in frames the plugin extends the `Puppeteer.Frame` object with custom methods as well (since `v3.1.5`):
+By default the plugin will only solve reCAPTCHAs showing up on the immediate page. In case you encounter captchas in frames the plugin extends the `Playwright.Frame` & `Puppeteer.Frame` object with custom methods as well:
 
 ```js
 // Loop over all potential frames on that page
 for (const frame of page.mainFrame().childFrames()) {
-  // Attempt to solve any potential reCAPTCHAs in those frames
+  // Attempt to solve any potential captchas in those frames
   await frame.solveRecaptchas()
+}
+```
+
+### Solving captchas in pre-existing browser pages
+
+In case you're not using `browser.newPage()` but re-use the existing `about:blank` tab (which is not recommended for various reasons) you will experience a `page.solveRecaptchas is not a function` error, as the plugin hasn't hooked into this page yet. As a workaround you can manually add existing pages to the lifecycle methods of the plugin:
+
+```js
+const recaptcha = RecaptchaPlugin()
+const pages = await browser.pages()
+for (const page in pages) {
+  // Add plugin methods to existing pages
+  await recaptcha.onPageCreated(page)
 }
 ```
 
@@ -265,3 +261,16 @@ I'm currently reimplementing autogenerated API docs using typedoc (instead of js
 ## Todo
 
 - Trigger the captcha checkbox first and only use an external provider when presented with a challenge (we might get lucky and save a few cents).
+
+---
+
+## License
+
+Copyright © 2018 - 2020, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](https://github.com/berstend). Released under the MIT License.
+
+<!--
+  Reference links
+-->
+
+[playwright-extra]: https://github.com/berstend/puppeteer-extra/tree/master/packages/playwright-extra
+[puppeteer-extra]: https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra
