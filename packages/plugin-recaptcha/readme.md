@@ -1,4 +1,4 @@
-# @extra/recaptcha [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test)](https://travis-ci.org/berstend/puppeteer-extra) [![Discord](https://img.shields.io/discord/737009125862408274)](https://discord.gg/vz7PeKk) [![npm](https://img.shields.io/npm/v/@extra/recaptcha.svg)](https://www.npmjs.com/package/@extra/recaptcha)
+# @extra/recaptcha [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test/master)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](https://discord.gg/vz7PeKk) [![npm](https://img.shields.io/npm/v/@extra/recaptcha.svg)](https://www.npmjs.com/package/@extra/recaptcha)
 
 > A plugin for [playwright-extra] & [puppeteer-extra] to solve reCAPTCHAs and hCaptchas automatically.
 
@@ -12,13 +12,6 @@ yarn add @extra/recaptcha
 npm install @extra/recaptcha
 ```
 
-### Support
-
-| 💫                            | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](#)<br/>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](#)<br/>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Webkit" width="24px" height="24px" />](#)<br/>Webkit |
-| ----------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| **[Playwright](#Playwright)** |                                                                               ✅                                                                               |                                                                                 ✅                                                                                 |                                                                               ✅                                                                               |
-| **[Puppeteer](#Puppeteer)**   |                                                                               ✅                                                                               |                                                      [🕒](https://github.com/puppeteer/puppeteer/issues/6163)                                                      |                                                                               -                                                                                |
-
 <details>
  <summary><strong>Changelog</strong></summary>
 
@@ -27,6 +20,13 @@ npm install @extra/recaptcha
 > 🎁 **Note:** Until we've automated changelog updates in markdown files please follow the `#announcements` channel in our [discord server](https://discord.gg/vz7PeKk) for the latest updates and changelog info.
 
 </details>
+
+### Support
+
+| 💫                            | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](#)<br/>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](#)<br/>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Webkit" width="24px" height="24px" />](#)<br/>Webkit |
+| ----------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| **[Playwright](#Playwright)** |                                                                               ✅                                                                               |                                                                                 ✅                                                                                 |                                                                               ✅                                                                               |
+| **[Puppeteer](#Puppeteer)**   |                                                                               ✅                                                                               |                                                      [🕒](https://github.com/puppeteer/puppeteer/issues/6163)                                                      |                                                                               -                                                                                |
 
 ## Usage
 
