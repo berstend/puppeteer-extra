@@ -68,10 +68,10 @@
   },
   "dependencies": {
     "@types/debug": "^4.1.0",
-    "@types/puppeteer": "latest",
+    "@types/puppeteer": "*",
     "debug": "^4.1.1",
     "deepmerge": "^4.2.2",
     "is-plain-object": "^5.0.0",
-    "playwright-core": "latest"
+    "playwright-core": "*"
   }
 }

@@ -56,11 +56,11 @@
   },
   "dependencies": {
     "@types/debug": "^4.1.0",
-    "@types/puppeteer": "latest",
+    "@types/puppeteer": "*",
     "automation-extra-plugin": "*",
     "debug": "^4.1.1",
     "deepmerge": "^4.2.2",
-    "playwright-core": "latest",
+    "playwright-core": "*",
     "puppeteer-extra-plugin": "*"
   }
 }
