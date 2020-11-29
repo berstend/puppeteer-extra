@@ -1,6 +1,6 @@
-import * as types from './types'
-import * as pw from './types/playwright'
-import * as pptr from './types/puppeteer'
+import type * as pw from 'playwright-core'
+import type * as pptr from 'puppeteer'
+import type * as types from './types'
 
 import { LauncherEnv } from 'automation-extra-plugin'
 import { PluginList } from './plugins'
@@ -108,7 +108,7 @@ export class AutomationExtraBase {
     }
 
     const isHeadless = (() => {
-      if (types.isConnectOptions(options)) {
+      if (isConnectOptions(options)) {
         return false // we don't know :-)
       }
       if ('headless' in options) {
@@ -127,7 +127,10 @@ export class AutomationExtraBase {
     this.plugins.checkRequirements(launchContext)
 
     const browser = await this.launcher[method](options as any)
-    this._patchPageCreationMethods(browser as pptr.BrowserWithInternals)
+
+    if (this.env.isPuppeteerBrowser(browser)) {
+      this._patchPageCreationMethods(browser)
+    }
 
     await this.plugins.dispatchBlocking('onBrowser', browser, launchContext)
 
@@ -260,11 +263,8 @@ export class AutomationExtraBase {
    *
    * @private
    */
-  private _patchPageCreationMethods(browser: pptr.BrowserWithInternals) {
+  private _patchPageCreationMethods(browser: pptr.Browser) {
     if (!browser || !browser._createPageInContext) {
-      return
-    }
-    if (!this.env.isPuppeteerBrowser(browser)) {
       return
     }
 
@@ -311,4 +311,15 @@ function requirePackages(packages: string[]) {
     }
   }
   return false
+}
+
+/** Type guard: check if current options are connect options */
+function isConnectOptions(
+  options: types.ConnectOptions | types.LaunchOptions
+): options is types.ConnectOptions {
+  const yup =
+    'browserURL' in (options as pptr.ConnectOptions) ||
+    'browserWSEndpoint' in (options as pptr.ConnectOptions) ||
+    'wsEndpoint' in (options as pw.ConnectOptions)
+  return yup
 }

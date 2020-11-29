@@ -1,8 +1,8 @@
-// Re-export stuff
-export { Playwright, Puppeteer, types } from 'automation-extra'
-export { PuppeteerExtra } from 'automation-extra'
+import type * as types from 'automation-extra'
+export * from 'automation-extra'
 
-import { addExtraPuppeteer, PuppeteerExtra, types } from 'automation-extra'
+/* tslint:disable-next-line no-duplicate-imports  */
+import { addExtraPuppeteer, PuppeteerExtra } from 'automation-extra'
 
 /**
  * Augment the provided Puppeteer with plugin functionality.

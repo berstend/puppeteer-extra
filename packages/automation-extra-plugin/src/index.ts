@@ -1,8 +1,8 @@
 import debug, { Debugger } from 'debug'
 
-import * as Puppeteer from './types/puppeteer'
-import * as Playwright from './types/playwright'
-export { Puppeteer, Playwright } // Re-export
+import type * as Playwright from 'playwright-core'
+import type * as Puppeteer from 'puppeteer'
+export type { Puppeteer, Playwright } // Re-export
 
 // We use dummy/noop functions in PluginLifecycleMethods meant to be overriden
 /* tslint:disable:no-empty */
@@ -29,7 +29,7 @@ export type PluginRequirements = Set<'launch' | 'headful' | 'runLast'>
 export type LaunchOptions = Puppeteer.LaunchOptions | Playwright.LaunchOptions
 export type ConnectOptions =
   | Puppeteer.ConnectOptions
-  | Playwright.BrowserTypeConnectOptions
+  | Playwright.ConnectOptions
 export type Browser = Puppeteer.Browser | Playwright.Browser
 export type Page = Puppeteer.Page | Playwright.Page
 

@@ -1,5 +1,5 @@
-import type * as pw from './types/playwright'
-import type * as pptr from './types/puppeteer'
+import type * as pw from 'playwright-core'
+import type * as pptr from 'puppeteer'
 
 export type SupportedDrivers = 'playwright' | 'puppeteer'
 
@@ -34,28 +34,16 @@ export type PlaywrightBrowser =
   | pw.FirefoxBrowser
   | pw.WebKitBrowser
 
-export type ConnectOptions = pptr.ConnectOptions | pw.BrowserTypeConnectOptions
+export type ConnectOptions = pptr.ConnectOptions | pw.ConnectOptions
 export type LaunchOptions = pptr.LaunchOptions | pw.LaunchOptions
 
-/** Type guard: check if current options are connect options */
-export function isConnectOptions(
-  options: ConnectOptions | LaunchOptions
-): options is ConnectOptions {
-  const yup =
-    'browserURL' in (options as pptr.ConnectOptions) ||
-    'browserWSEndpoint' in (options as pptr.ConnectOptions) ||
-    'wsEndpoint' in (options as pw.BrowserTypeConnectOptions)
-  return yup
-}
-
 // Plugins
-
-import {
+import type {
   AutomationExtraPlugin,
   LaunchContext,
   PluginLifecycleMethods
 } from 'automation-extra-plugin'
-import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import type { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
 export {
   AutomationExtraPlugin,

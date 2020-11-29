@@ -1,8 +1,9 @@
-// Re-export stuff
-export { Playwright, Puppeteer, types } from 'automation-extra'
-export { PlaywrightExtra } from 'automation-extra'
+import type * as types from 'automation-extra'
+export * from 'automation-extra'
 
-import { addExtraPlaywright, PlaywrightExtra, types } from 'automation-extra'
+/* tslint:disable-next-line no-duplicate-imports  */
+import { addExtraPlaywright, PlaywrightExtra } from 'automation-extra'
+
 import playwrightCore from 'playwright-core'
 
 /**

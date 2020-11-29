@@ -1,5 +1,6 @@
-import * as types from './types'
-import * as pptr from './types/puppeteer'
+import type * as pptr from 'puppeteer'
+
+import type * as types from './types'
 
 import { AutomationExtraBase } from './base'
 

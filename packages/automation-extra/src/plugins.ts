@@ -1,6 +1,6 @@
-import { LauncherEnv } from 'automation-extra-plugin'
+import type { LauncherEnv } from 'automation-extra-plugin'
 
-import * as types from './types'
+import type * as types from './types'
 
 import Debug from 'debug'
 const debug = Debug('automation-extra:plugins')

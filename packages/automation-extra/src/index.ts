@@ -1,13 +1,13 @@
 import type * as types from './types'
+export * from './types'
+
+import type * as pw from 'playwright-core'
+import type * as pptr from 'puppeteer'
+export type { pw as Playwright }
+export type { pptr as Puppeteer }
 
 import { PlaywrightExtra } from './playwright'
 import { PuppeteerExtra } from './puppeteer'
-
-// Re-export stuff
-export * as Playwright from './playwright'
-export * as Puppeteer from './puppeteer'
-export * as types from './types'
-
 export { PlaywrightExtra } from './playwright'
 export { PuppeteerExtra } from './puppeteer'
 export { AutomationExtraBase } from './base'

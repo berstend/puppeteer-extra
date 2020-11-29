@@ -1,5 +1,5 @@
-import * as types from './types'
-import * as pw from './types/playwright'
+import type * as pw from 'playwright-core'
+import type * as types from './types'
 
 import { AutomationExtraBase } from './base'
 
@@ -13,7 +13,7 @@ export class PlaywrightExtra
   }
 
   // Stuff we augment for plugin purposes
-  connect(options: pw.BrowserTypeConnectOptions): Promise<pw.Browser> {
+  connect(options: pw.ConnectOptions): Promise<pw.Browser> {
     return this._connect(options) as Promise<pw.Browser>
   }
   launch(options?: pw.LaunchOptions): Promise<pw.Browser> {
