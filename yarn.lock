@@ -8143,7 +8143,7 @@ pkg-dir@^4.1.0, pkg-dir@^4.2.0:
   dependencies:
     find-up "^4.0.0"
 
-playwright-core@1.6.2, playwright-core@latest:
+playwright-core@latest:
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.6.2.tgz#71080db6e33d6ff33746fbeee1e1d07537fcc853"
   integrity sha512-A8tDBwgMWY2WoxNsI6tCbKVr0QLUFWwuRpLYFVZQiEoep5vn1VVEnFA6bGdvbxvWVcA5E6vx8BkVcABCAzXhww==
