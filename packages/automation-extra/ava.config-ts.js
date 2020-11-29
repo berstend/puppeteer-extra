@@ -1,5 +1,4 @@
 export default {
-  compileEnhancements: false,
   environmentVariables: {
     TS_NODE_COMPILER_OPTIONS: '{"module":"commonjs"}',
     TS_NODE_FILES: 'true',
@@ -7,5 +6,6 @@ export default {
   },
   files: ['test/*.ts'],
   extensions: ['ts'],
-  require: ['ts-node/register']
+  require: ['ts-node/register'],
+  timeout: '15s' // https://github.com/avajs/ava/issues/2494
 }

@@ -1,6 +1,6 @@
 'use strict'
 
-import test from 'ava'
+const test = require('ava')
 
 const vanillaPuppeteer = require('puppeteer')
 const { addExtraPuppeteer } = require('automation-extra')

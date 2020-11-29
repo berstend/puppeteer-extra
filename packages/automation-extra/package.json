@@ -25,7 +25,7 @@
     "test-ci": "run-p lint test",
     "lint:js": "eslint --no-error-on-unmatched-pattern --ext .js src/ test/",
     "lint:ts": "tslint --project tsconfig.json",
-    "lint": "run-p lint:js lint:ts"
+    "lint": "run-s lint:js lint:ts"
   },
   "keywords": [
     "playwright",
@@ -38,7 +38,7 @@
     "node": ">=8"
   },
   "devDependencies": {
-    "ava": "^2.4.0",
+    "ava": "3.13.0",
     "documentation-markdown-themes": "^12.1.5",
     "npm-run-all": "^4.1.5",
     "playwright": "^1.6.2",
