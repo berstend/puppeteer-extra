@@ -22,7 +22,7 @@ test('will resolve plugin dependencies correctly', async t => {
   const chromium = addExtraPlaywright(playwright.chromium)
   chromium.use(new Plugin())
 
-  const error = await t.throwsAsync(async () => chromium.launch())
+  const error = await t.throwsAsync(async () => await chromium.launch())
   t.true(
     error.message.includes(`A plugin listed 'does-not-exist' as dependency`)
   )
@@ -43,7 +43,7 @@ test('will resolve plugin dependencies as Map correctly', async t => {
   const chromium = addExtraPlaywright(playwright.chromium)
   chromium.use(new Plugin())
 
-  const error = await t.throwsAsync(async () => chromium.launch())
+  const error = await t.throwsAsync(async () => await chromium.launch())
   t.true(
     error.message.includes(`A plugin listed 'does-not-exist-too' as dependency`)
   )

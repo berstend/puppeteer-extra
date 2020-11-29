@@ -67,13 +67,13 @@ export class AutomationExtraBase {
   protected async _connect(
     options: types.ConnectOptions = {}
   ): Promise<types.Browser> {
-    return this._launchOrConnect('connect', options)
+    return await this._launchOrConnect('connect', options)
   }
 
   protected async _launch(
     options: types.LaunchOptions = {}
   ): Promise<types.Browser> {
-    return this._launchOrConnect('launch', options)
+    return await this._launchOrConnect('launch', options)
   }
 
   protected async _launchOrConnect(
@@ -98,7 +98,7 @@ export class AutomationExtraBase {
     if (this.env.isPuppeteer) {
       // Puppeteer supports defining the browser during launch
       const override =
-        process.env.PUPPETEER_PRODUCT || (options as pptr.LaunchOptions).product
+        process.env.PUPPETEER_PRODUCT ?? (options as pptr.LaunchOptions).product
       this.env.browserName = override === 'firefox' ? 'firefox' : 'chromium'
     } else {
       if (this._launcher && this.env.isPlaywright) {
@@ -151,6 +151,7 @@ export class AutomationExtraBase {
       this.plugins.dispatch('onDisconnected', browser)
       this.plugins.dispatchLegacy('onClose')
     })
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     browser.on('targetcreated', async (target: pptr.Target) => {
       debug('targetcreated')
       this.plugins.dispatchLegacy('onTargetCreated', target)

@@ -7,5 +7,5 @@ export default {
   files: ['test/*.ts'],
   extensions: ['ts'],
   require: ['ts-node/register'],
-  timeout: '15s' // https://github.com/avajs/ava/issues/2494
+  timeout: '120s' // https://github.com/avajs/ava/issues/2494
 }

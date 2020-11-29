@@ -14,11 +14,13 @@ export class PuppeteerExtra
   }
 
   // Stuff we augment for plugin purposes
-  connect(options?: pptr.ConnectOptions): Promise<pptr.Browser> {
-    return this._connect(options) as Promise<pptr.Browser>
+  async connect(options?: pptr.ConnectOptions): Promise<pptr.Browser> {
+    const result = await this._connect(options)
+    return result as pptr.Browser
   }
-  launch(options?: pptr.LaunchOptions): Promise<pptr.Browser> {
-    return this._launch(options) as Promise<pptr.Browser>
+  async launch(options?: pptr.LaunchOptions): Promise<pptr.Browser> {
+    const result = await this._launch(options)
+    return result as pptr.Browser
   }
 
   // Puppeteer specific things we just pipe through

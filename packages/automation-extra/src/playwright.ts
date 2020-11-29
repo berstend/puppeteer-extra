@@ -13,27 +13,32 @@ export class PlaywrightExtra
   }
 
   // Stuff we augment for plugin purposes
-  connect(options: pw.ConnectOptions): Promise<pw.Browser> {
-    return this._connect(options) as Promise<pw.Browser>
+  async connect(options: pw.ConnectOptions): Promise<pw.Browser> {
+    const result = await this._connect(options)
+    return result as pw.Browser
   }
-  launch(options?: pw.LaunchOptions): Promise<pw.Browser> {
-    return this._launch(options) as Promise<pw.Browser>
+  async launch(options?: pw.LaunchOptions): Promise<pw.Browser> {
+    const result = await this._launch(options)
+    return result as pw.Browser
   }
 
   // FIXME: Augment this
-  launchPersistentContext(
+  async launchPersistentContext(
     userDataDir: string,
     options?: any // Not exported
   ): Promise<pw.BrowserContext> {
     console.warn(
       'Note: launchPersistentContext does not trigger plugins currently.'
     )
-    return this.vanillaLauncher.launchPersistentContext(userDataDir, options)
+    return await this.vanillaLauncher.launchPersistentContext(
+      userDataDir,
+      options
+    )
   }
-  launchServer(
+  async launchServer(
     options?: any // Not exported
   ): Promise<pw.BrowserServer> {
-    return this.vanillaLauncher.launchServer(options)
+    return await this.vanillaLauncher.launchServer(options)
   }
 
   // Playwright specific things we just pipe through

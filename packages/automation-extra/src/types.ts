@@ -7,15 +7,15 @@ export type SupportedDrivers = 'playwright' | 'puppeteer'
 // The playwright equivalent is `interface BrowserType<Browser>`
 export interface PuppeteerBrowserLauncher {
   /** Attaches Puppeteer to an existing Chromium instance */
-  connect(options?: pptr.ConnectOptions): Promise<pptr.Browser>
+  connect: (options?: pptr.ConnectOptions) => Promise<pptr.Browser>
   /** The default flags that Chromium will be launched with */
-  defaultArgs(options?: pptr.ChromeArgOptions): string[]
+  defaultArgs: (options?: pptr.ChromeArgOptions) => string[]
   /** Path where Puppeteer expects to find bundled Chromium */
-  executablePath(): string
+  executablePath: () => string
   /** The method launches a browser instance with given arguments. The browser will be closed when the parent node.js process is closed. */
-  launch(options?: pptr.LaunchOptions): Promise<pptr.Browser>
+  launch: (options?: pptr.LaunchOptions) => Promise<pptr.Browser>
   /** This methods attaches Puppeteer to an existing Chromium instance. */
-  createBrowserFetcher(options?: pptr.FetcherOptions): pptr.BrowserFetcher
+  createBrowserFetcher: (options?: pptr.FetcherOptions) => pptr.BrowserFetcher
 }
 
 export type PlaywrightBrowserLauncher = pw.BrowserType<pw.Browser>
@@ -38,11 +38,13 @@ export type ConnectOptions = pptr.ConnectOptions | pw.ConnectOptions
 export type LaunchOptions = pptr.LaunchOptions | pw.LaunchOptions
 
 // Plugins
+// eslint-disable-next-line import/first
 import type {
   AutomationExtraPlugin,
   LaunchContext,
   PluginLifecycleMethods
 } from 'automation-extra-plugin'
+// eslint-disable-next-line import/first
 import type { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
 export {

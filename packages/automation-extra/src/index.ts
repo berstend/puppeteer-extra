@@ -1,13 +1,14 @@
 import type * as types from './types'
-export * from './types'
-
 import type * as pw from 'playwright-core'
 import type * as pptr from 'puppeteer'
-export type { pw as Playwright }
-export type { pptr as Puppeteer }
 
 import { PlaywrightExtra } from './playwright'
 import { PuppeteerExtra } from './puppeteer'
+
+export * from './types'
+export type { pw as Playwright }
+export type { pptr as Puppeteer }
+
 export { PlaywrightExtra } from './playwright'
 export { PuppeteerExtra } from './puppeteer'
 export { AutomationExtraBase } from './base'
@@ -44,7 +45,7 @@ export const _addExtra = (
     )
     if (!hasValidBrowserName) {
       throw new Error(
-        `Invalid Playwright launcher: Unexpected browser name "${launcher.name}".`
+        `Invalid Playwright launcher: Unexpected browser name "${launcher.name()}".`
       )
     }
     return new PlaywrightExtra(launcher)

@@ -6,9 +6,9 @@ import Debug from 'debug'
 const debug = Debug('automation-extra:plugins')
 
 export class PluginList {
-  private _plugins: types.Plugin[] = []
+  private readonly _plugins: types.Plugin[] = []
 
-  constructor(private env: LauncherEnv) {}
+  constructor(private readonly env: LauncherEnv) {}
 
   /**
    * Get a list of all registered plugins.
@@ -39,11 +39,13 @@ export class PluginList {
     if (!plugin || !plugin.name) {
       throw new Error('A plugin must have a .name property')
     }
-    const isPuppeteerExtraPlugin = plugin._isPuppeteerExtraPlugin
+    const isPuppeteerExtraPlugin = plugin._isPuppeteerExtraPlugin === true
     const isPlaywrightDriver = this.env.driverName === 'playwright'
     if (isPuppeteerExtraPlugin && isPlaywrightDriver) {
       console.warn(
-        `Warning: Plugin "${plugin.name}" is derived from PuppeteerExtraPlugin and will most likely not work with playwright.`
+        `Warning: Plugin "${
+          (plugin.name as string) || 'unknown'
+        }" is derived from PuppeteerExtraPlugin and will most likely not work with playwright.`
       )
     }
 
@@ -296,7 +298,7 @@ ${requireNames
       this.add(plugin)
 
       // Handle nested dependencies :D
-      if (plugin.dependencies && plugin.dependencies.size) {
+      if (plugin.dependencies?.size) {
         this.resolveDependencies()
       }
     }

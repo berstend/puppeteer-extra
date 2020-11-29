@@ -23,9 +23,7 @@
     "test:js": "ava -v --serial --concurrency 1 --fail-fast",
     "test": "run-s test:js test:ts",
     "test-ci": "run-s lint test",
-    "lint:js": "eslint --no-error-on-unmatched-pattern --ext .js src/ test/",
-    "lint:ts": "tslint --project tsconfig.json",
-    "lint": "run-s lint:js lint:ts"
+    "lint": "eslint src/ test/"
   },
   "keywords": [
     "playwright",
@@ -40,8 +38,17 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^16.0.0",
     "@rollup/plugin-node-resolve": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "4",
+    "@typescript-eslint/parser": "4",
     "ava": "3.13.0",
     "documentation-markdown-themes": "^12.1.5",
+    "eslint": "7",
+    "eslint-config-prettier": "6",
+    "eslint-config-standard-with-typescript": "19",
+    "eslint-plugin-import": "2",
+    "eslint-plugin-node": "11",
+    "eslint-plugin-promise": "4",
+    "eslint-plugin-standard": "4",
     "npm-run-all": "^4.1.5",
     "playwright": "^1.6.2",
     "rimraf": "^3.0.0",
@@ -49,9 +56,6 @@
     "rollup-plugin-sourcemaps": "^0.6.3",
     "rollup-plugin-typescript2": "^0.29.0",
     "ts-node": "^9.0.0",
-    "tslint": "^5.20.1",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-config-standard": "^9.0.0",
     "typescript": "4.1.2"
   },
   "dependencies": {
