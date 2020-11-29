@@ -1,10 +1,8 @@
 import type * as types from 'automation-extra'
-export * from 'automation-extra'
-
 /* tslint:disable-next-line no-duplicate-imports  */
 import { addExtraPlaywright, PlaywrightExtra } from 'automation-extra'
-
 import playwrightCore from 'playwright-core'
+export * from 'automation-extra'
 
 /**
  * Augment the provided Playwright browser launcher with plugin functionality.
@@ -20,8 +18,9 @@ import playwrightCore from 'playwright-core'
  *
  * @param launcher - Playwright (or compatible) browser launcher
  */
-export const addExtra = (launcher: types.PlaywrightBrowserLauncher) =>
-  addExtraPlaywright(launcher)
+export const addExtra = (
+  launcher: types.PlaywrightBrowserLauncher
+): types.PlaywrightExtra => addExtraPlaywright(launcher)
 
 /**
  * The **default export** will behave exactly the same as the regular playwright
@@ -45,7 +44,9 @@ export const addExtra = (launcher: types.PlaywrightBrowserLauncher) =>
  * chromium.use(...)
  */
 export const defaultExport = (() => {
-  const makeProduct = (name: types.PlaywrightBrowsers) => {
+  const makeProduct = (
+    name: types.PlaywrightBrowsers
+  ): types.PlaywrightExtra => {
     const launcher = new PlaywrightExtra()
     launcher.productName = name // So we know what to require later
     return launcher
