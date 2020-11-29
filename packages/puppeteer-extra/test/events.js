@@ -27,6 +27,7 @@ test('will bind launched browser events to plugins', async t => {
     constructor(opts = {}) {
       super(opts)
     }
+
     get name() {
       return pluginName
     }
@@ -34,36 +35,47 @@ test('will bind launched browser events to plugins', async t => {
     onPluginRegistered() {
       PLUGIN_EVENTS.push('onPluginRegistered')
     }
+
     beforeLaunch() {
       PLUGIN_EVENTS.push('beforeLaunch')
     }
+
     afterLaunch() {
       PLUGIN_EVENTS.push('afterLaunch')
     }
+
     beforeConnect() {
       PLUGIN_EVENTS.push('beforeConnect')
     }
+
     afterConnect() {
       PLUGIN_EVENTS.push('afterConnect')
     }
+
     onBrowser() {
       PLUGIN_EVENTS.push('onBrowser')
     }
+
     onTargetCreated() {
       PLUGIN_EVENTS.push('onTargetCreated')
     }
+
     onPageCreated() {
       PLUGIN_EVENTS.push('onPageCreated')
     }
+
     onTargetChanged() {
       PLUGIN_EVENTS.push('onTargetChanged')
     }
+
     onTargetDestroyed() {
       PLUGIN_EVENTS.push('onTargetDestroyed')
     }
+
     onDisconnected() {
       PLUGIN_EVENTS.push('onDisconnected')
     }
+
     onClose() {
       PLUGIN_EVENTS.push('onClose')
     }
@@ -109,6 +121,7 @@ test('will bind connected browser events to plugins', async t => {
     constructor(opts = {}) {
       super(opts)
     }
+
     get name() {
       return pluginName
     }
@@ -116,36 +129,47 @@ test('will bind connected browser events to plugins', async t => {
     onPluginRegistered() {
       PLUGIN_EVENTS.push('onPluginRegistered')
     }
+
     beforeLaunch() {
       PLUGIN_EVENTS.push('beforeLaunch')
     }
+
     afterLaunch() {
       PLUGIN_EVENTS.push('afterLaunch')
     }
+
     beforeConnect() {
       PLUGIN_EVENTS.push('beforeConnect')
     }
+
     afterConnect() {
       PLUGIN_EVENTS.push('afterConnect')
     }
+
     onBrowser() {
       PLUGIN_EVENTS.push('onBrowser')
     }
+
     onTargetCreated() {
       PLUGIN_EVENTS.push('onTargetCreated')
     }
+
     onPageCreated() {
       PLUGIN_EVENTS.push('onPageCreated')
     }
+
     onTargetChanged() {
       PLUGIN_EVENTS.push('onTargetChanged')
     }
+
     onTargetDestroyed() {
       PLUGIN_EVENTS.push('onTargetDestroyed')
     }
+
     onDisconnected() {
       PLUGIN_EVENTS.push('onDisconnected')
     }
+
     onClose() {
       PLUGIN_EVENTS.push('onClose')
     }

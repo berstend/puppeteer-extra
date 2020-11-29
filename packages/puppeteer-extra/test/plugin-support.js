@@ -36,9 +36,11 @@ test('will launch puppeteer with plugin support', async t => {
     constructor(opts = {}) {
       super(opts)
     }
+
     get name() {
       return pluginName
     }
+
     get data() {
       return pluginData
     }

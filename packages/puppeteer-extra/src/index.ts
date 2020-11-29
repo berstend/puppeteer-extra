@@ -1,8 +1,7 @@
 import type * as types from 'automation-extra'
-export * from 'automation-extra'
-
-/* tslint:disable-next-line no-duplicate-imports  */
 import { addExtraPuppeteer, PuppeteerExtra } from 'automation-extra'
+
+export * from 'automation-extra'
 
 /**
  * Augment the provided Puppeteer with plugin functionality.
@@ -18,8 +17,9 @@ import { addExtraPuppeteer, PuppeteerExtra } from 'automation-extra'
  *
  * @param launcher - Puppeteer (or compatible) browser launcher
  */
-export const addExtra = (launcher: types.PuppeteerBrowserLauncher) =>
-  addExtraPuppeteer(launcher)
+export const addExtra = (
+  launcher: types.PuppeteerBrowserLauncher
+): types.PuppeteerExtra => addExtraPuppeteer(launcher)
 
 /**
  * The **default export** will behave exactly the same as the regular puppeteer

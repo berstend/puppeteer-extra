@@ -25,18 +25,22 @@ test('will modify puppeteer launch options through plugins', async t => {
     constructor(opts = {}) {
       super(opts)
     }
+
     get name() {
       return pluginName
     }
+
     get data() {
       return pluginData
     }
+
     beforeLaunch(options) {
       options.args = options.args || []
       options.args.push('--foobar=true')
       options.timeout = 60 * 1000
       options.headless = true
     }
+
     afterLaunch(browser, opts) {
       FINAL_OPTIONS = opts.options
     }
@@ -75,16 +79,20 @@ test('will modify puppeteer connect options through plugins', async t => {
     constructor(opts = {}) {
       super(opts)
     }
+
     get name() {
       return pluginName
     }
+
     get data() {
       return pluginData
     }
+
     beforeConnect(options) {
       options.foo1 = 60 * 1000
       options.foo2 = true
     }
+
     afterConnect(browser, opts) {
       FINAL_OPTIONS = opts.options
     }

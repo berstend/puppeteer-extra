@@ -13,12 +13,12 @@
     "experimentalDecorators": true,
     "strict": true,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": false,
+    "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": false,
     "pretty": true,
     "stripInternal": true
   },
-  "include": ["./src/**/*.tsx", "./src/**/*.ts"],
-  "exclude": ["node_modules", "dist", "./test/**/*.spec.ts"]
+  "include": ["./src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }

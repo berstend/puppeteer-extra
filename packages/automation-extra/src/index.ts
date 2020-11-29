@@ -17,7 +17,7 @@ export { AutomationExtraBase } from './base'
  *
  * @param launcher - Puppeteer or Playwright API compatible browser launcher
  */
-export const addExtra = (
+const addExtra = (
   launcher: types.PuppeteerBrowserLauncher | types.PlaywrightBrowserLauncher
 ): PuppeteerExtra | PlaywrightExtra => {
   // General checks
