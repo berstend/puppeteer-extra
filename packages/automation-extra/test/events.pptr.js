@@ -5,7 +5,7 @@ const test = require('ava')
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
 const vanillaPuppeteer = require('puppeteer')
-const { addExtra } = require('automation-extra')
+const { _addExtra } = require('automation-extra')
 
 const factory = (testConnect = false) => async t => {
   const PLUGIN_EVENTS = []
@@ -17,7 +17,7 @@ const factory = (testConnect = false) => async t => {
     wsEndpoint = browserServer.wsEndpoint()
   }
 
-  const launcher = addExtra(vanillaPuppeteer)
+  const launcher = _addExtra(vanillaPuppeteer)
   const { AutomationExtraPlugin } = require('automation-extra-plugin')
   const pluginName = 'hello-world'
 

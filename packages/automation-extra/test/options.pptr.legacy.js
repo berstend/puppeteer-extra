@@ -3,14 +3,14 @@
 const test = require('ava')
 
 const vanillaPuppeteer = require('puppeteer')
-const { addExtra } = require('automation-extra')
+const { _addExtra } = require('automation-extra')
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
 test('will modify puppeteer launch options through plugins', async t => {
   let FINAL_OPTIONS = null
 
-  const puppeteer = addExtra(vanillaPuppeteer)
+  const puppeteer = _addExtra(vanillaPuppeteer)
 
   const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
@@ -66,7 +66,7 @@ test('will modify puppeteer connect options through plugins', async t => {
   })
   const browserWSEndpoint = browserVanilla.wsEndpoint()
 
-  const puppeteer = addExtra(vanillaPuppeteer)
+  const puppeteer = _addExtra(vanillaPuppeteer)
   const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
   const pluginData = [{ name: 'foo', value: 'bar' }]

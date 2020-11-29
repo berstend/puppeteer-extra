@@ -14,10 +14,11 @@ export { AutomationExtraBase } from './base'
 
 /**
  * Augment a Puppeteer or Playwright API compatible browser launcher with plugin functionality.
+ * Note: We can't use `addExtra` here as we export that in `playwright-extra` and `puppeteer-extra`
  *
  * @param launcher - Puppeteer or Playwright API compatible browser launcher
  */
-const addExtra = (
+export const _addExtra = (
   launcher: types.PuppeteerBrowserLauncher | types.PlaywrightBrowserLauncher
 ): PuppeteerExtra | PlaywrightExtra => {
   // General checks
@@ -65,7 +66,7 @@ const addExtra = (
  */
 export const addExtraPlaywright = (
   launcher: types.PlaywrightBrowserLauncher
-): PlaywrightExtra => addExtra(launcher) as PlaywrightExtra
+): PlaywrightExtra => _addExtra(launcher) as PlaywrightExtra
 
 /**
  * Augment the provided Puppeteer browser launcher with plugin functionality.
@@ -79,4 +80,4 @@ export const addExtraPlaywright = (
  */
 export const addExtraPuppeteer = (
   launcher: types.PuppeteerBrowserLauncher
-): PuppeteerExtra => addExtra(launcher) as PuppeteerExtra
+): PuppeteerExtra => _addExtra(launcher) as PuppeteerExtra

@@ -21,9 +21,9 @@
     "postdocs": "npx prettier --write readme.md",
     "test:ts": "ava -v --config ava.config-ts.js",
     "test:js": "ava -v --serial --concurrency 1 --fail-fast",
-    "test": "run-p test:js test:ts",
-    "test-ci": "run-p lint test",
-    "lint": "yarn eslint src/ test/"
+    "test": "run-s test:js test:ts",
+    "test-ci": "run-s lint test",
+    "lint": "eslint src/ test/"
   },
   "keywords": [
     "playwright",

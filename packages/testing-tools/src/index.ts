@@ -4,7 +4,7 @@ import playwright from 'playwright'
 export * as puppeteer from 'puppeteer'
 export * as playwright from 'playwright'
 
-import { addExtra } from 'automation-extra'
+import { _addExtra } from 'automation-extra'
 
 export type BrowserName = 'chromium' | 'firefox' | 'webkit'
 export type DriverName = 'playwright' | 'puppeteer'
@@ -40,7 +40,7 @@ const getHelper = (driverName: DriverName, browserName: BrowserName) => {
     throw new Error(`Unsupported driver: "${driverName}"`)
   }
 
-  const getLauncherWithExtra = () => addExtra(getLauncher())
+  const getLauncherWithExtra = () => _addExtra(getLauncher())
 
   const getBrowser = async (plugin?: any) => {
     const launcher = getLauncherWithExtra()
