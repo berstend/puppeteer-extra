@@ -28,6 +28,14 @@ This monorepo is powered by [Lerna](https://github.com/lerna/lerna) and yarn wor
 
 #### Initial setup
 
+- Make sure to have a recent Node.js version installed (hint: use `nvm`)
+- Make sure `yarn` is recent (`>=1.2`), for better workspace support:
+
+```bash
+rm -rf ~/.yarn && npm install --global yarn && yarn --version
+# Issues? Check your PATH and `which yarn`
+```
+
 ```bash
 # Install deps
 yarn

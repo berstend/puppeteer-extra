@@ -36,9 +36,11 @@
     "node": ">=8"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^16.0.0",
+    "@rollup/plugin-node-resolve": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^4.8.2",
     "@typescript-eslint/parser": "^4.8.2",
-    "ava": "^2.4.0",
+    "ava": "^3.13.0",
     "documentation-markdown-themes": "^12.1.5",
     "eslint": "7",
     "eslint-config-prettier": "^6.15.0",
@@ -50,11 +52,9 @@
     "npm-run-all": "^4.1.5",
     "playwright": "^1.6.2",
     "rimraf": "^3.0.0",
-    "rollup": "^1.27.5",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-sourcemaps": "^0.4.2",
-    "rollup-plugin-typescript2": "0.29.0",
+    "rollup": "^2.34.0",
+    "rollup-plugin-sourcemaps": "^0.6.3",
+    "rollup-plugin-typescript2": "^0.29.0",
     "ts-node": "^9.0.0",
     "typescript": "4.1.2"
   },

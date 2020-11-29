@@ -1,6 +1,7 @@
 'use strict'
 
-import test, { beforeEach } from 'ava'
+const test = require('ava')
+const { beforeEach } = require('ava')
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
