@@ -15,7 +15,7 @@ WIP
 - [addExtra(launcher)](#addextralauncher)
 - [defaultExport()](#defaultexport)
 
-### [addExtra(launcher)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/puppeteer-extra/src/index.ts#L20-L22)
+### [addExtra(launcher)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/puppeteer-extra/src/index.ts#L20-L22)
 
 - `launcher` **types.PuppeteerBrowserLauncher** Puppeteer (or compatible) browser launcher
 
@@ -37,7 +37,7 @@ puppeteer.use(plugin)
 
 ---
 
-### [defaultExport()](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/puppeteer-extra/src/index.ts#L45-L48)
+### [defaultExport()](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/puppeteer-extra/src/index.ts#L45-L48)
 
 The **default export** will behave exactly the same as the regular puppeteer
 (just with extra plugin functionality) and can be used as a drop-in replacement.

@@ -72,13 +72,13 @@ Successor to `puppeteer-extra-plugin`
 - [class: PageShim](#class-pageshim)
   - [.addScript(script, arg?)](#addscriptscript-arg)
 
-### class: [PluginLifecycleMethods](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L40-L206)
+### class: [PluginLifecycleMethods](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L40-L206)
 
 Plugin lifecycle methods
 
 ---
 
-#### .[onPluginRegistered()](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L44-L44)
+#### .[onPluginRegistered()](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L44-L44)
 
 Returns: **[Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;void>**
 
@@ -86,7 +86,7 @@ After the plugin has been registered, called early in the life-cycle (once the p
 
 ---
 
-#### .[beforeLaunch(options)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L62-L62)
+#### .[beforeLaunch(options)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L62-L62)
 
 - `options` **LaunchOptions** Puppeteer/Playwright launch options
 
@@ -111,7 +111,7 @@ async beforeLaunch (options) {
 
 ---
 
-#### .[afterLaunch(browser, launchContext)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L90-L90)
+#### .[afterLaunch(browser, launchContext)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L90-L90)
 
 - `browser` **Browser** The `puppeteer` or `playwright` browser instance.
 - `launchContext` **LaunchContext**
@@ -144,7 +144,7 @@ async afterLaunch (browser, opts) {
 
 ---
 
-#### .[beforeConnect(options)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L102-L104)
+#### .[beforeConnect(options)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L102-L104)
 
 - `options` **ConnectOptions** Puppeteer/playwright connect options
 
@@ -159,7 +159,7 @@ be able to update the launch options.
 
 ---
 
-#### .[afterConnect(browser, launchContext)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L114-L114)
+#### .[afterConnect(browser, launchContext)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L114-L114)
 
 - `browser` **Browser** The `puppeteer` or playwright browser instance.
 - `launchContext` **LaunchContext**
@@ -170,7 +170,7 @@ After connecting to an existing browser instance.
 
 ---
 
-#### .[onBrowser(browser, launchContext)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L128-L128)
+#### .[onBrowser(browser, launchContext)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L128-L128)
 
 - `browser` **Browser** The `puppeteer` or `playwright` browser instance.
 - `launchContext` **LaunchContext**
@@ -186,7 +186,7 @@ and don't mind if it has been created through `launch` or `connect`.
 
 ---
 
-#### .[beforeContext(options, browser)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L143-L146)
+#### .[beforeContext(options, browser)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L143-L146)
 
 - `options` **Playwright.BrowserContextOptions** Playwright browser context options
 - `browser` **Playwright.Browser** Playwright browser
@@ -204,7 +204,7 @@ be able to update the context options.
 
 ---
 
-#### .[onContextCreated(context, options)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L156-L159)
+#### .[onContextCreated(context, options)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L156-L159)
 
 - `context` **Playwright.BrowserContext** Playwright browser context
 - `options` **Playwright.BrowserContextOptions** Playwright browser context options
@@ -215,7 +215,7 @@ Note: `playwright` specific.
 
 ---
 
-#### .[onPageCreated(page)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L180-L180)
+#### .[onPageCreated(page)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L180-L180)
 
 - `page` **(Puppeteer.Page | Playwright.Page)**
 
@@ -241,7 +241,7 @@ async onPageCreated (page) {
 
 ---
 
-#### .[onPageClose(page)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L186-L186)
+#### .[onPageClose(page)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L186-L186)
 
 - `page` **Page**
 
@@ -249,7 +249,7 @@ Called when a page has been closed.
 
 ---
 
-#### .[onContextClose(context)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L194-L194)
+#### .[onContextClose(context)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L194-L194)
 
 - `context` **Playwright.BrowserContext**
 
@@ -259,7 +259,7 @@ Note: `playwright` specific.
 
 ---
 
-#### .[onDisconnected(browser)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L205-L205)
+#### .[onDisconnected(browser)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L205-L205)
 
 - `browser` **Browser** The `puppeteer` or `playwright` browser instance.
 
@@ -272,7 +272,7 @@ This might happen because of one of the following:
 
 ---
 
-### class: [AutomationExtraPlugin](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L228-L412)
+### class: [AutomationExtraPlugin](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L228-L412)
 
 **Extends: PluginLifecycleMethods**
 
@@ -298,7 +298,7 @@ class Plugin extends AutomationExtraPlugin {
 
 ---
 
-#### .[env](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L256-L256)
+#### .[env](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L256-L256)
 
 Type: **[LauncherEnv](#launcherenv)**
 
@@ -308,7 +308,7 @@ Contains info regarding the launcher environment the plugin runs in
 
 ---
 
-#### .[shim(page)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L288-L288)
+#### .[shim(page)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L288-L288)
 
 - `page` **Page**
 
@@ -318,7 +318,7 @@ Unified Page methods for Playwright & Puppeteer
 
 ---
 
-#### .[defaults](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L317-L319)
+#### .[defaults](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L317-L319)
 
 Type: **PluginOptions**
 
@@ -347,7 +347,7 @@ puppeteer.use(require('puppeteer-extra-plugin-foobar')({ makeWindows: false }))
 
 ---
 
-#### .[requirements](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L342-L344)
+#### .[requirements](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L342-L344)
 
 Type: **PluginRequirements**
 
@@ -377,7 +377,7 @@ get requirements () {
 
 ---
 
-#### .[dependencies](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L363-L365)
+#### .[dependencies](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L363-L365)
 
 Type: **PluginDependencies**
 
@@ -401,7 +401,7 @@ get dependencies () {
 
 ---
 
-#### .[opts](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L382-L384)
+#### .[opts](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L382-L384)
 
 Type: **PluginOptions**
 
@@ -424,7 +424,7 @@ async onPageCreated (page) {
 
 ---
 
-#### .[debug](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L402-L404)
+#### .[debug](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L402-L404)
 
 Type: **Debugger**
 
@@ -449,7 +449,7 @@ this.debug('hello world')
 
 ---
 
-#### .[id](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L250-L250)
+#### .[id](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L250-L250)
 
 Plugin id/name (required)
 
@@ -470,13 +470,13 @@ static get id() {
 
 ---
 
-### class: [TypeGuards](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L423-L490)
+### class: [TypeGuards](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L423-L490)
 
 TypeGuards
 
 ---
 
-#### .[isPage(obj)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L431-L433)
+#### .[isPage(obj)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L431-L433)
 
 - `obj` **any** The object to test
 
@@ -486,7 +486,7 @@ Type guard, will make TypeScript understand which type we're working with.
 
 ---
 
-#### .[isBrowser(obj)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L439-L441)
+#### .[isBrowser(obj)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L439-L441)
 
 - `obj` **any** The object to test
 
@@ -496,7 +496,7 @@ Type guard, will make TypeScript understand which type we're working with.
 
 ---
 
-#### .[isPuppeteerPage(obj)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L447-L449)
+#### .[isPuppeteerPage(obj)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L447-L449)
 
 - `obj` **any** The object to test
 
@@ -506,7 +506,7 @@ Type guard, will make TypeScript understand which type we're working with.
 
 ---
 
-#### .[isPuppeteerBrowser(obj)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L455-L457)
+#### .[isPuppeteerBrowser(obj)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L455-L457)
 
 - `obj` **any** The object to test
 
@@ -516,7 +516,7 @@ Type guard, will make TypeScript understand which type we're working with.
 
 ---
 
-#### .[isPuppeteerBrowserContext(obj)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L463-L465)
+#### .[isPuppeteerBrowserContext(obj)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L463-L465)
 
 - `obj` **any** The object to test
 
@@ -526,7 +526,7 @@ Type guard, will make TypeScript understand which type we're working with.
 
 ---
 
-#### .[isPlaywrightPage(obj)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L471-L473)
+#### .[isPlaywrightPage(obj)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L471-L473)
 
 - `obj` **any** The object to test
 
@@ -536,7 +536,7 @@ Type guard, will make TypeScript understand which type we're working with.
 
 ---
 
-#### .[isPlaywrightBrowser(obj)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L479-L481)
+#### .[isPlaywrightBrowser(obj)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L479-L481)
 
 - `obj` **any** The object to test
 
@@ -546,7 +546,7 @@ Type guard, will make TypeScript understand which type we're working with.
 
 ---
 
-#### .[isPlaywrightBrowserContext(obj)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L487-L489)
+#### .[isPlaywrightBrowserContext(obj)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L487-L489)
 
 - `obj` **any** The object to test
 
@@ -556,7 +556,7 @@ Type guard, will make TypeScript understand which type we're working with.
 
 ---
 
-### class: [LauncherEnv](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L498-L540)
+### class: [LauncherEnv](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L498-L540)
 
 **Extends: TypeGuards**
 
@@ -564,26 +564,26 @@ Store environment specific info and make lookups easy
 
 ---
 
-#### .[browserName](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L506-L506)
+#### .[browserName](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L506-L506)
 
 The name of the browser engine currently in use: `"chromium" | "firefox" | "webkit"`.
 Note: The browser will only be known once a browser object is available.
 
 ---
 
-#### .[driverName](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L511-L511)
+#### .[driverName](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L511-L511)
 
 The name of the driver currently in use: `"playwright" | "puppeteer"`.
 
 ---
 
-### class: [PageShim](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L553-L583)
+### class: [PageShim](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L553-L583)
 
 Unified Page methods for Playwright & Puppeteer
 
 ---
 
-#### .[addScript(script, arg?)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra-plugin/src/index.ts#L574-L582)
+#### .[addScript(script, arg?)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra-plugin/src/index.ts#L574-L582)
 
 - `script` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function))**
 - `arg` **Serializable?**

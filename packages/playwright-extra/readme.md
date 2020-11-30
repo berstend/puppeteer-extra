@@ -25,7 +25,7 @@ New plugin framework to support Playwright. Based on `automation-extra`, a share
 - [addExtra(launcher)](#addextralauncher)
 - [defaultExport()](#defaultexport)
 
-### [addExtra(launcher)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/playwright-extra/src/index.ts#L21-L23)
+### [addExtra(launcher)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/playwright-extra/src/index.ts#L21-L23)
 
 - `launcher` **types.PlaywrightBrowserLauncher** Playwright (or compatible) browser launcher
 
@@ -47,7 +47,7 @@ chromium.use(plugin)
 
 ---
 
-### [defaultExport()](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/playwright-extra/src/index.ts#L46-L63)
+### [defaultExport()](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/playwright-extra/src/index.ts#L46-L63)
 
 The **default export** will behave exactly the same as the regular playwright
 (just with extra plugin functionality) and can be used as a drop-in replacement.

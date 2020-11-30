@@ -31,7 +31,7 @@ New plugin framework to support both Playwright and Puppeteer.
 - [addExtraPlaywright(launcher)](#addextraplaywrightlauncher)
 - [addExtraPuppeteer(launcher)](#addextrapuppeteerlauncher)
 
-### [addExtraPlaywright(launcher)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra/src/index.ts#L74-L76)
+### [addExtraPlaywright(launcher)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra/src/index.ts#L74-L76)
 
 - `launcher` **PlaywrightBrowserLauncher** Playwright (or compatible) browser launcher
 
@@ -49,7 +49,7 @@ chromium.use(plugin)
 
 ---
 
-### [addExtraPuppeteer(launcher)](https://github.com/berstend/puppeteer-extra/blob/d0cc14e305b5eddd3a6e551e25666ee8eb8b2500/packages/automation-extra/src/index.ts#L88-L90)
+### [addExtraPuppeteer(launcher)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra/src/index.ts#L88-L90)
 
 - `launcher` **PuppeteerBrowserLauncher** Puppeteer (or compatible) browser launcher
 
