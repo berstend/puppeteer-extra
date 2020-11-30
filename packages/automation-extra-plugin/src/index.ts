@@ -35,6 +35,7 @@ export type Page = Puppeteer.Page | Playwright.Page
 
 /**
  * Plugin lifecycle methods
+ * @class PluginLifecycleMethods
  */
 export class PluginLifecycleMethods {
   /**
@@ -209,6 +210,8 @@ export class PluginLifecycleMethods {
  *
  * Implements all `PluginLifecycleMethods`.
  *
+ * @class AutomationExtraPlugin
+ * @extends {PluginLifecycleMethods}
  * @example
  *   class Plugin extends AutomationExtraPlugin {
  *     static id = 'foobar'
@@ -411,6 +414,12 @@ export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
 export type SupportedDrivers = 'playwright' | 'puppeteer'
 export type BrowserEngines = 'chromium' | 'firefox' | 'webkit'
 
+/**
+ * TypeGuards
+ *
+ * @class TypeGuards
+ * @abstract
+ */
 export abstract class TypeGuards {
   // Type guards work by discriminating against properties only found in that specific type
 
@@ -482,6 +491,9 @@ export abstract class TypeGuards {
 
 /**
  * Store environment specific info and make lookups easy
+ *
+ * @class LauncherEnv
+ * @extends {TypeGuards}
  */
 export class LauncherEnv extends TypeGuards {
   // The browser might not be known from the very start, as we might lazy require the vanilla packages.
@@ -529,12 +541,18 @@ export class LauncherEnv extends TypeGuards {
 
 /**
  * Can be converted to JSON
+ * @private
  */
 type Serializable = {}
 
-/** Unified Page methods for Playwright & Puppeteer */
+/**
+ * Unified Page methods for Playwright & Puppeteer
+ *
+ * @class PageShim
+ */
 export class PageShim {
   private unsupportedShimError: Error
+
   constructor(private env: LauncherEnv, private page: Page) {
     this.unsupportedShimError = new Error(
       `Unsupported shim: ${this.env.driverName}/${this.env.browserName}`

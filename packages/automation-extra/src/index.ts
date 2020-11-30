@@ -1,4 +1,9 @@
-import type * as types from './types'
+import type {
+  PlaywrightBrowsers,
+  PlaywrightBrowserLauncher,
+  PuppeteerBrowserLauncher
+} from './types'
+// import type * as types from './types'
 import type * as pw from 'playwright-core'
 import type * as pptr from 'puppeteer'
 
@@ -15,12 +20,13 @@ export { AutomationExtraBase } from './base'
 
 /**
  * Augment a Puppeteer or Playwright API compatible browser launcher with plugin functionality.
- * Note: We can't use `addExtra` here as we export that in `playwright-extra` and `puppeteer-extra`
+ * Note: We can't use `addExtra` here as we wildcard export this file in `playwright-extra` and `puppeteer-extra`
  *
  * @param launcher - Puppeteer or Playwright API compatible browser launcher
+ * @private
  */
 export const _addExtra = (
-  launcher: types.PuppeteerBrowserLauncher | types.PlaywrightBrowserLauncher
+  launcher: PuppeteerBrowserLauncher | PlaywrightBrowserLauncher
 ): PuppeteerExtra | PlaywrightExtra => {
   // General checks
   /* tslint:disable-next-line */
@@ -35,13 +41,13 @@ export const _addExtra = (
 
   // Check for Playwright
   if ('name' in launcher) {
-    const validBrowserNames: types.PlaywrightBrowsers[] = [
+    const validBrowserNames: PlaywrightBrowsers[] = [
       'chromium',
       'firefox',
       'webkit'
     ]
     const hasValidBrowserName = validBrowserNames.includes(
-      launcher.name() as types.PlaywrightBrowsers
+      launcher.name() as PlaywrightBrowsers
     )
     if (!hasValidBrowserName) {
       throw new Error(
@@ -66,7 +72,7 @@ export const _addExtra = (
  * @param launcher - Playwright (or compatible) browser launcher
  */
 export const addExtraPlaywright = (
-  launcher: types.PlaywrightBrowserLauncher
+  launcher: PlaywrightBrowserLauncher
 ): PlaywrightExtra => _addExtra(launcher) as PlaywrightExtra
 
 /**
@@ -80,5 +86,5 @@ export const addExtraPlaywright = (
  * @param launcher - Puppeteer (or compatible) browser launcher
  */
 export const addExtraPuppeteer = (
-  launcher: types.PuppeteerBrowserLauncher
+  launcher: PuppeteerBrowserLauncher
 ): PuppeteerExtra => _addExtra(launcher) as PuppeteerExtra

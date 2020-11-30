@@ -41,7 +41,7 @@
     "@typescript-eslint/eslint-plugin": "4",
     "@typescript-eslint/parser": "4",
     "ava": "3.13.0",
-    "documentation-markdown-themes": "^12.1.5",
+    "documentation-markdown-themes": "13.1.2",
     "eslint": "7",
     "eslint-config-prettier": "6",
     "eslint-config-standard-with-typescript": "19",
