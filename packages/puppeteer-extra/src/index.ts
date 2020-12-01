@@ -1,4 +1,4 @@
-import type * as types from 'automation-extra'
+import type { PuppeteerBrowserLauncher } from 'automation-extra'
 import { addExtraPuppeteer, PuppeteerExtra } from 'automation-extra'
 
 export * from 'automation-extra'
@@ -17,9 +17,8 @@ export * from 'automation-extra'
  *
  * @param launcher - Puppeteer (or compatible) browser launcher
  */
-export const addExtra = (
-  launcher: types.PuppeteerBrowserLauncher
-): types.PuppeteerExtra => addExtraPuppeteer(launcher)
+export const addExtra = (launcher: PuppeteerBrowserLauncher): PuppeteerExtra =>
+  addExtraPuppeteer(launcher)
 
 /**
  * The **default export** will behave exactly the same as the regular puppeteer
@@ -42,7 +41,7 @@ export const addExtra = (
  * // Add plugins
  * puppeteer.use(...)
  */
-export const defaultExport = (() => {
+const defaultExport: PuppeteerExtra = (() => {
   const launcher = new PuppeteerExtra()
   return launcher
 })()

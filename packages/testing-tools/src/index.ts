@@ -1,5 +1,5 @@
-import puppeteer from 'puppeteer'
-import playwright from 'playwright'
+import * as puppeteer from 'puppeteer'
+import * as playwright from 'playwright'
 
 export * as puppeteer from 'puppeteer'
 export * as playwright from 'playwright'

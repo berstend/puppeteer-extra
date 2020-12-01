@@ -1,7 +1,9 @@
-import type * as types from 'automation-extra'
-/* tslint:disable-next-line no-duplicate-imports  */
+import type {
+  PlaywrightBrowserLauncher,
+  PlaywrightBrowsers
+} from 'automation-extra'
 import { addExtraPlaywright, PlaywrightExtra } from 'automation-extra'
-import playwrightCore from 'playwright-core'
+import * as playwrightCore from 'playwright-core'
 export * from 'automation-extra'
 
 /**
@@ -11,7 +13,7 @@ export * from 'automation-extra'
  *
  * @example
  * import playwright from 'playwright'
- * import { addExtra } from 'playwright-extra
+ * import { addExtra } from 'playwright-extra'
  *
  * const chromium = addExtra(playwright.chromium)
  * chromium.use(plugin)
@@ -19,11 +21,18 @@ export * from 'automation-extra'
  * @param launcher - Playwright (or compatible) browser launcher
  */
 export const addExtra = (
-  launcher: types.PlaywrightBrowserLauncher
-): types.PlaywrightExtra => addExtraPlaywright(launcher)
+  launcher: PlaywrightBrowserLauncher
+): PlaywrightExtra => addExtraPlaywright(launcher)
+
+const makeProduct = (name: PlaywrightBrowsers): PlaywrightExtra => {
+  const launcher = new PlaywrightExtra(name) // So we know what to require later
+  return launcher
+}
 
 /**
- * The **default export** will behave exactly the same as the regular playwright
+ * This object can be used to launch or connect to Chromium, returning instances of ChromiumBrowser.
+ *
+ * The **default exports** will behave exactly the same as the regular playwright
  * (just with extra plugin functionality) and can be used as a drop-in replacement.
  *
  * Behind the scenes it will try to require either `playwright`
@@ -43,23 +52,25 @@ export const addExtra = (
  * // Add plugins
  * chromium.use(...)
  */
-export const defaultExport = (() => {
-  const makeProduct = (
-    name: types.PlaywrightBrowsers
-  ): types.PlaywrightExtra => {
-    const launcher = new PlaywrightExtra()
-    launcher.productName = name // So we know what to require later
-    return launcher
-  }
-  return {
-    chromium: makeProduct('chromium'),
-    firefox: makeProduct('firefox'),
-    webkit: makeProduct('webkit'),
+export const chromium = makeProduct('chromium')
+/** This object can be used to launch or connect to Firefox, returning instances of FirefoxBrowser. */
+export const firefox = makeProduct('firefox')
+/** This object can be used to launch or connect to WebKit, returning instances of WebKitBrowser. */
+export const webkit = makeProduct('webkit')
 
-    errors: playwrightCore.errors,
-    selectors: playwrightCore.selectors,
-    devices: playwrightCore.devices
-  }
-})()
+/** Returns playwright specific errors */
+export const errors = playwrightCore.errors
+/** Selectors can be used to install custom selector engines. */
+export const selectors = playwrightCore.selectors
+/** Returns a list of devices to be used with browser.newContext([options]) or browser.newPage([options]). */
+export const devices = playwrightCore.devices
 
-export default defaultExport
+export default {
+  addExtra,
+  chromium,
+  firefox,
+  webkit,
+  errors,
+  selectors,
+  devices
+}

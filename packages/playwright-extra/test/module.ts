@@ -17,7 +17,7 @@ test('should have the launcher exports wrapped', async t => {
   t.true(pwModule.firefox instanceof Object)
   t.true(pwModule.webkit instanceof Object)
 
-  t.is(pwModule.chromium.productName, 'chromium')
-  t.is(pwModule.firefox.productName, 'firefox')
-  t.is(pwModule.webkit.productName, 'webkit')
+  t.is(pwModule.chromium.env.browserName, 'chromium')
+  t.is(pwModule.firefox.env.browserName, 'firefox')
+  t.is(pwModule.webkit.env.browserName, 'webkit')
 })

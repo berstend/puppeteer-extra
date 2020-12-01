@@ -8,7 +8,7 @@ export type { Puppeteer, Playwright } // Re-export
 /* tslint:disable:no-empty */
 
 /** @private */
-import merge from 'deepmerge'
+const merge = require('deepmerge')
 import { isPlainObject } from 'is-plain-object'
 const mergeOptions = { isMergeableObject: isPlainObject }
 
@@ -34,7 +34,11 @@ export type Browser = Puppeteer.Browser | Playwright.Browser
 export type Page = Puppeteer.Page | Playwright.Page
 
 /**
- * Plugin lifecycle methods
+ * Plugin lifecycle methods used by AutomationExtraPlugin.
+ *
+ * These are hooking into Playwright/Puppeteer events and are meant to be overriden
+ * on a per-need basis in your own plugin extending AutomationExtraPlugin.
+ *
  * @class PluginLifecycleMethods
  */
 export class PluginLifecycleMethods {
@@ -53,6 +57,7 @@ export class PluginLifecycleMethods {
    * @example
    * async beforeLaunch (options) {
    *   if (this.opts.flashPluginPath) {
+   *     options.args = options.args || []
    *     options.args.push(`--ppapi-flash-path=${this.opts.flashPluginPath}`)
    *   }
    * }
@@ -415,14 +420,15 @@ export type SupportedDrivers = 'playwright' | 'puppeteer'
 export type BrowserEngines = 'chromium' | 'firefox' | 'webkit'
 
 /**
- * TypeGuards
+ * TypeGuards: They allow differentiating between different objects and types.
+ *
+ * Type guards work by discriminating against properties only found in that specific type.
+ * This is especially useful when used with TypeScript as it improves type safety.
  *
  * @class TypeGuards
  * @abstract
  */
 export abstract class TypeGuards {
-  // Type guards work by discriminating against properties only found in that specific type
-
   /**
    * Type guard, will make TypeScript understand which type we're working with.
    * @param obj - The object to test
@@ -490,25 +496,25 @@ export abstract class TypeGuards {
 }
 
 /**
- * Store environment specific info and make lookups easy
+ * Stores environment specific info, populated by the launcher.
+ * This allows sane plugin development in a multi-browser, multi-driver environment.
  *
  * @class LauncherEnv
  * @extends {TypeGuards}
  */
 export class LauncherEnv extends TypeGuards {
-  // The browser might not be known from the very start, as we might lazy require the vanilla packages.
-  // Also puppeteer supports defining the browser during launch()
-
-  /**
-   * The name of the browser engine currently in use: `"chromium" | "firefox" | "webkit"`.
-   * Note: The browser will only be known once a browser object is available.
-   */
-  public browserName: BrowserEngines | 'unknown' = 'unknown'
-
   /**
    * The name of the driver currently in use: `"playwright" | "puppeteer"`.
    */
   public driverName: SupportedDrivers | 'unknown' = 'unknown'
+
+  /**
+   * The name of the browser engine currently in use: `"chromium" | "firefox" | "webkit" | "unknown"`.
+   *
+   * Note: With puppeteer the browser will only be known once a browser object is available (after launching or connecting),
+   * as they support defining the browser during `.launch()`.
+   */
+  public browserName: BrowserEngines | 'unknown' = 'unknown'
 
   /** @private */
   constructor(driverName?: SupportedDrivers | 'unknown') {
@@ -519,21 +525,27 @@ export class LauncherEnv extends TypeGuards {
   }
 
   // Helper methods for convenience
+  /** Check if current driver is puppeteer */
   get isPuppeteer() {
     return this.driverName === 'puppeteer'
   }
+  /** Check if current driver is playwright */
   get isPlaywright() {
     return this.driverName === 'playwright'
   }
+  /** Check if current browser is chrome or chromium */
   get isChromium() {
     return this.browserName === 'chromium'
   }
+  /** Check if current browser is firefox */
   get isFirefox() {
     return this.browserName === 'firefox'
   }
+  /** Check if current browser is webkit */
   get isWebkit() {
     return this.browserName === 'webkit'
   }
+  /** Check if current browser is known */
   get isBrowserKnown() {
     return this.browserName !== 'unknown'
   }
@@ -546,7 +558,8 @@ export class LauncherEnv extends TypeGuards {
 type Serializable = {}
 
 /**
- * Unified Page methods for Playwright & Puppeteer
+ * Unified Page methods for Playwright & Puppeteer.
+ * They support common actions through a single API.
  *
  * @class PageShim
  */

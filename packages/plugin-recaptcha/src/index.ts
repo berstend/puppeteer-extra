@@ -230,7 +230,12 @@ export class RecaptchaPlugin extends AutomationExtraPlugin {
       response.error = error.toString()
     }
     this.debug('solveRecaptchas', response)
-    if (this.opts.throwOnError && response.error) {
+    const fatalError =
+      response.error &&
+      (response.error as string).includes(
+        'Please provide a solution provider to the plugin'
+      )
+    if ((this.opts.throwOnError || fatalError) && response.error) {
       throw new Error(response.error)
     }
     return response
