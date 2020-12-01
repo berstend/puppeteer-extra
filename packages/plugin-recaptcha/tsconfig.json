@@ -8,8 +8,8 @@
     // "noResolve": true, // Important: Otherwise TS would rewrite our ambient d.ts file locations (see: yarn copy-dts) :(
     "sourceMap": true,
     "declaration": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": false,
+    "esModuleInterop": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "strict": false,
