@@ -6,10 +6,21 @@ import { AutomationExtraBase } from './base'
 export class PlaywrightExtra
   extends AutomationExtraBase
   implements types.PlaywrightBrowserLauncher {
-  protected vanillaLauncher = this.launcher as types.PlaywrightBrowserLauncher
+  protected readonly vanillaLauncher: types.PlaywrightBrowserLauncher
 
-  constructor(_launcher?: types.PlaywrightBrowserLauncher) {
-    super('playwright', _launcher)
+  constructor(
+    _launcherOrBrowserName:
+      | types.PlaywrightBrowserLauncher
+      | types.PlaywrightBrowsers
+  ) {
+    if (typeof _launcherOrBrowserName === 'string') {
+      super('playwright')
+      this.env.browserName = _launcherOrBrowserName
+    } else {
+      super('playwright', _launcherOrBrowserName)
+      this.env.browserName = _launcherOrBrowserName.name() as types.PlaywrightBrowsers
+    }
+    this.vanillaLauncher = this.launcher as types.PlaywrightBrowserLauncher
   }
 
   // Stuff we augment for plugin purposes

@@ -1,4 +1,6 @@
-# automation-extra [![Build Status](https://travis-ci.org/berstend/puppeteer-extra.svg?branch=master)](https://travis-ci.org/berstend/puppeteer-extra) [![npm](https://img.shields.io/npm/v/automation-extra.svg)](https://www.npmjs.com/package/automation-extra)
+# automation-extra [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test/master)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](http://scraping-chat.cf) [![npm](https://img.shields.io/npm/v/automation-extra.svg)](https://www.npmjs.com/package/automation-extra)
+
+> Driver agnostic plugin framework used by [playwright-extra] and [puppeteer-extra].
 
 ## Installation
 
@@ -6,17 +8,19 @@
 yarn add automation-extra
 ```
 
-## WIP
+<details>
+ <summary>Changelog</summary>
 
-New plugin framework to support both Playwright and Puppeteer.
+- v4.1
+  - Initial public release
 
-**UNDER ACTIVE DEVELOPMENT - NOT MEANT TO BE USED YET**
+</details>
 
-## Differences
+## Context
 
 - A rewrite of the `puppeteer-extra` plugin system to be driver agnostic and support both Puppeteer and Playwright.
-- Currently not meant to be used directly but through `puppeteer-extra` and `playwright-extra`.
-- Supports both legacy PuppeteerExtraPlugins as well as new AutomationExtraPlugins.
+- Not meant to be used directly by end-users but through `puppeteer-extra` and `playwright-extra`.
+- Supports both legacy PuppeteerExtraPlugins as well as new [AutomationExtraPlugins](https://github.com/berstend/puppeteer-extra/tree/master/packages/automation-extra-plugin).
 
 ## API
 
@@ -31,7 +35,7 @@ New plugin framework to support both Playwright and Puppeteer.
 - [addExtraPlaywright(launcher)](#addextraplaywrightlauncher)
 - [addExtraPuppeteer(launcher)](#addextrapuppeteerlauncher)
 
-### [addExtraPlaywright(launcher)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra/src/index.ts#L74-L76)
+### [addExtraPlaywright(launcher)](https://github.com/berstend/puppeteer-extra/blob/2c1d9b4981ce1463193af2959e5c42be5d231d2a/packages/automation-extra/src/index.ts#L73-L75)
 
 - `launcher` **PlaywrightBrowserLauncher** Playwright (or compatible) browser launcher
 
@@ -49,7 +53,7 @@ chromium.use(plugin)
 
 ---
 
-### [addExtraPuppeteer(launcher)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/automation-extra/src/index.ts#L88-L90)
+### [addExtraPuppeteer(launcher)](https://github.com/berstend/puppeteer-extra/blob/2c1d9b4981ce1463193af2959e5c42be5d231d2a/packages/automation-extra/src/index.ts#L87-L89)
 
 - `launcher` **PuppeteerBrowserLauncher** Puppeteer (or compatible) browser launcher
 
@@ -66,3 +70,14 @@ puppeteer.use(plugin)
 ```
 
 ---
+
+## License
+
+Copyright © 2018 - 2020, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](https://github.com/berstend). Released under the MIT License.
+
+<!--
+  Reference links
+-->
+
+[playwright-extra]: https://github.com/berstend/puppeteer-extra/tree/master/packages/playwright-extra
+[puppeteer-extra]: https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra

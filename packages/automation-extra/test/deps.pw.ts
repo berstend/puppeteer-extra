@@ -2,7 +2,7 @@ import test from 'ava'
 
 import { addExtraPlaywright } from '../src/index'
 
-import playwright from 'playwright'
+import * as playwright from 'playwright'
 
 import { AutomationExtraPlugin } from 'automation-extra-plugin'
 

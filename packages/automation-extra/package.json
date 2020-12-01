@@ -1,7 +1,7 @@
 {
   "name": "automation-extra",
   "version": "4.1.0",
-  "description": "Teach playwright and puppeteer new tricks through plugins.",
+  "description": "Driver agnostic plugin framework used by playwright-extra and puppeteer-extra.",
   "repository": "berstend/puppeteer-extra",
   "author": "berstend",
   "license": "MIT",

@@ -1,5 +1,4 @@
 import type * as pptr from 'puppeteer'
-
 import type * as types from './types'
 
 import { AutomationExtraBase } from './base'
@@ -7,10 +6,13 @@ import { AutomationExtraBase } from './base'
 export class PuppeteerExtra
   extends AutomationExtraBase
   implements types.PuppeteerBrowserLauncher {
-  protected vanillaLauncher = this.launcher as types.PuppeteerBrowserLauncher
+  protected readonly vanillaLauncher = this
+    .launcher as types.PuppeteerBrowserLauncher
 
   constructor(_launcher?: types.PuppeteerBrowserLauncher) {
     super('puppeteer', _launcher)
+    // Puppeteer supports defining the browser during `.launch`
+    this.env.browserName = 'unknown'
   }
 
   // Stuff we augment for plugin purposes

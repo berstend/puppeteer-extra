@@ -2,7 +2,7 @@ import test from 'ava'
 
 import { PlaywrightExtra } from '../src/index'
 
-const launcher = new PlaywrightExtra()
+const launcher = new PlaywrightExtra('chromium')
 
 test('is an object', async t => {
   t.is(typeof launcher, 'object')

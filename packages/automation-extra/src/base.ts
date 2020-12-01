@@ -9,9 +9,10 @@ import Debug from 'debug'
 const debug = Debug('automation-extra')
 
 export class AutomationExtraBase {
-  protected env: LauncherEnv
-  public plugins: PluginList
-  public productName?: types.PlaywrightBrowsers
+  /** Information about the launcher environment */
+  public readonly env: LauncherEnv
+  /** List of plugins */
+  public readonly plugins: PluginList
 
   constructor(
     driverName: types.SupportedDrivers,
@@ -57,25 +58,30 @@ export class AutomationExtraBase {
    */
   protected get launcher(): types.BrowserLauncher {
     if (!this._launcher) {
-      const launcher = this._requireLauncherOrThrow()
-      // In case we're running with Playwright we need to add the product name to the import
-      this._launcher = this.productName ? launcher[this.productName] : launcher
+      this._launcher = this._requireLauncherOrThrow()
+      // In case we're dealing with Playwright we need to add the product name to the import
+      if (this.env.isPlaywright) {
+        this._launcher = (this._launcher as any)[this.env.browserName]
+      }
     }
     return this._launcher as types.BrowserLauncher
   }
 
+  /** @internal */
   protected async _connect(
     options: types.ConnectOptions = {}
   ): Promise<types.Browser> {
     return await this._launchOrConnect('connect', options)
   }
 
+  /** @internal */
   protected async _launch(
     options: types.LaunchOptions = {}
   ): Promise<types.Browser> {
     return await this._launchOrConnect('launch', options)
   }
 
+  /** @internal */
   protected async _launchOrConnect(
     method: 'launch' | 'connect',
     options: types.LaunchOptions | types.ConnectOptions = {}
@@ -92,19 +98,13 @@ export class AutomationExtraBase {
     // options = await this.plugins.getValue(beforeEvent, options)
     options =
       (await this.plugins.dispatchBlocking(beforeEvent, options)) || options
-    // await this.plugins.dispatch(beforeEvent, Object.assign({}, options))
 
-    // Only now we know the final browser
+    // Only now we know the final browser with puppeteer
     if (this.env.isPuppeteer) {
       // Puppeteer supports defining the browser during launch
       const override =
         process.env.PUPPETEER_PRODUCT ?? (options as pptr.LaunchOptions).product
       this.env.browserName = override === 'firefox' ? 'firefox' : 'chromium'
-    } else {
-      if (this._launcher && this.env.isPlaywright) {
-        const launcher = this._launcher as types.PlaywrightBrowserLauncher
-        this.env.browserName = launcher.name() as types.PlaywrightBrowsers
-      }
     }
 
     const isHeadless = (() => {
@@ -278,7 +278,7 @@ export class AutomationExtraBase {
     })(browser._createPageInContext, browser)
   }
 
-  _requireLauncherOrThrow() {
+  protected _requireLauncherOrThrow() {
     const driverName = this.env.driverName
     const packages = [driverName + '-core', driverName]
     const launcher = requirePackages(packages)
