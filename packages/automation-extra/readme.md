@@ -35,7 +35,7 @@ yarn add automation-extra
 - [addExtraPlaywright(launcher)](#addextraplaywrightlauncher)
 - [addExtraPuppeteer(launcher)](#addextrapuppeteerlauncher)
 
-### [addExtraPlaywright(launcher)](https://github.com/berstend/puppeteer-extra/blob/2c1d9b4981ce1463193af2959e5c42be5d231d2a/packages/automation-extra/src/index.ts#L73-L75)
+### [addExtraPlaywright(launcher)](https://github.com/berstend/puppeteer-extra/blob/0f58277d6f874c9508735245fc961c5ee878fd64/packages/automation-extra/src/index.ts#L73-L75)
 
 - `launcher` **PlaywrightBrowserLauncher** Playwright (or compatible) browser launcher
 
@@ -53,7 +53,7 @@ chromium.use(plugin)
 
 ---
 
-### [addExtraPuppeteer(launcher)](https://github.com/berstend/puppeteer-extra/blob/2c1d9b4981ce1463193af2959e5c42be5d231d2a/packages/automation-extra/src/index.ts#L87-L89)
+### [addExtraPuppeteer(launcher)](https://github.com/berstend/puppeteer-extra/blob/0f58277d6f874c9508735245fc961c5ee878fd64/packages/automation-extra/src/index.ts#L87-L89)
 
 - `launcher` **PuppeteerBrowserLauncher** Puppeteer (or compatible) browser launcher
 

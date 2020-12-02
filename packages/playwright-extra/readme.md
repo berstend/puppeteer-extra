@@ -98,7 +98,7 @@ Making custom plugins which work with Playwright and Puppeteer is easy and fun. 
 - [selectors()](#selectors)
 - [devices()](#devices)
 
-### [addExtra(launcher)](https://github.com/berstend/puppeteer-extra/blob/2c1d9b4981ce1463193af2959e5c42be5d231d2a/packages/playwright-extra/src/index.ts#L23-L25)
+### [addExtra(launcher)](https://github.com/berstend/puppeteer-extra/blob/0f58277d6f874c9508735245fc961c5ee878fd64/packages/playwright-extra/src/index.ts#L23-L25)
 
 - `launcher` **PlaywrightBrowserLauncher** Playwright (or compatible) browser launcher
 
@@ -120,7 +120,7 @@ chromium.use(plugin)
 
 ---
 
-### [chromium()](https://github.com/berstend/puppeteer-extra/blob/2c1d9b4981ce1463193af2959e5c42be5d231d2a/packages/playwright-extra/src/index.ts#L55-L55)
+### [chromium()](https://github.com/berstend/puppeteer-extra/blob/0f58277d6f874c9508735245fc961c5ee878fd64/packages/playwright-extra/src/index.ts#L55-L55)
 
 This object can be used to launch or connect to Chromium, returning instances of ChromiumBrowser.
 
@@ -149,31 +149,31 @@ chromium.use(...)
 
 ---
 
-### [firefox()](https://github.com/berstend/puppeteer-extra/blob/2c1d9b4981ce1463193af2959e5c42be5d231d2a/packages/playwright-extra/src/index.ts#L57-L57)
+### [firefox()](https://github.com/berstend/puppeteer-extra/blob/0f58277d6f874c9508735245fc961c5ee878fd64/packages/playwright-extra/src/index.ts#L57-L57)
 
 This object can be used to launch or connect to Firefox, returning instances of FirefoxBrowser.
 
 ---
 
-### [webkit()](https://github.com/berstend/puppeteer-extra/blob/2c1d9b4981ce1463193af2959e5c42be5d231d2a/packages/playwright-extra/src/index.ts#L59-L59)
+### [webkit()](https://github.com/berstend/puppeteer-extra/blob/0f58277d6f874c9508735245fc961c5ee878fd64/packages/playwright-extra/src/index.ts#L59-L59)
 
 This object can be used to launch or connect to WebKit, returning instances of WebKitBrowser.
 
 ---
 
-### [errors()](https://github.com/berstend/puppeteer-extra/blob/2c1d9b4981ce1463193af2959e5c42be5d231d2a/packages/playwright-extra/src/index.ts#L62-L62)
+### [errors()](https://github.com/berstend/puppeteer-extra/blob/0f58277d6f874c9508735245fc961c5ee878fd64/packages/playwright-extra/src/index.ts#L62-L62)
 
 Returns playwright specific errors
 
 ---
 
-### [selectors()](https://github.com/berstend/puppeteer-extra/blob/2c1d9b4981ce1463193af2959e5c42be5d231d2a/packages/playwright-extra/src/index.ts#L64-L64)
+### [selectors()](https://github.com/berstend/puppeteer-extra/blob/0f58277d6f874c9508735245fc961c5ee878fd64/packages/playwright-extra/src/index.ts#L64-L64)
 
 Selectors can be used to install custom selector engines.
 
 ---
 
-### [devices()](https://github.com/berstend/puppeteer-extra/blob/2c1d9b4981ce1463193af2959e5c42be5d231d2a/packages/playwright-extra/src/index.ts#L66-L66)
+### [devices()](https://github.com/berstend/puppeteer-extra/blob/0f58277d6f874c9508735245fc961c5ee878fd64/packages/playwright-extra/src/index.ts#L66-L66)
 
 Returns a list of devices to be used with browser.newContext([options]) or browser.newPage([options]).
 
