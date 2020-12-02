@@ -70,12 +70,16 @@ export class RecaptchaContentScript {
 
   private async _waitUntilDocumentReady() {
     return new Promise(function (resolve) {
-      if (!document || !window) return resolve()
+      if (!document || !window) {
+        return resolve(null)
+      }
       const loadedAlready = /^loaded|^i|^c/.test(document.readyState)
-      if (loadedAlready) return resolve()
+      if (loadedAlready) {
+        return resolve(null)
+      }
 
       function onReady() {
-        resolve()
+        resolve(null)
         document.removeEventListener('DOMContentLoaded', onReady)
         window.removeEventListener('load', onReady)
       }
@@ -154,7 +158,7 @@ export class RecaptchaContentScript {
   }
 
   private getVisibleIframesIds() {
-    // Find all visible recaptcha boxes through their iframes
+    // Find all regular visible recaptcha boxes through their iframes
     return this._findVisibleIframeNodes()
       .filter(($f) => this._isVisible($f))
       .map(($f) => this._paintCaptchaBusy($f))
@@ -164,6 +168,35 @@ export class RecaptchaContentScript {
         (rawId) => rawId.split('-').slice(-1)[0] // a-841543e13666 => 841543e13666
       )
       .filter((id) => id)
+  }
+
+  private getInvisibleIframesIds() {
+    // Find all invisible recaptcha boxes through their iframes (only the ones with an active challenge window)
+    return this._findVisibleIframeNodes()
+      .filter(($f) => $f && $f.getAttribute('name'))
+      .map(($f) => $f.getAttribute('name') || '') // a-841543e13666
+      .map(
+        (rawId) => rawId.split('-').slice(-1)[0] // a-841543e13666 => 841543e13666
+      )
+      .filter((id) => id)
+      .filter(
+        (id) =>
+          document.querySelectorAll(
+            `iframe[src^='https://www.google.com/recaptcha/api2/bframe'][name^="c-${
+              id || ''
+            }"]`
+          ).length
+      )
+  }
+
+  private getIframesIds() {
+    // Find all recaptcha boxes through their iframes, check for invisible ones as fallback
+    const results = [
+      ...this.getVisibleIframesIds(),
+      ...this.getInvisibleIframesIds(),
+    ]
+    // Deduplicate results by using the unique id as key
+    return [...new Map(results.map((x: any) => [x.id, x])).values()]
   }
 
   private getResponseInputById(id?: string) {
@@ -199,6 +232,7 @@ export class RecaptchaContentScript {
     if (!client) return
     const info: types.CaptchaInfo = this._pick(['sitekey', 'callback'])(client)
     if (!info.sitekey) return
+    info._vendor = 'recaptcha'
     info.id = client.id
     info.s = client.s // google site specific
     info.widgetId = client.widgetId
@@ -227,7 +261,7 @@ export class RecaptchaContentScript {
       await this._waitUntilDocumentReady()
       const clients = this.getClients()
       if (!clients) return result
-      result.captchas = this.getVisibleIframesIds()
+      result.captchas = this.getIframesIds()
         .map((id) => this.getClientById(id))
         .map((client) => this.extractInfoFromClient(client))
         .map((info) => {
@@ -262,10 +296,11 @@ export class RecaptchaContentScript {
         return result
       }
 
-      result.solved = this.getVisibleIframesIds()
+      result.solved = this.getIframesIds()
         .map((id) => this.getClientById(id))
         .map((client) => {
           const solved: types.CaptchaSolved = {
+            _vendor: 'recaptcha',
             id: client.id,
             responseElement: false,
             responseCallback: false,
