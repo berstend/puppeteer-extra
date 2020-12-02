@@ -62,7 +62,7 @@ npm install puppeteer-extra-plugin-stealth puppeteer-extra-plugin-adblocker
 If you'd like to see debug output just run your script like so:
 
 ```bash
-DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node myscript.js
+DEBUG=automation-extra,puppeteer-extra-plugin:* node myscript.js
 ```
 
 ### More examples
