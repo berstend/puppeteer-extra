@@ -3,6 +3,7 @@
   "version": "4.1.0",
   "description": "Teach puppeteer new tricks through plugins.",
   "repository": "berstend/puppeteer-extra",
+  "homepage": "https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra",
   "author": "berstend",
   "license": "MIT",
   "typings": "dist/index.d.ts",
@@ -17,7 +18,8 @@
     "build": "run-s build:tsc build:rollup",
     "build:tsc": "tsc --module commonjs",
     "build:rollup": "rollup -c rollup.config.ts",
-    "docs": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API ./src/index.ts",
+    "docs": "echo 'docs will currently not be auto-generated'",
+    "docs-bak": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API ./src/index.ts",
     "postdocs": "npx prettier --write readme.md",
     "test:ts": "ava -v --config ava.config-ts.js",
     "test:js": "ava -v --serial --concurrency 1 --fail-fast",
@@ -26,11 +28,18 @@
     "lint": "eslint src/ test/"
   },
   "keywords": [
-    "playwright",
-    "playwright-extra",
-    "puppeteer-extra",
     "puppeteer",
-    "automation-extra"
+    "puppeteer-extra",
+    "flash",
+    "stealth",
+    "captcha",
+    "user-preferences",
+    "chrome",
+    "headless",
+    "pupeteer",
+    "browser",
+    "automation",
+    "antibot"
   ],
   "engines": {
     "node": ">=8"

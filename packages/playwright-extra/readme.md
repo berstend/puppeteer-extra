@@ -1,16 +1,84 @@
-# playwright-extra [![Build Status](https://travis-ci.org/berstend/puppeteer-extra.svg?branch=master)](https://travis-ci.org/berstend/puppeteer-extra) [![npm](https://img.shields.io/npm/v/playwright-extra.svg)](https://www.npmjs.com/package/playwright-extra)
+# playwright-extra [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test/master)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](http://scraping-chat.cf) [![npm](https://img.shields.io/npm/v/playwright-extra.svg)](https://www.npmjs.com/package/playwright-extra)
+
+> A modular plugin framework for [playwright](https://github.com/microsoft/playwright) to enable cool [plugins](#plugins) through a clean interface.
 
 ## Installation
 
 ```bash
-yarn add playwright-extra
+yarn add playwright playwright-extra
+# - or -
+npm install playwright playwright-extra
 ```
 
-## WIP
+<details>
+ <summary>Changelog</summary>
 
-New plugin framework to support Playwright. Based on `automation-extra`, a shared foundation for both Playwright and Puppeteer.
+- v4.2
+  - Initial public release
 
-**UNDER ACTIVE DEVELOPMENT - NOT MEANT TO BE USED YET**
+</details>
+
+## Quickstart
+
+```js
+// playwright-extra is a drop-in replacement for playwright,
+// it augments the installed playwright with plugin functionality
+// Note: Instead of chromium you can use firefox and webkit as well.
+const { chromium } = require('playwright-extra')
+
+// import and configure a the recaptcha plugin
+const RecaptchaPlugin = require('@extra/recaptcha')
+const recaptcha = RecaptchaPlugin({
+  provider: {
+    id: '2captcha',
+    token: 'XXXXXXX' // Replace this with your own 2captcha api key
+  }
+})
+
+// add the plugin to playwright
+chromium.use(recaptcha)
+
+// playwright usage as normal
+chromium.launch({ headless: true }).then(async browser => {
+  const page = await browser.newPage()
+  await page.goto('https://www.google.com/recaptcha/api2/demo')
+
+  // That's it, a single line of code to solve reCAPTCHAs and hCaptchas 🎉
+  await page.solveRecaptchas()
+
+  await Promise.all([
+    page.waitForNavigation(),
+    page.click(`#recaptcha-demo-submit`)
+  ])
+  await page.screenshot({ path: 'response.png', fullPage: true })
+  await browser.close()
+})
+```
+
+The above example uses the [`recaptcha`](/packages/plugin-recaptcha) plugin, which need to be installed as well:
+
+```bash
+yarn add @extra/recaptcha
+# - or -
+npm install @extra/recaptcha
+```
+
+---
+
+## Plugins
+
+### 🏴 [`@extra/recaptcha`](/packages/plugin-recaptcha)
+
+- Solves reCAPTCHAs and hCaptchas automatically, using a single line of code: `page.solveRecaptchas()`
+- First plugin to support Playwright & Puppeteer, Chrome, Firefox and Webkit.
+
+_**Note:** `playwright-extra` is brand new, we're in the process of porting over existing [`puppeteer-extra`] plugins with Firefox & Webkit support. If you depend on having a large list of pre-made plugins available we suggest you use [`puppeteer-extra`] for the moment. See also: [Playwright vs Puppeteer](https://github.com/berstend/puppeteer-extra/wiki/Playwright-vs-Puppeteer)_
+
+**Write your own plugin**
+
+Making custom plugins which work with Playwright and Puppeteer is easy and fun. It might even make your own code base more maintainable and modular. Head over to the documentation here: [`automation-extra-plugin`](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra)
+
+---
 
 ## API
 
@@ -23,13 +91,18 @@ New plugin framework to support Playwright. Based on `automation-extra`, a share
 #### Table of Contents
 
 - [addExtra(launcher)](#addextralauncher)
-- [defaultExport()](#defaultexport)
+- [chromium()](#chromium)
+- [firefox()](#firefox)
+- [webkit()](#webkit)
+- [errors()](#errors)
+- [selectors()](#selectors)
+- [devices()](#devices)
 
-### [addExtra(launcher)](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/playwright-extra/src/index.ts#L21-L23)
+### [addExtra(launcher)](https://github.com/berstend/puppeteer-extra/blob/2c1d9b4981ce1463193af2959e5c42be5d231d2a/packages/playwright-extra/src/index.ts#L23-L25)
 
-- `launcher` **types.PlaywrightBrowserLauncher** Playwright (or compatible) browser launcher
+- `launcher` **PlaywrightBrowserLauncher** Playwright (or compatible) browser launcher
 
-Returns: **types.PlaywrightExtra**
+Returns: **PlaywrightExtra**
 
 Augment the provided Playwright browser launcher with plugin functionality.
 
@@ -39,7 +112,7 @@ Example:
 
 ```javascript
 import playwright from 'playwright'
-import { addExtra } from 'playwright-extra
+import { addExtra } from 'playwright-extra'
 
 const chromium = addExtra(playwright.chromium)
 chromium.use(plugin)
@@ -47,9 +120,11 @@ chromium.use(plugin)
 
 ---
 
-### [defaultExport()](https://github.com/berstend/puppeteer-extra/blob/3dd22d546eb9d9a47feca4800ed3cf0fda52107c/packages/playwright-extra/src/index.ts#L46-L63)
+### [chromium()](https://github.com/berstend/puppeteer-extra/blob/2c1d9b4981ce1463193af2959e5c42be5d231d2a/packages/playwright-extra/src/index.ts#L55-L55)
 
-The **default export** will behave exactly the same as the regular playwright
+This object can be used to launch or connect to Chromium, returning instances of ChromiumBrowser.
+
+The **default exports** will behave exactly the same as the regular playwright
 (just with extra plugin functionality) and can be used as a drop-in replacement.
 
 Behind the scenes it will try to require either `playwright`
@@ -73,3 +148,45 @@ chromium.use(...)
 ```
 
 ---
+
+### [firefox()](https://github.com/berstend/puppeteer-extra/blob/2c1d9b4981ce1463193af2959e5c42be5d231d2a/packages/playwright-extra/src/index.ts#L57-L57)
+
+This object can be used to launch or connect to Firefox, returning instances of FirefoxBrowser.
+
+---
+
+### [webkit()](https://github.com/berstend/puppeteer-extra/blob/2c1d9b4981ce1463193af2959e5c42be5d231d2a/packages/playwright-extra/src/index.ts#L59-L59)
+
+This object can be used to launch or connect to WebKit, returning instances of WebKitBrowser.
+
+---
+
+### [errors()](https://github.com/berstend/puppeteer-extra/blob/2c1d9b4981ce1463193af2959e5c42be5d231d2a/packages/playwright-extra/src/index.ts#L62-L62)
+
+Returns playwright specific errors
+
+---
+
+### [selectors()](https://github.com/berstend/puppeteer-extra/blob/2c1d9b4981ce1463193af2959e5c42be5d231d2a/packages/playwright-extra/src/index.ts#L64-L64)
+
+Selectors can be used to install custom selector engines.
+
+---
+
+### [devices()](https://github.com/berstend/puppeteer-extra/blob/2c1d9b4981ce1463193af2959e5c42be5d231d2a/packages/playwright-extra/src/index.ts#L66-L66)
+
+Returns a list of devices to be used with browser.newContext([options]) or browser.newPage([options]).
+
+---
+
+## License
+
+Copyright © 2018 - 2020, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](https://github.com/berstend). Released under the MIT License.
+
+<!--
+  Reference links
+-->
+
+[playwright-extra]: https://github.com/berstend/puppeteer-extra/tree/master/packages/playwright-extra
+[puppeteer-extra]: https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra
+[`puppeteer-extra`]: https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra

@@ -10,7 +10,7 @@ export * from 'automation-extra'
  *
  * @example
  * import vanillaPuppeteer from 'puppeteer'
- * import { addExtra } from 'puppeteer-extra
+ * import { addExtra } from 'puppeteer-extra'
  *
  * const puppeteer = addExtra(vanillaPuppeteer)
  * puppeteer.use(plugin)

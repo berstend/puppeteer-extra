@@ -1,4 +1,4 @@
-# @extra/recaptcha [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test/master)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](https://github.com/berstend/puppeteer-extra/wiki/Scraping-Chat) [![npm](https://img.shields.io/npm/v/@extra/recaptcha.svg)](https://www.npmjs.com/package/@extra/recaptcha)
+# @extra/recaptcha [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test/master)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](http://scraping-chat.cf) [![npm](https://img.shields.io/npm/v/@extra/recaptcha.svg)](https://www.npmjs.com/package/@extra/recaptcha)
 
 > A plugin for [playwright-extra] & [puppeteer-extra] to solve reCAPTCHAs and hCaptchas automatically.
 
@@ -13,11 +13,10 @@ npm install @extra/recaptcha
 ```
 
 <details>
- <summary><strong>Changelog</strong></summary>
+ <summary>Changelog</summary>
 
-#### Latest
-
-> 🎁 **Note:** Until we've automated changelog updates in markdown files please follow the `#announcements` channel in our [discord server](https://discord.gg/vz7PeKk) for the latest updates and changelog info.
+- v4.1
+  - Initial public release
 
 </details>
 
