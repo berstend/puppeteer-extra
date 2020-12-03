@@ -20,12 +20,12 @@
     "pretty": true,
     "stripInternal": true
   },
+  // Note: Only include src/ here as otherwise subfolders get generated in dist/
   "include": [
     "./src/**/*.tsx",
     "./src/**/*.ts",
     "./src/**/*.d.ts",
     "./src/**/*.test.ts",
-    "./test/**/*.ts",
     "src/provider/2captcha-api.js"
   ],
   "exclude": ["node_modules", "dist", "./test/**/*.spec.ts"]
