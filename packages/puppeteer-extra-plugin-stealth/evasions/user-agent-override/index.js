@@ -8,7 +8,7 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * If you don't provide any values this plugin will default to using the regular UserAgent string (while stripping the headless part).
  * Default language is set to "en-US,en", default platform is "win32".
  *
- * By default puppeteer will not set a `Accept-Language` header in headless:
+ * Up until recently puppeteer would not set a `Accept-Language` header in headless by default:
  * It's (theoretically) possible to fix that using either `page.setExtraHTTPHeaders` or a `--lang` launch arg.
  * Unfortunately `page.setExtraHTTPHeaders` will lowercase everything and launch args are not always available. :)
  *
@@ -16,6 +16,8 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  *
  * Note: You cannot use the regular `page.setUserAgent()` puppeteer call in your code,
  * as it will reset the language and platform values you set with this plugin.
+ *
+ * Note: `qvalues` (e.g. `en-US,en;q=0.9`) will be set automatically when using this method.
  *
  * @example
  * const puppeteer = require("puppeteer-extra")
@@ -29,12 +31,12 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * // Stealth plugins are just regular `puppeteer-extra` plugins and can be added as such
  * const UserAgentOverride = require("puppeteer-extra-plugin-stealth/evasions/user-agent-override")
  * // Define custom UA, locale and platform
- * const ua = UserAgentOverride({ userAgent: "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)", locale: "de-DE,de;q=0.9", platform: "Win32" })
+ * const ua = UserAgentOverride({ userAgent: "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)", locale: "de-DE,de", platform: "Win32" })
  * puppeteer.use(ua)
  *
  * @param {Object} [opts] - Options
  * @param {string} [opts.userAgent] - The user agent to use (default: browser.userAgent())
- * @param {string} [opts.locale] - The locale to use in `Accept-Language` header and in `navigator.languages` (default: `en-US,en;q=0.9`)
+ * @param {string} [opts.locale] - The locale to use in `Accept-Language` header and in `navigator.languages` (default: `en-US,en`)
  * @param {string} [opts.platform] - The platform to use in `navigator.platform` (default: `Win32`)
  *
  */

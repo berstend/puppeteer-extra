@@ -6,11 +6,11 @@
 
 - [class: Plugin](#class-plugin)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/0f58277d6f874c9508735245fc961c5ee878fd64/packages/puppeteer-extra-plugin-stealth/evasions/user-agent-override/index.js#L41-L77)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/7a9082f9837f2403099e2181d639aa0065c51ba9/packages/puppeteer-extra-plugin-stealth/evasions/user-agent-override/index.js#L43-L79)
 
 - `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Options (optional, default `{}`)
   - `opts.userAgent` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The user agent to use (default: browser.userAgent())
-  - `opts.locale` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The locale to use in `Accept-Language` header and in `navigator.languages` (default: `en-US,en;q=0.9`)
+  - `opts.locale` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The locale to use in `Accept-Language` header and in `navigator.languages` (default: `en-US,en`)
   - `opts.platform` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The platform to use in `navigator.platform` (default: `Win32`)
 
 **Extends: PuppeteerExtraPlugin**
@@ -20,7 +20,7 @@ Fixes the UserAgent info (composed of UA string, Accept-Language, Platform).
 If you don't provide any values this plugin will default to using the regular UserAgent string (while stripping the headless part).
 Default language is set to "en-US,en", default platform is "win32".
 
-By default puppeteer will not set a `Accept-Language` header in headless:
+Up until recently puppeteer would not set a `Accept-Language` header in headless by default:
 It's (theoretically) possible to fix that using either `page.setExtraHTTPHeaders` or a `--lang` launch arg.
 Unfortunately `page.setExtraHTTPHeaders` will lowercase everything and launch args are not always available. :)
 
@@ -28,6 +28,8 @@ In addition, the `navigator.platform` property is always set to the host value, 
 
 Note: You cannot use the regular `page.setUserAgent()` puppeteer call in your code,
 as it will reset the language and platform values you set with this plugin.
+
+Note: `qvalues` (e.g. `en-US,en;q=0.9`) will be set automatically when using this method.
 
 Example:
 
@@ -45,7 +47,7 @@ const UserAgentOverride = require('puppeteer-extra-plugin-stealth/evasions/user-
 // Define custom UA, locale and platform
 const ua = UserAgentOverride({
   userAgent: 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)',
-  locale: 'de-DE,de;q=0.9',
+  locale: 'de-DE,de',
   platform: 'Win32'
 })
 puppeteer.use(ua)

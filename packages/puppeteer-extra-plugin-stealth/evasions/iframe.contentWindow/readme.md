@@ -6,7 +6,7 @@
 
 - [class: Plugin](#class-plugin)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/0f58277d6f874c9508735245fc961c5ee878fd64/packages/puppeteer-extra-plugin-stealth/evasions/iframe.contentWindow/index.js#L13-L128)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/7a9082f9837f2403099e2181d639aa0065c51ba9/packages/puppeteer-extra-plugin-stealth/evasions/iframe.contentWindow/index.js#L13-L128)
 
 - `opts` (optional, default `{}`)
 

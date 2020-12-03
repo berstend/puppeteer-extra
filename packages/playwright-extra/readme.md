@@ -26,7 +26,7 @@ npm install playwright playwright-extra
 // Note: Instead of chromium you can use firefox and webkit as well.
 const { chromium } = require('playwright-extra')
 
-// import and configure a the recaptcha plugin
+// import and configure the recaptcha plugin
 const RecaptchaPlugin = require('@extra/recaptcha')
 const recaptcha = RecaptchaPlugin({
   provider: {
@@ -55,13 +55,34 @@ chromium.launch({ headless: true }).then(async browser => {
 })
 ```
 
-The above example uses the [`recaptcha`](/packages/plugin-recaptcha) plugin, which need to be installed as well:
+The above example uses the [`recaptcha`](/packages/plugin-recaptcha) plugin, which needs to be installed as well:
 
 ```bash
 yarn add @extra/recaptcha
 # - or -
 npm install @extra/recaptcha
 ```
+
+If you'd like to see debug output just run your script like so:
+
+```bash
+DEBUG=automation-extra,automation-extra-plugin:* node myscript.js
+```
+
+### More examples
+
+<details>
+ <summary><strong>TypeScript usage</strong></summary><br/>
+
+`playwright-extra` and most plugins are written in TS, so you get perfect type support out of the box. :)
+
+```ts
+import { chromium } from 'playwright-extra'
+// if you need types as well:
+import { chromium, Playwright } from 'playwright-extra'
+```
+
+</details>
 
 ---
 
@@ -98,7 +119,7 @@ Making custom plugins which work with Playwright and Puppeteer is easy and fun. 
 - [selectors()](#selectors)
 - [devices()](#devices)
 
-### [addExtra(launcher)](https://github.com/berstend/puppeteer-extra/blob/0f58277d6f874c9508735245fc961c5ee878fd64/packages/playwright-extra/src/index.ts#L23-L25)
+### [addExtra(launcher)](https://github.com/berstend/puppeteer-extra/blob/7a9082f9837f2403099e2181d639aa0065c51ba9/packages/playwright-extra/src/index.ts#L23-L25)
 
 - `launcher` **PlaywrightBrowserLauncher** Playwright (or compatible) browser launcher
 
@@ -120,7 +141,7 @@ chromium.use(plugin)
 
 ---
 
-### [chromium()](https://github.com/berstend/puppeteer-extra/blob/0f58277d6f874c9508735245fc961c5ee878fd64/packages/playwright-extra/src/index.ts#L55-L55)
+### [chromium()](https://github.com/berstend/puppeteer-extra/blob/7a9082f9837f2403099e2181d639aa0065c51ba9/packages/playwright-extra/src/index.ts#L55-L55)
 
 This object can be used to launch or connect to Chromium, returning instances of ChromiumBrowser.
 
@@ -149,31 +170,31 @@ chromium.use(...)
 
 ---
 
-### [firefox()](https://github.com/berstend/puppeteer-extra/blob/0f58277d6f874c9508735245fc961c5ee878fd64/packages/playwright-extra/src/index.ts#L57-L57)
+### [firefox()](https://github.com/berstend/puppeteer-extra/blob/7a9082f9837f2403099e2181d639aa0065c51ba9/packages/playwright-extra/src/index.ts#L57-L57)
 
 This object can be used to launch or connect to Firefox, returning instances of FirefoxBrowser.
 
 ---
 
-### [webkit()](https://github.com/berstend/puppeteer-extra/blob/0f58277d6f874c9508735245fc961c5ee878fd64/packages/playwright-extra/src/index.ts#L59-L59)
+### [webkit()](https://github.com/berstend/puppeteer-extra/blob/7a9082f9837f2403099e2181d639aa0065c51ba9/packages/playwright-extra/src/index.ts#L59-L59)
 
 This object can be used to launch or connect to WebKit, returning instances of WebKitBrowser.
 
 ---
 
-### [errors()](https://github.com/berstend/puppeteer-extra/blob/0f58277d6f874c9508735245fc961c5ee878fd64/packages/playwright-extra/src/index.ts#L62-L62)
+### [errors()](https://github.com/berstend/puppeteer-extra/blob/7a9082f9837f2403099e2181d639aa0065c51ba9/packages/playwright-extra/src/index.ts#L62-L62)
 
 Returns playwright specific errors
 
 ---
 
-### [selectors()](https://github.com/berstend/puppeteer-extra/blob/0f58277d6f874c9508735245fc961c5ee878fd64/packages/playwright-extra/src/index.ts#L64-L64)
+### [selectors()](https://github.com/berstend/puppeteer-extra/blob/7a9082f9837f2403099e2181d639aa0065c51ba9/packages/playwright-extra/src/index.ts#L64-L64)
 
 Selectors can be used to install custom selector engines.
 
 ---
 
-### [devices()](https://github.com/berstend/puppeteer-extra/blob/0f58277d6f874c9508735245fc961c5ee878fd64/packages/playwright-extra/src/index.ts#L66-L66)
+### [devices()](https://github.com/berstend/puppeteer-extra/blob/7a9082f9837f2403099e2181d639aa0065c51ba9/packages/playwright-extra/src/index.ts#L66-L66)
 
 Returns a list of devices to be used with browser.newContext([options]) or browser.newPage([options]).
 
