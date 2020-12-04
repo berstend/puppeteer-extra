@@ -38,12 +38,12 @@ class DemoPlugin extends AutomationExtraPlugin {
     return 'demo'
   }
 
-  beforeLaunch(options) {
+  async beforeLaunch(options) {
     // Modify launch options
     options.headless = false
   }
 
-  onBrowser(browser) {
+  async onBrowser(browser) {
     // Become aware of browser launch/connect
     console.log('onBrowser:', {
       driverName: this.env.driverName,
@@ -51,7 +51,7 @@ class DemoPlugin extends AutomationExtraPlugin {
     })
   }
 
-  onPageCreated(page) {
+  async onPageCreated(page) {
     // Hook into page events
     console.log('Page created:', page.url())
     page.on('load', () => {
