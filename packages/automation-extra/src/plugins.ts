@@ -288,12 +288,21 @@ export class PluginList {
     // Handle `plugins` stanza
     this._plugins
       .filter(p => 'plugins' in p && p.plugins.length)
-      .map(p => (p as types.AutomationExtraPlugin).plugins)
-      .forEach(plugins => {
-        plugins
+      .map(p => p as types.AutomationExtraPlugin)
+      .forEach(parent => {
+        parent.plugins
           .filter(p => !pluginNames.has(p.name))
           .forEach(p => {
             debug('adding missing plugin', p.name)
+            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+            if (parent.filter && !p.filter) {
+              // Make child plugins inherit the parents filter if they don't have anything specified
+              Object.defineProperty(p, 'filter', {
+                get() {
+                  return parent.filter
+                }
+              })
+            }
             this.add(p)
           })
       })
