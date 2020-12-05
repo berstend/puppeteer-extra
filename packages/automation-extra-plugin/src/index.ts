@@ -43,6 +43,27 @@ export interface AutomationExtraPluginInstance {
 }
 
 /**
+ * Filters
+ * @private
+ */
+export type FilterString =
+  | 'playwright:chromium'
+  | 'playwright:firefox'
+  | 'playwright:webkit'
+  | 'puppeteer:chromium'
+  | 'puppeteer:firefox'
+
+export interface FilterInclude {
+  include: FilterString[]
+  exclude?: never
+}
+export interface FilterExclude {
+  include?: never
+  exclude: FilterString[]
+}
+export type Filter = FilterInclude | FilterExclude
+
+/**
  * Plugin lifecycle methods used by AutomationExtraPlugin.
  *
  * These are hooking into Playwright/Puppeteer events and are meant to be overriden
@@ -348,6 +369,9 @@ export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
    *   - In case the plugin prefers to run after the others.
    *     Useful when the plugin needs data from others.
    *
+   * @note
+   * The plugin code will still be executed, only a warning will be shown to the user.
+   *
    * @example
    * get requirements () {
    *   return new Set(['runLast', 'dataFromPlugins'])
@@ -355,6 +379,25 @@ export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
    */
   get requirements(): PluginRequirements {
     return new Set([])
+  }
+
+  /**
+   * Plugin filter statements (optional).
+   *
+   * Filter this plugin from being called depending on the environment.
+   *
+   * @note
+   * `include` or `exclude` are mutually exclusive, use one or the other.
+   *
+   * @example
+   * get filter() {
+   *   return {
+   *     include: ['playwright:chromium', 'puppeteer:chromium']
+   *   }
+   * }
+   */
+  get filter(): Filter | undefined {
+    return
   }
 
   /**

@@ -94,17 +94,18 @@ export class AutomationExtraBase {
     const beforeEvent = method === 'launch' ? 'beforeLaunch' : 'beforeConnect'
     const afterEvent = method === 'launch' ? 'afterLaunch' : 'afterConnect'
 
+    // Only now we know the final browser with puppeteer
+    if (this.env.isPuppeteer) {
+      this.env.browserName = getPuppeteerProduct(options)
+    }
+
     // Give plugins the chance to modify the options before launch/connect
-    // options = await this.plugins.getValue(beforeEvent, options)
     options =
       (await this.plugins.dispatchBlocking(beforeEvent, options)) || options
 
-    // Only now we know the final browser with puppeteer
+    // One of the plugins might have changed the browser product
     if (this.env.isPuppeteer) {
-      // Puppeteer supports defining the browser during launch
-      const override =
-        process.env.PUPPETEER_PRODUCT ?? (options as pptr.LaunchOptions).product
-      this.env.browserName = override === 'firefox' ? 'firefox' : 'chromium'
+      this.env.browserName = getPuppeteerProduct(options)
     }
 
     const isHeadless = (() => {
@@ -323,4 +324,12 @@ function isConnectOptions(
     'browserWSEndpoint' in (options as pptr.ConnectOptions) ||
     'wsEndpoint' in (options as pw.ConnectOptions)
   return yup
+}
+
+function getPuppeteerProduct(
+  options: pptr.LaunchOptions
+): 'firefox' | 'chromium' {
+  // Puppeteer supports defining the browser during launch or through an environment variable
+  const override = process.env.PUPPETEER_PRODUCT ?? (options || {}).product
+  return override === 'firefox' ? 'firefox' : 'chromium'
 }

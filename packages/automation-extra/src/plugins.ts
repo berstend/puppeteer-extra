@@ -1,4 +1,4 @@
-import type { LauncherEnv } from 'automation-extra-plugin'
+import type { LauncherEnv, FilterString } from 'automation-extra-plugin'
 
 import type * as types from './types'
 
@@ -76,9 +76,19 @@ export class PluginList {
     name: TName,
     ...args: Parameters<types.PluginMethodFn<TName>>
   ): void {
-    const plugins: types.AutomationExtraPlugin[] = this._plugins.filter(
+    const filteredPlugins = this.filteredPlugins
+    const plugins: types.AutomationExtraPlugin[] = filteredPlugins.filter(
       plugin => name in plugin
     ) as any
+    debug('dispatch', {
+      name,
+      currentEnv: `${this.env.driverName}:${this.env.browserName}`,
+      plugins: {
+        all: this._plugins.length,
+        filtered: filteredPlugins.length,
+        filteredWithEvent: plugins.length
+      }
+    })
 
     for (const plugin of plugins) {
       try {
@@ -111,16 +121,26 @@ export class PluginList {
     name: TName,
     ...args: Parameters<types.PluginMethodFn<TName>>
   ): Promise<ReturnType<types.PluginMethodFn<TName>>> {
-    const plugins: types.AutomationExtraPlugin[] = this._plugins.filter(
+    const filteredPlugins = this.filteredPlugins
+    const plugins: types.AutomationExtraPlugin[] = filteredPlugins.filter(
       plugin => name in plugin
     ) as any
+    debug('dispatchBlocking', {
+      name,
+      currentEnv: `${this.env.driverName}:${this.env.browserName}`,
+      plugins: {
+        all: this._plugins.length,
+        filtered: filteredPlugins.length,
+        filteredWithEvent: plugins.length
+      }
+    })
 
     let retValue: any = null
     for (const plugin of plugins) {
       try {
         retValue = await (plugin[name] as any)(...args)
         // In case we got a return value use that as new first argument for followup function calls
-        if (retValue) {
+        if (retValue !== undefined) {
           args[0] = retValue
         }
       } catch (err) {
@@ -138,9 +158,19 @@ export class PluginList {
     name: TName,
     ...args: Parameters<types.LegacyPluginMethodFn<TName>>
   ): void {
-    const plugins: types.PuppeteerExtraPlugin[] = this._plugins.filter(
+    const filteredPlugins = this.filteredPlugins
+    const plugins: types.PuppeteerExtraPlugin[] = filteredPlugins.filter(
       plugin => name in plugin
     ) as any
+    debug('dispatch', {
+      name,
+      currentEnv: `${this.env.driverName}:${this.env.browserName}`,
+      plugins: {
+        all: this._plugins.length,
+        filtered: filteredPlugins.length,
+        filteredWithEvent: plugins.length
+      }
+    })
 
     for (const plugin of plugins) {
       try {
@@ -153,6 +183,26 @@ export class PluginList {
         )
       }
     }
+  }
+
+  /**
+   * Filter plugins based on their `filter` stanza
+   */
+  get filteredPlugins(): types.Plugin[] {
+    const currentEnv = `${this.env.driverName}:${this.env.browserName}` as FilterString
+    const plugins = (this._plugins as types.AutomationExtraPlugin[]).filter(
+      plugin => {
+        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+        if (plugin.filter?.include?.length) {
+          return plugin.filter.include.includes(currentEnv)
+          // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+        } else if (plugin.filter?.exclude?.length) {
+          return plugin.filter.exclude.includes(currentEnv) !== true
+        }
+        return true // keep plugin
+      }
+    )
+    return plugins as types.Plugin[]
   }
 
   /**
