@@ -34,6 +34,15 @@ export type Browser = Puppeteer.Browser | Playwright.Browser
 export type Page = Puppeteer.Page | Playwright.Page
 
 /**
+ * Minimal plugin interface
+ * @private
+ */
+export interface AutomationExtraPluginInstance {
+  _isAutomationExtraPlugin: boolean
+  [propName: string]: any
+}
+
+/**
  * Plugin lifecycle methods used by AutomationExtraPlugin.
  *
  * These are hooking into Playwright/Puppeteer events and are meant to be overriden
@@ -353,6 +362,9 @@ export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
    *
    * Missing plugins will be required() by automation-extra.
    *
+   * @note
+   * Look into using `plugins` instead if you want to avoid dynamic imports.
+   *
    * @example
    * // Will ensure the 'puppeteer-extra-plugin-user-preferences' plugin is loaded.
    * get dependencies () {
@@ -367,6 +379,21 @@ export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
    */
   get dependencies(): PluginDependencies {
     return new Set([])
+  }
+
+  /**
+   * Add additional plugins (optional).
+   *
+   * Expects an array of AutomationExtraPlugin instances, not classes.
+   * This is intended to be used by "meta" plugins that use other plugins behind the scenes.
+   *
+   * The benefit over using `dependencies` is that this doesn't use the framework for dynamic imports,
+   * but requires explicit imports which bundlers like webkit handle much better.
+   *
+   * Missing plugins listed here will be added at the start of `launch` or `connect` events.
+   */
+  get plugins(): AutomationExtraPluginInstance[] {
+    return []
   }
 
   /**

@@ -235,6 +235,20 @@ export class PluginList {
   resolveDependencies() {
     const pluginNames = new Set(this._plugins.map((p: any) => p.name))
 
+    // Handle `plugins` stanza
+    this._plugins
+      .filter(p => 'plugins' in p && p.plugins.length)
+      .map(p => (p as types.AutomationExtraPlugin).plugins)
+      .forEach(plugins => {
+        plugins
+          .filter(p => !pluginNames.has(p.name))
+          .forEach(p => {
+            debug('adding missing plugin', p.name)
+            this.add(p)
+          })
+      })
+
+    // Handle `dependencies` stanza
     const allDeps: Map<string, any> = new Map()
     this._plugins
       // Skip plugins without dependencies
