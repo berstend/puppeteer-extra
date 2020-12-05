@@ -37,7 +37,7 @@ export type Page = Puppeteer.Page | Playwright.Page
  * Minimal plugin interface
  * @private
  */
-export interface AutomationExtraPluginInstance {
+export interface MinimalPlugin {
   _isAutomationExtraPlugin: boolean
   [propName: string]: any
 }
@@ -260,13 +260,15 @@ export class PluginLifecycleMethods {
  *     }
  *   }
  */
-export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
+export abstract class AutomationExtraPlugin<
+  Opts = PluginOptions
+> extends PluginLifecycleMethods {
   /** @private */
   ['constructor']: typeof AutomationExtraPlugin
   /** @private */
   private _debugBase: Debugger
   /** @private */
-  private _opts: PluginOptions
+  private _opts: Opts
 
   /**
    * Plugin id/name (required)
@@ -290,7 +292,7 @@ export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
    */
   public env: LauncherEnv
 
-  constructor(opts?: PluginOptions) {
+  constructor(opts?: Partial<Opts>) {
     super()
     this._debugBase = debug(`automation-extra-plugin:base:${this.id}`)
     this._opts = merge(this.defaults, opts || {}, mergeOptions)
@@ -349,8 +351,8 @@ export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
    * // Users can overwrite plugin defaults during instantiation:
    * puppeteer.use(require('puppeteer-extra-plugin-foobar')({ makeWindows: false }))
    */
-  get defaults(): PluginOptions {
-    return {}
+  get defaults(): Opts {
+    return {} as Opts
   }
 
   /**
@@ -435,7 +437,7 @@ export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
    *
    * Missing plugins listed here will be added at the start of `launch` or `connect` events.
    */
-  get plugins(): AutomationExtraPluginInstance[] {
+  get plugins(): MinimalPlugin[] {
     return []
   }
 
@@ -454,7 +456,7 @@ export abstract class AutomationExtraPlugin extends PluginLifecycleMethods {
    *   this.debug(this.opts.foo) // => bar
    * }
    */
-  get opts(): PluginOptions {
+  get opts(): Opts {
     return this._opts
   }
 

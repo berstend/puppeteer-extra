@@ -283,6 +283,7 @@ export class PluginList {
    * @private
    */
   resolveDependencies() {
+    debug('resolveDependencies')
     const pluginNames = new Set(this._plugins.map((p: any) => p.name))
 
     // Handle `plugins` stanza
