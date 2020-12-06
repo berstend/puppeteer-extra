@@ -197,7 +197,8 @@ export class PluginList {
           return plugin.filter.include.includes(currentEnv)
           // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
         } else if (plugin.filter?.exclude?.length) {
-          return plugin.filter.exclude.includes(currentEnv) !== true
+          // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+          return !plugin.filter.exclude.includes(currentEnv)
         }
         return true // keep plugin
       }
