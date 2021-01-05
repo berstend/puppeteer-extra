@@ -85,7 +85,7 @@ test('stealth: inconsistencies between page and worker', async t => {
   const pageFP = await page.evaluate(detectFingerprint)
   const workerFP = await (await worker).evaluate(detectFingerprint)
 
-  t.is(pageFP, workerFP)
+  t.deepEqual(pageFP, workerFP)
 })
 
 async function detectHeadless() {
