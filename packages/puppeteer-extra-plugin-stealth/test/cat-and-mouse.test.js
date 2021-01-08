@@ -88,6 +88,21 @@ test('stealth: inconsistencies between page and worker', async t => {
   t.deepEqual(pageFP, workerFP)
 })
 
+test.serial('stealth: creepjs has good trust score', async t => {
+  page.goto('https://abrahamjuliot.github.io/creepjs/')
+
+  const score = await (
+    await (
+      await page.waitForSelector('#fingerprint-data .unblurred')
+    ).getProperty('textContent')
+  ).jsonValue()
+
+  t.true(
+    parseInt(score) > 80,
+    `The creepjs score is: ${parseInt(score)}% but it should be at least 80%`
+  )
+})
+
 async function detectHeadless() {
   const results = {}
 
