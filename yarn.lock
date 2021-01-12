@@ -13024,3 +13024,8 @@ yn@3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/yn/-/yn-3.1.1.tgz#1e87401a09d767c1d5eab26a6e4c185182d2eb50"
   integrity sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==
+
+zod@^2.0.0-beta.25:
+  version "2.0.0-beta.25"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-2.0.0-beta.25.tgz#b1a280f89e24e044897412cb51b53de46c0bd8d9"
+  integrity sha512-fsPQ0j/r65wACW90TzK+gHFyDIZ3qKUiqmr7ysRvurynl87+6GSCQTmkzCQWd4/xADQ60UiD+sZWztt1LHxr0Q==
