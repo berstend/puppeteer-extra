@@ -2,8 +2,6 @@
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
-const withUtils = require('../_utils/withUtils')
-
 /**
  * Set the hardwareConcurrency to 4 (optionally configurable with `hardwareConcurrency`)
  *
@@ -23,15 +21,15 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   async onPageCreated(page) {
-    await withUtils(page).evaluateOnNewDocument((utils, opts) => {
-      const patchNavigator = (name, value) =>
-        utils.replaceProperty(Object.getPrototypeOf(navigator), name, {
-          get() {
-            return value
-          }
-        })
-
-      patchNavigator('hardwareConcurrency', opts.hardwareConcurrency || 4)
+    await page.evaluateOnNewDocument(opts => {
+      Object.defineProperty(
+        Object.getPrototypeOf(navigator),
+        'hardwareConcurrency',
+        {
+          value: opts.hardwareConcurrency || 4,
+          writable: false
+        }
+      )
     }, this.opts)
   }
 }
