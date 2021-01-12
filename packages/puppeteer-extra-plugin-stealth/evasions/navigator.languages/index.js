@@ -1,6 +1,7 @@
 'use strict'
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+const withUtils = require('../_utils/withUtils')
 
 /**
  * Pass the Languages Test. Allows setting custom languages.
@@ -17,10 +18,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/navigator.languages'
   }
 
+  // Overwrite the `languages` property to use a custom getter.
   async onPageCreated(page) {
-    await page.evaluateOnNewDocument(opts => {
-      // Overwrite the `languages` property to use a custom getter.
-      Object.defineProperty(Object.getPrototypeOf(navigator), 'languages', {
+    await withUtils(page).evaluateOnNewDocument((utils, opts) => {
+      utils.replaceProperty(Object.getPrototypeOf(navigator), 'languages', {
         get: () => opts.languages || ['en-US', 'en']
       })
     }, this.opts)
