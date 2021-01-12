@@ -37,7 +37,8 @@
   ],
   "ava": {
     "files": [
-      "!test/util.js"
+      "!test/util.js",
+      "!test/fixtures/sw.js"
     ]
   },
   "devDependencies": {
