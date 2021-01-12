@@ -25,6 +25,7 @@ yarn-error.log*
 
 TODO.md
 packages/testing/
+packages/plugin-stealth/
 packages/puppeteer-extra2/
 packages/puppeteer-extra-old/
 packages/test-*
