@@ -81,6 +81,7 @@ test('stealth: will pass Paul Irish', async t => {
   t.false(wasHeadlessDetected)
 })
 
+/*
 test('stealth: inconsistencies between page and worker', async t => {
   const pageFP = await page.evaluate(detectFingerprint)
   const workerFP = await (await worker).evaluate(detectFingerprint)
@@ -102,6 +103,7 @@ test.serial('stealth: creepjs has good trust score', async t => {
     `The creepjs score is: ${parseInt(score)}% but it should be at least 80%`
   )
 })
+*/
 
 async function detectHeadless() {
   const results = {}
