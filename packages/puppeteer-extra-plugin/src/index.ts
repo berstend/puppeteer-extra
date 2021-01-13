@@ -372,10 +372,6 @@ export abstract class PuppeteerExtraPlugin {
     // noop
   }
 
-  async onWorkerCreated(worker: Puppeteer.Worker) {
-    // noop
-  }
-
   /**
    * Called when the url of a target changes.
    *
@@ -465,7 +461,7 @@ export abstract class PuppeteerExtraPlugin {
   _getMissingDependencies(plugins: any) {
     const pluginNames = new Set(plugins.map((p: any) => p.name))
     const missing = new Set(
-      Array.from(this.dependencies.values()).filter(x => !pluginNames.has(x))
+      Array.from(this.dependencies.values()).filter((x) => !pluginNames.has(x))
     )
     return missing
   }
@@ -541,15 +537,6 @@ export abstract class PuppeteerExtraPlugin {
       const page = await target.page()
       if (this.onPageCreated) {
         await this.onPageCreated(page)
-      }
-    } else if (target.type() === 'service_worker' || target.type() === 'shared_worker') {
-      const worker = (await target.worker() as any)
-      if (worker) {
-        // Fixme: find some nicer way to add the method
-        worker.evaluateOnNewDocument = worker.evaluate
-        if (this.onWorkerCreated) {
-          await this.onWorkerCreated(worker)
-        }
       }
     }
   }
