@@ -17,7 +17,7 @@
     "lint": "eslint --ext .js .",
     "test:js": "ava --concurrency 2 -v",
     "test": "run-p test:js lint",
-    "test-ci": "run-s test",
+    "test-ci": "run-s test:js",
     "types": "npx --package typescript@3.7 tsc --emitDeclarationOnly --declaration --allowJs index.js"
   },
   "engines": {
