@@ -2,6 +2,8 @@
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
+const withUtils = require('../_utils/withUtils')
+
 /**
  * By default puppeteer will have a fixed `navigator.vendor` property.
  *
@@ -41,16 +43,22 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   async onPageCreated(page) {
-    this.debug('onPageCreated - Will set these user agent options', {
+    this.debug('onPageCreated', {
       opts: this.opts
     })
 
-    await page.evaluateOnNewDocument(v => {
-      // Overwrite the `vendor` property to use a custom getter.
-      Object.defineProperty(Object.getPrototypeOf(navigator), 'vendor', {
-        get: () => v
-      })
-    }, this.opts.vendor || 'Google Inc.')
+    await withUtils(page).evaluateOnNewDocument(
+      (utils, { opts }) => {
+        utils.replaceGetterWithProxy(
+          Object.getPrototypeOf(navigator),
+          'vendor',
+          utils.makeHandler().getterValue(opts.vendor)
+        )
+      },
+      {
+        opts: this.opts
+      }
+    )
   } // onPageCreated
 }
 

@@ -16,6 +16,7 @@ test('splitObjPath: will do what it says', async t => {
 })
 
 test('makeNativeString: will do what it says', async t => {
+  utils.init()
   t.is(utils.makeNativeString('bob'), 'function bob() { [native code] }')
   t.is(
     utils.makeNativeString('toString'),
@@ -223,21 +224,22 @@ function toStringTest(obj) {
 - Function.prototype.toString.call(obj): ${Function.prototype.toString.call(
     obj
   )}
-- Function.prototype.valueOf.call(obj) + "": ${Function.prototype.valueOf.call(
-    obj
-  ) + ''}
-- obj.toString === Function.prototype.toString: ${obj.toString ===
-    Function.prototype.toString}
+- Function.prototype.valueOf.call(obj) + "": ${
+    Function.prototype.valueOf.call(obj) + ''
+  }
+- obj.toString === Function.prototype.toString: ${
+    obj.toString === Function.prototype.toString
+  }
 `.trim()
 }
 
 test('patchToString: passes all toString tests', async t => {
-  const toStringVanilla = await (async function() {
+  const toStringVanilla = await (async function () {
     const browser = await vanillaPuppeteer.launch({ headless: true })
     const page = await browser.newPage()
     return page.evaluate(toStringTest, 'HTMLMediaElement.prototype.canPlayType')
   })()
-  const toStringStealth = await (async function() {
+  const toStringStealth = await (async function () {
     const browser = await vanillaPuppeteer.launch({ headless: true })
     const page = await browser.newPage()
     await withUtils(page).evaluate(utils => {

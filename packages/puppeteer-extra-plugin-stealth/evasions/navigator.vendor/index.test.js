@@ -8,7 +8,7 @@ test('vanilla: navigator.vendor is always Google Inc.', async t => {
   const page = await browser.newPage()
 
   const vendor = await page.evaluate(() => navigator.vendor)
-  t.true(vendor === 'Google Inc.')
+  t.is(vendor, 'Google Inc.')
 })
 
 test('stealth: navigator.vendor set to custom value', async t => {
@@ -19,7 +19,7 @@ test('stealth: navigator.vendor set to custom value', async t => {
   const page = await browser.newPage()
 
   const vendor = await page.evaluate(() => navigator.vendor)
-  t.true(vendor === 'Apple Computer, Inc.')
+  t.is(vendor, 'Apple Computer, Inc.')
 })
 
 test('stealth: will not leak modifications', async t => {
@@ -36,4 +36,34 @@ test('stealth: will not leak modifications', async t => {
     () => Object.getOwnPropertyNames(navigator) // Must be an empty array if native
   )
   t.deepEqual(test2, [])
+})
+
+test('stealth: does patch getters properly', async t => {
+  const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
+  const browser = await puppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const results = await page.evaluate(() => {
+    const hasInvocationError = (() => {
+      try {
+        // eslint-disable-next-line dot-notation
+        Object['seal'](Object.getPrototypeOf(navigator)['vendor'])
+        return false
+      } catch (err) {
+        return true
+      }
+    })()
+    return {
+      hasInvocationError,
+      toString: Object.getOwnPropertyDescriptor(
+        Object.getPrototypeOf(navigator),
+        'vendor'
+      ).get.toString()
+    }
+  })
+
+  t.deepEqual(results, {
+    hasInvocationError: true,
+    toString: 'function get vendor() { [native code] }'
+  })
 })
