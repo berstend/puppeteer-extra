@@ -2,6 +2,8 @@
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
+const withUtils = require('../_utils/withUtils')
+
 /**
  * Set the hardwareConcurrency to 4 (optionally configurable with `hardwareConcurrency`)
  *
@@ -20,20 +22,28 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/navigator.hardwareConcurrency'
   }
 
+  get defaults() {
+    return {
+      hardwareConcurrency: 4
+    }
+  }
+
   async onPageCreated(page) {
-    await page.evaluateOnNewDocument(opts => {
-      Object.defineProperty(
-        Object.getPrototypeOf(navigator),
-        'hardwareConcurrency',
-        {
-          value: opts.hardwareConcurrency || 4,
-          writable: false
-        }
-      )
-    }, this.opts)
+    await withUtils(page).evaluateOnNewDocument(
+      (utils, { opts }) => {
+        utils.replaceGetterWithProxy(
+          Object.getPrototypeOf(navigator),
+          'hardwareConcurrency',
+          utils.makeHandler().getterValue(opts.hardwareConcurrency)
+        )
+      },
+      {
+        opts: this.opts
+      }
+    )
   }
 }
 
-module.exports = function(pluginConfig) {
+module.exports = function (pluginConfig) {
   return new Plugin(pluginConfig)
 }

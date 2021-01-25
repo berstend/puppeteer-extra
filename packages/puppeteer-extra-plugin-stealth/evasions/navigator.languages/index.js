@@ -18,16 +18,31 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/navigator.languages'
   }
 
-  // Overwrite the `languages` property to use a custom getter.
+  get defaults() {
+    return {
+      languages: [] // Empty default, otherwise this would be merged with user defined array override
+    }
+  }
+
   async onPageCreated(page) {
-    await withUtils(page).evaluateOnNewDocument((utils, opts) => {
-      utils.replaceProperty(Object.getPrototypeOf(navigator), 'languages', {
-        get: () => opts.languages || ['en-US', 'en']
-      })
-    }, this.opts)
+    await withUtils(page).evaluateOnNewDocument(
+      (utils, { opts }) => {
+        const languages = opts.languages.length
+          ? opts.languages
+          : ['en-US', 'en']
+        utils.replaceGetterWithProxy(
+          Object.getPrototypeOf(navigator),
+          'languages',
+          utils.makeHandler().getterValue(Object.freeze([...languages]))
+        )
+      },
+      {
+        opts: this.opts
+      }
+    )
   }
 }
 
-module.exports = function(pluginConfig) {
+module.exports = function (pluginConfig) {
   return new Plugin(pluginConfig)
 }
