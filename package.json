@@ -1,47 +1,45 @@
 {
+  "version": "0.0.0",
   "private": true,
   "description": "Modular framework to teach Puppeteer new tricks.",
   "repository": "berstend/puppeteer-extra",
-  "author": "berstend",
   "license": "MIT",
+  "author": "berstend",
   "main": "packages/puppeteer-extra/index.js",
-  "engines": {
-    "node": ">=8"
-  },
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "yarn lerna exec --concurrency 1 'yarn build; echo 0'",
     "docs": "lerna run docs",
-    "test": "lerna run test --concurrency 1 --stream",
-    "test-ci": "lerna run test-ci --concurrency 1 --stream",
+    "download-firefox": "node packages/testing-tools/download-firefox.js",
     "prepare": "lerna run prepare",
     "release": "lerna publish --npm-client npm",
-    "download-firefox": "node packages/testing-tools/download-firefox.js"
+    "test": "lerna run test --concurrency 1 --stream",
+    "test-ci": "lerna run test-ci --concurrency 1 --stream"
   },
-  "workspaces": [
-    "packages/*"
-  ],
+  "resolutions": {},
+  "dependencies": {},
   "devDependencies": {
-    "eslint": "^7.14.0",
-    "eslint-config-prettier": "^6.15.0",
+    "eslint": "^7.18.0",
+    "eslint-config-prettier": "^7.2.0",
     "eslint-config-prettier-standard": "^3.0.1",
     "eslint-config-standard": "^16.0.2",
-    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^5.0.0",
-    "lerna": "^3.19.0",
-    "lerna-update-wizard": "^0.17.5",
-    "prettier": "^2.2.0",
+    "lerna": "^3.22.1",
+    "lerna-update-wizard": "^0.17.8",
+    "prettier": "^2.2.1",
     "prettier-config-standard": "^1.0.1"
   },
   "optionalDependencies": {
-    "fsevents": "^2.1.2"
+    "fsevents": "^2.3.1"
   },
-  "resolutions": {
-    "**/fsevents": "^2.1.2"
-  },
-  "dependencies": {},
-  "version": "0.0.0"
+  "engines": {
+    "node": ">=8"
+  }
 }

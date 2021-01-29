@@ -48,6 +48,8 @@ yarn bootstrap
 yarn build
 ```
 
+> **Note regarding `fsevents`:** If you are working from a non-OSX environment you may need to run `npx json -I -f package.json -e 'this.resolutions={}'` prior to the initial `yarn` command to allow correct installation.
+
 #### Development flow
 
 ```bash
