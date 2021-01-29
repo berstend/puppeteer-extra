@@ -8,21 +8,21 @@ declare module 'puppeteer' {
   export type EvaluateHandleFn = string | ((...args: unknown[]) => unknown)
 
   export interface Browser {
-    readonly _createPageInContext: (contextId?: string) => Promise<Page>
-    readonly _defaultContext: types.BrowserContext
+    _createPageInContext: (contextId?: string) => Promise<Page>
+    _defaultContext: types.BrowserContext
   }
 
   export interface Page {
-    readonly _client: types.CDPSession
-    readonly _frameManager: FrameManager
-    readonly _workers: Map<string, WebWorker>
+    _client: types.CDPSession
+    _frameManager: FrameManager
+    _workers: Map<string, WebWorker>
   }
 
   export interface WebWorker {
-    readonly _client: types.CDPSession
-    readonly _url: string
-    readonly _executionContextPromise: Promise<types.ExecutionContext>
-    readonly _executionContextCallback: (value: types.ExecutionContext) => void
+    _client: types.CDPSession
+    _url: string
+    _executionContextPromise: Promise<types.ExecutionContext>
+    _executionContextCallback: (value: types.ExecutionContext) => void
 
     url(): string
 
@@ -40,12 +40,12 @@ declare module 'puppeteer' {
   }
 
   export interface FrameManager {
-    readonly _client: types.CDPSession
-    readonly _page: Page
-    readonly _frames: Map<string, types.Frame>
-    readonly _contextIdToContext: Map<number, types.ExecutionContext>
-    readonly _isolatedWorlds: Set<string>
-    readonly _mainFrame: types.Frame
+    _client: types.CDPSession
+    _page: Page
+    _frames: Map<string, types.Frame>
+    _contextIdToContext: Map<number, types.ExecutionContext>
+    _isolatedWorlds: Set<string>
+    _mainFrame: types.Frame
 
     initialize(): Promise<void>
 
