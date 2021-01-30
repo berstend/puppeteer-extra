@@ -4,21 +4,20 @@
 
 #### Table of Contents
 
-- [class: Plugin](#class-plugin)
+-   [class: Plugin](#class-plugin)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/e6133619b051febed630ada35241664eba59b9fa/packages/puppeteer-extra-plugin-stealth/evasions/user-agent-override/index.js#L41-L77)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/f96d8b0cedfe93b2867fcdd2049364a242bdc036/packages/puppeteer-extra-plugin-stealth/evasions/user-agent-override/index.js#L40-L159)
 
-- `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Options (optional, default `{}`)
-  - `opts.userAgent` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The user agent to use (default: browser.userAgent())
-  - `opts.locale` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The locale to use in `Accept-Language` header and in `navigator.languages` (default: `en-US,en;q=0.9`)
-  - `opts.platform` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The platform to use in `navigator.platform` (default: `Win32`)
+-   `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Options (optional, default `{}`)
+    -   `opts.userAgent` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The user agent to use (default: browser.userAgent())
+    -   `opts.locale` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The locale to use in `Accept-Language` header and in `navigator.languages` (default: `en-US,en`)
 
 **Extends: PuppeteerExtraPlugin**
 
-Fixes the UserAgent info (composed of UA string, Accept-Language, Platform).
+Fixes the UserAgent info (composed of UA string, Accept-Language, Platform, and UA hints).
 
 If you don't provide any values this plugin will default to using the regular UserAgent string (while stripping the headless part).
-Default language is set to "en-US,en", default platform is "win32".
+Default language is set to "en-US,en", the other settings match the UserAgent string.
 
 By default puppeteer will not set a `Accept-Language` header in headless:
 It's (theoretically) possible to fix that using either `page.setExtraHTTPHeaders` or a `--lang` launch arg.
@@ -32,23 +31,19 @@ as it will reset the language and platform values you set with this plugin.
 Example:
 
 ```javascript
-const puppeteer = require('puppeteer-extra')
+const puppeteer = require("puppeteer-extra")
 
-const StealthPlugin = require('puppeteer-extra-plugin-stealth')
+const StealthPlugin = require("puppeteer-extra-plugin-stealth")
 const stealth = StealthPlugin()
 // Remove this specific stealth plugin from the default set
-stealth.enabledEvasions.delete('user-agent-override')
+stealth.enabledEvasions.delete("user-agent-override")
 puppeteer.use(stealth)
 
 // Stealth plugins are just regular `puppeteer-extra` plugins and can be added as such
-const UserAgentOverride = require('puppeteer-extra-plugin-stealth/evasions/user-agent-override')
-// Define custom UA, locale and platform
-const ua = UserAgentOverride({
-  userAgent: 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)',
-  locale: 'de-DE,de;q=0.9',
-  platform: 'Win32'
-})
+const UserAgentOverride = require("puppeteer-extra-plugin-stealth/evasions/user-agent-override")
+// Define custom UA and locale
+const ua = UserAgentOverride({ userAgent: "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)", locale: "de-DE,de" })
 puppeteer.use(ua)
 ```
 
----
+* * *

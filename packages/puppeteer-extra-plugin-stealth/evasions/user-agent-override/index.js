@@ -3,10 +3,10 @@
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
 /**
- * Fixes the UserAgent info (composed of UA string, Accept-Language, Platform).
+ * Fixes the UserAgent info (composed of UA string, Accept-Language, Platform, and UA hints).
  *
  * If you don't provide any values this plugin will default to using the regular UserAgent string (while stripping the headless part).
- * Default language is set to "en-US,en", default platform is "win32".
+ * Default language is set to "en-US,en", the other settings match the UserAgent string.
  *
  * By default puppeteer will not set a `Accept-Language` header in headless:
  * It's (theoretically) possible to fix that using either `page.setExtraHTTPHeaders` or a `--lang` launch arg.
@@ -28,13 +28,13 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  *
  * // Stealth plugins are just regular `puppeteer-extra` plugins and can be added as such
  * const UserAgentOverride = require("puppeteer-extra-plugin-stealth/evasions/user-agent-override")
- * // Define custom UA, locale and platform
- * const ua = UserAgentOverride({ userAgent: "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)", locale: "de-DE,de;q=0.9", platform: "Win32" })
+ * // Define custom UA and locale
+ * const ua = UserAgentOverride({ userAgent: "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)", locale: "de-DE,de" })
  * puppeteer.use(ua)
  *
  * @param {Object} [opts] - Options
  * @param {string} [opts.userAgent] - The user agent to use (default: browser.userAgent())
- * @param {string} [opts.locale] - The locale to use in `Accept-Language` header and in `navigator.languages` (default: `en-US,en;q=0.9`)
+ * @param {string} [opts.locale] - The locale to use in `Accept-Language` header and in `navigator.languages` (default: `en-US,en`)
  *
  */
 class Plugin extends PuppeteerExtraPlugin {
