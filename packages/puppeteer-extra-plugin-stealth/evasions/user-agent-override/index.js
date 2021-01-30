@@ -115,7 +115,7 @@ class Plugin extends PuppeteerExtraPlugin {
     // Return OS version
     const _getPlatformVersion = () => {
       if (ua.includes('Mac OS X')) {
-        return ua.match(/Mac OS X ([^_]+)/)[1]
+        return ua.match(/Mac OS X ([^)]+)/)[1]
       } else if (ua.includes('Android')) {
         return ua.match(/Android ([^;]+)/)[1]
       } else if (ua.includes('Windows')) {
@@ -130,7 +130,7 @@ class Plugin extends PuppeteerExtraPlugin {
 
     // Return the Android model, empty on desktop
     const _getPlatformModel = () =>
-      _getMobile() ? ua.match(/Android.*?;.*?\/([^;]+)/)[1] : ''
+      _getMobile() ? ua.match(/Android.*?;\s([^)]+)/)[1] : ''
 
     const _getMobile = () => ua.includes('Android')
 
