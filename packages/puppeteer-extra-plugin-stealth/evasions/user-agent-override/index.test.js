@@ -125,9 +125,7 @@ const _testUAHint = async userAgent => {
 
   const browser = await puppeteer.launch({
     headless: false, // only works on headful
-    args: ['--enable-features=UserAgentClientHint'],
-    executablePath:
-      '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+    args: ['--enable-features=UserAgentClientHint']
   })
 
   const majorVersion = parseInt(
