@@ -120,22 +120,42 @@ test('stealth: navigator.languages with custom locale', async t => {
   t.deepEqual(lang, 'de-DE')
 })
 
-test('stealth: navigator.platform with default platform', async t => {
-  const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
-  const browser = await puppeteer.launch({ headless: true })
-  const page = await browser.newPage()
-
-  const platform = await page.evaluate(() => navigator.platform)
-  t.true(platform === 'Win32')
-})
-
-test('stealth: navigator.platform with custom platform', async t => {
+test('stealth: test if UA hints are correctly set', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
-    Plugin({ platform: 'MyFunkyPlatform' })
+    Plugin({
+      userAgent:
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36'
+    })
   )
-  const browser = await puppeteer.launch({ headless: true })
+
+  const browser = await puppeteer.launch({
+    headless: false, // only works on headful
+    args: ['--enable-features=UserAgentClientHint']
+  })
+
+  const majorVersion = parseInt(
+    (await browser.version()).match(/\/([^\.]+)/)[1]
+  )
+  if (majorVersion < 88) {
+    return t.true(true) // Skip test on browsers that don't support UA hints
+  }
+
   const page = await browser.newPage()
 
-  const platform = await page.evaluate(() => navigator.platform)
-  t.true(platform === 'MyFunkyPlatform')
+  await page.goto('https://headers.cf/headers/?format=raw')
+  const firstLoad = await page.content()
+  t.true(
+    firstLoad.includes(
+      `sec-ch-ua: "Chromium";v="88", "Google Chrome";v="88", ";Not A Brand";v="99"`
+    )
+  )
+
+  await page.reload()
+  const secondLoad = await page.content()
+  t.true(secondLoad.includes('sec-ch-ua-mobile: ?0'))
+  t.true(secondLoad.includes('sec-ch-ua-full-version: "88.0.4324.96"'))
+  t.true(secondLoad.includes('sec-ch-ua-arch: "x86"'))
+  t.true(secondLoad.includes('sec-ch-ua-platform: "Windows"'))
+  t.true(secondLoad.includes('sec-ch-ua-platform-version: "10.0"'))
+  t.true(secondLoad.includes('sec-ch-ua-model: ""'))
 })
