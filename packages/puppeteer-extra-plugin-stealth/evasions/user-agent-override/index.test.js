@@ -120,8 +120,10 @@ test('stealth: navigator.languages with custom locale', async t => {
   t.deepEqual(lang, 'de-DE')
 })
 
-const _testUAHint = async userAgent => {
-  const puppeteer = addExtra(vanillaPuppeteer).use(Plugin({ userAgent }))
+const _testUAHint = async (userAgent, locale) => {
+  const puppeteer = addExtra(vanillaPuppeteer).use(
+    Plugin({ userAgent, locale })
+  )
 
   const browser = await puppeteer.launch({
     headless: false, // only works on headful
@@ -144,7 +146,8 @@ const _testUAHint = async userAgent => {
 
 test('stealth: test if UA hints are correctly set - Windows 10', async t => {
   const page = await _testUAHint(
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36'
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36',
+    'en-AU'
   )
   if (!page) {
     t.true(true) // skip
@@ -156,6 +159,7 @@ test('stealth: test if UA hints are correctly set - Windows 10', async t => {
       `sec-ch-ua: "Google Chrome";v="99", " Not;A Brand";v="99", "Chromium";v="99"`
     )
   )
+  t.true(firstLoad.includes(`Accept-Language: en-AU`))
 
   await page.reload()
   const secondLoad = await page.content()
@@ -169,7 +173,8 @@ test('stealth: test if UA hints are correctly set - Windows 10', async t => {
 
 test('stealth: test if UA hints are correctly set - macOS 11', async t => {
   const page = await _testUAHint(
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36'
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36',
+    'de-DE'
   )
   if (!page) {
     t.true(true) // skip
@@ -181,6 +186,7 @@ test('stealth: test if UA hints are correctly set - macOS 11', async t => {
       `sec-ch-ua: "Google Chrome";v="99", " Not;A Brand";v="99", "Chromium";v="99"`
     )
   )
+  t.true(firstLoad.includes(`Accept-Language: de-DE`))
 
   await page.reload()
   const secondLoad = await page.content()
@@ -194,7 +200,8 @@ test('stealth: test if UA hints are correctly set - macOS 11', async t => {
 
 test('stealth: test if UA hints are correctly set - Android 10', async t => {
   const page = await _testUAHint(
-    'Mozilla/5.0 (Linux; Android 10; SM-P205) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36'
+    'Mozilla/5.0 (Linux; Android 10; SM-P205) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36',
+    'nl-NL'
   )
   if (!page) {
     t.true(true) // skip
@@ -206,6 +213,7 @@ test('stealth: test if UA hints are correctly set - Android 10', async t => {
       `sec-ch-ua: "Google Chrome";v="99", " Not;A Brand";v="99", "Chromium";v="99"`
     )
   )
+  t.true(firstLoad.includes(`Accept-Language: nl-NL`))
 
   await page.reload()
   const secondLoad = await page.content()
