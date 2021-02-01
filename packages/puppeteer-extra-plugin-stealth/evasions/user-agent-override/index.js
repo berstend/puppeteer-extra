@@ -174,6 +174,11 @@ class Plugin extends PuppeteerExtraPlugin {
     this._headless = options.headless
   }
 
+  async beforeConnect() {
+    // Treat browsers using connect() as headless browsers
+    this._headless = true
+  }
+
   get data() {
     return [
       {
