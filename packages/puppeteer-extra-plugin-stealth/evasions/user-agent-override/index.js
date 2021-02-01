@@ -40,10 +40,16 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 class Plugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
     super(opts)
+
+    this._headless = false
   }
 
   get name() {
     return 'stealth/evasions/user-agent-override'
+  }
+
+  get dependencies() {
+    return new Set(['user-preferences'])
   }
 
   get defaults() {
@@ -61,8 +67,8 @@ class Plugin extends PuppeteerExtraPlugin {
 
     // Full version number from Chrome
     const uaVersion = ua.includes('Chrome/')
-      ? ua.match(/Chrome\/([^\s]+)/)[1]
-      : (await page.browser().version()).match(/\/([^\s]+)/)[1]
+      ? ua.match(/Chrome\/([\d|.]+)/)[1]
+      : (await page.browser().version()).match(/\/([\d|.]+)/)[1]
 
     // Get platform identifier (short or long version)
     const _getPlatform = (extended = false) => {
@@ -114,12 +120,12 @@ class Plugin extends PuppeteerExtraPlugin {
 
     // Return OS version
     const _getPlatformVersion = () => {
-      if (ua.includes('Mac OS X')) {
+      if (ua.includes('Mac OS X ')) {
         return ua.match(/Mac OS X ([^)]+)/)[1]
-      } else if (ua.includes('Android')) {
+      } else if (ua.includes('Android ')) {
         return ua.match(/Android ([^;]+)/)[1]
-      } else if (ua.includes('Windows')) {
-        return ua.match(/([\d|.]+);/)[1]
+      } else if (ua.includes('Windows ')) {
+        return ua.match(/Windows .*?([\d|.]+);/)[1]
       } else {
         return ''
       }
@@ -136,7 +142,6 @@ class Plugin extends PuppeteerExtraPlugin {
 
     const override = {
       userAgent: ua,
-      acceptLanguage: this.opts.locale || 'en-US,en',
       platform: _getPlatform(),
       userAgentMetadata: {
         brands: _getBrands(),
@@ -149,13 +154,36 @@ class Plugin extends PuppeteerExtraPlugin {
       }
     }
 
+    // In case of headless, override the acceptLanguage in CDP.
+    // This is not preferred, as it messed up the header order.
+    // On headful, we set the user preference language setting instead.
+    if (this._headless) {
+      override.acceptLanguage = this.opts.locale || 'en-US,en'
+    }
+
     this.debug('onPageCreated - Will set these user agent options', {
       override,
       opts: this.opts
     })
 
     page._client.send('Network.setUserAgentOverride', override)
-  } // onPageCreated
+  }
+
+  async beforeLaunch(options) {
+    // Check if launched headless
+    this._headless = options.headless
+  }
+
+  get data() {
+    return [
+      {
+        name: 'userPreferences',
+        value: {
+          intl: { accept_languages: this.opts.locale || 'en-US,en' }
+        }
+      }
+    ]
+  }
 }
 
 const defaultExport = opts => new Plugin(opts)
