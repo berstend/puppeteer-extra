@@ -7,6 +7,7 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  *
  * If you don't provide any values this plugin will default to using the regular UserAgent string (while stripping the headless part).
  * Default language is set to "en-US,en", the other settings match the UserAgent string.
+ * If you are running on Linux, it will mask the settins to look like Windows. This behavior can be disabled with the `maskLinux` option.
  *
  * By default puppeteer will not set a `Accept-Language` header in headless:
  * It's (theoretically) possible to fix that using either `page.setExtraHTTPHeaders` or a `--lang` launch arg.
@@ -35,6 +36,7 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * @param {Object} [opts] - Options
  * @param {string} [opts.userAgent] - The user agent to use (default: browser.userAgent())
  * @param {string} [opts.locale] - The locale to use in `Accept-Language` header and in `navigator.languages` (default: `en-US,en`)
+ * @param {boolean} [opts.maskLinux] - Wether to hide Linux as platform in the user agent or not - true by default
  *
  */
 class Plugin extends PuppeteerExtraPlugin {
@@ -55,15 +57,24 @@ class Plugin extends PuppeteerExtraPlugin {
   get defaults() {
     return {
       userAgent: null,
-      locale: 'en-US,en'
+      locale: 'en-US,en',
+      maskLinux: true
     }
   }
 
   async onPageCreated(page) {
     // Determine the full user agent string, strip the "Headless" part
-    const ua =
+    let ua =
       this.opts.userAgent ||
       (await page.browser().userAgent()).replace('HeadlessChrome/', 'Chrome/')
+
+    if (
+      this.opts.maskLinux &&
+      ua.includes('Linux') &&
+      !ua.includes('Android') // Skip Android user agents since they also contain Linux
+    ) {
+      ua = ua.replace(/\(([^)]+)\)/, '(Windows NT 10.0; Win64; x64)') // Replace the first part in parentheses with Windows data
+    }
 
     // Full version number from Chrome
     const uaVersion = ua.includes('Chrome/')

@@ -120,6 +120,35 @@ test('stealth: navigator.languages with custom locale', async t => {
   t.deepEqual(lang, 'de-DE')
 })
 
+test('stealth: navigator.platform with maskLinux true (default)', async t => {
+  const puppeteer = addExtra(vanillaPuppeteer).use(
+    Plugin({
+      userAgent:
+        'Mozilla/5.0 (X11; Ubuntu; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.9.9999.99 Safari/537.36'
+    })
+  )
+  const browser = await puppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const platform = await page.evaluate(() => navigator.platform)
+  t.true(platform === 'Win32')
+})
+
+test('stealth: navigator.platform with maskLinux false', async t => {
+  const puppeteer = addExtra(vanillaPuppeteer).use(
+    Plugin({
+      userAgent:
+        'Mozilla/5.0 (X11; Ubuntu; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.9.9999.99 Safari/537.36',
+      maskLinux: false
+    })
+  )
+  const browser = await puppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const platform = await page.evaluate(() => navigator.platform)
+  t.true(platform === 'Linux')
+})
+
 const _testUAHint = async (userAgent, locale) => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
     Plugin({ userAgent, locale })

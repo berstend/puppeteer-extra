@@ -6,11 +6,12 @@
 
 - [class: Plugin](#class-plugin)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/12a76f2678ba8d3e8bd665da94a59aed500e510a/packages/puppeteer-extra-plugin-stealth/evasions/user-agent-override/index.js#L40-L159)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/ab0047d1af7dc38412744abdb61bcfc35c42dc34/packages/puppeteer-extra-plugin-stealth/evasions/user-agent-override/index.js#L42-L203)
 
 - `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Options (optional, default `{}`)
   - `opts.userAgent` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The user agent to use (default: browser.userAgent())
   - `opts.locale` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The locale to use in `Accept-Language` header and in `navigator.languages` (default: `en-US,en`)
+  - `opts.maskLinux` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** Wether to hide Linux as platform in the user agent or not - true by default
 
 **Extends: PuppeteerExtraPlugin**
 
@@ -18,6 +19,7 @@ Fixes the UserAgent info (composed of UA string, Accept-Language, Platform, and 
 
 If you don't provide any values this plugin will default to using the regular UserAgent string (while stripping the headless part).
 Default language is set to "en-US,en", the other settings match the UserAgent string.
+If you are running on Linux, it will mask the settins to look like Windows. This behavior can be disabled with the `maskLinux` option.
 
 By default puppeteer will not set a `Accept-Language` header in headless:
 It's (theoretically) possible to fix that using either `page.setExtraHTTPHeaders` or a `--lang` launch arg.
