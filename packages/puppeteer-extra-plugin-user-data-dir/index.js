@@ -41,7 +41,7 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   get requirements() {
-    return new Set(['launch', 'runLast', 'dataFromPlugins'])
+    return new Set(['runLast', 'dataFromPlugins'])
   }
 
   get shouldDeleteDirectory() {
@@ -116,6 +116,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
+module.exports = function (pluginConfig) {
   return new Plugin(pluginConfig)
 }
