@@ -52,7 +52,8 @@
   },
   "dependencies": {
     "debug": "^4.1.1",
-    "puppeteer-extra-plugin": "^3.1.8"
+    "puppeteer-extra-plugin": "^3.1.8",
+    "puppeteer-extra-plugin-user-preferences": "^2.2.8"
   },
   "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }
