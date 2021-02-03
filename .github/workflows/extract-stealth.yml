@@ -14,7 +14,7 @@ jobs:
       - name: Sleep for 60 seconds
         uses: jakejarvis/wait-action@master
         with:
-          time: "60s"
+          time: "180s"
 
       - name: Checkout
         uses: actions/checkout@v2
