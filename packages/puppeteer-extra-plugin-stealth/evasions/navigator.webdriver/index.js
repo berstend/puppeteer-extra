@@ -27,13 +27,13 @@ class Plugin extends PuppeteerExtraPlugin {
   // To remove this bar on Linux, run: mkdir -p /etc/opt/chrome/policies/managed && echo '{ "CommandLineFlagSecurityWarningsEnabled": false }' > /etc/opt/chrome/policies/managed/managed_policies.json
   async beforeLaunch(options) {
     // If disable-blink-features is already passed, append the AutomationControlled switch
-    options.args.forEach(e => {
-      if (e.startsWith('--disable-blink-features=')) {
-        e += ',AutomationControlled'
-        return // eslint-disable-line
-      }
-    })
-    options.args.push(`--disable-blink-features=AutomationControlled`)
+    const idx = launchOptions.args.findIndex((arg) => arg.startsWith('--disable-blink-features='));
+    if (idx !== -1) {
+      const arg = launchOptions.args[idx];
+      launchOptions.args[idx] = `${arg},AutomationControlled`;
+    } else {
+      launchOptions.args.push('--disable-blink-features=AutomationControlled');
+    }
   }
 }
 
