@@ -96,7 +96,7 @@ class Plugin extends PuppeteerExtraPlugin {
       }
     }
 
-    // Source in C++: https://source.chromium.org/chromium/chromium/src/+/master:chrome/browser/chrome_content_browser_client.cc;l=1187-1238
+    // Source in C++: https://source.chromium.org/chromium/chromium/src/+/master:components/embedder_support/user_agent_utils.cc;l=55-100
     const _getBrands = () => {
       const seed = uaVersion.split('.')[0] // the major version number of Chrome
 
