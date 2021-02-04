@@ -41,7 +41,7 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   get requirements() {
-    return new Set(['launch', 'runLast', 'dataFromPlugins'])
+    return new Set(['runLast', 'dataFromPlugins'])
   }
 
   get shouldDeleteDirectory() {
@@ -69,7 +69,7 @@ class Plugin extends PuppeteerExtraPlugin {
     try {
       // We're doing it sync to improve chances to cleanup
       // correctly in the event of ultimate disaster.
-      fse.removeSync(this._userDataDir)
+      fse.rmdirSync(this._userDataDir, { recursive: true })
     } catch (e) {
       debug(e)
     }

@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-stealth",
-  "version": "2.6.5",
+  "version": "2.7.4",
   "description": "Stealth mode: Applies various techniques to make detection of headless puppeteer harder.",
   "main": "index.js",
   "typings": "index.d.ts",
@@ -17,7 +17,7 @@
     "lint": "eslint --ext .js .",
     "test:js": "ava --serial --concurrency 2 -v",
     "test": "run-p test:js lint",
-    "test-ci": "run-s test",
+    "test-ci": "run-s test:js",
     "types": "npx --package typescript@3.7 tsc --emitDeclarationOnly --declaration --allowJs index.js"
   },
   "engines": {
@@ -37,7 +37,8 @@
   ],
   "ava": {
     "files": [
-      "!test/util.js"
+      "!test/util.js",
+      "!test/fixtures/sw.js"
     ]
   },
   "devDependencies": {
@@ -51,7 +52,8 @@
   },
   "dependencies": {
     "debug": "^4.1.1",
-    "puppeteer-extra-plugin": "^3.1.7"
+    "puppeteer-extra-plugin": "^3.1.8",
+    "puppeteer-extra-plugin-user-preferences": "^2.2.11"
   },
   "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }

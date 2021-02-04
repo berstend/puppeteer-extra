@@ -380,8 +380,8 @@ We use a [monorepo](/) powered by [Lerna](https://github.com/lerna/lerna#--use-w
 <details>
  <summary><strong>Compatibility</strong></summary><br/>
 
-`puppeteer-extra` and all plugins are [tested continously](https://travis-ci.org/berstend/puppeteer-extra) against all relevant NodeJS (v8-v13) and puppeteer versions.
-We never broke compatibility and still support puppeteer down to version 1.6.2 (Released Aug 1, 2018).
+`puppeteer-extra` and all plugins are [tested continously](https://github.com/berstend/puppeteer-extra/actions) in a matrix of current (stable & LTS) NodeJS and puppeteer versions.
+We never broke compatibility and still support puppeteer down to very early versions from 2018.
 
 A few plugins won't work in headless mode (it's noted if that's the case) due to Chrome limitations (e.g. the [`user-preferences`](/packages/puppeteer-extra-plugin-user-preferences) plugin), look into `xvfb-run` if you still require a headless experience in these circumstances.
 
@@ -625,7 +625,7 @@ puppeteer.use(...)
 
 ## License
 
-Copyright © 2018 - 2020, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](https://github.com/berstend). Released under the MIT License.
+Copyright © 2018 - 2021, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](https://github.com/berstend). Released under the MIT License.
 
 <!-- Markdown footnotes (for links) -->
 

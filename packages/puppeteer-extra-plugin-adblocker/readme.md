@@ -1,4 +1,4 @@
-# puppeteer-extra-plugin-adblocker [![Build Status](https://travis-ci.org/berstend/puppeteer-extra.svg?branch=master)](https://travis-ci.org/berstend/puppeteer-extra) [![npm](https://img.shields.io/npm/v/puppeteer-extra-plugin-adblocker.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin-adblocker)
+# puppeteer-extra-plugin-adblocker [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test/master)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](http://scraping-chat.cf) [![npm](https://img.shields.io/npm/v/puppeteer-extra-plugin-adblocker.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin-adblocker)
 
 > A [puppeteer-extra](https://github.com/berstend/puppeteer-extra) plugin to block ads and trackers.
 
@@ -42,7 +42,7 @@ const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker')
 puppeteer.use(AdblockerPlugin())
 
 // puppeteer usage as normal
-puppeteer.launch({ headless: true }).then(async browser => {
+puppeteer.launch({ headless: true }).then(async (browser) => {
   const page = await browser.newPage()
   // Visit a page, ads are blocked automatically!
   await page.goto('https://www.google.com/search?q=rent%20a%20car')
@@ -66,7 +66,7 @@ puppeteer.use(Adblocker({ blockTrackers: true }))
 
 puppeteer
   .launch({ headless: false, defaultViewport: null })
-  .then(async browser => {
+  .then(async (browser) => {
     const page = await browser.newPage()
     await page.goto('https://www.vanityfair.com')
     await page.waitFor(60 * 1000)
@@ -83,7 +83,7 @@ Usage:
 ```js
 const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker')
 const adblocker = AdblockerPlugin({
-  blockTrackers: true // default: false
+  blockTrackers: true, // default: false
 })
 puppeteer.use(adblocker)
 ```

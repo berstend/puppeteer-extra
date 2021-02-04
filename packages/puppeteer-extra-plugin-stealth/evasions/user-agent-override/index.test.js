@@ -120,8 +120,13 @@ test('stealth: navigator.languages with custom locale', async t => {
   t.deepEqual(lang, 'de-DE')
 })
 
-test('stealth: navigator.platform with default platform', async t => {
-  const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
+test('stealth: navigator.platform with maskLinux true (default)', async t => {
+  const puppeteer = addExtra(vanillaPuppeteer).use(
+    Plugin({
+      userAgent:
+        'Mozilla/5.0 (X11; Ubuntu; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.9.9999.99 Safari/537.36'
+    })
+  )
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -129,13 +134,122 @@ test('stealth: navigator.platform with default platform', async t => {
   t.true(platform === 'Win32')
 })
 
-test('stealth: navigator.platform with custom platform', async t => {
+test('stealth: navigator.platform with maskLinux false', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
-    Plugin({ platform: 'MyFunkyPlatform' })
+    Plugin({
+      userAgent:
+        'Mozilla/5.0 (X11; Ubuntu; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.9.9999.99 Safari/537.36',
+      maskLinux: false
+    })
   )
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
   const platform = await page.evaluate(() => navigator.platform)
-  t.true(platform === 'MyFunkyPlatform')
+  t.true(platform === 'Linux')
+})
+
+const _testUAHint = async (userAgent, locale) => {
+  const puppeteer = addExtra(vanillaPuppeteer).use(
+    Plugin({ userAgent, locale })
+  )
+
+  const browser = await puppeteer.launch({
+    headless: false, // only works on headful
+    args: ['--enable-features=UserAgentClientHint']
+  })
+
+  const majorVersion = parseInt(
+    (await browser.version()).match(/\/([^\.]+)/)[1]
+  )
+  if (majorVersion < 88) {
+    return null // Skip test on browsers that don't support UA hints
+  }
+
+  const page = await browser.newPage()
+
+  await page.goto('https://headers.cf/headers/?format=raw')
+
+  return page
+}
+
+test('stealth: test if UA hints are correctly set - Windows 10', async t => {
+  const page = await _testUAHint(
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36',
+    'en-AU'
+  )
+  if (!page) {
+    t.true(true) // skip
+    return
+  }
+  const firstLoad = await page.content()
+  t.true(
+    firstLoad.includes(
+      `sec-ch-ua: "Google Chrome";v="99", " Not;A Brand";v="99", "Chromium";v="99"`
+    )
+  )
+  t.true(firstLoad.includes(`Accept-Language: en-AU`))
+
+  await page.reload()
+  const secondLoad = await page.content()
+  t.true(secondLoad.includes('sec-ch-ua-mobile: ?0'))
+  t.true(secondLoad.includes('sec-ch-ua-full-version: "99.0.9999.99"'))
+  t.true(secondLoad.includes('sec-ch-ua-arch: "x86"'))
+  t.true(secondLoad.includes('sec-ch-ua-platform: "Windows"'))
+  t.true(secondLoad.includes('sec-ch-ua-platform-version: "10.0"'))
+  t.true(secondLoad.includes('sec-ch-ua-model: ""'))
+})
+
+test('stealth: test if UA hints are correctly set - macOS 11', async t => {
+  const page = await _testUAHint(
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36',
+    'de-DE'
+  )
+  if (!page) {
+    t.true(true) // skip
+    return
+  }
+  const firstLoad = await page.content()
+  t.true(
+    firstLoad.includes(
+      `sec-ch-ua: "Google Chrome";v="99", " Not;A Brand";v="99", "Chromium";v="99"`
+    )
+  )
+  t.true(firstLoad.includes(`Accept-Language: de-DE`))
+
+  await page.reload()
+  const secondLoad = await page.content()
+  t.true(secondLoad.includes('sec-ch-ua-mobile: ?0'))
+  t.true(secondLoad.includes('sec-ch-ua-full-version: "99.0.9999.99"'))
+  t.true(secondLoad.includes('sec-ch-ua-arch: "x86"'))
+  t.true(secondLoad.includes('sec-ch-ua-platform: "Mac OS X"'))
+  t.true(secondLoad.includes('sec-ch-ua-platform-version: "11_1_0"'))
+  t.true(secondLoad.includes('sec-ch-ua-model: ""'))
+})
+
+test('stealth: test if UA hints are correctly set - Android 10', async t => {
+  const page = await _testUAHint(
+    'Mozilla/5.0 (Linux; Android 10; SM-P205) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36',
+    'nl-NL'
+  )
+  if (!page) {
+    t.true(true) // skip
+    return
+  }
+  const firstLoad = await page.content()
+  t.true(
+    firstLoad.includes(
+      `sec-ch-ua: "Google Chrome";v="99", " Not;A Brand";v="99", "Chromium";v="99"`
+    )
+  )
+  t.true(firstLoad.includes(`Accept-Language: nl-NL`))
+
+  await page.reload()
+  const secondLoad = await page.content()
+  t.true(secondLoad.includes('sec-ch-ua-mobile: ?1'))
+  t.true(secondLoad.includes('sec-ch-ua-full-version: "99.0.9999.99"'))
+  t.true(secondLoad.includes('sec-ch-ua-arch: ""'))
+  t.true(secondLoad.includes('sec-ch-ua-platform: "Android"'))
+  t.true(secondLoad.includes('sec-ch-ua-platform-version: "10"'))
+  t.true(secondLoad.includes('sec-ch-ua-model: "SM-P205"'))
 })

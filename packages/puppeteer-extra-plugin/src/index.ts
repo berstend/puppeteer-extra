@@ -461,7 +461,7 @@ export abstract class PuppeteerExtraPlugin {
   _getMissingDependencies(plugins: any) {
     const pluginNames = new Set(plugins.map((p: any) => p.name))
     const missing = new Set(
-      Array.from(this.dependencies.values()).filter(x => !pluginNames.has(x))
+      Array.from(this.dependencies.values()).filter((x) => !pluginNames.has(x))
     )
     return missing
   }

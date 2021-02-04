@@ -59,3 +59,44 @@ test('stealth: will not leak modifications', async t => {
   )
   t.false(test2.includes('languages'))
 })
+
+test('stealth: does patch getters properly', async t => {
+  const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
+  const browser = await puppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const results = await page.evaluate(() => {
+    const hasInvocationError = (() => {
+      try {
+        // eslint-disable-next-line dot-notation
+        Object['seal'](Object.getPrototypeOf(navigator)['languages'])
+        return false
+      } catch (err) {
+        return true
+      }
+    })()
+    const hasPushError = (() => {
+      try {
+        // eslint-disable-next-line dot-notation
+        navigator.languages.push(null)
+        return false
+      } catch (err) {
+        return true
+      }
+    })()
+    return {
+      hasInvocationError,
+      hasPushError,
+      toString: Object.getOwnPropertyDescriptor(
+        Object.getPrototypeOf(navigator),
+        'languages'
+      ).get.toString()
+    }
+  })
+
+  t.deepEqual(results, {
+    hasInvocationError: true,
+    hasPushError: true,
+    toString: 'function get languages() { [native code] }'
+  })
+})

@@ -28,13 +28,13 @@ class Plugin extends PuppeteerExtraPlugin {
   async beforeLaunch(options) {
     options.args = options.args || []
     // If disable-blink-features is already passed, append the AutomationControlled switch
-    options.args.forEach(e => {
-      if (e.startsWith('--disable-blink-features=')) {
-        e += ',AutomationControlled'
-        return // eslint-disable-line
-      }
-    })
-    options.args.push(`--disable-blink-features=AutomationControlled`)
+    const idx = options.args.findIndex((arg) => arg.startsWith('--disable-blink-features='));
+    if (idx !== -1) {
+      const arg = options.args[idx];
+      options.args[idx] = `${arg},AutomationControlled`;
+    } else {
+      options.args.push('--disable-blink-features=AutomationControlled');
+    }
   }
 }
 

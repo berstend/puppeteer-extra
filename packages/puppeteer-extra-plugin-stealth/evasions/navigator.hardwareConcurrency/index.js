@@ -22,17 +22,25 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/navigator.hardwareConcurrency'
   }
 
-  async onPageCreated(page) {
-    await withUtils(page).evaluateOnNewDocument((utils, opts) => {
-      const patchNavigator = (name, value) =>
-        utils.replaceProperty(Object.getPrototypeOf(navigator), name, {
-          get() {
-            return value
-          }
-        })
+  get defaults() {
+    return {
+      hardwareConcurrency: 4
+    }
+  }
 
-      patchNavigator('hardwareConcurrency', opts.hardwareConcurrency || 4)
-    }, this.opts)
+  async onPageCreated(page) {
+    await withUtils(page).evaluateOnNewDocument(
+      (utils, { opts }) => {
+        utils.replaceGetterWithProxy(
+          Object.getPrototypeOf(navigator),
+          'hardwareConcurrency',
+          utils.makeHandler().getterValue(opts.hardwareConcurrency)
+        )
+      },
+      {
+        opts: this.opts
+      }
+    )
   }
 }
 

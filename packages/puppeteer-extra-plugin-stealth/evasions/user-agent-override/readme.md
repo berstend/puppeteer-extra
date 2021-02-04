@@ -6,19 +6,20 @@
 
 - [class: Plugin](#class-plugin)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/7a9082f9837f2403099e2181d639aa0065c51ba9/packages/puppeteer-extra-plugin-stealth/evasions/user-agent-override/index.js#L43-L79)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/ab0047d1af7dc38412744abdb61bcfc35c42dc34/packages/puppeteer-extra-plugin-stealth/evasions/user-agent-override/index.js#L42-L203)
 
 - `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Options (optional, default `{}`)
   - `opts.userAgent` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The user agent to use (default: browser.userAgent())
   - `opts.locale` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The locale to use in `Accept-Language` header and in `navigator.languages` (default: `en-US,en`)
-  - `opts.platform` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** The platform to use in `navigator.platform` (default: `Win32`)
+  - `opts.maskLinux` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)?** Wether to hide Linux as platform in the user agent or not - true by default
 
 **Extends: PuppeteerExtraPlugin**
 
-Fixes the UserAgent info (composed of UA string, Accept-Language, Platform).
+Fixes the UserAgent info (composed of UA string, Accept-Language, Platform, and UA hints).
 
 If you don't provide any values this plugin will default to using the regular UserAgent string (while stripping the headless part).
-Default language is set to "en-US,en", default platform is "win32".
+Default language is set to "en-US,en", the other settings match the UserAgent string.
+If you are running on Linux, it will mask the settins to look like Windows. This behavior can be disabled with the `maskLinux` option.
 
 Up until recently puppeteer would not set a `Accept-Language` header in headless by default:
 It's (theoretically) possible to fix that using either `page.setExtraHTTPHeaders` or a `--lang` launch arg.
@@ -44,11 +45,10 @@ puppeteer.use(stealth)
 
 // Stealth plugins are just regular `puppeteer-extra` plugins and can be added as such
 const UserAgentOverride = require('puppeteer-extra-plugin-stealth/evasions/user-agent-override')
-// Define custom UA, locale and platform
+// Define custom UA and locale
 const ua = UserAgentOverride({
   userAgent: 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)',
-  locale: 'de-DE,de',
-  platform: 'Win32'
+  locale: 'de-DE,de'
 })
 puppeteer.use(ua)
 ```

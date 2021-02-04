@@ -1,4 +1,4 @@
-# puppeteer-extra-plugin [![Build Status](https://travis-ci.org/berstend/puppeteer-extra.svg?branch=master)](https://travis-ci.org/berstend/puppeteer-extra) [![npm](https://img.shields.io/npm/v/puppeteer-extra-plugin.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin)
+# puppeteer-extra-plugin [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test/master)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](http://scraping-chat.cf) [![npm](https://img.shields.io/npm/v/puppeteer-extra-plugin.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin)
 
 ## Installation
 

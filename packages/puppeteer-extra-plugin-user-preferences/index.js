@@ -44,7 +44,7 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   get requirements() {
-    return new Set(['launch', 'runLast', 'headful', 'dataFromPlugins'])
+    return new Set(['runLast', 'dataFromPlugins'])
   }
 
   get dependencies() {

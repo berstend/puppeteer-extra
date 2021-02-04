@@ -16,6 +16,7 @@ test('splitObjPath: will do what it says', async t => {
 })
 
 test('makeNativeString: will do what it says', async t => {
+  utils.init()
   t.is(utils.makeNativeString('bob'), 'function bob() { [native code] }')
   t.is(
     utils.makeNativeString('toString'),
