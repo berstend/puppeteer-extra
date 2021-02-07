@@ -9,7 +9,8 @@
   "scripts": {
     "docs": "node -e 0",
     "lint": "eslint --ext .js .",
-    "test": "run-p lint",
+    "test:js": "ava -v --serial --concurrency 1",
+    "test": "run-p test:js lint",
     "test-ci": "run-s test"
   },
   "engines": {
