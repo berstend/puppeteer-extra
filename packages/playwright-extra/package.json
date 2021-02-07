@@ -61,6 +61,6 @@
   },
   "dependencies": {
     "automation-extra": "^4.1.0",
-    "playwright-core": "*"
+    "playwright-core": "1.8.0"
   }
 }
