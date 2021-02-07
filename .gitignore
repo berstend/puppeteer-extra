@@ -16,6 +16,7 @@ dist
 .env.production.local
 .cache
 .rpt2_cache
+.idea
 
 lerna-debug.log*
 lerna-error.log*
