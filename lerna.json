@@ -1,4 +1,9 @@
 {
+  "command": {
+    "version": {
+      "message": "chore(release): %s"
+    }
+  },
   "packages": ["packages/*"],
   "version": "independent",
   "useWorkspaces": true,
