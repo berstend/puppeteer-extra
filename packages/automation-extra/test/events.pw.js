@@ -5,6 +5,8 @@ const test = require('ava')
 const playwright = require('playwright')
 const { addExtraPlaywright } = require('automation-extra')
 
+const count = (arr = [], val) => arr.filter(v => v === val).length
+
 const factory = (
   browserName = 'chromium',
   testConnect = false,
@@ -72,52 +74,71 @@ const factory = (
   const instance = new Plugin()
   launcher.use(instance)
   t.true(PLUGIN_EVENTS.includes('onPluginRegistered'))
+  t.is(count(PLUGIN_EVENTS, 'onPluginRegistered'), 1)
 
   let browser
   if (testConnect) {
     browser = await launcher.connect({ wsEndpoint })
     t.true(PLUGIN_EVENTS.includes('beforeConnect'))
+    t.is(count(PLUGIN_EVENTS, 'beforeConnect'), 1)
     t.true(PLUGIN_EVENTS.includes('afterConnect'))
+    t.is(count(PLUGIN_EVENTS, 'afterConnect'), 1)
+
     t.true(!PLUGIN_EVENTS.includes('beforeLaunch'))
     t.true(!PLUGIN_EVENTS.includes('afterLaunch'))
   } else {
     browser = await launcher.launch()
     t.true(PLUGIN_EVENTS.includes('beforeLaunch'))
+    t.is(count(PLUGIN_EVENTS, 'beforeLaunch'), 1)
     t.true(PLUGIN_EVENTS.includes('afterLaunch'))
+    t.is(count(PLUGIN_EVENTS, 'afterLaunch'), 1)
+
     t.true(!PLUGIN_EVENTS.includes('beforeConnect'))
     t.true(!PLUGIN_EVENTS.includes('afterConnect'))
   }
 
   t.true(PLUGIN_EVENTS.includes('onBrowser'))
+  t.is(count(PLUGIN_EVENTS, 'onBrowser'), 1)
 
   if (useNewPage) {
     const page = await browser.newPage()
     t.true(PLUGIN_EVENTS.includes('beforeContext'))
+    t.is(count(PLUGIN_EVENTS, 'beforeContext'), 1)
     t.true(PLUGIN_EVENTS.includes('onContextCreated'))
+    t.is(count(PLUGIN_EVENTS, 'onContextCreated'), 1)
     t.true(PLUGIN_EVENTS.includes('onPageCreated'))
+    t.is(count(PLUGIN_EVENTS, 'onPageCreated'), 1)
 
     await page.close()
     t.true(PLUGIN_EVENTS.includes('onPageClose'))
+    t.is(count(PLUGIN_EVENTS, 'onPageClose'), 1)
 
     await page.context().close()
     t.true(PLUGIN_EVENTS.includes('onContextClose'))
+    t.is(count(PLUGIN_EVENTS, 'onContextClose'), 1)
   } else {
     const context = await browser.newContext()
     t.true(PLUGIN_EVENTS.includes('beforeContext'))
+    t.is(count(PLUGIN_EVENTS, 'beforeContext'), 1)
     t.true(PLUGIN_EVENTS.includes('onContextCreated'))
+    t.is(count(PLUGIN_EVENTS, 'onContextCreated'), 1)
 
     const page = await context.newPage().catch(console.log)
     t.true(PLUGIN_EVENTS.includes('onPageCreated'))
+    t.is(count(PLUGIN_EVENTS, 'onPageCreated'), 1)
 
     await page.close()
     t.true(PLUGIN_EVENTS.includes('onPageClose'))
+    t.is(count(PLUGIN_EVENTS, 'onPageClose'), 1)
 
     await context.close()
     t.true(PLUGIN_EVENTS.includes('onContextClose'))
+    t.is(count(PLUGIN_EVENTS, 'onContextClose'), 1)
   }
 
   await browser.close().catch(console.log)
   t.true(PLUGIN_EVENTS.includes('onDisconnected'))
+  t.is(count(PLUGIN_EVENTS, 'onDisconnected'), 1)
 
   if (browserServer) {
     await browserServer.close()

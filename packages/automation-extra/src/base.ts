@@ -204,6 +204,7 @@ export class AutomationExtraBase {
       })
     }
 
+    // Note: `browser.newPage` will implicitly call `browser.newContext` as well
     browser.newContext = ((originalMethod, ctx) => {
       return async (options: pw.BrowserContextOptions = {}) => {
         const contextOptions: pw.BrowserContextOptions =
@@ -219,23 +220,6 @@ export class AutomationExtraBase {
         return context
       }
     })(browser.newContext, browser)
-
-    browser.newPage = ((originalMethod, ctx) => {
-      return async (options: pw.BrowserContextOptions = {}) => {
-        const contextOptions: pw.BrowserContextOptions =
-          (await this.plugins.dispatchBlocking(
-            'beforeContext',
-            options,
-            browser
-          )) || options
-        const page = await originalMethod.call(ctx, contextOptions)
-        const context = page.context()
-        this.plugins.dispatch('onContextCreated', context, contextOptions)
-
-        bindContextEvents(context)
-        return page
-      }
-    })(browser.newPage, browser)
   }
 
   /**
