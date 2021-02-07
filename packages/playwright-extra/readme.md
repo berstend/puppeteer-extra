@@ -99,7 +99,7 @@ _`playwright-extra` is brand new, we're in the process of porting over existing 
 
 **Write your own plugin**
 
-Making custom plugins which work with Playwright and Puppeteer is easy and fun. It might even make your own code base more maintainable and modular. Head over to the documentation here: [`automation-extra-plugin`](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra)
+Making custom plugins which work with Playwright and Puppeteer is easy and fun. It might even make your own code base more maintainable and modular. Head over to the documentation here: [`automation-extra-plugin`](https://github.com/berstend/puppeteer-extra/tree/master/packages/automation-extra-plugin)
 
 ---
 
