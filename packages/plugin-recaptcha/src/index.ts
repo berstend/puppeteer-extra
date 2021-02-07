@@ -70,10 +70,11 @@ export class RecaptchaPlugin extends AutomationExtraPlugin {
     this.debug('hasRecaptchaScriptTag', !!hasRecaptchaScriptTag)
     if (hasRecaptchaScriptTag) {
       this.debug('waitForRecaptchaClient - start', new Date())
+      // Testing for .clients is more robust then .count (some sites implement recaptcha in a broken way)
       await (page as types.Playwright.Page).waitForFunction(
         `
         (function() {
-          return window.___grecaptcha_cfg && window.___grecaptcha_cfg.count
+          return Object.keys((window.___grecaptcha_cfg || {}).clients || {}).length
         })()
       `,
         { polling: 200, timeout: 10 * 1000 }

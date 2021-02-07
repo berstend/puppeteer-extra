@@ -110,7 +110,9 @@ export class RecaptchaContentScript {
   private _findVisibleIframeNodes() {
     return Array.from(
       document.querySelectorAll<HTMLIFrameElement>(
-        `iframe[src^='https://www.google.com/recaptcha/api2/anchor'][name^="a-"]`
+        `iframe[src^='https://www.google.com/recaptcha/api2/anchor'][name^="a-"]` +
+          ', ' +
+          `iframe[src^='https://www.google.com/recaptcha/enterprise/anchor'][name^="a-"]`
       )
     )
   }
@@ -118,7 +120,11 @@ export class RecaptchaContentScript {
     return document.querySelector<HTMLIFrameElement>(
       `iframe[src^='https://www.google.com/recaptcha/api2/anchor'][name^="a-${
         id || ''
-      }"]`
+      }"]` +
+        ', ' +
+        `iframe[src^='https://www.google.com/recaptcha/enterprise/anchor'][name^="a-${
+          id || ''
+        }"]`
     )
   }
 
@@ -126,7 +132,11 @@ export class RecaptchaContentScript {
     let frame: HTMLElement | null = document.querySelector<HTMLIFrameElement>(
       `iframe[src^='https://www.google.com/recaptcha/api2/bframe'][name^="c-${
         id || ''
-      }"]`
+      }"]` +
+        ', ' +
+        `iframe[src^='https://www.google.com/recaptcha/enterprise/bframe'][name^="c-${
+          id || ''
+        }"]`
     )
     if (!frame) {
       return
@@ -180,7 +190,11 @@ export class RecaptchaContentScript {
           document.querySelectorAll(
             `iframe[src^='https://www.google.com/recaptcha/api2/bframe'][name^="c-${
               id || ''
-            }"]`
+            }"]` +
+              ', ' +
+              `iframe[src^='https://www.google.com/recaptcha/enterprise/bframe'][name^="c-${
+                id || ''
+              }"]`
           ).length
       )
   }
