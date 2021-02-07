@@ -765,7 +765,7 @@ The script is evaluated after the document was created but before any of its scr
 
 ## License
 
-Copyright © 2018 - 2020, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](https://github.com/berstend). Released under the MIT License.
+Copyright © 2018 - 2021, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](https://github.com/berstend). Released under the MIT License.
 
 <!--
   Reference links

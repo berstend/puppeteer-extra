@@ -93,7 +93,9 @@ import { chromium, Playwright } from 'playwright-extra'
 - Solves reCAPTCHAs and hCaptchas automatically, using a single line of code: `page.solveRecaptchas()`
 - First plugin to support Playwright & Puppeteer, Chrome, Firefox and Webkit.
 
-_**Note:** `playwright-extra` is brand new, we're in the process of porting over existing [`puppeteer-extra`] plugins with Firefox & Webkit support. If you depend on having a large list of pre-made plugins available we suggest you use [`puppeteer-extra`] for the moment. See also: [Playwright vs Puppeteer](https://github.com/berstend/puppeteer-extra/wiki/Playwright-vs-Puppeteer)_
+**Note**
+
+_`playwright-extra` is brand new, we're in the process of porting over existing [`puppeteer-extra`] plugins with Firefox & Webkit support. If you depend on having a large list of pre-made plugins available we suggest you use [`puppeteer-extra`] for the moment. See also: [Playwright vs Puppeteer](https://github.com/berstend/puppeteer-extra/wiki/Playwright-vs-Puppeteer)_
 
 **Write your own plugin**
 
@@ -202,7 +204,7 @@ Returns a list of devices to be used with browser.newContext([options]) or brows
 
 ## License
 
-Copyright © 2018 - 2020, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](https://github.com/berstend). Released under the MIT License.
+Copyright © 2018 - 2021, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](https://github.com/berstend). Released under the MIT License.
 
 <!--
   Reference links

@@ -291,6 +291,13 @@ browserless
 
 </details>
 
+<details>
+ <summary><strong>Using with Playwright</strong></summary><br/>
+
+[`playwright-extra`] is now available.
+
+</details>
+
 ---
 
 ## Plugins
