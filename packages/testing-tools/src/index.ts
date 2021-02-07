@@ -28,6 +28,21 @@ export const availableBrowsersPlaywright: BrowserName[] = [
 ]
 export const availableBrowsersPuppeteer: BrowserName[] = ['chromium', 'firefox']
 
+const isPuppeteerFirefoxInstalled = (() => {
+  if (!isPuppeteerFirefoxSupported()) {
+    return false
+  }
+  const ffPath = getFirefoxExecutablePath()
+  if (!ffPath) {
+    return false
+  }
+  try {
+    return require('fs').existsSync(ffPath)
+  } catch (err) {
+    return false
+  }
+})()
+
 const getHelper = (driverName: DriverName, browserName: BrowserName) => {
   const getLauncher = () => {
     // console.log({ driver: driverName, browser: browserName })
@@ -96,14 +111,23 @@ export const wrap = (ava: any) => (
   if (process.env.TEST_CASE) {
     cases = process.env.TEST_CASE as TestCases
   }
-  if (!isPuppeteerFirefoxSupported()) {
+
+  if (!isPuppeteerFirefoxInstalled) {
     opts = opts || { exclude: [] }
     opts.exclude?.push('puppeteer:firefox')
-    console.log(
-      'Puppeteer Firefox is not supported with this version, skipping.',
-      process.env.PUPPETEER_VERSION
-    )
+
+    if (!isPuppeteerFirefoxSupported()) {
+      console.log(
+        'Puppeteer Firefox is not supported with this puppeteer version, skipping.',
+        process.env.PUPPETEER_VERSION
+      )
+    } else {
+      console.log(
+        'Puppeteer Firefox is not installed, skipping. Run "yarn download-firefox" in the project root to install.'
+      )
+    }
   }
+
   const entries = Array.isArray(cases) ? cases : [cases]
   for (const entry of entries) {
     const driverName = entry.split(':')[0] as DriverName
