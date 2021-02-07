@@ -31,8 +31,8 @@
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^5.0.0",
-    "lerna": "^3.19.0",
-    "lerna-update-wizard": "^0.17.5",
+    "lerna": "^3.22.1",
+    "lerna-update-wizard": "^0.17.8",
     "prettier": "^2.2.0",
     "prettier-config-standard": "^1.0.1"
   },
