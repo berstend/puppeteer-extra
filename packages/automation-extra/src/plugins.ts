@@ -242,14 +242,12 @@ export class PluginList {
           requirement === 'headful' &&
           launchContext.isHeadless
         ) {
-          console.warn(
+          debug(
             `Warning: Plugin '${plugin.name}' is not supported in headless mode.`
           )
         }
         if (launchContext.context === 'connect' && requirement === 'launch') {
-          console.warn(
-            `Warning: Plugin '${plugin.name}' doesn't support connect().`
-          )
+          debug(`Warning: Plugin '${plugin.name}' doesn't support connect().`)
         }
       }
     }
