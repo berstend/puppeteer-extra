@@ -99,6 +99,13 @@ export class AutomationExtraBase {
       this.env.browserName = getPuppeteerProduct(options)
     }
 
+    // Make it possible for plugins to use `options.args` without checking
+    if (!isConnectOptions(options)) {
+      if (typeof options.args === 'undefined') {
+        options.args = []
+      }
+    }
+
     // Give plugins the chance to modify the options before launch/connect
     options =
       (await this.plugins.dispatchBlocking(beforeEvent, options)) || options
