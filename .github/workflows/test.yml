@@ -56,9 +56,6 @@ jobs:
       - name: 'Fix for: error fsevents@2.1.2: The platform "linux" is incompatible with this module.'
         run: npx json -I -f package.json -e 'this.resolutions={}'
 
-      - name: 'Debug'
-        run: ls /home/runner/work/puppeteer-extra/puppeteer-extra/helpers/testing/wrap
-
       - name: yarn install
         uses: bahmutov/npm-install@v1
 
