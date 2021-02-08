@@ -4,7 +4,7 @@
       "message": "chore(release): %s"
     }
   },
-  "packages": ["packages/*"],
+  "packages": ["packages/*", "helpers/test/*"],
   "version": "independent",
   "useWorkspaces": true,
   "npmClient": "yarn",

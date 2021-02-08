@@ -1,6 +1,5 @@
 {
   "name": "@extra-test/wrap",
-  "private": true,
   "version": "1.0.0",
   "typings": "dist/index.d.ts",
   "main": "dist/index.js",

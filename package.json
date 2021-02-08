@@ -19,7 +19,8 @@
     "download-firefox": "node helpers/scripts/download-firefox.js"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "helpers/test/*"
   ],
   "devDependencies": {
     "eslint": "^7.14.0",
