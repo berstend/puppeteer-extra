@@ -62,7 +62,7 @@
   "dependencies": {
     "@types/debug": "^4.1.0",
     "@types/puppeteer": "5.4.3",
-    "automation-extra-plugin": "*",
+    "automation-extra-plugin": "^4.1.0",
     "debug": "^4.1.1",
     "deepmerge": "^4.2.2",
     "playwright-core": "1.8.0",
