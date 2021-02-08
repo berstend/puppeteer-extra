@@ -69,7 +69,7 @@ jobs:
         run: yarn lerna link
 
       - name: yarn build:helpers
-        run: yarn lerna run build --concurrency 1
+        run: yarn build:helpers
 
       - name: lerna build
         run: yarn lerna run build --concurrency 1
