@@ -145,23 +145,9 @@ async function checkUserAgent(pptr) {
 <details>
  <summary><strong>Using with <code>puppeteer-firefox</code></strong></summary><br/>
 
-> [puppeteer-firefox](https://github.com/puppeteer/puppeteer/tree/master/experimental/puppeteer-firefox) is still new and experimental, you can follow it's progress [here](https://aslushnikov.github.io/ispuppeteerfirefoxready/).
+If you're interested in automating firefox [please read this](https://github.com/berstend/puppeteer-extra/wiki/Is-Puppeteer-Firefox-ready-yet%3F).
 
-```js
-// Any puppeteer API-compatible puppeteer implementation
-// or version can be augmented with `addExtra`.
-const { addExtra } = require('puppeteer-extra')
-const puppeteer = addExtra(require('puppeteer-firefox'))
-
-puppeteer
-  .launch({ headless: false, defaultViewport: null })
-  .then(async browser => {
-    const page = await browser.newPage()
-    await page.goto('https://www.spacejam.com/archive/spacejam/movie/jam.htm')
-    await page.waitFor(10 * 1000)
-    await browser.close()
-  })
-```
+TL;DR: You want to use `playwright-extra` :-)
 
 </details>
 
