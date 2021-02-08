@@ -57,7 +57,7 @@ jobs:
         run: npx json -I -f package.json -e 'this.resolutions={}'
 
       - name: 'Debug'
-        run: ls /home/runner/work/puppeteer-extra/puppeteer-extra/
+        run: ls /home/runner/work/puppeteer-extra/puppeteer-extra/helpers/testing/wrap
 
       - name: yarn install
         uses: bahmutov/npm-install@v1
