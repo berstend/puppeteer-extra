@@ -1,6 +1,6 @@
 {
   "name": "automation-extra",
-  "version": "4.2.1",
+  "version": "4.2.0",
   "description": "Driver agnostic plugin framework used by playwright-extra and puppeteer-extra.",
   "homepage": "https://github.com/berstend/puppeteer-extra/tree/master/packages/automation-extra",
   "repository": "berstend/puppeteer-extra",
