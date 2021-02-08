@@ -145,9 +145,8 @@ async function checkUserAgent(pptr) {
 <details>
  <summary><strong>Using with <code>puppeteer-firefox</code></strong></summary><br/>
 
-If you're interested in automating firefox [please read this](https://github.com/berstend/puppeteer-extra/wiki/Is-Puppeteer-Firefox-ready-yet%3F).
-
-TL;DR: You want to use `playwright-extra` :-)
+> If you're interested in automating firefox [please read this](https://github.com/berstend/puppeteer-extra/wiki/Is-Puppeteer-Firefox-ready-yet%3F).
+> TL;DR: You want to use `playwright-extra` :-)
 
 </details>
 
