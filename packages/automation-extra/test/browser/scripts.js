@@ -2,7 +2,7 @@
 
 const test = require('ava')
 
-const { wrap } = require('testing-tools')
+const { wrap } = require('@extra-test/wrap')
 
 wrap(test)(['playwright:all', 'puppeteer:all'], {
   exclude: ['puppeteer:firefox'] // https://github.com/puppeteer/puppeteer/issues/6163

@@ -1,5 +1,5 @@
 import test, { ExecutionContext } from 'ava'
-import { DriverContext, wrap } from 'testing-tools'
+import { DriverContext, wrap } from '@extra-test/wrap'
 
 import RecaptchaPlugin from '../src/index'
 

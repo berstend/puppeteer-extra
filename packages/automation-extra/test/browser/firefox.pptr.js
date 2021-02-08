@@ -2,7 +2,7 @@
 
 const test = require('ava')
 
-const { wrap } = require('testing-tools')
+const { wrap } = require('@extra-test/wrap')
 
 wrap(test)('puppeteer:firefox')(
   'will remove headless from the user-agent',

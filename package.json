@@ -16,12 +16,13 @@
     "test-ci": "lerna run test-ci --concurrency 1 --stream",
     "prepare": "lerna run prepare",
     "release": "lerna publish --npm-client npm",
-    "download-firefox": "node packages/testing-tools/download-firefox.js"
+    "download-firefox": "node helpers/scripts/download-firefox.js"
   },
   "workspaces": [
     "packages/*"
   ],
   "devDependencies": {
+    "@extra-test/wrap": "file:helpers/testing/wrap",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-config-prettier-standard": "^3.0.1",
