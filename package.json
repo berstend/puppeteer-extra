@@ -10,8 +10,7 @@
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "build": "yarn build:helpers && yarn lerna exec --concurrency 1 'yarn build; echo 0'",
-    "build:helpers": "cd  helpers/test/wrap && yarn build",
+    "build": "yarn lerna exec --concurrency 1 'yarn build; echo 0'",
     "docs": "lerna run docs",
     "test": "lerna run test --concurrency 1 --stream",
     "test-ci": "lerna run test-ci --concurrency 1 --stream",
@@ -23,7 +22,6 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@extra-test/wrap": "file:helpers/test/wrap",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-config-prettier-standard": "^3.0.1",

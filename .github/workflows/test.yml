@@ -71,9 +71,6 @@ jobs:
       - name: lerna build
         run: yarn lerna run build --concurrency 1
 
-      - name: yarn build:helpers
-        run: yarn build:helpers
-
       - name: debug
         run: |
           yarn list --pattern "puppeteer|puppeteer-extra"
