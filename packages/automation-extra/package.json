@@ -16,7 +16,7 @@
     "clean": "rimraf dist/*",
     "prebuild": "run-s clean",
     "build": "run-s build:tsc build:rollup",
-    "build:tsc": "tsc --module commonjs",
+    "build:tsc": "tsc -p tsconfig.build.json",
     "build:rollup": "rollup -c rollup.config.ts",
     "docs": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API ./src/index.ts",
     "postdocs": "npx prettier --write readme.md",
