@@ -1,7 +1,7 @@
 {
   "name": "automation-extra-plugin",
   "version": "4.2.1",
-  "_rand": "a98sdf89asdf",
+  "_rand": "a7f69a7sd",
   "description": "Base class for automation-extra plugins (supports Playwright and Puppeteer).",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
