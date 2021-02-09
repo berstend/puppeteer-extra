@@ -24,7 +24,13 @@ wrap(test)(['puppeteer:all', 'playwright:all'], {
     }
 
     await page.click('a')
-    await page.waitForTimeout(1 * 1000)
+
+    if ('waitForTimeout' in page) {
+      await page.waitForTimeout(1 * 1000)
+    } else {
+      await (page as any).waitFor(1 * 1000) // pptr@2
+    }
+
     t.is(page.url(), 'https://www.iana.org/domains/reserved')
 
     await browser.close()
