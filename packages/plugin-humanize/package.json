@@ -1,6 +1,6 @@
 {
   "name": "@extra/humanize",
-  "version": "4.2.0",
+  "version": "4.2.1-next.612+458b641",
   "description": "A plugin for playwright & puppeteer to humanize inputs (mouse movements)",
   "homepage": "https://github.com/berstend/puppeteer-extra/tree/master/packages/plugin-humanize",
   "repository": "berstend/puppeteer-extra",
@@ -12,6 +12,9 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "clean": "rimraf dist/*",
     "prebuild": "run-s clean",
@@ -45,7 +48,8 @@
   },
   "dependencies": {
     "@types/bezier-js": "^0.0.8",
-    "automation-extra-plugin": "^4.1.0",
+    "automation-extra-plugin": "^4.2.1",
     "bezier-js": "2.6.1"
-  }
+  },
+  "gitHead": "458b641e07015dade5325e62db9c8186a62bfa76"
 }
