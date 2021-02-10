@@ -1,4 +1,4 @@
-import { AutomationExtraPlugin } from 'automation-extra-plugin'
+import { AutomationExtraPlugin, NestedPartial } from 'automation-extra-plugin'
 
 import * as types from './types'
 
@@ -18,9 +18,9 @@ export const BuiltinSolutionProviders: types.SolutionProvider[] = [
  * A plugin to automatically detect and solve reCAPTCHAs.
  * @noInheritDoc
  */
-export class RecaptchaPlugin extends AutomationExtraPlugin {
+export class RecaptchaPlugin extends AutomationExtraPlugin<types.PluginOptions> {
   static id = 'recaptcha'
-  constructor(opts: Partial<types.PluginOptions>) {
+  constructor(opts: NestedPartial<types.PluginOptions>) {
     super(opts)
     this.debug('Initialized', this.opts)
   }
@@ -312,7 +312,7 @@ export class RecaptchaPlugin extends AutomationExtraPlugin {
 }
 
 /** Default export, RecaptchaPlugin  */
-const defaultExport = (options?: Partial<types.PluginOptions>) => {
+const defaultExport = (options?: NestedPartial<types.PluginOptions>) => {
   return new RecaptchaPlugin(options || {})
 }
 

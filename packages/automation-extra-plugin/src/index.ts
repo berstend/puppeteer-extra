@@ -16,6 +16,13 @@ export interface PluginOptions {
   [key: string]: any
 }
 
+/** Like `Partial<>` but with nested property support */
+export type NestedPartial<T> = {
+  [K in keyof T]?: T[K] extends Array<infer R>
+    ? Array<NestedPartial<R>>
+    : NestedPartial<T[K]>
+}
+
 // Let the plugin know the context of things
 export interface LaunchContext {
   context: 'launch' | 'connect'
@@ -292,7 +299,7 @@ export abstract class AutomationExtraPlugin<
    */
   public env: LauncherEnv
 
-  constructor(opts?: Partial<Opts>) {
+  constructor(opts?: NestedPartial<Opts>) {
     super()
     this._debugBase = debug(`automation-extra-plugin:base:${this.id}`)
     this._opts = merge(this.defaults, opts || {}, mergeOptions)

@@ -1,4 +1,8 @@
-import { AutomationExtraPlugin, Playwright } from 'automation-extra-plugin'
+import {
+  AutomationExtraPlugin,
+  Playwright,
+  NestedPartial
+} from 'automation-extra-plugin'
 import * as mouse from './mouse/spoof'
 import * as mouseHelper from './mouse/helper'
 
@@ -14,11 +18,11 @@ export interface MouseOpts {
 }
 
 export interface HumanizePluginOpts {
-  mouse: Partial<MouseOpts>
+  mouse: MouseOpts
 }
 
 export class HumanizePlugin extends AutomationExtraPlugin<HumanizePluginOpts> {
-  constructor(opts: Partial<HumanizePluginOpts> = {}) {
+  constructor(opts: NestedPartial<HumanizePluginOpts> = {}) {
     super(opts)
   }
 
@@ -47,11 +51,11 @@ export class HumanizePlugin extends AutomationExtraPlugin<HumanizePluginOpts> {
 
   async onPageCreated(page: Page) {
     this.debug('onPageCreated', this.opts)
-    if (this.opts.mouse.enabled === false) {
+    if (!this.opts.mouse.enabled) {
       return
     }
 
-    if (this.opts.mouse.showCursor === true) {
+    if (this.opts.mouse.showCursor) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       mouseHelper.installHelper(page, this.env)
     }
@@ -64,7 +68,7 @@ export class HumanizePlugin extends AutomationExtraPlugin<HumanizePluginOpts> {
         selector: string,
         options?: Puppeteer.ClickOptions | PlaywrightClickOptions | undefined
       ) => {
-        if (this.opts.mouse.enabled === false) {
+        if (!this.opts.mouse.enabled) {
           return await originalMethod.apply(ctx, [selector, options as any])
         }
 
@@ -85,7 +89,7 @@ export class HumanizePlugin extends AutomationExtraPlugin<HumanizePluginOpts> {
 }
 
 /** Default export  */
-const defaultExport = (opts?: Partial<HumanizePluginOpts>) => {
+const defaultExport = (opts?: NestedPartial<HumanizePluginOpts>) => {
   return new HumanizePlugin(opts)
 }
 
