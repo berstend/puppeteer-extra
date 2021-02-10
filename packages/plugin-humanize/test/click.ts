@@ -19,16 +19,18 @@ wrap(test)(['puppeteer:all', 'playwright:all'], {
 
     if (plugin.env.isPlaywrightPage(page)) {
       await page.waitForSelector('a')
-    } else {
-      await page.waitForSelector('a')
+      await Promise.all([
+        page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+        page.click('a')
+      ])
     }
 
-    await page.click('a')
-
-    if ('waitForTimeout' in page) {
-      await page.waitForTimeout(1 * 1000)
-    } else {
-      await (page as any).waitFor(1 * 1000) // pptr@2
+    if (plugin.env.isPuppeteerPage(page)) {
+      await page.waitForSelector('a')
+      await Promise.all([
+        page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+        page.click('a')
+      ])
     }
 
     t.is(page.url(), 'https://www.iana.org/domains/reserved')
