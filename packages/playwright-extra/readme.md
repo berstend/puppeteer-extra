@@ -93,13 +93,17 @@ import { chromium, Playwright } from 'playwright-extra'
 - Solves reCAPTCHAs and hCaptchas automatically, using a single line of code: `page.solveRecaptchas()`
 - First plugin to support Playwright & Puppeteer, Chrome, Firefox and Webkit.
 
+### [`@extra/humanize`](/packages/plugin-humanize)
+
+- Humanizes input gestures (use realistic mouse movements on `page.click()`, etc)
+
 **Note**
 
-_`playwright-extra` is brand new, we're in the process of porting over existing [`puppeteer-extra`] plugins with Firefox & Webkit support. If you depend on having a large list of pre-made plugins available we suggest you use [`puppeteer-extra`] for the moment. See also: [Playwright vs Puppeteer](https://github.com/berstend/puppeteer-extra/wiki/Playwright-vs-Puppeteer)_
+_`playwright-extra` is new, we're in the process of porting over existing [`puppeteer-extra`] plugins with Firefox & Webkit support. If you depend on having a large list of pre-made plugins available we suggest you use [`puppeteer-extra`] for the moment. See also: [Playwright vs Puppeteer](https://github.com/berstend/puppeteer-extra/wiki/Playwright-vs-Puppeteer)_
 
 **Write your own plugin**
 
-Making custom plugins which work with Playwright and Puppeteer is easy and fun. It might even make your own code base more maintainable and modular. Head over to the documentation here: [`automation-extra-plugin`](https://github.com/berstend/puppeteer-extra/tree/master/packages/automation-extra-plugin)
+Making custom plugins which work with Playwright and Puppeteer is easy and fun. It might even help making your own code base more maintainable and modular. Head over to the documentation here: [`automation-extra-plugin`](https://github.com/berstend/puppeteer-extra/tree/master/packages/automation-extra-plugin)
 
 ---
 

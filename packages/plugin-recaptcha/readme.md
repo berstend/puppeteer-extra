@@ -132,7 +132,7 @@ puppeteer.launch({ headless: true }).then(async (browser) => {
 // hence you get perfect type support out of the box :)
 
 import puppeteer from 'puppeteer-extra'
-import RecaptchaPlugin from 'puppeteer-extra-plugin-recaptcha'
+import RecaptchaPlugin from '@extra/recaptcha'
 
 puppeteer.use(
   RecaptchaPlugin({
