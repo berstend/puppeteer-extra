@@ -28,8 +28,8 @@ test('vanilla: will not have modifications', async t => {
   const test2 = await page.evaluate(
     () => Object.getOwnPropertyNames(navigator) // Must be an empty array if native
   )
-  t.false(test2.includes('mimeTypes'))
   t.false(test2.includes('plugins'))
+  t.false(test2.includes('mimeTypes'))
 })
 
 test('stealth: has plugin, has mimetypes', async t => {
@@ -53,6 +53,6 @@ test('stealth: will not leak modifications', async t => {
   const test2 = await page.evaluate(
     () => Object.getOwnPropertyNames(navigator) // Must be an empty array if native
   )
-  t.false(test2.includes('mimeTypes'))
   t.false(test2.includes('plugins'))
+  t.false(test2.includes('mimeTypes'))
 })
