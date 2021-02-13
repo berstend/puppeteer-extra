@@ -270,6 +270,43 @@ test('patchToString: passes all toString tests', async t => {
   t.is(toStringVanilla, toStringStealth)
 })
 
+test('patchToString: passes stack trace tests', async t => {
+  const toStringStackTrace = () => {
+    try {
+      Object.create(
+        Object.getOwnPropertyDescriptor(Function.prototype, 'toString').get
+      ).toString()
+    } catch (err) {
+      return err.stack.split('\n').slice(0, 2).join('|')
+    }
+    return 'error not thrown'
+  }
+
+  const toStringVanilla = await (async function () {
+    const browser = await vanillaPuppeteer.launch({ headless: true })
+    const page = await browser.newPage()
+    return page.evaluate(toStringStackTrace)
+  })()
+  const toStringStealth = await (async function () {
+    const browser = await vanillaPuppeteer.launch({ headless: true })
+    const page = await browser.newPage()
+    await withUtils(page).evaluate(utils => {
+      HTMLMediaElement.prototype.canPlayType = function canPlayType() {}
+      utils.patchToString(HTMLMediaElement.prototype.canPlayType)
+    })
+    return page.evaluate(toStringStackTrace)
+  })()
+
+  // Check that the unmodified results are as expected
+  t.is(
+    toStringVanilla,
+    `TypeError: Object prototype may only be an Object or null: undefined|    at Function.create (<anonymous>)`.trim()
+  )
+
+  // Make sure our customizations leave no trace
+  t.is(toStringVanilla, toStringStealth)
+})
+
 test('patchToString: vanilla has iframe issues', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
@@ -400,10 +437,10 @@ test('replaceProperty: will work without traces', async t => {
       get: () => ['de-DE']
     })
     return {
-      propNamesLength: Object.getOwnPropertyNames(navigator).length
+      propNames: Object.getOwnPropertyNames(navigator)
     }
   })
-  t.is(results.propNamesLength, 0)
+  t.false(results.propNames.includes('languages'))
 })
 
 test('cache: will prevent leaks through overriding methods', async t => {

@@ -43,7 +43,7 @@ utils.stripProxyFromErrors = (handler = {}) => {
         // We try to use a known "anchor" line for that and strip it with everything above it.
         // If the anchor line cannot be found for some reason we fall back to our blacklist approach.
 
-        const stripWithBlacklist = stack => {
+        const stripWithBlacklist = (stack, stripFirstLine = true) => {
           const blacklist = [
             `at Reflect.${trap} `, // e.g. Reflect.get or Reflect.apply
             `at Object.${trap} `, // e.g. Object.get or Object.apply
@@ -53,16 +53,16 @@ utils.stripProxyFromErrors = (handler = {}) => {
             err.stack
               .split('\n')
               // Always remove the first (file) line in the stack (guaranteed to be our proxy)
-              .filter((line, index) => index !== 1)
+              .filter((line, index) => !(index === 1 && stripFirstLine))
               // Check if the line starts with one of our blacklisted strings
               .filter(line => !blacklist.some(bl => line.trim().startsWith(bl)))
               .join('\n')
           )
         }
 
-        const stripWithAnchor = stack => {
+        const stripWithAnchor = (stack, anchor) => {
           const stackArr = stack.split('\n')
-          const anchor = `at Object.newHandler.<computed> [as ${trap}] ` // Known first Proxy line in chromium
+          anchor = anchor || `at Object.newHandler.<computed> [as ${trap}] ` // Known first Proxy line in chromium
           const anchorIndex = stackArr.findIndex(line =>
             line.trim().startsWith(anchor)
           )
@@ -73,6 +73,16 @@ utils.stripProxyFromErrors = (handler = {}) => {
           // Note: We're keeping the 1st line (zero index) as it's unrelated (e.g. `TypeError`)
           stackArr.splice(1, anchorIndex)
           return stackArr.join('\n')
+        }
+
+        // Special cases due to our nested toString proxies
+        err.stack = err.stack.replace(
+          'at Object.toString (',
+          'at Function.toString ('
+        )
+        if ((err.stack || '').includes('at Function.toString (')) {
+          err.stack = stripWithBlacklist(err.stack, false)
+          throw err
         }
 
         // Try using the anchor method, fallback to blacklist if necessary
