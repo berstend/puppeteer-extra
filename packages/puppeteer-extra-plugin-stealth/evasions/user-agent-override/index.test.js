@@ -192,12 +192,14 @@ test('stealth: test if UA hints are correctly set - Windows 10', async t => {
 
   await page.reload()
   const secondLoad = await page.content()
-  t.true(secondLoad.includes('sec-ch-ua-mobile: ?0'))
-  t.true(secondLoad.includes('sec-ch-ua-full-version: "99.0.9999.99"'))
-  t.true(secondLoad.includes('sec-ch-ua-arch: "x86"'))
-  t.true(secondLoad.includes('sec-ch-ua-platform: "Windows"'))
-  t.true(secondLoad.includes('sec-ch-ua-platform-version: "10.0"'))
-  t.true(secondLoad.includes('sec-ch-ua-model: ""'))
+  if (secondLoad.includes('sec-ch-ua-full-version')) {
+    t.true(secondLoad.includes('sec-ch-ua-mobile: ?0'))
+    t.true(secondLoad.includes('sec-ch-ua-full-version: "99.0.9999.99"'))
+    t.true(secondLoad.includes('sec-ch-ua-arch: "x86"'))
+    t.true(secondLoad.includes('sec-ch-ua-platform: "Windows"'))
+    t.true(secondLoad.includes('sec-ch-ua-platform-version: "10.0"'))
+    t.true(secondLoad.includes('sec-ch-ua-model: ""'))
+  }
 })
 
 test('stealth: test if UA hints are correctly set - macOS 11', async t => {
@@ -219,12 +221,14 @@ test('stealth: test if UA hints are correctly set - macOS 11', async t => {
 
   await page.reload()
   const secondLoad = await page.content()
-  t.true(secondLoad.includes('sec-ch-ua-mobile: ?0'))
-  t.true(secondLoad.includes('sec-ch-ua-full-version: "99.0.9999.99"'))
-  t.true(secondLoad.includes('sec-ch-ua-arch: "x86"'))
-  t.true(secondLoad.includes('sec-ch-ua-platform: "Mac OS X"'))
-  t.true(secondLoad.includes('sec-ch-ua-platform-version: "11_1_0"'))
-  t.true(secondLoad.includes('sec-ch-ua-model: ""'))
+  if (secondLoad.includes('sec-ch-ua-full-version')) {
+    t.true(secondLoad.includes('sec-ch-ua-mobile: ?0'))
+    t.true(secondLoad.includes('sec-ch-ua-full-version: "99.0.9999.99"'))
+    t.true(secondLoad.includes('sec-ch-ua-arch: "x86"'))
+    t.true(secondLoad.includes('sec-ch-ua-platform: "Mac OS X"'))
+    t.true(secondLoad.includes('sec-ch-ua-platform-version: "11_1_0"'))
+    t.true(secondLoad.includes('sec-ch-ua-model: ""'))
+  }
 })
 
 test('stealth: test if UA hints are correctly set - Android 10', async t => {
@@ -246,10 +250,13 @@ test('stealth: test if UA hints are correctly set - Android 10', async t => {
 
   await page.reload()
   const secondLoad = await page.content()
-  t.true(secondLoad.includes('sec-ch-ua-mobile: ?1'))
-  t.true(secondLoad.includes('sec-ch-ua-full-version: "99.0.9999.99"'))
-  t.true(secondLoad.includes('sec-ch-ua-arch: ""'))
-  t.true(secondLoad.includes('sec-ch-ua-platform: "Android"'))
-  t.true(secondLoad.includes('sec-ch-ua-platform-version: "10"'))
-  t.true(secondLoad.includes('sec-ch-ua-model: "SM-P205"'))
+
+  if (secondLoad.includes('sec-ch-ua-full-version')) {
+    t.true(secondLoad.includes('sec-ch-ua-mobile: ?1'))
+    t.true(secondLoad.includes('sec-ch-ua-full-version: "99.0.9999.99"'))
+    t.true(secondLoad.includes('sec-ch-ua-arch: ""'))
+    t.true(secondLoad.includes('sec-ch-ua-platform: "Android"'))
+    t.true(secondLoad.includes('sec-ch-ua-platform-version: "10"'))
+    t.true(secondLoad.includes('sec-ch-ua-model: "SM-P205"'))
+  }
 })
