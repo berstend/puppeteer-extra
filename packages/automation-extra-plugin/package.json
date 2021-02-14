@@ -73,6 +73,7 @@
     "@types/puppeteer": "5.4.3",
     "debug": "^4.1.1",
     "deepmerge": "^4.2.2",
+    "devtools-protocol": "^0.0.852555",
     "is-plain-object": "^5.0.0",
     "playwright-core": "1.8.0"
   }
