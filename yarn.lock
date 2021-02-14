@@ -2956,6 +2956,28 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
+"@tracerbench/message-transport@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@tracerbench/message-transport/-/message-transport-2.0.0.tgz#430c1c84eac2860d9819d9a9c94ef06d79f80e16"
+  integrity sha512-PtgWnELGF9j3CSlqJX3vVw3s46eMlt4OnwQUh1yAvqAcdzjfXyJeCrRa/YSbt4tyvLfHKGPVmcuHBuBO1/rrtQ==
+
+"@tracerbench/protocol-connection@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@tracerbench/protocol-connection/-/protocol-connection-2.0.0.tgz#7abc61352b8339b10072639dc96e2b8e83a89ab7"
+  integrity sha512-S43URQlQ8L1ZkvHGpqglRv8f1fal92JASoKvT7t7VQElFYb/juV/CM69lp10f2gGPY4A/iIu7c2BwK0v1FwSdw==
+  dependencies:
+    "@tracerbench/message-transport" "^2.0.0"
+    "@tracerbench/protocol-transport" "^2.0.0"
+    race-cancellation "^0.4.1"
+
+"@tracerbench/protocol-transport@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@tracerbench/protocol-transport/-/protocol-transport-2.0.0.tgz#81d7f6ab387e6362ab1ac9df4497ba0f6a2e1bf3"
+  integrity sha512-Z62tfmARhQ/lpl4Q1ZDGnNqQyyNlme1YLJa9Egak7joOEDmyxrJpmeTszW/XhaAYuaZQihB6nTXzLzjRwfyqWw==
+  dependencies:
+    "@tracerbench/message-transport" "^2.0.0"
+    race-cancellation "^0.4.1"
+
 "@types/bezier-js@^0.0.8":
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/@types/bezier-js/-/bezier-js-0.0.8.tgz#e9dcdafa72ed4fe0decc72e35f8422fd402c269d"
@@ -10253,6 +10275,11 @@ quick-lru@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-4.0.1.tgz#5b8878f113a58217848c6482026c73e1ba57727f"
   integrity sha512-ARhCpm70fzdcvNQfPoy49IaanKkTlRWF2JMzqhcJbhSFRZv7nPTvZJdcY7301IPmvW+/p0RgIWnQDLJxifsQ7g==
+
+race-cancellation@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/race-cancellation/-/race-cancellation-0.4.1.tgz#bd1c69bf5b836b56645a4b5b78fb9b973c46eb45"
+  integrity sha512-TF1vf4q/a5mwER9DoIuniE/qNIRM3Begyoe+21VUKgsyQAT4iIfSqlK7aG4Of1J1wzeATqVwbDP0dwX9GhaGcw==
 
 randomstring@^1.1.5:
   version "1.1.5"

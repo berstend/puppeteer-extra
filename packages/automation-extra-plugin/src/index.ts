@@ -4,6 +4,8 @@ import type * as Playwright from 'playwright-core'
 import type * as Puppeteer from 'puppeteer'
 export type { Puppeteer, Playwright } // Re-export
 
+import type { ProtocolConnectionBase } from '@tracerbench/protocol-connection'
+
 // We use dummy/noop functions in PluginLifecycleMethods meant to be overriden
 /* tslint:disable:no-empty */
 
@@ -637,6 +639,14 @@ export class LauncherEnv extends TypeGuards {
 type Serializable = {}
 
 /**
+ * Cache per-page cdp sessions
+ * @private
+ */
+const cdpSessionCache = new WeakMap<Page, CDPSession>()
+
+export type CDPSession = Pick<ProtocolConnectionBase, 'send' | 'on'>
+
+/**
  * Unified Page methods for Playwright & Puppeteer.
  * They support common actions through a single API.
  *
@@ -671,5 +681,41 @@ export class PageShim {
       return this.page.addInitScript(script, arg)
     }
     throw this.unsupportedShimError
+  }
+
+  /**
+   * Chromium browsers only: Return a fully typed CDP session.
+   *
+   * @see https://playwright.dev/docs/api/class-cdpsession/
+   * @see https://pptr.dev/#?product=Puppeteer&version=v7.0.4&show=api-class-cdpsession
+   */
+  async getCDPSession() {
+    if (this.env.isBrowserKnown && !this.env.isChromium) {
+      throw new Error(
+        'CDP sessions are only available for chromium based browsers.'
+      )
+    }
+    const session = cdpSessionCache.get(this.page)
+    if (session) {
+      return session
+    }
+
+    const createSession = () => {
+      if (this.env.isPuppeteerPage(this.page)) {
+        // In puppeteer we can re-use the existing connection,
+        // I haven't found a way to do that in playwright yet
+        return (this.page as any)._client
+        // return this.page.target().createCDPSession()
+      }
+      if (this.env.isPlaywrightPage(this.page)) {
+        return (this.page.context() as Playwright.ChromiumBrowserContext).newCDPSession(
+          this.page
+        )
+      }
+      throw this.unsupportedShimError
+    }
+    const newSession: unknown = await createSession()
+    cdpSessionCache.set(this.page, newSession as CDPSession)
+    return newSession as CDPSession
   }
 }
