@@ -41,6 +41,7 @@ export type ConnectOptions =
   | Playwright.ConnectOptions
 export type Browser = Puppeteer.Browser | Playwright.Browser
 export type Page = Puppeteer.Page | Playwright.Page
+export type Worker = Puppeteer.Worker | Playwright.Worker
 
 /**
  * Minimal plugin interface
@@ -228,6 +229,13 @@ export class PluginLifecycleMethods {
    *
    */
   async onPageClose(page: Page) {}
+
+  /**
+   * Called when a worker has been created.
+   *
+   * This is a unified event for dedicated, service and shared workers.
+   */
+  async onWorkerCreated(worker: Puppeteer.Worker | Playwright.Worker) {}
 
   /**
    * Called when a browser context has been closed.

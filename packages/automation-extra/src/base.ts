@@ -169,8 +169,21 @@ export class AutomationExtraBase {
         page.on('close', () => {
           this.plugins.dispatch('onPageClose', page)
         })
-
+        page.on('workercreated', worker => {
+          // handle dedicated webworkers
+          this.plugins.dispatch('onWorkerCreated', worker)
+        })
         this.plugins.dispatch('onPageCreated', page)
+      }
+      if (
+        target.type() === 'service_worker' ||
+        target.type() === 'shared_worker'
+      ) {
+        // handle service + shared workers
+        const worker = await target.worker()
+        if (worker) {
+          this.plugins.dispatch('onWorkerCreated', worker)
+        }
       }
     })
     // // Legacy events
@@ -208,6 +221,21 @@ export class AutomationExtraBase {
         page.on('close', () => {
           this.plugins.dispatch('onPageClose', page)
         })
+
+        page.on('worker', worker => {
+          // handle dedicated webworkers
+          this.plugins.dispatch('onWorkerCreated', worker)
+        })
+
+        if (this.env.isChromium) {
+          ;(context as pw.ChromiumBrowserContext).on(
+            'serviceworker',
+            worker => {
+              // handle service worker
+              this.plugins.dispatch('onWorkerCreated', worker)
+            }
+          )
+        }
       })
     }
 
