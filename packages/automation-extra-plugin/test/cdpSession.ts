@@ -23,7 +23,9 @@ wrap(test)(['puppeteer:chromium', 'playwright:chromium'])(
       }
     }
     const instance = new Plugin()
-    const { browser } = await driver.getPage(instance)
+    const { browser, page } = await driver.getPage(instance)
+
+    await page.goto('https://example.com', { waitUntil: 'domcontentloaded' })
 
     t.truthy(results.getVersion)
     t.truthy(results.getVersion.jsVersion)
