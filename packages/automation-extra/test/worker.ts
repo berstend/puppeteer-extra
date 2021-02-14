@@ -27,7 +27,11 @@ wrap(test)(['puppeteer:chromium', 'playwright:chromium'])(
       { waitUntil: 'domcontentloaded' }
     )
 
-    await page.waitForTimeout(5 * 1000)
+    if ('waitForTimeout' in page) {
+      await page.waitForTimeout(5 * 1000)
+    } else {
+      await (page as any).waitFor(5 * 1000) // old pptr
+    }
 
     t.truthy(results.length)
     t.deepEqual(results, [
