@@ -507,7 +507,7 @@ export type BrowserEngines = 'chromium' | 'firefox' | 'webkit'
  * @class TypeGuards
  * @abstract
  */
-export abstract class TypeGuards {
+export class TypeGuards {
   /**
    * Type guard, will make TypeScript understand which type we're working with.
    * @param obj - The object to test
