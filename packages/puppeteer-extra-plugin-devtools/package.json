@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-devtools",
-  "version": "2.2.15",
+  "version": "2.2.16",
   "description": "Make puppeteer browser debugging possible from anywhere (devtools with screencasting on the internet).",
   "main": "index.js",
   "repository": "berstend/puppeteer-extra",

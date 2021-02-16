@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-anonymize-ua",
-  "version": "2.2.15",
+  "version": "2.2.16",
   "description": "Anonymize User-Agent in puppeteer.",
   "main": "index.js",
   "repository": "berstend/puppeteer-extra",
