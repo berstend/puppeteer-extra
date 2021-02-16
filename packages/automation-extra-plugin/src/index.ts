@@ -1,5 +1,8 @@
 import debug, { Debugger } from 'debug'
 
+import { EventEmitter } from 'events'
+import TypedEmitter from 'typed-emitter'
+
 import type * as Playwright from 'playwright-core'
 import type * as Puppeteer from 'puppeteer'
 export type { Puppeteer, Playwright } // Re-export
@@ -304,16 +307,15 @@ export abstract class AutomationExtraPlugin<
   static id = 'base-plugin'
 
   /**
-   * Contains info regarding the launcher environment the plugin runs in
-   * @see LauncherEnv
+   * @private
    */
-  public env: LauncherEnv
+  private _env: LauncherEnv | undefined
 
   constructor(opts?: NestedPartial<Opts>) {
     super()
     this._debugBase = debug(`automation-extra-plugin:base:${this.id}`)
     this._opts = merge(this.defaults, opts || {}, mergeOptions)
-    this.env = new LauncherEnv()
+    // this.env = new LauncherEnv()
     this._debugBase('Initialized.')
   }
 
@@ -498,6 +500,24 @@ export abstract class AutomationExtraPlugin<
   }
 
   /**
+   * Contains info regarding the launcher environment the plugin runs in
+   * @see LauncherEnv
+   */
+  get env(): LauncherEnv {
+    if (!this._env) {
+      throw new Error(
+        'Launcher env not available yet, you need to register the plugin before using it.'
+      )
+    }
+    return this._env
+  }
+
+  /** @private */
+  set env(env: LauncherEnv) {
+    this._env = env
+  }
+
+  /**
    * @private
    */
   get _isAutomationExtraPlugin() {
@@ -605,12 +625,18 @@ export class LauncherEnv extends TypeGuards {
    */
   public browserName: BrowserEngines | 'unknown' = 'unknown'
 
+  /**
+   * EventEmitter for all plugin lifecycle events
+   */
+  public events: TypedEmitter<PluginLifecycleMethods>
+
   /** @private */
   constructor(driverName?: SupportedDrivers | 'unknown') {
     super()
     if (driverName) {
       this.driverName = driverName
     }
+    this.events = new EventEmitter()
   }
 
   // Helper methods for convenience

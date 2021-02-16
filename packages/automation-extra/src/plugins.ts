@@ -1,5 +1,4 @@
 import type { LauncherEnv, FilterString } from 'automation-extra-plugin'
-
 import type * as types from './types'
 
 import Debug from 'debug'
@@ -54,6 +53,7 @@ export class PluginList {
 
     if ('onPluginRegistered' in plugin) {
       plugin.onPluginRegistered()
+      this.env.events.emit('onPluginRegistered')
     }
 
     if (plugin.requirements.has('dataFromPlugins')) {
@@ -89,7 +89,6 @@ export class PluginList {
         filteredWithEvent: plugins.length
       }
     })
-
     for (const plugin of plugins) {
       try {
         ;(plugin[name] as any)(...args)
@@ -100,6 +99,7 @@ export class PluginList {
         )
       }
     }
+    this.env.events.emit(name, ...(args as any))
   }
 
   /**
@@ -151,6 +151,7 @@ export class PluginList {
         return retValue
       }
     }
+    this.env.events.emit(name, ...(args as any))
     return retValue
   }
 
