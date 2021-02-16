@@ -55,7 +55,7 @@ test('will be able to modify launch options', async t => {
 })
 
 test('will set env correctly', async t => {
-  let result = null
+  let result = {} as any
 
   class Plugin extends AutomationExtraPlugin {
     static id = 'foobar'
@@ -75,10 +75,8 @@ test('will set env correctly', async t => {
   const context = await browser.newContext()
   const page = await context.newPage()
 
-  t.deepEqual(result, {
-    browserName: 'chromium',
-    driverName: 'playwright'
-  })
+  t.is(result.browserName, 'chromium')
+  t.is(result.driverName, 'playwright')
 
   await page.goto('about:blank')
   await browser.close()
