@@ -34,7 +34,7 @@ puppeteer.launch().then(async browser => {
 
   const page = await browser.newPage()
   await page.goto('https://www.google.com')
-  await page.waitFor(60 * 1000)
+  await page.waitForTimeout(60 * 1000)
   browser.close()
 })
 ```

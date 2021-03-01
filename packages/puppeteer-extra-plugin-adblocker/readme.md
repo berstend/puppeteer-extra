@@ -47,7 +47,7 @@ puppeteer.launch({ headless: true }).then(async (browser) => {
   // Visit a page, ads are blocked automatically!
   await page.goto('https://www.google.com/search?q=rent%20a%20car')
 
-  await page.waitFor(5 * 1000)
+  await page.waitForTimeout(5 * 1000)
   await page.screenshot({ path: 'response.png', fullPage: true })
 
   console.log(`All done, check the screenshots. ✨`)
@@ -69,7 +69,7 @@ puppeteer
   .then(async (browser) => {
     const page = await browser.newPage()
     await page.goto('https://www.vanityfair.com')
-    await page.waitFor(60 * 1000)
+    await page.waitForTimeout(60 * 1000)
     await browser.close()
   })
 ```

@@ -272,7 +272,7 @@ test('regression: new method will not break recaptcha popup', async t => {
     'In the depth of winter, I finally learned that within me there lay an invincible summer.'
   )
   await page.click('#tswsubmit')
-  await page.waitFor(1000)
+  await page.waitForTimeout(1000)
 
   const { hasRecaptchaPopup } = await page.evaluate(() => {
     const hasRecaptchaPopup = !!document.querySelectorAll(
@@ -309,7 +309,7 @@ test('regression: old method indeed did break recaptcha popup', async t => {
     'In the depth of winter, I finally learned that within me there lay an invincible summer.'
   )
   await page.click('#tswsubmit')
-  await page.waitFor(1000)
+  await page.waitForTimeout(1000)
 
   const { hasRecaptchaPopup } = await page.evaluate(() => {
     const hasRecaptchaPopup = !!document.querySelectorAll(
