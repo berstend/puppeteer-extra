@@ -263,6 +263,8 @@ test('regression: new method will not break recaptcha popup', async t => {
     .launch({ headless: true })
   const page = await browser.newPage()
 
+  page.waitForTimeout = page.waitForTimeout || page.waitFor
+
   await page.goto('https://www.fbdemo.com/invisible-captcha/index.html')
 
   await page.type('#tswname', 'foo')
@@ -273,6 +275,7 @@ test('regression: new method will not break recaptcha popup', async t => {
   )
   await page.click('#tswsubmit')
   await page.waitForTimeout(1000)
+
 
   const { hasRecaptchaPopup } = await page.evaluate(() => {
     const hasRecaptchaPopup = !!document.querySelectorAll(
