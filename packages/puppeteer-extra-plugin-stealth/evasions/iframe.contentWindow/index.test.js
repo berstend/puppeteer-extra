@@ -293,11 +293,12 @@ test('regression: old method indeed did break recaptcha popup', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
+  page.waitForTimeout = page.waitForTimeout || page.waitFor
   // Old method
   await page.evaluateOnNewDocument(() => {
     // eslint-disable-next-line
     Object.defineProperty(HTMLIFrameElement.prototype, 'contentWindow', {
-      get: function() {
+      get: function () {
         return window
       }
     })
