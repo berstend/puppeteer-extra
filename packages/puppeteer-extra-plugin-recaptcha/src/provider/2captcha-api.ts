@@ -59,7 +59,10 @@ function pollCaptcha(captchaId, options, invalid, callback) {
         callback = function () {} // prevent the callback from being called more than once, if multiple http requests are open at the same time.
       })
     })
-
+    request.on('error', function (e) {
+      request.destroy()
+      callback(e)
+    })
     request.end()
   }, options.pollingInterval || defaultOptions.pollingInterval)
 }
