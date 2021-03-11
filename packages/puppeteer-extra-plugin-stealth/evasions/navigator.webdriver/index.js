@@ -15,10 +15,16 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/navigator.webdriver'
   }
 
-  // Pre Chrome 88.0.4291.0
   async onPageCreated(page) {
     await page.evaluateOnNewDocument(() => {
-      delete Object.getPrototypeOf(navigator).webdriver
+      if (navigator.webdriver === false) {
+        // Post Chrome 89.0.4339.0 and already good
+      } else if (navigator.webdriver === undefined) {
+        // Pre Chrome 89.0.4339.0 and already good
+      } else {
+        // Pre Chrome 88.0.4291.0 and needs patching
+        delete Object.getPrototypeOf(navigator).webdriver
+      }
     })
   }
 
