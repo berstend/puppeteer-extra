@@ -6,7 +6,7 @@
 
 - [class: Plugin](#class-plugin)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/9534845cc95088e65c2d53bfb029263976fc9add/packages/puppeteer-extra-plugin-stealth/evasions/navigator.hardwareConcurrency/index.js#L16-L37)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/7a9082f9837f2403099e2181d639aa0065c51ba9/packages/puppeteer-extra-plugin-stealth/evasions/navigator.hardwareConcurrency/index.js#L16-L37)
 
 - `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Options (optional, default `{}`)
   - `opts.hardwareConcurrency` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)?** The value to use in `navigator.hardwareConcurrency` (default: `4`)

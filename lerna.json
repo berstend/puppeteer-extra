@@ -1,6 +1,12 @@
 {
-  "packages": ["packages/*"],
+  "command": {
+    "version": {
+      "message": "chore(release): %s"
+    }
+  },
+  "packages": ["packages/*", "helpers/test/*"],
   "version": "independent",
   "useWorkspaces": true,
-  "npmClient": "yarn"
+  "npmClient": "yarn",
+  "ignoreChanges": ["**/__fixtures__/**", "**/__tests__/**", "**/*.md"]
 }

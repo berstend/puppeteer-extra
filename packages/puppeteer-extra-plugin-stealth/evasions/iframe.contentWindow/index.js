@@ -74,10 +74,10 @@ class Plugin extends PuppeteerExtraPlugin {
           // We need to be very surgical here to not break other iframes by accident
           Object.defineProperty(iframe, 'srcdoc', {
             configurable: true, // Important, so we can reset this later
-            get: function() {
+            get: function () {
               return _iframe.srcdoc
             },
-            set: function(newValue) {
+            set: function (newValue) {
               addContentWindowProxy(this)
               // Reset property, the hook is only needed once
               Object.defineProperty(iframe, 'srcdoc', {
@@ -99,7 +99,7 @@ class Plugin extends PuppeteerExtraPlugin {
             get(target, key) {
               return Reflect.get(target, key)
             },
-            apply: function(target, thisArg, args) {
+            apply: function (target, thisArg, args) {
               const isIframe =
                 args && args.length && `${args[0]}`.toLowerCase() === 'iframe'
               if (!isIframe) {
@@ -127,6 +127,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
+module.exports = function (pluginConfig) {
   return new Plugin(pluginConfig)
 }

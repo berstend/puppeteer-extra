@@ -147,7 +147,7 @@ class Plugin extends PuppeteerExtraPlugin {
           }
         }
 
-        window.chrome.loadTimes = function() {
+        window.chrome.loadTimes = function () {
           return {
             ...protocolInfo,
             ...timingInfo
@@ -162,6 +162,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
+module.exports = function (pluginConfig) {
   return new Plugin(pluginConfig)
 }

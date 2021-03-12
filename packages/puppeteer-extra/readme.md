@@ -1,6 +1,6 @@
 # puppeteer-extra [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test/master)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](http://scraping-chat.cf) [![npm](https://img.shields.io/npm/v/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra) [![npm](https://img.shields.io/npm/dt/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra) [![npm](https://img.shields.io/npm/l/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra)
 
-> A light-weight wrapper around [`puppeteer`](https://github.com/GoogleChrome/puppeteer) and [friends](#more-examples) to enable cool [plugins](#plugins) through a clean interface.
+> A light-weight wrapper around [`puppeteer`](https://github.com/puppeteer/puppeteer) and [friends](#more-examples) to enable cool [plugins](#plugins) through a clean interface.
 
 <a href="https://github.com/berstend/puppeteer-extra"><img src="https://i.imgur.com/qtlnoQL.png" width="279px" height="187px" align="right" /></a>
 
@@ -12,7 +12,7 @@ yarn add puppeteer puppeteer-extra
 npm install puppeteer puppeteer-extra
 
 # puppeteer-extra works with any puppeteer version:
-yarn add puppeteer@2.0.0 puppeteer-extra
+yarn add puppeteer@5 puppeteer-extra
 ```
 
 ## Quickstart
@@ -62,7 +62,7 @@ npm install puppeteer-extra-plugin-stealth puppeteer-extra-plugin-adblocker
 If you'd like to see debug output just run your script like so:
 
 ```bash
-DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node myscript.js
+DEBUG=automation-extra,puppeteer-extra-plugin:* node myscript.js
 ```
 
 ### More examples
@@ -147,23 +147,8 @@ async function checkUserAgent(pptr) {
 <details>
  <summary><strong>Using with <code>puppeteer-firefox</code></strong></summary><br/>
 
-> [puppeteer-firefox](https://github.com/puppeteer/puppeteer/tree/master/experimental/puppeteer-firefox) is still new and experimental, you can follow it's progress [here](https://aslushnikov.github.io/ispuppeteerfirefoxready/).
-
-```js
-// Any puppeteer API-compatible puppeteer implementation
-// or version can be augmented with `addExtra`.
-const { addExtra } = require('puppeteer-extra')
-const puppeteer = addExtra(require('puppeteer-firefox'))
-
-puppeteer
-  .launch({ headless: false, defaultViewport: null })
-  .then(async browser => {
-    const page = await browser.newPage()
-    await page.goto('https://www.spacejam.com/archive/spacejam/movie/jam.htm')
-    await page.waitFor(10 * 1000)
-    await browser.close()
-  })
-```
+> If you're interested in automating firefox [please read this](https://github.com/berstend/puppeteer-extra/wiki/Is-Puppeteer-Firefox-ready-yet%3F).
+> TL;DR: You want to use `playwright-extra` :-)
 
 </details>
 
@@ -293,6 +278,13 @@ browserless
 
 </details>
 
+<details>
+ <summary><strong>Using with Playwright</strong></summary><br/>
+
+[`playwright-extra`] is now available.
+
+</details>
+
 ---
 
 ## Plugins
@@ -301,14 +293,14 @@ browserless
 
 - Applies various evasion techniques to make detection of headless puppeteer harder.
 
-#### 🆕 [`puppeteer-extra-plugin-adblocker`](/packages/puppeteer-extra-plugin-adblocker)
+#### 🏴 [`@extra/recaptcha`](/packages/plugin-recaptcha)
+
+- Solves reCAPTCHAs and hCaptchas automatically, using a single line of code: `page.solveRecaptchas()`
+- First plugin to support [Playwright](https://github.com/berstend/puppeteer-extra/tree/master/packages/playwright-extra) & Puppeteer, Chrome, Firefox and Webkit.
+
+#### [`puppeteer-extra-plugin-adblocker`](/packages/puppeteer-extra-plugin-adblocker)
 
 - Very fast & efficient blocker for ads and trackers. Reduces bandwidth & load times.
-- Thanks to [@remusao](https://github.com/remusao) for contributing this plugin 👏
-
-#### 🏴 [`puppeteer-extra-plugin-recaptcha`](/packages/puppeteer-extra-plugin-recaptcha)
-
-- Solves reCAPTCHAs automatically, using a single line of code: `page.solveRecaptchas()`.
 
 #### [`puppeteer-extra-plugin-devtools`](/packages/puppeteer-extra-plugin-devtools)
 
@@ -390,6 +382,19 @@ A few plugins won't work in headless mode (it's noted if that's the case) due to
 </details>
 
 ## Changelog
+
+<details>
+ <summary><code>3.1.15 ➠ 4.1.0</code></summary>
+
+### `3.1.15` ➠ `4.1.0`
+
+Massive rewrite: `puppeteer-extra` is now just a small entry point to [`automation-extra`], which is the underlying shared foundation used by [`playwright-extra`] as well. Existing `puppeteer-extra` plugins and code should continue to work with the new `puppeteer-extra`, please report any issues you might encounter.
+
+- Breaking changes:
+  - `puppeteer.plugins` ➠ `puppeteer.plugins.list`
+  - `puppeteer.pluginNames` ➠ `puppeteer.plugins.names`
+
+</details>
 
 <details>
  <summary><code>2.1.6 ➠ 3.1.1</code></summary>
@@ -614,8 +619,13 @@ puppeteer.use(...)
 
 ## License
 
-Copyright © 2018 - 2021, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](mailto:github@berstend.com?subject=[GitHub]%20PuppeteerExtra). Released under the MIT License.
+Copyright © 2018 - 2021, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](https://github.com/berstend). Released under the MIT License.
 
 <!-- Markdown footnotes (for links) -->
 
 [puppeteerextraplugin]: https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin 'PuppeteerExtraPlugin Documentation'
+[playwright-extra]: https://github.com/berstend/puppeteer-extra/tree/master/packages/playwright-extra
+[`playwright-extra`]: https://github.com/berstend/puppeteer-extra/tree/master/packages/playwright-extra
+[puppeteer-extra]: https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra
+[automation-extra]: https://github.com/berstend/puppeteer-extra/tree/master/packages/automation-extra
+[`automation-extra`]: https://github.com/berstend/puppeteer-extra/tree/master/packages/automation-extra

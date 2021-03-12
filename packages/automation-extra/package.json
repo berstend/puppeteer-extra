@@ -1,0 +1,71 @@
+{
+  "name": "automation-extra",
+  "version": "4.2.0",
+  "description": "Driver agnostic plugin framework used by playwright-extra and puppeteer-extra.",
+  "homepage": "https://github.com/berstend/puppeteer-extra/tree/master/packages/automation-extra",
+  "repository": "berstend/puppeteer-extra",
+  "author": "berstend",
+  "license": "MIT",
+  "typings": "dist/index.d.ts",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rimraf dist/*",
+    "prebuild": "run-s clean",
+    "build": "run-s build:tsc build:rollup",
+    "build:tsc": "tsc -p tsconfig.build.json",
+    "build:rollup": "rollup -c rollup.config.ts",
+    "docs": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API ./src/index.ts",
+    "postdocs": "npx prettier --write readme.md",
+    "test:ts": "ava -v --config ava.config-ts.js",
+    "test:js": "ava -v --serial --concurrency 1 --fail-fast",
+    "test": "run-s test:js test:ts",
+    "test-ci": "run-s lint test",
+    "lint": "eslint src/ test/"
+  },
+  "keywords": [
+    "playwright",
+    "playwright-extra",
+    "puppeteer-extra",
+    "puppeteer",
+    "automation-extra"
+  ],
+  "engines": {
+    "node": ">=8"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^16.0.0",
+    "@rollup/plugin-node-resolve": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "4",
+    "@typescript-eslint/parser": "4",
+    "ava": "3.13.0",
+    "documentation-markdown-themes": "13.1.2",
+    "eslint": "7",
+    "eslint-config-prettier": "6",
+    "eslint-config-standard-with-typescript": "19",
+    "eslint-plugin-import": "2",
+    "eslint-plugin-node": "11",
+    "eslint-plugin-promise": "4",
+    "eslint-plugin-standard": "4",
+    "npm-run-all": "^4.1.5",
+    "playwright": "1.8.0",
+    "rimraf": "^3.0.0",
+    "rollup": "^2.34.0",
+    "rollup-plugin-sourcemaps": "^0.6.3",
+    "rollup-plugin-typescript2": "^0.29.0",
+    "ts-node": "^9.0.0",
+    "typescript": "4.1.2"
+  },
+  "dependencies": {
+    "@types/debug": "^4.1.0",
+    "@types/puppeteer": "5.4.3",
+    "automation-extra-plugin": "^4.1.0",
+    "debug": "^4.1.1",
+    "deepmerge": "^4.2.2",
+    "playwright-core": "1.8.0",
+    "puppeteer-extra-plugin": "*"
+  }
+}

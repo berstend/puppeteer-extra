@@ -24,8 +24,8 @@ class Plugin extends PuppeteerExtraPlugin {
     // Intercept CDP commands and strip identifying and unnecessary sourceURL
     // https://github.com/puppeteer/puppeteer/blob/9b3005c105995cd267fdc7fb95b78aceab82cf0e/new-docs/puppeteer.cdpsession.md
     const debug = this.debug
-    page._client.send = (function(originalMethod, context) {
-      return async function() {
+    page._client.send = (function (originalMethod, context) {
+      return async function () {
         const [method, paramArgs] = arguments || []
         const next = () => originalMethod.apply(context, [method, paramArgs])
 
@@ -57,6 +57,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
+module.exports = function (pluginConfig) {
   return new Plugin(pluginConfig)
 }

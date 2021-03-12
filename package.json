@@ -15,24 +15,26 @@
     "test": "lerna run test --concurrency 1 --stream",
     "test-ci": "lerna run test-ci --concurrency 1 --stream",
     "prepare": "lerna run prepare",
-    "release": "lerna publish --npm-client npm"
+    "release": "lerna publish --npm-client npm",
+    "download-firefox": "node helpers/scripts/download-firefox.js"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "helpers/test/*"
   ],
   "devDependencies": {
-    "eslint": "^6.7.1",
-    "eslint-config-prettier": "^6.7.0",
+    "eslint": "^7.14.0",
+    "eslint-config-prettier": "^6.15.0",
     "eslint-config-prettier-standard": "^3.0.1",
-    "eslint-config-standard": "^14.1.0",
+    "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
-    "lerna": "^3.19.0",
-    "lerna-update-wizard": "^0.17.5",
-    "prettier": "^1.19.1",
+    "eslint-plugin-standard": "^5.0.0",
+    "lerna": "^3.22.1",
+    "lerna-update-wizard": "^0.17.8",
+    "prettier": "^2.2.0",
     "prettier-config-standard": "^1.0.1"
   },
   "optionalDependencies": {

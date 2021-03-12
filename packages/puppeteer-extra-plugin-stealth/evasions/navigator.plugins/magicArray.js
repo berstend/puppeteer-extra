@@ -7,7 +7,7 @@
  * Note: This is meant to be run in the context of the page.
  */
 module.exports.generateMagicArray = (utils, fns) =>
-  function(
+  function (
     dataArray = [],
     proto = MimeTypeArray.prototype,
     itemProto = MimeType.prototype,

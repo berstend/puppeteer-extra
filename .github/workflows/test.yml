@@ -14,8 +14,8 @@ on:
       - 'test/*'
 
 env:
-  CI: "true"
-  FORCE_COLOR: "true"
+  CI: 'true'
+  FORCE_COLOR: 'true'
 
 jobs:
   test:
@@ -77,9 +77,12 @@ jobs:
           file node_modules/puppeteer-extra/dist/index.cjs.js
       - uses: microsoft/playwright-github-action@v1
 
+      - name: download firefox (puppeteer)
+        run: yarn download-firefox
+
       - name: test
         uses: GabrielBB/xvfb-action@v1
         env:
-          DISPLAY: ":99.0"
+          DISPLAY: ':99.0'
         with:
           run: yarn test-ci

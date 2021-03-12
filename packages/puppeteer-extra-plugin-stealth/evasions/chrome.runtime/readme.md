@@ -8,7 +8,7 @@
 - [sendMessageHandler()](#sendmessagehandler)
 - [connectHandler()](#connecthandler)
 
-### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/e6133619b051febed630ada35241664eba59b9fa/packages/puppeteer-extra-plugin-stealth/evasions/chrome.runtime/index.js#L13-L251)
+### class: [Plugin](https://github.com/berstend/puppeteer-extra/blob/7a9082f9837f2403099e2181d639aa0065c51ba9/packages/puppeteer-extra-plugin-stealth/evasions/chrome.runtime/index.js#L12-L250)
 
 - `opts` (optional, default `{}`)
 
@@ -18,13 +18,13 @@ Mock the `chrome.runtime` object if not available (e.g. when running headless) a
 
 ---
 
-### [sendMessageHandler()](https://github.com/berstend/puppeteer-extra/blob/e6133619b051febed630ada35241664eba59b9fa/packages/puppeteer-extra-plugin-stealth/evasions/chrome.runtime/index.js#L80-L123)
+### [sendMessageHandler()](https://github.com/berstend/puppeteer-extra/blob/7a9082f9837f2403099e2181d639aa0065c51ba9/packages/puppeteer-extra-plugin-stealth/evasions/chrome.runtime/index.js#L79-L122)
 
 Mock `chrome.runtime.sendMessage`
 
 ---
 
-### [connectHandler()](https://github.com/berstend/puppeteer-extra/blob/e6133619b051febed630ada35241664eba59b9fa/packages/puppeteer-extra-plugin-stealth/evasions/chrome.runtime/index.js#L136-L210)
+### [connectHandler()](https://github.com/berstend/puppeteer-extra/blob/7a9082f9837f2403099e2181d639aa0065c51ba9/packages/puppeteer-extra-plugin-stealth/evasions/chrome.runtime/index.js#L135-L209)
 
 Mock `chrome.runtime.connect`
 

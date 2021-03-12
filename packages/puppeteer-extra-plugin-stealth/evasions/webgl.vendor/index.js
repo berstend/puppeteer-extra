@@ -26,7 +26,7 @@ class Plugin extends PuppeteerExtraPlugin {
   async onPageCreated(page) {
     await withUtils(page).evaluateOnNewDocument((utils, opts) => {
       const getParameterProxyHandler = {
-        apply: function(target, ctx, args) {
+        apply: function (target, ctx, args) {
           const param = (args || [])[0]
           // UNMASKED_VENDOR_WEBGL
           if (param === 37445) {
@@ -53,6 +53,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
+module.exports = function (pluginConfig) {
   return new Plugin(pluginConfig)
 }

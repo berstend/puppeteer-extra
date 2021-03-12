@@ -48,9 +48,7 @@ class Plugin extends PuppeteerExtraPlugin {
       prefix: 'devtools-tunnel',
       auth: {
         user: 'user',
-        pass: require('crypto')
-          .randomBytes(20)
-          .toString('hex')
+        pass: require('crypto').randomBytes(20).toString('hex')
       }
     }
   }
@@ -236,6 +234,6 @@ class Tunnel extends RemoteDevTools.DevToolsTunnel {
   }
 }
 
-module.exports = function(pluginConfig) {
+module.exports = function (pluginConfig) {
   return new Plugin(pluginConfig)
 }

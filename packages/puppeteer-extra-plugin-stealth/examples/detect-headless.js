@@ -4,7 +4,7 @@
 // initial detects from @antoinevastel
 //   http://antoinevastel.github.io/bot%20detection/2018/01/17/detect-chrome-headless-v2.html
 
-module.exports = async function() {
+module.exports = async function () {
   const results = {}
 
   async function test(name, fn) {
@@ -85,7 +85,7 @@ module.exports = async function() {
   await test('toString', _ => {
     let gotYou = 0
     const spooky = /./
-    spooky.toString = function() {
+    spooky.toString = function () {
       gotYou++
       return 'spooky'
     }

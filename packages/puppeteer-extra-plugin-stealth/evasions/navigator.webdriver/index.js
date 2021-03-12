@@ -26,6 +26,7 @@ class Plugin extends PuppeteerExtraPlugin {
   // Note: this will add an infobar to Chrome with a warning that an unsupported flag is set
   // To remove this bar on Linux, run: mkdir -p /etc/opt/chrome/policies/managed && echo '{ "CommandLineFlagSecurityWarningsEnabled": false }' > /etc/opt/chrome/policies/managed/managed_policies.json
   async beforeLaunch(options) {
+    options.args = options.args || []
     // If disable-blink-features is already passed, append the AutomationControlled switch
     const idx = options.args.findIndex((arg) => arg.startsWith('--disable-blink-features='));
     if (idx !== -1) {
@@ -37,6 +38,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
+module.exports = function (pluginConfig) {
   return new Plugin(pluginConfig)
 }

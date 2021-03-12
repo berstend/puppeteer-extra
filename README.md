@@ -1,10 +1,10 @@
-# puppeteer-extra
+# puppeteer-extra [![Downloads](https://img.shields.io/endpoint?style=social&url=https://runkit.io/fezvrasta/combined-npm-downloads/1.0.0?packages=puppeteer-extra,puppeteer-extra-plugin,puppeteer-extra-plugin-stealth,puppeteer-extra-plugin-recaptcha,puppeteer-extra-plugin-adblocker)](https://github.com/berstend/puppeteer-extra/)
 
-This is the monorepo for [`puppeteer-extra`](./packages/puppeteer-extra), a modular plugin framework for [`puppeteer`](https://github.com/GoogleChrome/puppeteer). :-)
+This is the monorepo for [`puppeteer-extra`](./packages/puppeteer-extra), a modular plugin framework for [`puppeteer`](https://github.com/puppeteer/puppeteer). :-)
 
 🌟 **For the main documentation, please head over to the [`puppeteer-extra`](./packages/puppeteer-extra) package.**
 
-In case you're interested in the available plugins, check out the [packages folder](./packages/).
+We've also recently introduced support for Playwright, if you're interested in that head over to [`playwright-extra`](./packages/playwright-extra).
 
 ## Monorepo
 
@@ -28,6 +28,14 @@ This monorepo is powered by [Lerna](https://github.com/lerna/lerna) and yarn wor
 
 #### Initial setup
 
+- Make sure to have a recent Node.js version installed (hint: use `nvm`)
+- Make sure `yarn` is recent (`>=1.2`), for better workspace support:
+
+```bash
+rm -rf ~/.yarn && npm install --global yarn && yarn --version
+# Issues? Check your PATH and `which yarn`
+```
+
 ```bash
 # Install deps
 yarn
@@ -39,6 +47,10 @@ yarn bootstrap
 # Build all TypeScript sources
 yarn build
 ```
+
+#### Troubleshooting
+
+> **Note regarding `fsevents`:** If you are working from a non-OSX environment you may need to run `npx json -I -f package.json -e 'this.resolutions={}'` prior to the initial `yarn` command to allow correct installation. This is a local fix and not meant to be commited afterwards.
 
 #### Development flow
 
@@ -52,6 +64,9 @@ yarn lerna add fs-extra --scope=puppeteer-extra-plugin-user-data-dir
 # Remove dependency
 # https://github.com/lerna/lerna/issues/833
 yarn lerna exec --concurrency 1 'yarn remove fs-extra; echo 0'
+
+# Make sure firefox is installed and symlinked
+yarn download-firefox
 
 # Run test in all packages
 yarn test

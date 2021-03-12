@@ -7,9 +7,9 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  *
  * If you don't provide any values this plugin will default to using the regular UserAgent string (while stripping the headless part).
  * Default language is set to "en-US,en", the other settings match the UserAgent string.
- * If you are running on Linux, it will mask the settins to look like Windows. This behavior can be disabled with the `maskLinux` option.
+ * If you are running on Linux, it will mask the settings to look like Windows. This behavior can be disabled with the `maskLinux` option.
  *
- * By default puppeteer will not set a `Accept-Language` header in headless:
+ * Up until recently puppeteer would not set a `Accept-Language` header in headless by default:
  * It's (theoretically) possible to fix that using either `page.setExtraHTTPHeaders` or a `--lang` launch arg.
  * Unfortunately `page.setExtraHTTPHeaders` will lowercase everything and launch args are not always available. :)
  *
@@ -17,6 +17,8 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  *
  * Note: You cannot use the regular `page.setUserAgent()` puppeteer call in your code,
  * as it will reset the language and platform values you set with this plugin.
+ *
+ * Note: `qvalues` (e.g. `en-US,en;q=0.9`) will be set automatically when using this method.
  *
  * @example
  * const puppeteer = require("puppeteer-extra")

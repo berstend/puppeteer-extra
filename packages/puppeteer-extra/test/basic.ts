@@ -12,18 +12,17 @@ test('is an instance of PuppeteerExtra', async t => {
 
 test('should have the public class members', async t => {
   t.true(puppeteer.use instanceof Function)
-  t.true(puppeteer.plugins instanceof Array)
-  t.true(puppeteer.pluginNames instanceof Array)
-  t.true(puppeteer.getPluginData instanceof Function)
+  t.true(puppeteer.plugins.list instanceof Array)
+  t.true(puppeteer.plugins.names instanceof Array)
 })
 
-test('should have the internal class members', async t => {
-  t.true('getPluginsByProp' in puppeteer)
-  t.true('resolvePluginDependencies' in puppeteer)
-  t.true('orderPlugins' in puppeteer)
-  t.true('checkPluginRequirements' in puppeteer)
-  t.true('callPlugins' in puppeteer)
-  t.true('callPluginsWithValue' in puppeteer)
+test('plugins should have the internal class members', async t => {
+  t.true('add' in puppeteer.plugins)
+  t.true('dispatch' in puppeteer.plugins)
+  t.true('dispatchBlocking' in puppeteer.plugins)
+  t.true('order' in puppeteer.plugins)
+  t.true('checkRequirements' in puppeteer.plugins)
+  t.true('resolveDependencies' in puppeteer.plugins)
 })
 
 test('should have the orginal puppeteer public class members', async t => {

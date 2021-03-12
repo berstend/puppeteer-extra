@@ -1,6 +1,12 @@
 export = defaultExport;
+/**
+ * Default export, PuppeteerExtraStealthPlugin
+ *
+ * @param {Object} [opts] - Options
+ * @param {Set<string>} [opts.enabledEvasions] - Specify which evasions to use (by default all)
+ */
 declare function defaultExport(opts?: {
-    enabledEvasions?: Set<string>;
+    enabledEvasions: Set<string>;
 }): StealthPlugin;
 declare const StealthPlugin_base: typeof import("puppeteer-extra-plugin").PuppeteerExtraPlugin;
 /**
@@ -72,10 +78,6 @@ declare const StealthPlugin_base: typeof import("puppeteer-extra-plugin").Puppet
  */
 declare class StealthPlugin extends StealthPlugin_base {
     constructor(opts?: {});
-    get defaults(): {
-        availableEvasions: Set<string>;
-        enabledEvasions: Set<any>;
-    };
     /**
      * Get all available evasions.
      *
@@ -107,5 +109,4 @@ declare class StealthPlugin extends StealthPlugin_base {
      * puppeteer.use(pluginStealth)
      */
     get enabledEvasions(): Set<string>;
-    onBrowser(browser: any): Promise<void>;
 }

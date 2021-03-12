@@ -11,7 +11,7 @@ test('stealth: will have convincing plugins', async t => {
 
   const results = await page.evaluate(() => {
     // We need to help serializing the error or it won't survive being sent back from `page.evaluate`
-    const catchErr = function(fn, ...args) {
+    const catchErr = function (fn, ...args) {
       try {
         return fn.apply(this, args)
       } catch ({ name, message, stack }) {

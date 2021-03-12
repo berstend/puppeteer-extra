@@ -27,15 +27,15 @@ export default {
       sourcemap: true,
       exports: 'named',
       outro: defaultExportOutro,
-      banner
+      banner,
     },
     {
       file: pkg.module,
       format: 'es',
       sourcemap: true,
       exports: 'named',
-      banner
-    }
+      banner,
+    },
   ],
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external: [
@@ -46,7 +46,7 @@ export default {
     'path'
   ],
   watch: {
-    include: 'src/**'
+    include: 'src/**',
   },
   plugins: [
     // Compile TypeScript files
@@ -57,9 +57,9 @@ export default {
     // which external modules to include in the bundle
     // https://github.com/rollup/rollup-plugin-node-resolve#usage
     resolve({
-      preferBuiltins: true
+      preferBuiltins: true,
     }),
     // Resolve source maps to the original source
-    sourceMaps()
-  ]
+    sourceMaps(),
+  ],
 }

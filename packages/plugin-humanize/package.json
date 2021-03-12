@@ -1,0 +1,55 @@
+{
+  "name": "@extra/humanize",
+  "version": "4.2.1",
+  "description": "A plugin for playwright & puppeteer to humanize inputs (mouse movements)",
+  "homepage": "https://github.com/berstend/puppeteer-extra/tree/master/packages/plugin-humanize",
+  "repository": "berstend/puppeteer-extra",
+  "author": "berstend",
+  "license": "MIT",
+  "typings": "dist/index.d.ts",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "rimraf dist/*",
+    "prebuild": "run-s clean",
+    "build": "run-s build:tsc build:rollup",
+    "build:tsc": "tsc -p tsconfig.build.json",
+    "build:rollup": "rollup -c rollup.config.ts",
+    "docs": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API ./src/index.ts",
+    "postdocs": "npx prettier --write readme.md",
+    "test:ts": "ava -v --config ava.config-ts.js",
+    "test": "run-s test:ts",
+    "test-ci": "run-s lint test",
+    "lint": "eslint src/ test/"
+  },
+  "keywords": [
+    "puppeteer",
+    "playwright",
+    "puppeteer-extra",
+    "playwright-extra",
+    "automation-extra",
+    "automation-extra-plugin",
+    "humanize",
+    "human input",
+    "ghost cursor"
+  ],
+  "engines": {
+    "node": ">=8"
+  },
+  "devDependencies": {
+    "ava": "3",
+    "ts-node": "^9.1.1"
+  },
+  "dependencies": {
+    "@types/bezier-js": "^0.0.8",
+    "automation-extra-plugin": "*",
+    "bezier-js": "2.6.1"
+  },
+  "gitHead": "458b641e07015dade5325e62db9c8186a62bfa76"
+}
