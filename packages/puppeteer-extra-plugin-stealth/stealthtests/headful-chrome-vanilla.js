@@ -14,7 +14,7 @@ async function main() {
   const page = await browser.newPage()
   await page.setViewport({ width: 800, height: 600 })
   await page.goto('https://bot.sannysoft.com/')
-  await page.waitFor(5000)
+  await page.waitForTimeout(5000)
   await page.screenshot({ path: screenshotPath, fullPage: true })
 
   await browser.close()

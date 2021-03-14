@@ -263,6 +263,8 @@ test('regression: new method will not break recaptcha popup', async t => {
     .launch({ headless: true })
   const page = await browser.newPage()
 
+  page.waitForTimeout = page.waitForTimeout || page.waitFor
+
   await page.goto('https://www.fbdemo.com/invisible-captcha/index.html')
 
   await page.type('#tswname', 'foo')
@@ -272,7 +274,8 @@ test('regression: new method will not break recaptcha popup', async t => {
     'In the depth of winter, I finally learned that within me there lay an invincible summer.'
   )
   await page.click('#tswsubmit')
-  await page.waitFor(1000)
+  await page.waitForTimeout(1000)
+
 
   const { hasRecaptchaPopup } = await page.evaluate(() => {
     const hasRecaptchaPopup = !!document.querySelectorAll(
@@ -290,11 +293,12 @@ test('regression: old method indeed did break recaptcha popup', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
+  page.waitForTimeout = page.waitForTimeout || page.waitFor
   // Old method
   await page.evaluateOnNewDocument(() => {
     // eslint-disable-next-line
     Object.defineProperty(HTMLIFrameElement.prototype, 'contentWindow', {
-      get: function() {
+      get: function () {
         return window
       }
     })
@@ -309,7 +313,7 @@ test('regression: old method indeed did break recaptcha popup', async t => {
     'In the depth of winter, I finally learned that within me there lay an invincible summer.'
   )
   await page.click('#tswsubmit')
-  await page.waitFor(1000)
+  await page.waitForTimeout(1000)
 
   const { hasRecaptchaPopup } = await page.evaluate(() => {
     const hasRecaptchaPopup = !!document.querySelectorAll(
