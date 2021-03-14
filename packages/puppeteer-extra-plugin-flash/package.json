@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-flash",
-  "version": "2.2.9",
+  "version": "2.2.10",
   "description": "Allow flash on all sites without user interaction.",
   "main": "index.js",
   "repository": "berstend/puppeteer-extra",
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "debug": "^4.1.1",
-    "puppeteer-extra-plugin": "^3.1.8"
+    "puppeteer-extra-plugin": "^3.1.9"
   },
   "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }
