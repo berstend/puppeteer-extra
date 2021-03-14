@@ -1,6 +1,6 @@
 const test = require('ava')
 
-const { vanillaPuppeteer, addExtra } = require('./util')
+const { vanillaPuppeteer, addExtra, compareLooseVersionStrings } = require('./util')
 const Plugin = require('..')
 
 // Fix CI issues with old versions
@@ -17,6 +17,7 @@ test('stealth: will pass Paul Irish', async t => {
     .use(Plugin())
     .launch({ headless: true })
   const page = await browser.newPage()
+  await page.exposeFunction('compareLooseVersionStrings', compareLooseVersionStrings)
   const detectionResults = await page.evaluate(detectHeadless)
   await browser.close()
 
@@ -45,32 +46,39 @@ async function detectHeadless() {
     return /HeadlessChrome/.test(window.navigator.userAgent)
   })
 
-  // Detects the --enable-automation || --headless flags
-  // Will return true in headful if --enable-automation is provided
-  await test('navigator.webdriver present', _ => {
-    return 'webdriver' in navigator
-  })
+  // navigator.webdriver behavior change since release 89.0.4339.0. See also #448
+  if (await compareLooseVersionStrings(navigator.userAgent, '89.0.4339.0') >= 0) {
+    await test('navigator.webdriver is not false', _ => {
+      return navigator.webdriver !== false
+    })
+  } else {
+    // Detects the --enable-automation || --headless flags
+    // Will return true in headful if --enable-automation is provided
+    await test('navigator.webdriver present', _ => {
+      return 'webdriver' in navigator
+    })
 
-  await test('navigator.webdriver not undefined', _ => {
-    return navigator.webdriver !== undefined
-  })
+    await test('navigator.webdriver not undefined', _ => {
+      return navigator.webdriver !== undefined
+    })
 
-  /* eslint-disable no-proto */
-  await test('navigator.webdriver property overridden', _ => {
-    return (
-      Object.getOwnPropertyDescriptor(navigator.__proto__, 'webdriver') !==
-      undefined
-    )
-  })
+    /* eslint-disable no-proto */
+    await test('navigator.webdriver property overridden', _ => {
+      return (
+        Object.getOwnPropertyDescriptor(navigator.__proto__, 'webdriver') !==
+        undefined
+      )
+    })
 
-  await test('navigator.webdriver prop detected', _ => {
-    for (const prop in navigator) {
-      if (prop === 'webdriver') {
-        return true
+    await test('navigator.webdriver prop detected', _ => {
+      for (const prop in navigator) {
+        if (prop === 'webdriver') {
+          return true
+        }
       }
-    }
-    return false
-  })
+      return false
+    })
+  }
 
   await test('window.chrome missing', _ => {
     return /Chrome/.test(window.navigator.userAgent) && !window.chrome

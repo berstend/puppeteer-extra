@@ -2,7 +2,7 @@ const test = require('ava')
 
 const fpscanner = require('fpscanner')
 
-const { getVanillaFingerPrint, getStealthFingerPrint } = require('./util')
+const { getVanillaFingerPrint, getStealthFingerPrint, compareLooseVersionStrings } = require('./util')
 const Plugin = require('../.')
 
 // Fix CI issues with old versions
@@ -41,5 +41,12 @@ test('stealth: will not fail a single fpscanner test', async t => {
   if (failedChecks.length) {
     console.warn('The following fingerprints failed:', failedChecks)
   }
-  t.is(failedChecks.length, 0)
+
+  if (compareLooseVersionStrings(fingerPrint.userAgent, '89.0.4339.0') >= 0) {
+    // Updated navigator.webdriver behavior breaks the fpscanner tests.
+    t.is(failedChecks.length, 1)
+    t.is(failedChecks[0].name, 'WEBDRIVER')
+  } else {
+    t.is(failedChecks.length, 0)
+  }
 })
