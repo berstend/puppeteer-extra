@@ -131,6 +131,7 @@ export const decode = function(base64, options, callback) {
     request.destroy()
     callback(e)
   })
+
   request.write(postData)
   request.end()
 }
