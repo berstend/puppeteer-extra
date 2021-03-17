@@ -4,6 +4,8 @@
 
 ## Installation
 
+> ⚡ **This is not publicly released yet:** [Please read this for beta version installation instructions](https://github.com/berstend/puppeteer-extra/issues/454).
+
 ```bash
 yarn add playwright playwright-extra
 # - or -
