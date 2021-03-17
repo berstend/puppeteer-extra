@@ -5,6 +5,7 @@
 <a href="https://github.com/berstend/puppeteer-extra"><img src="https://i.imgur.com/qtlnoQL.png" width="279px" height="187px" align="right" /></a>
 
 ## Installation
+> ⚡ **This is not publicly released yet:** [Please read this for beta version installation instructions](https://github.com/berstend/puppeteer-extra/issues/454).
 
 ```bash
 yarn add puppeteer puppeteer-extra
