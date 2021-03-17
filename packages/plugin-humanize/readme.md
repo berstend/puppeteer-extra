@@ -5,6 +5,7 @@
 ![ghost-cursor in action](https://cdn.discordapp.com/attachments/418699380833648644/664110683054538772/acc_gen.gif)
 
 ## Install
+> ⚡ **This is not publicly released yet:** [Please read this for beta version installation instructions](https://github.com/berstend/puppeteer-extra/issues/454).
 
 ```bash
 yarn add @extra/humanize
