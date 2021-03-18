@@ -61,6 +61,10 @@ jobs:
         if: ${{ matrix.node }} === '2.1.1'
         run: cp packages/puppeteer-extra/src/puppeteer.ts.legacy packages/puppeteer-extra/src/puppeteer.ts 
 
+      - name: 'patch compatibility pptr v8-'
+        if: ${{ matrix.node }} === '2.1.1'
+        run: sed -i.bak s/1.20.3/1.19/  packages/puppeteer-extra-plugin-adblocker/package.json
+
       - name: yarn install
         uses: bahmutov/npm-install@v1
 
