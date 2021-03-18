@@ -17,7 +17,7 @@ export interface VanillaPuppeteer {
   /** Path where Puppeteer expects to find bundled Chromium */
   executablePath(): string
   /** The method launches a browser instance with given arguments. The browser will be closed when the parent node.js process is closed. */
-  launch(options?: Puppeteer.LaunchOptions & Puppeteer.BrowserLaunchArgumentOptions & Puppeteer.BrowserConnectOptions): Promise<Puppeteer.Browser>
+  launch(options?: Puppeteer.AllLaunchOptions): Promise<Puppeteer.Browser>
   /** This methods attaches Puppeteer to an existing Chromium instance. */
   createBrowserFetcher(
     options?: Puppeteer.BrowserFetcherOptions
@@ -150,7 +150,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    *
    * @param options - See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions).
    */
-  async launch(options?: Puppeteer.LaunchOptions & Puppeteer.BrowserLaunchArgumentOptions & Puppeteer.BrowserConnectOptions): Promise<Puppeteer.Browser> {
+  async launch(options?: Puppeteer.AllLaunchOptions): Promise<Puppeteer.Browser> {
     // Ensure there are certain properties (e.g. the `options.args` array)
     const defaultLaunchOptions = { args: [] }
     options = merge(defaultLaunchOptions, options || {})
