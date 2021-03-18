@@ -52,10 +52,10 @@
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^9.0.0",
-    "typescript": "^3.7.4"
+    "typescript": "^4.1.5"
   },
   "dependencies": {
-    "@cliqz/adblocker-puppeteer": "1.18.7",
+    "@cliqz/adblocker-puppeteer": "1.20.3",
     "@types/chrome": "0.0.91",
     "debug": "^4.1.1",
     "node-fetch": "^2.6.0",

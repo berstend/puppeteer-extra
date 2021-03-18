@@ -535,7 +535,7 @@ export abstract class PuppeteerExtraPlugin {
     // Pre filter pages for plugin developers convenience
     if (target.type() === 'page') {
       const page = await target.page()
-      if (this.onPageCreated) {
+      if (page && this.onPageCreated) {
         await this.onPageCreated(page)
       }
     }
