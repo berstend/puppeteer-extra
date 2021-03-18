@@ -28,7 +28,7 @@ jobs:
         node:
           - 15
           # - 14
-          - 12
+          # - 12
         puppeteer_version:
           - 8.0.0 # Chromium 90.0.4427.0, Feb 18, 2021
 
