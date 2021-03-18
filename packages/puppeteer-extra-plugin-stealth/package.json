@@ -48,7 +48,7 @@
     "fpscanner": "^0.1.5",
     "loop": "^3.0.6",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "^2.0.0"
+    "puppeteer": "^8.0.0"
   },
   "dependencies": {
     "debug": "^4.1.1",

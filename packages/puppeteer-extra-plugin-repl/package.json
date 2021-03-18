@@ -33,7 +33,7 @@
     "ava": "2.4.0",
     "mock-stdin": "^0.3.1",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "^2.0.0"
+    "puppeteer": "^8.0.0"
   },
   "dependencies": {
     "chalk": "^3.0.0",
