@@ -1,8 +1,7 @@
-'use strict'
-
+import Utils from '../_utils'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
-
 import withUtils from '../_utils/withUtils'
+import { Page } from 'puppeteer'
 
 /**
  * Mock the `chrome.csi` function if not available (e.g. when running headless).
@@ -21,7 +20,7 @@ import withUtils from '../_utils/withUtils'
  * @see `chrome.loadTimes` evasion
  *
  */
-class Plugin extends PuppeteerExtraPlugin {
+class ChromeCsiPlugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
     super(opts)
   }
@@ -30,8 +29,8 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/chrome.csi'
   }
 
-  async onPageCreated(page) {
-    await withUtils(page).evaluateOnNewDocument(utils => {
+  async onPageCreated(page: Page) {
+    await withUtils(page).evaluateOnNewDocument((utils: typeof Utils) => {
       const chrome = (window as any).chrome;
       if (!chrome) {
         // Use the exact property descriptor found in headful Chrome
@@ -70,6 +69,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
-  return new Plugin(pluginConfig)
+export default function(pluginConfig: any) {
+  return new ChromeCsiPlugin(pluginConfig)
 }

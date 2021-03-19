@@ -1,8 +1,7 @@
-'use strict'
-
+import Utils from '../_utils'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
-
 import withUtils from '../_utils/withUtils'
+import { Page } from 'puppeteer'
 
 /**
  * Fix Chromium not reporting "probably" to codecs like `videoEl.canPlayType('video/mp4; codecs="avc1.42E01E"')`.
@@ -17,8 +16,8 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/media.codecs'
   }
 
-  async onPageCreated(page) {
-    await withUtils(page).evaluateOnNewDocument(utils => {
+  async onPageCreated(page: Page) {
+    await withUtils(page).evaluateOnNewDocument((utils: typeof Utils) => {
       /**
        * Input might look funky, we need to normalize it so e.g. whitespace isn't an issue for our spoofing.
        *
@@ -29,9 +28,9 @@ class Plugin extends PuppeteerExtraPlugin {
        * audio/ogg; codecs="vorbis"
        * @param {String} arg
        */
-      const parseInput = arg => {
+      const parseInput = (arg: string) => {
         const [mime, codecStr] = arg.trim().split(';')
-        let codecs = []
+        let codecs: string[] = []
         if (codecStr && codecStr.includes('codecs="')) {
           codecs = codecStr
             .trim()
@@ -39,8 +38,8 @@ class Plugin extends PuppeteerExtraPlugin {
             .replace(`"`, '')
             .trim()
             .split(',')
-            .filter(x => !!x)
-            .map(x => x.trim())
+            .filter((x: string) => !!x)
+            .map((x: string) => x.trim())
         }
         return {
           mime,
@@ -51,7 +50,7 @@ class Plugin extends PuppeteerExtraPlugin {
 
       const canPlayType = {
         // Intercept certain requests
-        apply: function(target, ctx, args) {
+        apply: function(target: any, ctx: any, args: any[]) {
           if (!args || !args.length) {
             return target.apply(ctx, args)
           }
@@ -86,6 +85,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
+export default function(pluginConfig: any) {
   return new Plugin(pluginConfig)
 }

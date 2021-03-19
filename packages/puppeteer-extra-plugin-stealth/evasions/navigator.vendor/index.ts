@@ -1,7 +1,8 @@
 'use strict'
 
+import { Page } from 'puppeteer'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
-
+import Utils from '../_utils'
 import withUtils from '../_utils/withUtils'
 
 /**
@@ -42,13 +43,13 @@ class Plugin extends PuppeteerExtraPlugin {
     }
   }
 
-  async onPageCreated(page) {
+  async onPageCreated(page: Page) {
     this.debug('onPageCreated', {
       opts: this.opts
     })
 
     await withUtils(page).evaluateOnNewDocument(
-      (utils, { opts }) => {
+      (utils: typeof Utils, { opts }: {opts: any}) => {
         utils.replaceGetterWithProxy(
           Object.getPrototypeOf(navigator),
           'vendor',
@@ -62,5 +63,8 @@ class Plugin extends PuppeteerExtraPlugin {
   } // onPageCreated
 }
 
-const defaultExport = opts => new Plugin(opts)
-module.exports = defaultExport
+const defaultExport = (opts: any) => new Plugin(opts)
+
+export default defaultExport;
+
+// module.exports = defaultExport

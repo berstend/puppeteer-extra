@@ -23,15 +23,18 @@ export const utils = {
    *
    * @param {object} handler - The JS Proxy handler to wrap
    */
-  stripProxyFromErrors: (handler = {} as {[key:string]: (...args: any[]) => any}) => {
+  // {[key:string]: (...args: any[]) => any}
+  stripProxyFromErrors: (handler = {} as ProxyHandler<any>) => {
     const newHandler = {} as {[key:string]: (...args: any[]) => any}
     // We wrap each trap in the handler in a try/catch and modify the error stack if they throw
-    const traps = Object.getOwnPropertyNames(handler)
+    const traps = Object.getOwnPropertyNames(handler) as Array<keyof ProxyHandler<any>>
+
     traps.forEach(trap => {
       newHandler[trap] = function (...args: any[]) {
         try {
           // Forward the call to the defined proxy handler
-          return handler[trap].apply(this, args || [])
+          const mtd = handler[trap] as Function;
+          return mtd.apply(this, args || [])
         } catch (err) {
           // Stack traces differ per browser, we only support chromium based ones currently
           if (!err || !err.stack || !err.stack.includes(`at `)) {
@@ -258,9 +261,9 @@ export const utils = {
    * @param {object} proxyObj - The object that toString will be called on
    * @param {object} originalObj - The object which toString result we wan to return
    */
-  redirectToString: (proxyObj, originalObj) => {
+  redirectToString: (proxyObj: any, originalObj: any) => {
     const handler = {
-      apply: function (target, ctx) {
+      apply: function (target: any, ctx: any) {
         // This fixes e.g. `HTMLMediaElement.prototype.canPlayType.toString + ""`
         if (ctx === Function.prototype.toString) {
           return utils.makeNativeString('toString')
@@ -332,13 +335,14 @@ export const utils = {
    * @param {object} handler - The JS Proxy handler to use
    */
   replaceGetterWithProxy: (obj: any, propName: string, handler: ProxyHandler<any>) => {
-    const fn = Object.getOwnPropertyDescriptor(obj, propName).get
-    const fnStr = fn.toString() // special getter function string
-    const proxyObj = new Proxy(fn, utils.stripProxyFromErrors(handler))
-
-    utils.replaceProperty(obj, propName, { get: proxyObj })
-    utils.patchToString(proxyObj, fnStr)
-
+    const props = Object.getOwnPropertyDescriptor(obj, propName) as PropertyDescriptor;
+    if (props && props.get) {
+      const fn = props.get
+      const fnStr = fn.toString() // special getter function string
+      const proxyObj = new Proxy(fn, utils.stripProxyFromErrors(handler))
+      utils.replaceProperty(obj, propName, { get: proxyObj })
+      utils.patchToString(proxyObj, fnStr)
+    }
     return true
   },
 
@@ -495,7 +499,7 @@ export const utils = {
   // Proxy handler templates for re-usability
   makeHandler: () => ({
     // Used by simple `navigator` getter evasions
-    getterValue: (value: string) => ({
+    getterValue: (value: readonly string[]) => ({
       apply(target: any, ctx: any, args?: any[]) {
         // Let's fetch the value first, to trigger and escalate potential errors
         // Illegal invocations like `navigator.__proto__.vendor` will throw here

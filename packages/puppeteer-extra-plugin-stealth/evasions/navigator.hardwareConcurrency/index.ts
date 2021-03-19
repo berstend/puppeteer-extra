@@ -1,8 +1,9 @@
-'use strict'
+import Utils from '../_utils'
 
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
 import withUtils from '../_utils/withUtils'
+import { Page } from 'puppeteer'
 
 /**
  * Set the hardwareConcurrency to 4 (optionally configurable with `hardwareConcurrency`)
@@ -13,7 +14,7 @@ import withUtils from '../_utils/withUtils'
  * @param {number} [opts.hardwareConcurrency] - The value to use in `navigator.hardwareConcurrency` (default: `4`)
  */
 
-class Plugin extends PuppeteerExtraPlugin {
+class NavigatorHardwareConcurrencyPlugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
     super(opts)
   }
@@ -28,9 +29,9 @@ class Plugin extends PuppeteerExtraPlugin {
     }
   }
 
-  async onPageCreated(page) {
+  async onPageCreated(page: Page) {
     await withUtils(page).evaluateOnNewDocument(
-      (utils, { opts }) => {
+      (utils: typeof Utils, { opts }: {opts: any}) => {
         utils.replaceGetterWithProxy(
           Object.getPrototypeOf(navigator),
           'hardwareConcurrency',
@@ -44,6 +45,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) {
-  return new Plugin(pluginConfig)
+export default function (pluginConfig: any) {
+  return new NavigatorHardwareConcurrencyPlugin(pluginConfig)
 }

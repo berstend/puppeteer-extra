@@ -49,7 +49,7 @@ class NavigatorPlugin extends PuppeteerExtraPlugin {
         // Plugin and MimeType cross-reference each other, let's do that now
         // Note: We're looping through `data.plugins` here, not the generated `plugins`
         for (const pluginData of data.plugins) {
-          pluginData.__mimeTypes.forEach((type, index) => {
+          pluginData.__mimeTypes.forEach((type: string, index: number) => {
             plugins[pluginData.name][index] = mimeTypes[type]
 
             Object.defineProperty(plugins[pluginData.name], type, {
@@ -96,6 +96,6 @@ class NavigatorPlugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
+module.exports = function(pluginConfig: any) {
   return new NavigatorPlugin(pluginConfig)
 }

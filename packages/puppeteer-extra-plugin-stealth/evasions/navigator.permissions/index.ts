@@ -1,5 +1,5 @@
-'use strict'
-
+import Utils from '../_utils'
+import { Page } from 'puppeteer'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 import withUtils from '../_utils/withUtils'
 
@@ -19,8 +19,8 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   /* global Notification Permissions PermissionStatus */
-  async onPageCreated(page) {
-    await withUtils(page).evaluateOnNewDocument((utils, opts) => {
+  async onPageCreated(page: Page) {
+    await withUtils(page).evaluateOnNewDocument((utils: typeof Utils, opts: any) => {
       const isSecure = document.location.protocol.startsWith('https')
 
       // In headful on secure origins the permission should be "default", not "denied"
@@ -37,7 +37,7 @@ class Plugin extends PuppeteerExtraPlugin {
       // whereas in headless it's "prompt"
       if (!isSecure) {
         const handler = {
-          apply(target, ctx, args) {
+          apply(target: any, ctx: any, args: any[]) {
             const param = (args || [])[0]
 
             const isNotifications =
@@ -64,6 +64,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) {
+export default function (pluginConfig: any) {
   return new Plugin(pluginConfig)
 }

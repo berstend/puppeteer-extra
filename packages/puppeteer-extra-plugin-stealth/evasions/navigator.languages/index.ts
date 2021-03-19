@@ -1,7 +1,8 @@
-'use strict'
+import Utils from '../_utils'
 
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 import withUtils from '../_utils/withUtils'
+import { Page } from 'puppeteer'
 
 /**
  * Pass the Languages Test. Allows setting custom languages.
@@ -24,10 +25,10 @@ class NavigatorLanguagesPlugin extends PuppeteerExtraPlugin {
     }
   }
 
-  async onPageCreated(page) {
+  async onPageCreated(page: Page) {
     await withUtils(page).evaluateOnNewDocument(
-      (utils, { opts }) => {
-        const languages = opts.languages.length
+      (utils: typeof Utils, { opts }: {opts: any}) => {
+        const languages: string[] = opts.languages.length
           ? opts.languages
           : ['en-US', 'en']
         utils.replaceGetterWithProxy(
@@ -43,6 +44,6 @@ class NavigatorLanguagesPlugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) {
+export default function (pluginConfig: any) {
   return new NavigatorLanguagesPlugin(pluginConfig)
 }

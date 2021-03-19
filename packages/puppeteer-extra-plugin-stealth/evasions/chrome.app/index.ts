@@ -1,7 +1,7 @@
-'use strict'
-
+import Utils from '../_utils'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 import withUtils from '../_utils/withUtils'
+import { Page } from 'puppeteer'
 
 /**
  * Mock the `chrome.app` object if not available (e.g. when running headless).
@@ -15,8 +15,8 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/chrome.app'
   }
 
-  async onPageCreated(page) {
-    await withUtils(page).evaluateOnNewDocument(utils => {
+  async onPageCreated(page: Page) {
+    await withUtils(page).evaluateOnNewDocument((utils: typeof Utils) => {
       const {chrome} = window as any;
       if (!chrome) {
         // Use the exact property descriptor found in headful Chrome
@@ -35,7 +35,7 @@ class Plugin extends PuppeteerExtraPlugin {
       }
 
       const makeError = {
-        ErrorInInvocation: fn => {
+        ErrorInInvocation: (fn: string) => {
           const err = new TypeError(`Error in invocation of app.${fn}()`)
           return utils.stripErrorWithAnchor(
             err,
@@ -95,6 +95,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
+export default function(pluginConfig: any) {
   return new Plugin(pluginConfig)
 }

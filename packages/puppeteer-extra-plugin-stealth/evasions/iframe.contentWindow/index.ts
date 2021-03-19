@@ -1,5 +1,6 @@
 'use strict'
-
+import Utils from '../_utils'
+import { Page } from 'puppeteer'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 import withUtils from '../_utils/withUtils'
 
@@ -23,13 +24,13 @@ class Plugin extends PuppeteerExtraPlugin {
     return new Set(['runLast'])
   }
 
-  async onPageCreated(page) {
-    await withUtils(page).evaluateOnNewDocument((utils, opts) => {
+  async onPageCreated(page: Page) {
+    await withUtils(page).evaluateOnNewDocument((utils: typeof Utils, opts: any) => {
       try {
         // Adds a contentWindow proxy to the provided iframe element
-        const addContentWindowProxy = iframe => {
+        const addContentWindowProxy = (iframe: any) => {
           const contentWindowProxy = {
-            get(target, key) {
+            get(target: any, key: string) {
               // Now to the interesting part:
               // We actually make this thing behave like a regular iframe window,
               // by intercepting calls to e.g. `.self` and redirect it to the correct thing. :)
@@ -62,7 +63,7 @@ class Plugin extends PuppeteerExtraPlugin {
         }
 
         // Handles iframe element creation, augments `srcdoc` property so we can intercept further
-        const handleIframeCreation = (target, thisArg, args) => {
+        const handleIframeCreation = (target: any, thisArg: any, args: any[]) => {
           const iframe = target.apply(thisArg, args)
 
           // We need to keep the originals around
@@ -95,10 +96,10 @@ class Plugin extends PuppeteerExtraPlugin {
           /* global document */
           const createElementHandler = {
             // Make toString() native
-            get(target, key) {
+            get(target: any, key: string) {
               return Reflect.get(target, key)
             },
-            apply: function(target, thisArg, args) {
+            apply: function(target: any, thisArg: any, args: any[]) {
               const isIframe =
                 args && args.length && `${args[0]}`.toLowerCase() === 'iframe'
               if (!isIframe) {
@@ -126,6 +127,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
+export default function(pluginConfig: any) {
   return new Plugin(pluginConfig)
 }

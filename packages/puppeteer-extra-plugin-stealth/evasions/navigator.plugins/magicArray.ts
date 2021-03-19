@@ -83,9 +83,10 @@ export const generateMagicArray = (utils: typeof Utils, fns: any) =>
       defineProp(magicArray, entry[itemMainProp], entry)
     })
 
+    const propsDesc = Object.getOwnPropertyDescriptors(magicArray) as any;
     // This is the best way to fake the type to make sure this is false: `Array.isArray(navigator.mimeTypes)`
     const magicArrayObj = Object.create(proto, {
-      ...Object.getOwnPropertyDescriptors(magicArray),
+      ...propsDesc,
       // There's one ugly quirk we unfortunately need to take care of:
       // The `MimeTypeArray` prototype has an enumerable `length` property,
       // but headful Chrome will still skip it when running `Object.getOwnPropertyNames(navigator.mimeTypes)`.
