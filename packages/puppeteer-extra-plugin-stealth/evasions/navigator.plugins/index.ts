@@ -1,9 +1,8 @@
 'use strict'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
-
-const utils = require('../_utils')
-const withUtils = require('../_utils/withUtils')
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import utils from '../_utils'
+import withUtils from '../_utils/withUtils'
 
 const { generateMimeTypeArray } = require('./mimeTypes')
 const { generatePluginArray } = require('./plugins')
@@ -23,7 +22,7 @@ const data = require('./data.json')
  * @see https://developer.mozilla.org/en-US/docs/Web/API/NavigatorPlugins/plugins
  * @see https://developer.mozilla.org/en-US/docs/Web/API/PluginArray
  */
-class Plugin extends PuppeteerExtraPlugin {
+class NavigatorPlugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
     super(opts)
   }
@@ -97,5 +96,5 @@ class Plugin extends PuppeteerExtraPlugin {
 }
 
 module.exports = function(pluginConfig) {
-  return new Plugin(pluginConfig)
+  return new NavigatorPlugin(pluginConfig)
 }

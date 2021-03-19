@@ -1,12 +1,12 @@
 'use strict'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
 /**
  * Fix missing window.outerWidth/window.outerHeight in headless mode
  * Will also set the viewport to match window size, unless specified by user
  */
-class Plugin extends PuppeteerExtraPlugin {
+class WindowOuterDimensionsPlugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
     super(opts)
   }
@@ -22,9 +22,9 @@ class Plugin extends PuppeteerExtraPlugin {
         if (window.outerWidth && window.outerHeight) {
           return // nothing to do here
         }
-        const windowFrame = 85 // probably OS and WM dependent
-        window.outerWidth = window.innerWidth
-        window.outerHeight = window.innerHeight + windowFrame
+        const windowFrame = 85; // probably OS and WM dependent
+        (window as any).outerWidth = window.innerWidth;
+        (window as any).outerHeight = window.innerHeight + windowFrame
       } catch (err) {}
     })
   }
@@ -40,5 +40,5 @@ class Plugin extends PuppeteerExtraPlugin {
 }
 
 module.exports = function(pluginConfig) {
-  return new Plugin(pluginConfig)
+  return new WindowOuterDimensionsPlugin(pluginConfig)
 }

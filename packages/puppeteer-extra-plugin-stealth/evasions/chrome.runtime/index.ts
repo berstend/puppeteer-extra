@@ -1,8 +1,7 @@
 'use strict'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
-
-const withUtils = require('../_utils/withUtils')
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import withUtils from '../_utils/withUtils'
 
 const STATIC_DATA = require('./staticData.json')
 
@@ -25,7 +24,8 @@ class Plugin extends PuppeteerExtraPlugin {
   async onPageCreated(page) {
     await withUtils(page).evaluateOnNewDocument(
       (utils, { opts, STATIC_DATA }) => {
-        if (!window.chrome) {
+        const {chrome} = window as any
+        if (!chrome) {
           // Use the exact property descriptor found in headful Chrome
           // fetch it via `Object.getOwnPropertyDescriptor(window, 'chrome')`
           Object.defineProperty(window, 'chrome', {
@@ -37,14 +37,14 @@ class Plugin extends PuppeteerExtraPlugin {
         }
 
         // That means we're running headful and don't need to mock anything
-        const existsAlready = 'runtime' in window.chrome
+        const existsAlready = 'runtime' in chrome
         // `chrome.runtime` is only exposed on secure origins
         const isNotSecure = !window.location.protocol.startsWith('https')
         if (existsAlready || (isNotSecure && !opts.runOnInsecureOrigins)) {
           return // Nothing to do here
         }
 
-        window.chrome.runtime = {
+        chrome.runtime = {
           // There's a bunch of static data in that property which doesn't seem to change,
           // we should periodically check for updates: `JSON.stringify(window.chrome.runtime, null, 2)`
           ...STATIC_DATA,
@@ -121,7 +121,7 @@ class Plugin extends PuppeteerExtraPlugin {
           }
         }
         utils.mockWithProxy(
-          window.chrome.runtime,
+          chrome.runtime,
           'sendMessage',
           function sendMessage() {},
           sendMessageHandler
@@ -208,7 +208,7 @@ class Plugin extends PuppeteerExtraPlugin {
           }
         }
         utils.mockWithProxy(
-          window.chrome.runtime,
+          chrome.runtime,
           'connect',
           function connect() {},
           connectHandler

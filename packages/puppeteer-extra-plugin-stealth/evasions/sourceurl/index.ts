@@ -1,12 +1,12 @@
 'use strict'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
 /**
  * Strip sourceURL from scripts injected by puppeteer.
  * It can be used to identify the presence of pptr via stacktraces.
  */
-class Plugin extends PuppeteerExtraPlugin {
+class SourceurlPlugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
     super(opts)
   }
@@ -58,5 +58,5 @@ class Plugin extends PuppeteerExtraPlugin {
 }
 
 module.exports = function(pluginConfig) {
-  return new Plugin(pluginConfig)
+  return new SourceurlPlugin(pluginConfig)
 }

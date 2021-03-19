@@ -1,8 +1,14 @@
 'use strict'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
-const withUtils = require('../_utils/withUtils')
+import withUtils from '../_utils/withUtils'
+
+interface NtEntry {
+  nextHopProtocol: string;// 'h2',
+  type: string;// 'other'
+}
+
 
 /**
  * Mock the `chrome.loadTimes` function if not available (e.g. when running headless).
@@ -19,7 +25,7 @@ const withUtils = require('../_utils/withUtils')
  * @see `chrome.csi` evasion
  *
  */
-class Plugin extends PuppeteerExtraPlugin {
+class ChromeLoadTimesPlugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
     super(opts)
   }
@@ -31,7 +37,8 @@ class Plugin extends PuppeteerExtraPlugin {
   async onPageCreated(page) {
     await withUtils(page).evaluateOnNewDocument(
       (utils, { opts }) => {
-        if (!window.chrome) {
+        const {chrome} = window as any;
+        if (!chrome) {
           // Use the exact property descriptor found in headful Chrome
           // fetch it via `Object.getOwnPropertyDescriptor(window, 'chrome')`
           Object.defineProperty(window, 'chrome', {
@@ -43,7 +50,7 @@ class Plugin extends PuppeteerExtraPlugin {
         }
 
         // That means we're running headful and don't need to mock anything
-        if ('loadTimes' in window.chrome) {
+        if ('loadTimes' in chrome) {
           return // Nothing to do here
         }
 
@@ -51,7 +58,7 @@ class Plugin extends PuppeteerExtraPlugin {
         if (
           !window.performance ||
           !window.performance.timing ||
-          !window.PerformancePaintTiming
+          !(window as any).PerformancePaintTiming
         ) {
           return
         }
@@ -69,21 +76,21 @@ class Plugin extends PuppeteerExtraPlugin {
         const protocolInfo = {
           get connectionInfo() {
             const ntEntry =
-              performance.getEntriesByType('navigation')[0] || ntEntryFallback
+              (performance.getEntriesByType('navigation')[0] || ntEntryFallback) as NtEntry
             return ntEntry.nextHopProtocol
           },
           get npnNegotiatedProtocol() {
             // NPN is deprecated in favor of ALPN, but this implementation returns the
             // HTTP/2 or HTTP2+QUIC/39 requests negotiated via ALPN.
             const ntEntry =
-              performance.getEntriesByType('navigation')[0] || ntEntryFallback
+              (performance.getEntriesByType('navigation')[0] || ntEntryFallback) as NtEntry
             return ['h2', 'hq'].includes(ntEntry.nextHopProtocol)
               ? ntEntry.nextHopProtocol
               : 'unknown'
           },
           get navigationType() {
             const ntEntry =
-              performance.getEntriesByType('navigation')[0] || ntEntryFallback
+              (performance.getEntriesByType('navigation')[0] || ntEntryFallback) as NtEntry
             return ntEntry.type
           },
           get wasAlternateProtocolAvailable() {
@@ -96,14 +103,14 @@ class Plugin extends PuppeteerExtraPlugin {
             // SPDY is deprecated in favor of HTTP/2, but this implementation returns
             // true for HTTP/2 or HTTP2+QUIC/39 as well.
             const ntEntry =
-              performance.getEntriesByType('navigation')[0] || ntEntryFallback
+              (performance.getEntriesByType('navigation')[0] || ntEntryFallback) as NtEntry
             return ['h2', 'hq'].includes(ntEntry.nextHopProtocol)
           },
           get wasNpnNegotiated() {
             // NPN is deprecated in favor of ALPN, but this implementation returns true
             // for HTTP/2 or HTTP2+QUIC/39 requests negotiated via ALPN.
             const ntEntry =
-              performance.getEntriesByType('navigation')[0] || ntEntryFallback
+              (performance.getEntriesByType('navigation')[0] || ntEntryFallback) as NtEntry
             return ['h2', 'hq'].includes(ntEntry.nextHopProtocol)
           }
         }
@@ -147,13 +154,13 @@ class Plugin extends PuppeteerExtraPlugin {
           }
         }
 
-        window.chrome.loadTimes = function() {
+        chrome.loadTimes = function() {
           return {
             ...protocolInfo,
             ...timingInfo
           }
         }
-        utils.patchToString(window.chrome.loadTimes)
+        utils.patchToString(chrome.loadTimes)
       },
       {
         opts: this.opts
@@ -163,5 +170,5 @@ class Plugin extends PuppeteerExtraPlugin {
 }
 
 module.exports = function(pluginConfig) {
-  return new Plugin(pluginConfig)
+  return new ChromeLoadTimesPlugin(pluginConfig)
 }

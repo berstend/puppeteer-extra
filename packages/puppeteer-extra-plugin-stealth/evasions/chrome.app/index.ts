@@ -1,8 +1,7 @@
 'use strict'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
-
-const withUtils = require('../_utils/withUtils')
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import withUtils from '../_utils/withUtils'
 
 /**
  * Mock the `chrome.app` object if not available (e.g. when running headless).
@@ -18,7 +17,8 @@ class Plugin extends PuppeteerExtraPlugin {
 
   async onPageCreated(page) {
     await withUtils(page).evaluateOnNewDocument(utils => {
-      if (!window.chrome) {
+      const {chrome} = window as any;
+      if (!chrome) {
         // Use the exact property descriptor found in headful Chrome
         // fetch it via `Object.getOwnPropertyDescriptor(window, 'chrome')`
         Object.defineProperty(window, 'chrome', {
@@ -30,7 +30,7 @@ class Plugin extends PuppeteerExtraPlugin {
       }
 
       // That means we're running headful and don't need to mock anything
-      if ('app' in window.chrome) {
+      if ('app' in chrome) {
         return // Nothing to do here
       }
 
@@ -64,7 +64,7 @@ class Plugin extends PuppeteerExtraPlugin {
         `.trim()
       )
 
-      window.chrome.app = {
+      chrome.app = {
         ...STATIC_DATA,
 
         get isInstalled() {
@@ -90,7 +90,7 @@ class Plugin extends PuppeteerExtraPlugin {
           return 'cannot_run'
         }
       }
-      utils.patchToStringNested(window.chrome.app)
+      utils.patchToStringNested(chrome.app)
     })
   }
 }

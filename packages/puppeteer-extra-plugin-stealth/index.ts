@@ -1,7 +1,14 @@
 'use strict'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
-
+import Puppeteer from 'puppeteer'
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import {EventEmitter} from 'events';
+/**
+ * Specify which evasions to use (by default all)
+ */
+export interface EvasionsOptions {
+  enabledEvasions?: Set<String>;
+}
 /**
  * Stealth mode: Applies various techniques to make detection of headless puppeteer harder. 💯
  *
@@ -65,12 +72,9 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  *   await browser.close()
  * })()
  *
- * @param {Object} [opts] - Options
- * @param {Set<string>} [opts.enabledEvasions] - Specify which evasions to use (by default all)
- *
  */
 class StealthPlugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+  constructor(opts:EvasionsOptions = {}) {
     super(opts)
   }
 
@@ -108,7 +112,7 @@ class StealthPlugin extends PuppeteerExtraPlugin {
    *
    * @private
    */
-  get dependencies() {
+  get dependencies(): Set<string> {
     return new Set(
       [...this.opts.enabledEvasions].map(e => `${this.name}/evasions/${e}`)
     )
@@ -126,7 +130,7 @@ class StealthPlugin extends PuppeteerExtraPlugin {
    * console.log(pluginStealth.availableEvasions) // => Set { 'user-agent', 'console.debug' }
    * puppeteer.use(pluginStealth)
    */
-  get availableEvasions() {
+  get availableEvasions(): Set<string> {
     return this.defaults.availableEvasions
   }
 
@@ -143,21 +147,21 @@ class StealthPlugin extends PuppeteerExtraPlugin {
    * pluginStealth.enabledEvasions.delete('console.debug')
    * puppeteer.use(pluginStealth)
    */
-  get enabledEvasions() {
+  get enabledEvasions(): Set<string> {
     return this.opts.enabledEvasions
   }
 
   /**
    * @private
    */
-  set enabledEvasions(evasions) {
+  set enabledEvasions(evasions: Set<string>) {
     this.opts.enabledEvasions = evasions
   }
 
-  async onBrowser(browser) {
-    if (browser && browser.setMaxListeners) {
+  async onBrowser(browser: Puppeteer.Browser) {
+    if (browser && (browser as any as EventEmitter).setMaxListeners) {
       // Increase event emitter listeners to prevent MaxListenersExceededWarning
-      browser.setMaxListeners(30)
+      (browser as any as EventEmitter).setMaxListeners(30)
     }
   }
 }
@@ -168,7 +172,7 @@ class StealthPlugin extends PuppeteerExtraPlugin {
  * @param {Object} [opts] - Options
  * @param {Set<string>} [opts.enabledEvasions] - Specify which evasions to use (by default all)
  */
-const defaultExport = opts => new StealthPlugin(opts)
+const defaultExport = (opts?: {enabledEvasions?: Set<String>}) => new StealthPlugin(opts)
 module.exports = defaultExport
 
 // const moduleExport = defaultExport

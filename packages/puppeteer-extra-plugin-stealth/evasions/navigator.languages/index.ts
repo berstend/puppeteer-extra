@@ -1,7 +1,7 @@
 'use strict'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
-const withUtils = require('../_utils/withUtils')
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import withUtils from '../_utils/withUtils'
 
 /**
  * Pass the Languages Test. Allows setting custom languages.
@@ -9,7 +9,7 @@ const withUtils = require('../_utils/withUtils')
  * @param {Object} [opts] - Options
  * @param {Array<string>} [opts.languages] - The languages to use (default: `['en-US', 'en']`)
  */
-class Plugin extends PuppeteerExtraPlugin {
+class NavigatorLanguagesPlugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
     super(opts)
   }
@@ -44,5 +44,5 @@ class Plugin extends PuppeteerExtraPlugin {
 }
 
 module.exports = function (pluginConfig) {
-  return new Plugin(pluginConfig)
+  return new NavigatorLanguagesPlugin(pluginConfig)
 }

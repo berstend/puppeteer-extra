@@ -1,6 +1,6 @@
 'use strict'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+import { PluginData, PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
 /**
  * Fixes the UserAgent info (composed of UA string, Accept-Language, Platform, and UA hints).
@@ -39,7 +39,9 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * @param {boolean} [opts.maskLinux] - Wether to hide Linux as platform in the user agent or not - true by default
  *
  */
-class Plugin extends PuppeteerExtraPlugin {
+class UserAgentOverridePlugin extends PuppeteerExtraPlugin {
+  private _headless: boolean;
+
   constructor(opts = {}) {
     super(opts)
 
@@ -163,7 +165,7 @@ class Plugin extends PuppeteerExtraPlugin {
         model: _getPlatformModel(),
         mobile: _getMobile()
       }
-    }
+    } as any
 
     // In case of headless, override the acceptLanguage in CDP.
     // This is not preferred, as it messed up the header order.
@@ -197,10 +199,10 @@ class Plugin extends PuppeteerExtraPlugin {
         value: {
           intl: { accept_languages: this.opts.locale || 'en-US,en' }
         }
-      }
+      } as PluginData
     ]
   }
 }
 
-const defaultExport = opts => new Plugin(opts)
+const defaultExport = opts => new UserAgentOverridePlugin(opts)
 module.exports = defaultExport

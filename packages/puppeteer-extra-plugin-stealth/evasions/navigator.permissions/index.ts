@@ -1,8 +1,7 @@
 'use strict'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
-
-const withUtils = require('../_utils/withUtils')
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import withUtils from '../_utils/withUtils'
 
 /**
  * Fix `Notification.permission` behaving weirdly in headless mode

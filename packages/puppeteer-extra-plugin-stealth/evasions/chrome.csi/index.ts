@@ -1,8 +1,8 @@
 'use strict'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
-const withUtils = require('../_utils/withUtils')
+import withUtils from '../_utils/withUtils'
 
 /**
  * Mock the `chrome.csi` function if not available (e.g. when running headless).
@@ -32,7 +32,8 @@ class Plugin extends PuppeteerExtraPlugin {
 
   async onPageCreated(page) {
     await withUtils(page).evaluateOnNewDocument(utils => {
-      if (!window.chrome) {
+      const chrome = (window as any).chrome;
+      if (!chrome) {
         // Use the exact property descriptor found in headful Chrome
         // fetch it via `Object.getOwnPropertyDescriptor(window, 'chrome')`
         Object.defineProperty(window, 'chrome', {
@@ -44,18 +45,19 @@ class Plugin extends PuppeteerExtraPlugin {
       }
 
       // That means we're running headful and don't need to mock anything
-      if ('csi' in window.chrome) {
+      if ('csi' in (window as any).chrome) {
         return // Nothing to do here
       }
 
       // Check that the Navigation Timing API v1 is available, we need that
-      if (!window.performance || !window.performance.timing) {
+      const performance = window.performance;
+      if (!performance || !performance.timing) {
         return
       }
 
-      const { timing } = window.performance
+      const { timing } = performance;
 
-      window.chrome.csi = function() {
+      chrome.csi = function() {
         return {
           onloadT: timing.domContentLoadedEventEnd,
           startE: timing.navigationStart,
@@ -63,7 +65,7 @@ class Plugin extends PuppeteerExtraPlugin {
           tran: 15 // Transition type or something
         }
       }
-      utils.patchToString(window.chrome.csi)
+      utils.patchToString(chrome.csi)
     })
   }
 }

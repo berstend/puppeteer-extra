@@ -1,9 +1,7 @@
 'use strict'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
-
-const withUtils = require('../_utils/withUtils')
-
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import withUtils from '../_utils/withUtils'
 /**
  * Fix WebGL Vendor/Renderer being set to Google in headless mode
  *
@@ -13,7 +11,7 @@ const withUtils = require('../_utils/withUtils')
  * @param {string} [opts.vendor] - The vendor string to use (default: `Intel Inc.`)
  * @param {string} [opts.renderer] - The renderer string (default: `Intel Iris OpenGL Engine`)
  */
-class Plugin extends PuppeteerExtraPlugin {
+class WebGlVendorPlugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
     super(opts)
   }
@@ -54,5 +52,5 @@ class Plugin extends PuppeteerExtraPlugin {
 }
 
 module.exports = function(pluginConfig) {
-  return new Plugin(pluginConfig)
+  return new WebGlVendorPlugin(pluginConfig)
 }

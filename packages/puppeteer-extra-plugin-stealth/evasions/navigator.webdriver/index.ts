@@ -1,12 +1,13 @@
 'use strict'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+import Puppeteer from 'puppeteer'
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
 /**
  * Pass the Webdriver Test.
  * Will delete `navigator.webdriver` property.
  */
-class Plugin extends PuppeteerExtraPlugin {
+class NavigatorWebdriverPlugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
     super(opts)
   }
@@ -15,7 +16,7 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/navigator.webdriver'
   }
 
-  async onPageCreated(page) {
+  async onPageCreated(page: Puppeteer.Page) {
     await page.evaluateOnNewDocument(() => {
       if (navigator.webdriver === false) {
         // Post Chrome 89.0.4339.0 and already good
@@ -44,5 +45,5 @@ class Plugin extends PuppeteerExtraPlugin {
 }
 
 module.exports = function(pluginConfig) {
-  return new Plugin(pluginConfig)
+  return new NavigatorWebdriverPlugin(pluginConfig)
 }
