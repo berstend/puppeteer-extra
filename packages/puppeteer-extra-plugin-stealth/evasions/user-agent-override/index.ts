@@ -194,7 +194,7 @@ class UserAgentOverridePlugin extends PuppeteerExtraPlugin {
     this._headless = true
   }
 
-  get data() {
+  get data(): PluginData[] {
     return [
       {
         name: 'userPreferences',
