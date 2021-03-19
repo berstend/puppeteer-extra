@@ -54,3 +54,7 @@ packages/puppeteer-extra-plugin-stealth/evasions/_template/index.js
 packages/puppeteer-extra-plugin-stealth/evasions/_utils/withUtils.js
 packages/puppeteer-extra-plugin-stealth/evasions/_utils/index.js
 packages/puppeteer-extra-plugin-stealth/index.js
+packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/magicArray.js
+packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/mimeTypes.js
+packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/plugins.js
+packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/functionMocks.js
