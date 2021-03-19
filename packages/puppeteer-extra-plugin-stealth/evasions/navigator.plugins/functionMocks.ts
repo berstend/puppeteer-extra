@@ -1,16 +1,17 @@
+import Utils from '../_utils'
 /**
  * `navigator.{plugins,mimeTypes}` share similar custom functions to look up properties
  *
  * Note: This is meant to be run in the context of the page.
  */
-module.exports.generateFunctionMocks = utils => (
-  proto,
-  itemMainProp,
-  dataArray
+export const generateFunctionMocks = (utils: typeof Utils) => (
+  proto: any,
+  itemMainProp: any,
+  dataArray: any[]
 ) => ({
   /** Returns the MimeType object with the specified index. */
   item: utils.createProxy(proto.item, {
-    apply(target, ctx, args) {
+    apply(target: any, ctx: any, args: any[]) {
       if (!args.length) {
         throw new TypeError(
           `Failed to execute 'item' on '${
@@ -28,7 +29,7 @@ module.exports.generateFunctionMocks = utils => (
   }),
   /** Returns the MimeType object with the specified name. */
   namedItem: utils.createProxy(proto.namedItem, {
-    apply(target, ctx, args) {
+    apply(target: any, ctx: any, args: any[]) {
       if (!args.length) {
         throw new TypeError(
           `Failed to execute 'namedItem' on '${
@@ -42,7 +43,7 @@ module.exports.generateFunctionMocks = utils => (
   /** Does nothing and shall return nothing */
   refresh: proto.refresh
     ? utils.createProxy(proto.refresh, {
-        apply(target, ctx, args) {
+        apply(target: any, ctx: any, args: any[]) {
           return undefined
         }
       })

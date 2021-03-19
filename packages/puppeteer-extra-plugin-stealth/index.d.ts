@@ -66,9 +66,6 @@ declare const StealthPlugin_base: typeof import("puppeteer-extra-plugin").Puppet
  *   await browser.close()
  * })()
  *
- * @param {Object} [opts] - Options
- * @param {Set<string>} [opts.enabledEvasions] - Specify which evasions to use (by default all)
- *
  */
 declare class StealthPlugin extends StealthPlugin_base {
     constructor(opts?: {});

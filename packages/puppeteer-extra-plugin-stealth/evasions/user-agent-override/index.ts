@@ -1,5 +1,7 @@
 'use strict'
 
+import { CDPSession, Page } from 'puppeteer';
+// import { AllLaunchOptions } from 'puppeteer-extra';
 import { PluginData, PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
 /**
@@ -40,7 +42,7 @@ import { PluginData, PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
  *
  */
 class UserAgentOverridePlugin extends PuppeteerExtraPlugin {
-  private _headless: boolean;
+  private _headless?: boolean;
 
   constructor(opts = {}) {
     super(opts)
@@ -64,7 +66,7 @@ class UserAgentOverridePlugin extends PuppeteerExtraPlugin {
     }
   }
 
-  async onPageCreated(page) {
+  async onPageCreated(page: Page) {
     // Determine the full user agent string, strip the "Headless" part
     let ua =
       this.opts.userAgent ||
@@ -81,7 +83,7 @@ class UserAgentOverridePlugin extends PuppeteerExtraPlugin {
     // Full version number from Chrome
     const uaVersion = ua.includes('Chrome/')
       ? ua.match(/Chrome\/([\d|.]+)/)[1]
-      : (await page.browser().version()).match(/\/([\d|.]+)/)[1]
+      : ((await page.browser().version()).match(/\/([\d|.]+)/) as string[])[1]
 
     // Get platform identifier (short or long version)
     const _getPlatform = (extended = false) => {
@@ -178,11 +180,11 @@ class UserAgentOverridePlugin extends PuppeteerExtraPlugin {
       override,
       opts: this.opts
     })
-
-    page._client.send('Network.setUserAgentOverride', override)
+    const client = (page as any)._client as CDPSession;
+    client.send('Network.setUserAgentOverride', override)
   }
 
-  async beforeLaunch(options) {
+  async beforeLaunch(options: {headless?: boolean}) {
     // Check if launched headless
     this._headless = options.headless
   }
@@ -204,5 +206,5 @@ class UserAgentOverridePlugin extends PuppeteerExtraPlugin {
   }
 }
 
-const defaultExport = opts => new UserAgentOverridePlugin(opts)
+const defaultExport = (opts: any) => new UserAgentOverridePlugin(opts)
 module.exports = defaultExport

@@ -1,14 +1,15 @@
 'use strict'
 
+import { Page } from 'puppeteer'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
-import utils from '../_utils'
+import Utils from '../_utils'
 import withUtils from '../_utils/withUtils'
 
-const { generateMimeTypeArray } = require('./mimeTypes')
-const { generatePluginArray } = require('./plugins')
-const { generateMagicArray } = require('./magicArray')
-const { generateFunctionMocks } = require('./functionMocks')
-
+import { generateMimeTypeArray } from './mimeTypes';
+import { generatePluginArray } from './plugins';
+import { generateMagicArray } from  './magicArray';
+import { generateFunctionMocks } from './functionMocks';
+1
 const data = require('./data.json')
 
 /**
@@ -31,9 +32,9 @@ class NavigatorPlugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/navigator.plugins'
   }
 
-  async onPageCreated(page) {
+  async onPageCreated(page: Page) {
     await withUtils(page).evaluateOnNewDocument(
-      (utils, { fns, data }) => {
+      (utils: typeof Utils, { fns, data } : {fns: any, data: any}) => {
         fns = utils.materializeFns(fns)
 
         // That means we're running headful
@@ -69,7 +70,7 @@ class NavigatorPlugin extends PuppeteerExtraPlugin {
           })
         }
 
-        const patchNavigator = (name, value) =>
+        const patchNavigator = (name: string, value: any) =>
           utils.replaceProperty(Object.getPrototypeOf(navigator), name, {
             get() {
               return value
@@ -83,7 +84,7 @@ class NavigatorPlugin extends PuppeteerExtraPlugin {
       },
       {
         // We pass some functions to evaluate to structure the code more nicely
-        fns: utils.stringifyFns({
+        fns: Utils.stringifyFns({
           generateMimeTypeArray,
           generatePluginArray,
           generateMagicArray,

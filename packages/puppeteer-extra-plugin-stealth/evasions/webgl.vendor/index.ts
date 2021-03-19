@@ -1,5 +1,6 @@
 'use strict'
 
+import { Page } from 'puppeteer'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 import withUtils from '../_utils/withUtils'
 /**
@@ -21,10 +22,10 @@ class WebGlVendorPlugin extends PuppeteerExtraPlugin {
   }
 
   /* global WebGLRenderingContext WebGL2RenderingContext */
-  async onPageCreated(page) {
-    await withUtils(page).evaluateOnNewDocument((utils, opts) => {
+  async onPageCreated(page: Page) {
+    await withUtils(page).evaluateOnNewDocument((utils: any, opts: any) => {
       const getParameterProxyHandler = {
-        apply: function(target, ctx, args) {
+        apply: function(target: any, ctx: any, args: any) {
           const param = (args || [])[0]
           // UNMASKED_VENDOR_WEBGL
           if (param === 37445) {
@@ -41,7 +42,7 @@ class WebGlVendorPlugin extends PuppeteerExtraPlugin {
       // There's more than one WebGL rendering context
       // https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext#Browser_compatibility
       // To find out the original values here: Object.getOwnPropertyDescriptors(WebGLRenderingContext.prototype.getParameter)
-      const addProxy = (obj, propName) => {
+      const addProxy = (obj: any, propName: string) => {
         utils.replaceWithProxy(obj, propName, getParameterProxyHandler)
       }
       // For whatever weird reason loops don't play nice with Object.defineProperty, here's the next best thing:
@@ -51,6 +52,6 @@ class WebGlVendorPlugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
+module.exports = function(pluginConfig: any) {
   return new WebGlVendorPlugin(pluginConfig)
 }

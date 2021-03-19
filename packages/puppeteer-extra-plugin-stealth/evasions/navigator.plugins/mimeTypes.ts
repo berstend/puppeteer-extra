@@ -1,3 +1,5 @@
+import Utils from '../_utils'
+
 /* global MimeType MimeTypeArray */
 
 /**
@@ -8,7 +10,7 @@
  * @see https://developer.mozilla.org/en-US/docs/Web/API/NavigatorPlugins/mimeTypes
  * @see https://developer.mozilla.org/en-US/docs/Web/API/MimeTypeArray
  */
-module.exports.generateMimeTypeArray = (utils, fns) => mimeTypesData => {
+export const generateMimeTypeArray = (utils: typeof Utils, fns: any) => (mimeTypesData: any) => {
   return fns.generateMagicArray(utils, fns)(
     mimeTypesData,
     MimeTypeArray.prototype,

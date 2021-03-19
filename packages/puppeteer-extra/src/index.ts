@@ -5,6 +5,8 @@ const debug = Debug('puppeteer-extra')
 
 import merge from 'deepmerge'
 
+export {AllLaunchOptions} from './puppeteer';
+
 /**
  * Original Puppeteer API
  * @private

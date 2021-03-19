@@ -1,3 +1,5 @@
+import Utils from '../_utils'
+
 /* global MimeType MimeTypeArray Plugin PluginArray  */
 
 /**
@@ -6,7 +8,7 @@
  *
  * Note: This is meant to be run in the context of the page.
  */
-module.exports.generateMagicArray = (utils, fns) =>
+export const generateMagicArray = (utils: typeof Utils, fns: any) =>
   function(
     dataArray = [],
     proto = MimeTypeArray.prototype,
@@ -14,7 +16,7 @@ module.exports.generateMagicArray = (utils, fns) =>
     itemMainProp = 'type'
   ) {
     // Quick helper to set props with the same descriptors vanilla is using
-    const defineProp = (obj, prop, value) =>
+    const defineProp = (obj: any, prop: string, value: any) =>
       Object.defineProperty(obj, prop, {
         value,
         writable: false,
@@ -23,7 +25,7 @@ module.exports.generateMagicArray = (utils, fns) =>
       })
 
     // Loop over our fake data and construct items
-    const makeItem = data => {
+    const makeItem = (data: any) => {
       const item = {}
       for (const prop of Object.keys(data)) {
         if (prop.startsWith('__')) {
@@ -34,12 +36,12 @@ module.exports.generateMagicArray = (utils, fns) =>
       return patchItem(item, data)
     }
 
-    const patchItem = (item, data) => {
+    const patchItem = (item: any, data: any) => {
       let descriptor = Object.getOwnPropertyDescriptors(item)
 
       // Special case: Plugins have a magic length property which is not enumerable
       // e.g. `navigator.plugins[i].length` should always be the length of the assigned mimeTypes
-      if (itemProto === Plugin.prototype) {
+      if (itemProto as any === Plugin.prototype) {
         descriptor = {
           ...descriptor,
           length: {
@@ -55,12 +57,12 @@ module.exports.generateMagicArray = (utils, fns) =>
       const obj = Object.create(itemProto, descriptor)
 
       // Virtually all property keys are not enumerable in vanilla
-      const blacklist = [...Object.keys(data), 'length', 'enabledPlugin']
+      const blacklist: (string | symbol)[] = [...Object.keys(data), 'length', 'enabledPlugin']
       return new Proxy(obj, {
         ownKeys(target) {
-          return Reflect.ownKeys(target).filter(k => !blacklist.includes(k))
+          return Reflect.ownKeys(target).filter((k: string | symbol) => !blacklist.includes(k))
         },
-        getOwnPropertyDescriptor(target, prop) {
+        getOwnPropertyDescriptor(target: any, prop: string) {
           if (blacklist.includes(prop)) {
             return undefined
           }
@@ -69,7 +71,7 @@ module.exports.generateMagicArray = (utils, fns) =>
       })
     }
 
-    const magicArray = []
+    const magicArray = [] as any[]
 
     // Loop through our fake data and use that to create convincing entities
     dataArray.forEach(data => {
@@ -84,7 +86,6 @@ module.exports.generateMagicArray = (utils, fns) =>
     // This is the best way to fake the type to make sure this is false: `Array.isArray(navigator.mimeTypes)`
     const magicArrayObj = Object.create(proto, {
       ...Object.getOwnPropertyDescriptors(magicArray),
-
       // There's one ugly quirk we unfortunately need to take care of:
       // The `MimeTypeArray` prototype has an enumerable `length` property,
       // but headful Chrome will still skip it when running `Object.getOwnPropertyNames(navigator.mimeTypes)`.
@@ -114,7 +115,7 @@ module.exports.generateMagicArray = (utils, fns) =>
         if (key === 'namedItem') {
           return functionMocks.namedItem
         }
-        if (proto === PluginArray.prototype && key === 'refresh') {
+        if ((proto as any) === PluginArray.prototype && key === 'refresh') {
           return functionMocks.refresh
         }
         // Everything else can pass through as normal
@@ -126,7 +127,7 @@ module.exports.generateMagicArray = (utils, fns) =>
         // My guess is that it has to do with the recent change of not allowing data enumeration and this being implemented weirdly
         // For that reason we just completely fake the available property names based on our data to match what regular Chrome is doing
         // Specific issues when not patching this: `length` property is available, direct `types` props (e.g. `obj['application/pdf']`) are missing
-        const keys = []
+        const keys: string[] = []
         const typeProps = magicArray.map(mt => mt[itemMainProp])
         typeProps.forEach((_, i) => keys.push(`${i}`))
         typeProps.forEach(propName => keys.push(propName))
