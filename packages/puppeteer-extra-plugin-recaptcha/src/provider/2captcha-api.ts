@@ -1,14 +1,13 @@
 // https://github.com/bochkarev-artem/2captcha/blob/master/index.js
 // TODO: Create our own API wrapper
 
-var http = require('http')
 var https = require('https')
 var url = require('url')
 var querystring = require('querystring')
 
 var apiKey
-var apiInUrl = 'http://2captcha.com/in.php'
-var apiResUrl = 'http://2captcha.com/res.php'
+var apiInUrl = 'https://2captcha.com/in.php'
+var apiResUrl = 'https://2captcha.com/res.php'
 var apiMethod = 'base64'
 var SOFT_ID = '2589'
 
@@ -20,7 +19,7 @@ var defaultOptions = {
 function pollCaptcha(captchaId, options, invalid, callback) {
   invalid = invalid.bind({ options: options, captchaId: captchaId })
   var intervalId = setInterval(function() {
-    var httpRequestOptions = url.parse(
+    var httpsRequestOptions = url.parse(
       apiResUrl +
         '?action=get&soft_id=' +
         SOFT_ID +
@@ -29,7 +28,7 @@ function pollCaptcha(captchaId, options, invalid, callback) {
         '&id=' +
         captchaId
     )
-    var request = http.request(httpRequestOptions, function(response) {
+    var request = https.request(httpsRequestOptions, function(response) {
       var body = ''
 
       response.on('data', function(chunk) {
@@ -56,7 +55,7 @@ function pollCaptcha(captchaId, options, invalid, callback) {
             invalid
           )
         }
-        callback = function() {} // prevent the callback from being called more than once, if multiple http requests are open at the same time.
+        callback = function() {} // prevent the callback from being called more than once, if multiple https requests are open at the same time.
       })
     })
     request.on('error', function(e) {
@@ -76,8 +75,8 @@ export const decode = function(base64, options, callback) {
     callback = options
     options = defaultOptions
   }
-  var httpRequestOptions = url.parse(apiInUrl)
-  httpRequestOptions.method = 'POST'
+  var httpsRequestOptions = url.parse(apiInUrl)
+  httpsRequestOptions.method = 'POST'
 
   var postData = {
     method: apiMethod,
@@ -88,7 +87,7 @@ export const decode = function(base64, options, callback) {
 
   postData = querystring.stringify(postData)
 
-  var request = http.request(httpRequestOptions, function(response) {
+  var request = https.request(httpsRequestOptions, function(response) {
     var body = ''
 
     response.on('data', function(chunk) {
@@ -148,8 +147,8 @@ export const decodeReCaptcha = function(
     callback = options
     options = defaultOptions
   }
-  var httpRequestOptions = url.parse(apiInUrl)
-  httpRequestOptions.method = 'POST'
+  var httpsRequestOptions = url.parse(apiInUrl)
+  httpsRequestOptions.method = 'POST'
 
   var postData = {
     method: captchaMethod,
@@ -168,7 +167,7 @@ export const decodeReCaptcha = function(
 
   postData = querystring.stringify(postData)
 
-  var request = http.request(httpRequestOptions, function(response) {
+  var request = https.request(httpsRequestOptions, function(response) {
     var body = ''
 
     response.on('data', function(chunk) {
@@ -227,12 +226,10 @@ export const decodeUrl = function(uri, options, callback) {
     callback = options
     options = defaultOptions
   }
-  var protocol = http
-  if (uri.indexOf('https') == 0) protocol = https
 
   var options = url.parse(uri)
 
-  var request = protocol.request(options, function(response) {
+  var request = https.request(options, function(response) {
     var body = ''
     response.setEncoding('base64')
 
@@ -263,12 +260,9 @@ export const solveRecaptchaFromHtml = function(html, options, callback) {
   googleUrl = googleUrl.split("'")[0]
   googleUrl = 'https://www.google.com/recaptcha/api/challenge?k=' + googleUrl
 
-  var protocol = http
-  if (googleUrl.indexOf('https') == 0) protocol = https
+  var httpsRequestOptions = url.parse(googleUrl)
 
-  var httpRequestOptions = url.parse(googleUrl)
-
-  var request = protocol.request(httpRequestOptions, function(response) {
+  var request = https.request(httpsRequestOptions, function(response) {
     var body = ''
     response.on('data', function(chunk) {
       body += chunk
@@ -306,7 +300,7 @@ export const report = function(captchaId) {
     captchaId
   var options = url.parse(reportUrl)
 
-  var request = http.request(options, function(response) {
+  var request = https.request(options, function(response) {
     // var body = ''
     // response.on('data', function(chunk) {
     //   body += chunk
