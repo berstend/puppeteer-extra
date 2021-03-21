@@ -202,6 +202,33 @@ test('stealth: test if UA hints are correctly set - Windows 10', async t => {
   }
 })
 
+test('stealth: test if UA hints are correctly set - Windows 10 Generic', async t => {
+  const page = await _testUAHint(
+    'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.7113.93 Safari/537.36',
+    'en-AU'
+  )
+  if (!page) {
+    t.true(true) // skip
+    return
+  }
+  const firstLoad = await page.content()
+  t.true(
+    firstLoad.includes(`sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="90"`)
+  )
+  t.true(firstLoad.includes(`Accept-Language: en-AU`))
+
+  await page.reload()
+  const secondLoad = await page.content()
+  if (secondLoad.includes('sec-ch-ua-full-version')) {
+    t.true(secondLoad.includes('sec-ch-ua-mobile: ?0'))
+    t.true(secondLoad.includes('sec-ch-ua-full-version: "90.'))
+    t.true(secondLoad.includes('sec-ch-ua-arch: "x86"'))
+    t.true(secondLoad.includes('sec-ch-ua-platform: "Windows"'))
+    t.true(secondLoad.includes('sec-ch-ua-platform-version: "10.0"'))
+    t.true(secondLoad.includes('sec-ch-ua-model: ""'))
+  }
+})
+
 test('stealth: test if UA hints are correctly set - macOS 11', async t => {
   const page = await _testUAHint(
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36',
