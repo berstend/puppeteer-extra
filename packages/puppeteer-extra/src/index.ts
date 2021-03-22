@@ -5,7 +5,7 @@ const debug = Debug('puppeteer-extra')
 
 import merge from 'deepmerge'
 
-export {AllLaunchOptions} from './puppeteer';
+export { AllLaunchOptions } from './puppeteer';
 
 /**
  * Original Puppeteer API
@@ -518,8 +518,9 @@ export default defaultExport
  * @param puppeteer Any puppeteer API-compatible puppeteer implementation or version.
  * @return A fresh PuppeteerExtra instance using the provided puppeteer
  */
-export const addExtra = (puppeteer: VanillaPuppeteer): PuppeteerExtra =>
-  new PuppeteerExtra(puppeteer)
+export const addExtra = (puppeteer: VanillaPuppeteer | Puppeteer.VanillaPuppeteer
+  ): PuppeteerExtra =>
+  new PuppeteerExtra(puppeteer as any as VanillaPuppeteer)
 
 /**
  * Attempt to require puppeteer or puppeteer-core from dependencies.
