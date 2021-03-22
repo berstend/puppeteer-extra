@@ -1,16 +1,23 @@
-const assert = require('assert')
-const vanillaPuppeteer = require('puppeteer')
-const { addExtra } = require('puppeteer-extra')
+import { Page } from "puppeteer";
+
+import assert from 'assert'
+import { addExtra, VanillaPuppeteer } from 'puppeteer-extra'
+export { addExtra, VanillaPuppeteer } from 'puppeteer-extra'
+
+export { default as vanillaPuppeteer} from 'puppeteer'
+import { default as vanillaPuppeteer} from 'puppeteer'
 
 const fpCollectPath = require.resolve('fpcollect/dist/fpCollect.min.js')
 
-const getFingerPrintFromPage = async page => {
+var fpCollect: any;
+
+const getFingerPrintFromPage = async (page: Page) => {
   return page.evaluate(() => fpCollect.generateFingerprint()) // eslint-disable-line
 }
 
-const dummyHTMLPath = require('path').join(__dirname, './fixtures/dummy.html')
+export const dummyHTMLPath = require('path').join(__dirname, './fixtures/dummy.html')
 
-const getFingerPrint = async (puppeteer, pageFn) => {
+const getFingerPrint = async (puppeteer: any, pageFn: any) => {
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
   await page.goto('file://' + dummyHTMLPath)
@@ -26,21 +33,21 @@ const getFingerPrint = async (puppeteer, pageFn) => {
   return { ...fingerPrint, pageFnResult }
 }
 
-const getVanillaFingerPrint = async pageFn =>
+export const getVanillaFingerPrint = async (pageFn: any) =>
   getFingerPrint(vanillaPuppeteer, pageFn)
-const getStealthFingerPrint = async (Plugin, pageFn, pluginOptions = null) =>
-  getFingerPrint(addExtra(vanillaPuppeteer).use(Plugin(pluginOptions)), pageFn)
+export const getStealthFingerPrint = async (Plugin: any, pageFn: any, pluginOptions = null) =>
+  getFingerPrint(addExtra(vanillaPuppeteer as any as VanillaPuppeteer).use(Plugin(pluginOptions)), pageFn)
 
 // Expecting the input string to be in one of these formats:
 // - The UA string
 // - The shorter version string from Puppeteers browser.version()
 // - The shortest four-integer string
-const parseLooseVersionString = looseVersionString => looseVersionString
-  .match(/(\d+\.){3}\d+/)[0]
+const parseLooseVersionString = (looseVersionString: string) => (looseVersionString
+  .match(/(\d+\.){3}\d+/) as string[])[0]
   .split('.')
   .map(x => parseInt(x))
 
-const compareLooseVersionStrings = (version0, version1) => {
+export const compareLooseVersionStrings = (version0: string, version1: string) => {
   const parsed0 = parseLooseVersionString(version0)
   const parsed1 = parseLooseVersionString(version1)
   assert(parsed0.length == 4)
@@ -53,13 +60,4 @@ const compareLooseVersionStrings = (version0, version1) => {
     }
   }
   return 0
-}
-
-module.exports = {
-  getVanillaFingerPrint,
-  getStealthFingerPrint,
-  dummyHTMLPath,
-  vanillaPuppeteer,
-  addExtra,
-  compareLooseVersionStrings
 }

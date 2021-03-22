@@ -1,20 +1,23 @@
-const test = require('ava')
+import test from 'ava'
 
-const {
+import {
   getVanillaFingerPrint,
   getStealthFingerPrint
-} = require('../../test/util')
+} from '../../test/util'
 
-const { vanillaPuppeteer, addExtra } = require('../../test/util')
+import { vanillaPuppeteer, addExtra } from '../../test/util'
 
-const Plugin = require('.')
+import Plugin from '.'
+import { Page } from 'puppeteer'
 
 const STATIC_DATA = require('./staticData.json')
 
 /* global chrome */
+var window: any;
+var chrome: any;
 
 test('vanilla: is chrome false', async t => {
-  const pageFn = async page => await page.evaluate(() => window.chrome) // eslint-disable-line
+  const pageFn = async (page: Page) => await page.evaluate(() => window.chrome) // eslint-disable-line
   const { pageFnResult: chrome, hasChrome } = await getVanillaFingerPrint(
     pageFn
   )
@@ -24,7 +27,7 @@ test('vanilla: is chrome false', async t => {
 })
 
 test('stealth: is chrome true', async t => {
-  const pageFn = async page => await page.evaluate(() => window.chrome) // eslint-disable-line
+  const pageFn = async (page: Page) => await page.evaluate(() => window.chrome) // eslint-disable-line
   const { pageFnResult: chrome, hasChrome } = await getStealthFingerPrint(
     Plugin,
     pageFn
@@ -44,7 +47,7 @@ test('stealth: will add convincing chrome.runtime object', async t => {
   //
 
   const results = await page.evaluate(() => {
-    const catchErr = (fn, ...args) => {
+    const catchErr = (fn: Function, ...args: any[]) => {
       try {
         return fn.apply(this, args)
       } catch (err) {
@@ -134,7 +137,7 @@ test('stealth: will add convincing chrome.runtime.connect', async t => {
   const page = await browser.newPage()
 
   const results = await page.evaluate(() => {
-    const catchErr = (fn, ...args) => {
+    const catchErr = (fn: Function, ...args: any[]) => {
       try {
         return fn.apply(this, args)
       } catch (err) {
@@ -261,7 +264,7 @@ test('stealth: error stack is fine', async t => {
   const page = await browser.newPage()
 
   const result = await page.evaluate(() => {
-    const catchErr = (fn, ...args) => {
+    const catchErr = (fn: Function, ...args: any[]) => {
       try {
         return fn.apply(this, args)
       } catch ({ name, message, stack }) {

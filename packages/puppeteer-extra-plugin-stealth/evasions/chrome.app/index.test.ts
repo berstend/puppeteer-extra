@@ -1,18 +1,21 @@
-const test = require('ava')
+import test from 'ava'
 
-const { vanillaPuppeteer, addExtra } = require('../../test/util')
+import { VanillaPuppeteer, vanillaPuppeteer, addExtra } from '../../test/util'
 
-const Plugin = require('.')
+import Plugin from '.'
 
 /* global chrome */
+var window: any;
+var chrome: any;
+
 
 test('stealth: will add convincing chrome.app object', async t => {
-  const puppeteer = addExtra(vanillaPuppeteer).use(Plugin({}))
+  const puppeteer = addExtra(vanillaPuppeteer as any as VanillaPuppeteer).use(Plugin({}))
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
   const results = await page.evaluate(() => {
-    const catchErr = (fn, ...args) => {
+    const catchErr = (fn: Function, ...args: any[]) => {
       try {
         return fn.apply(this, args)
       } catch ({ name, message, stack }) {
