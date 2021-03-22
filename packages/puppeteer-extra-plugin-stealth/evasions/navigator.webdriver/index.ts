@@ -44,6 +44,6 @@ class NavigatorWebdriverPlugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig: any) {
+export = function(pluginConfig: any) {
   return new NavigatorWebdriverPlugin(pluginConfig)
 }

@@ -206,5 +206,4 @@ class UserAgentOverridePlugin extends PuppeteerExtraPlugin {
   }
 }
 
-const defaultExport = (opts: any) => new UserAgentOverridePlugin(opts)
-module.exports = defaultExport
+export = (opts: any) => new UserAgentOverridePlugin(opts)

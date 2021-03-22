@@ -6,7 +6,7 @@ import { Page } from 'puppeteer'
 /**
  * Mock the `chrome.app` object if not available (e.g. when running headless).
  */
-class Plugin extends PuppeteerExtraPlugin {
+class ChromeAppPlugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
     super(opts)
   }
@@ -95,6 +95,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-export default function(pluginConfig: any) {
-  return new Plugin(pluginConfig)
+export = function(pluginConfig: any) {
+  return new ChromeAppPlugin(pluginConfig)
 }

@@ -7,7 +7,7 @@ import { Page } from 'puppeteer'
  * Fix Chromium not reporting "probably" to codecs like `videoEl.canPlayType('video/mp4; codecs="avc1.42E01E"')`.
  * (Chromium doesn't support proprietary codecs, only Chrome does)
  */
-class Plugin extends PuppeteerExtraPlugin {
+class MediaCodecsPlugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
     super(opts)
   }
@@ -85,6 +85,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-export default function(pluginConfig: any) {
-  return new Plugin(pluginConfig)
+export = function(pluginConfig: any) {
+  return new MediaCodecsPlugin(pluginConfig)
 }

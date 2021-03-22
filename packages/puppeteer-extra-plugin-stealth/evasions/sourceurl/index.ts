@@ -63,6 +63,6 @@ class SourceurlPlugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig: any) {
+export = function(pluginConfig: any) {
   return new SourceurlPlugin(pluginConfig)
 }

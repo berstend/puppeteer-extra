@@ -6,7 +6,7 @@ import utils from './index'
  *
  * @param {Puppeteer.Page} page
  */
-export default (page: Puppeteer.Page ) => ({
+export = (page: Puppeteer.Page ) => ({
   /**
    * Simple `page.evaluate` replacement to preload utils
    */

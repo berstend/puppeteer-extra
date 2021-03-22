@@ -69,6 +69,6 @@ class ChromeCsiPlugin extends PuppeteerExtraPlugin {
   }
 }
 
-export default function(pluginConfig: any) {
+export = function(pluginConfig: any) {
   return new ChromeCsiPlugin(pluginConfig)
 }

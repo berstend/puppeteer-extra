@@ -9,7 +9,7 @@ import withUtils from '../_utils/withUtils'
  * @see https://bugs.chromium.org/p/chromium/issues/detail?id=1052332
  */
 
-class Plugin extends PuppeteerExtraPlugin {
+class NavigatorPermissionsPlugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
     super(opts)
   }
@@ -64,6 +64,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-export default function (pluginConfig: any) {
-  return new Plugin(pluginConfig)
+export = function (pluginConfig: any) {
+  return new NavigatorPermissionsPlugin(pluginConfig)
 }

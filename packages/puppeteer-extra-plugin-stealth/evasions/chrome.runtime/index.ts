@@ -8,7 +8,7 @@ const STATIC_DATA = require('./staticData.json')
 /**
  * Mock the `chrome.runtime` object if not available (e.g. when running headless) and on a secure site.
  */
-class Plugin extends PuppeteerExtraPlugin {
+class ChromeRuntimePlugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
     super(opts)
   }
@@ -249,6 +249,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-export default function(pluginConfig: any) {
-  return new Plugin(pluginConfig)
+export = function(pluginConfig: any) {
+  return new ChromeRuntimePlugin(pluginConfig)
 }

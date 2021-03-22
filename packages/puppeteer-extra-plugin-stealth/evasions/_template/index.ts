@@ -4,7 +4,7 @@ import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 import Puppeteer from 'puppeteer/lib/types'
 
 
-export interface PluginOptions {
+interface PluginOptions {
 }
 
 /**
@@ -28,6 +28,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig?: PluginOptions) {
+export = function(pluginConfig?: PluginOptions) {
   return new Plugin(pluginConfig)
 }

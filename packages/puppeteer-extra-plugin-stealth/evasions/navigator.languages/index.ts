@@ -44,6 +44,6 @@ class NavigatorLanguagesPlugin extends PuppeteerExtraPlugin {
   }
 }
 
-export default function (pluginConfig: any) {
+export = function (pluginConfig: any) {
   return new NavigatorLanguagesPlugin(pluginConfig)
 }

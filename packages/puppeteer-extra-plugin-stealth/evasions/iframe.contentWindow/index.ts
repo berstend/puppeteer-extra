@@ -10,7 +10,7 @@ import withUtils from '../_utils/withUtils'
  *
  * https://github.com/puppeteer/puppeteer/issues/1106
  */
-class Plugin extends PuppeteerExtraPlugin {
+class IframeContentWindowPlugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
     super(opts)
   }
@@ -127,6 +127,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-export default function(pluginConfig: any) {
-  return new Plugin(pluginConfig)
+export = function(pluginConfig: any) {
+  return new IframeContentWindowPlugin(pluginConfig)
 }

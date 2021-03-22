@@ -28,7 +28,7 @@ import withUtils from '../_utils/withUtils'
  * @param {string} [opts.vendor] - The vendor to use in `navigator.vendor` (default: `Google Inc.`)
  *
  */
-class Plugin extends PuppeteerExtraPlugin {
+class NavigatorVendorPlugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
     super(opts)
   }
@@ -63,8 +63,4 @@ class Plugin extends PuppeteerExtraPlugin {
   } // onPageCreated
 }
 
-const defaultExport = (opts: any) => new Plugin(opts)
-
-export default defaultExport;
-
-// module.exports = defaultExport
+export = (opts: any) => new NavigatorVendorPlugin(opts)

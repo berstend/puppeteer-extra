@@ -12,6 +12,7 @@ on:
     branches:
       - master
       - 'test/*'
+      - ts
 
 env:
   CI: "true"

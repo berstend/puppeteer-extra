@@ -6,7 +6,7 @@ import {EventEmitter} from 'events';
 /**
  * Specify which evasions to use (by default all)
  */
-export interface EvasionsOptions {
+interface EvasionsOptions {
   enabledEvasions?: Set<String>;
 }
 /**
@@ -173,7 +173,7 @@ class StealthPlugin extends PuppeteerExtraPlugin {
  * @param {Set<string>} [opts.enabledEvasions] - Specify which evasions to use (by default all)
  */
 const defaultExport = (opts?: {enabledEvasions?: Set<String>}) => new StealthPlugin(opts)
-module.exports = defaultExport
+export = defaultExport
 
 // const moduleExport = defaultExport
 // moduleExport.StealthPlugin = StealthPlugin

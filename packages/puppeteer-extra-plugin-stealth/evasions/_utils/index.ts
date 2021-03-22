@@ -11,7 +11,7 @@
  */
 // const utils = {} as any
 
-export const utils = {
+const utils = {
   init: () => {
     utils.preloadCache()
   },
@@ -517,4 +517,4 @@ export const utils = {
 // Stuff starting below this line is NodeJS specific.
 // --
 
-export default utils
+export = utils

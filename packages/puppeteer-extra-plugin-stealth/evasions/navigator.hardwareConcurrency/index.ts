@@ -45,6 +45,6 @@ class NavigatorHardwareConcurrencyPlugin extends PuppeteerExtraPlugin {
   }
 }
 
-export default function (pluginConfig: any) {
+export = function (pluginConfig: any) {
   return new NavigatorHardwareConcurrencyPlugin(pluginConfig)
 }
