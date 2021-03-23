@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import AdblockerPlugin from './index'
+import AdblockerPlugin from '../src/index'
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 

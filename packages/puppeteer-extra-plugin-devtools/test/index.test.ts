@@ -2,7 +2,7 @@ const PLUGIN_NAME = 'devtools'
 
 import test from 'ava'
 
-import Plugin from '.'
+import Plugin from '../src'
 
 test('is a function', async t => {
   t.is(typeof Plugin, 'function')
@@ -25,7 +25,7 @@ test('will throw without browser when creating a tunnel', async t => {
   const instance = Plugin()
   let error = null
   try {
-    await instance.createTunnel()
+    await (instance as any).createTunnel()
   } catch (err) {
     error = err
   }

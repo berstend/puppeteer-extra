@@ -1,5 +1,5 @@
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
-import * as RemoteDevTools from './lib/RemoteDevTools'
+import * as RemoteDevTools from '../lib/RemoteDevTools'
 import ow from 'ow'
 
 /**
@@ -236,6 +236,6 @@ class Tunnel extends RemoteDevTools.DevToolsTunnel {
   }
 }
 
-module.exports = function(pluginConfig: any) {
+export = function(pluginConfig?: any) {
   return new Plugin(pluginConfig)
 }

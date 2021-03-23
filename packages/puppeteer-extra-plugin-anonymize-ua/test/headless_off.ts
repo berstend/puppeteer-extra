@@ -1,5 +1,3 @@
-'use strict'
-
 const test = require('ava')
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
