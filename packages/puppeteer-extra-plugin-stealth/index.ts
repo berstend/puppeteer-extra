@@ -1,8 +1,6 @@
-'use strict'
-
 import Puppeteer from 'puppeteer'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
-import {EventEmitter} from 'events';
+import { EventEmitter } from 'events';
 /**
  * Specify which evasions to use (by default all)
  */

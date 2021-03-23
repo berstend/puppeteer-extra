@@ -20,7 +20,9 @@
     "build:tsc": "tsc --module commonjs",
     "build:rollup": "rollup -c rollup.config.ts",
     "docs": "node -e 0",
-    "test": "ava -v --config ava.config-ts.js",
+    "test:js": "ava -v --serial --concurrency 1 --fail-fast",
+    "test:ts": "ava -v --serial --concurrency 1 --fail-fast --config ava.config-ts.js",
+    "test": "run-p test:ts test:js lint",
     "pretest-ci": "run-s build",
     "test-ci-back": "ava --concurrency 1 --serial --fail-fast -v",
     "test-ci": "exit 0"

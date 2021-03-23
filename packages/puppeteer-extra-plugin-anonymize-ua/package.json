@@ -11,7 +11,7 @@
     "lint": "eslint --ext .js .",
     "test:js": "ava -v --serial --concurrency 1 --fail-fast",
     "test:ts": "ava -v --serial --concurrency 1 --fail-fast --config ava.config-ts.js",
-    "test": "run-p test:js lint",
+    "test": "run-p test:ts test:js lint",
     "test-ci": "run-s test"
   },
   "engines": {
