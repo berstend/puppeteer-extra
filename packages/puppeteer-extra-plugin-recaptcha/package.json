@@ -24,11 +24,9 @@
     "docs2": "typedoc --module commonjs --readme none --target ES6 --theme markdown --excludeNotExported --excludeExternals --excludePrivate --out docs --mode file src/index.ts",
     "pretest-ci": "run-s build",
     "test-ci": "ava --fail-fast -v",
-
     "test:js": "ava -v --serial --concurrency 1 --fail-fast",
     "test:ts": "ava -v --serial --concurrency 1 --fail-fast --config ava.config-ts.js",
-    "test": "run-p test:ts test:js lint",
-
+    "test": "run-p test:ts lint",
     "ambient-dts": "run-s ambient-dts-copy ambient-dts-fix-path",
     "ambient-dts-copy": "copyfiles -u 1 \"src/**/*.d.ts\" dist",
     "ambient-dts-fix-path": "replace-in-files --string='/// <reference path=\"../src/' --replacement='/// <reference path=\"../dist/' 'dist/**/*.d.ts'"

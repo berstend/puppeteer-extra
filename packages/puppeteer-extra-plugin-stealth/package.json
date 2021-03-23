@@ -9,17 +9,22 @@
   "author": "berstend",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -p .",
+    "clean": "rimraf dist/*",
+    "tscheck": "tsc --pretty --noEmit",
+    "prebuild": "run-s clean",
+    "build": "run-s build:tsc build:rollup",
+    "build:tsc": "tsc --module commonjs",
+    "build:rollup": "rollup -c rollup.config.ts",
     "docs": "run-s docs-for-plugin postdocs-for-plugin docs-for-evasions postdocs-for-evasions types",
     "docs-for-plugin": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API index.js",
     "postdocs-for-plugin": "npx prettier --write readme.md",
     "docs-for-evasions": "cd ./evasions && loop \"documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API index.js\"",
     "postdocs-for-evasions": "cd ./evasions && loop \"npx prettier --write readme.md\"",
     "lint": "eslint --ext .js .",
-    "test:js": "ava --concurrency 2 -v",
-    "test": "run-p test:js lint",
-    "test-ci": "run-s test:js",
-    "types": "npx --package typescript@3.7 tsc --emitDeclarationOnly --declaration --allowJs index.js"
+    "test:ts": "ava -v --serial --concurrency 1 --fail-fast --config ava.config-ts.js",
+    "test:js": "ava -v --serial --concurrency 1 --fail-fast",
+    "test": "run-p test:ts lint",
+    "test-ci": "run-s test"
   },
   "engines": {
     "node": ">=8"

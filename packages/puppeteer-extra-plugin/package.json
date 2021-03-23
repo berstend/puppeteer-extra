@@ -22,9 +22,9 @@
     "postdocs": "npx prettier --write readme.md",
     "test:js": "ava -v --serial --concurrency 1 --fail-fast",
     "test:ts": "ava -v --serial --concurrency 1 --fail-fast --config ava.config-ts.js",
-    "test": "run-p test:ts test:js lint",
+    "test": "run-p test:ts lint",
     "pretest-ci": "run-s build",
-    "test-ci": "ava --fail-fast -v"
+    "test-ci": "run-s test"
   },
   "engines": {
     "node": ">=9.11.2"

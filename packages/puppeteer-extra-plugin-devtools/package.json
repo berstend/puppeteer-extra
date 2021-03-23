@@ -7,10 +7,18 @@
   "author": "berstend",
   "license": "MIT",
   "scripts": {
+    "clean": "rimraf dist/*",
+    "tscheck": "tsc --pretty --noEmit",
+    "prebuild": "run-s clean",
+    "build": "run-s build:tsc build:rollup",
+    "build:tsc": "tsc --module commonjs",
+    "build:rollup": "rollup -c rollup.config.ts",
     "docs": "node -e 0",
     "lint": "eslint --ext .js .",
-    "test-old": "ava --fail-fast -v",
-    "test": "run-p lint",
+    "test:ts": "ava -v --serial --concurrency 1 --fail-fast --config ava.config-ts.js",
+    "test:js": "ava -v --serial --concurrency 1 --fail-fast",
+    "test": "run-p test:ts lint",
+    "pretest-ci": "run-s build",
     "test-ci": "run-s test"
   },
   "engines": {
