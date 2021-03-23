@@ -1,5 +1,3 @@
-'use strict'
-
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
 /**
