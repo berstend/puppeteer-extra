@@ -1,3 +1,4 @@
+import { Page } from 'puppeteer'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
 /**
@@ -36,7 +37,7 @@ class Plugin extends PuppeteerExtraPlugin {
     }
   }
 
-  async onPageCreated(page) {
+  async onPageCreated(page: Page) {
     let ua = await page.browser().userAgent()
     if (this.opts.stripHeadless) {
       ua = ua.replace('HeadlessChrome/', 'Chrome/')

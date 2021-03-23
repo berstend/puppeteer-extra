@@ -10,7 +10,7 @@
     "clean": "rimraf dist/*",
     "tscheck": "tsc --pretty --noEmit",
     "prebuild": "run-s clean",
-    "build": "run-s build:tsc build:rollup",
+    "build": "run-s build:tsc",
     "build:tsc": "tsc --module commonjs",
     "build:rollup": "rollup -c rollup.config.ts",
     "docs": "node -e 0",

@@ -27,7 +27,7 @@ export class DevToolsCommon {
   public wsHost: string
   public wsPort: string
 
-  constructor(webSocketDebuggerUrl, opts = {} as any) {
+  constructor(webSocketDebuggerUrl: string, opts = {} as any) {
     ow(webSocketDebuggerUrl, ow.string)
     ow(webSocketDebuggerUrl, ow.string.includes('ws://'))
     ow(opts, ow.object.plain)

@@ -1,4 +1,4 @@
-import { Page } from 'puppeteer'
+import { MouseButton, Page, WaitForOptions } from 'puppeteer'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
 /**
@@ -29,7 +29,11 @@ class ClickAndWaitPlugin extends PuppeteerExtraPlugin {
     return 'click-and-wait'
   }
 
-  async clickAndWaitForNavigation(this: Page, selector: string, clickOptions, waitOptions) {
+  async clickAndWaitForNavigation(this: Page, selector: string, clickOptions?: {
+        delay?: number;
+        button?: MouseButton;
+        clickCount?: number;
+    }, waitOptions?: WaitForOptions) {
     return Promise.all([
       this.waitForNavigation(waitOptions),
       this.click(selector, clickOptions)

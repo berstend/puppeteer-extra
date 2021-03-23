@@ -1,6 +1,7 @@
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
-import * as RemoteDevTools from '../lib/RemoteDevTools'
+import * as RemoteDevTools from './lib/RemoteDevTools'
 import ow from 'ow'
+import { Browser, Page } from 'puppeteer';
 
 /**
  * As the tunnel page is public the plugin will require basic auth.
@@ -83,7 +84,7 @@ class Plugin extends PuppeteerExtraPlugin {
    * // Browser 1's devtools frontend can be found at: https://devtools-tunnel-qe2t5rghme.localtunnel.me
    * // Browser 2's devtools frontend can be found at: https://devtools-tunnel-pp83sdi4jo.localtunnel.me
    */
-  async createTunnel(browser) {
+  async createTunnel(browser: Browser) {
     ow(browser, ow.object.hasKeys('wsEndpoint'))
 
     const wsEndpoint = browser.wsEndpoint()
@@ -122,7 +123,7 @@ class Plugin extends PuppeteerExtraPlugin {
    *   const tunnel = await devtools.createTunnel(browser)
    * })
    */
-  setAuthCredentials(user, pass) {
+  setAuthCredentials(user: string, pass: string) {
     ow(user, ow.string.nonEmpty)
     ow(pass, ow.string.nonEmpty)
     this.opts.auth = { user, pass }
@@ -146,7 +147,7 @@ class Plugin extends PuppeteerExtraPlugin {
    *   // => http://localhost:55952
    * })
    */
-  getLocalDevToolsUrl(browser) {
+  getLocalDevToolsUrl(browser: Browser) {
     ow(browser, ow.object.hasKeys('wsEndpoint'))
 
     const wsEndpoint = browser.wsEndpoint()
@@ -186,7 +187,7 @@ class Plugin extends PuppeteerExtraPlugin {
  *
  */
 class Tunnel extends RemoteDevTools.DevToolsTunnel {
-  constructor(wsEndpoint, opts = {}) {
+  constructor(wsEndpoint: string, opts = {}) {
     super(wsEndpoint, opts)
   }
 
@@ -216,9 +217,9 @@ class Tunnel extends RemoteDevTools.DevToolsTunnel {
    * console.log(tunnel.getUrlForPage(page))
    * // => https://devtools-tunnel-bmkjg26zmr.localtunnel.me/devtools/inspector.html?ws(...)
    */
-  getUrlForPage(page) {
+  getUrlForPage(page: Page) {
     ow(page, ow.object.hasKeys('_target._targetInfo.targetId'))
-    const pageId = page._target._targetInfo.targetId
+    const pageId = (page as any)._target._targetInfo.targetId
     return super.getUrlForPageId(pageId)
   }
 

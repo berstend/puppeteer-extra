@@ -1,12 +1,12 @@
 'use strict'
 
-const test = require('ava')
+import test from 'ava'
 
-const {
+import {
   DevToolsCommon,
   DevToolsLocal,
   DevToolsTunnel
-} = require('./RemoteDevTools')
+} from '../../src/lib/RemoteDevTools'
 
 const webSocketDebuggerUrl =
   'ws://127.0.0.1:9222/devtools/browser/ec78d039-2f19-4c6f-a08e-bcaf88e34b69'
@@ -18,7 +18,7 @@ test('is a function', async t => {
 })
 
 test('will throw when missing webSocketDebuggerUrl', async t => {
-  const error = await t.throws(() => new DevToolsCommon())
+  const error = await t.throws(() => new DevToolsCommon(undefined as string))
   t.is(
     error.message,
     'Expected argument to be of type `string` but received type `undefined`'
