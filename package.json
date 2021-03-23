@@ -38,9 +38,7 @@
   "optionalDependencies": {
     "fsevents": "^2.1.2"
   },
-  "resolutions": {
-    "**/fsevents": "^2.1.2"
-  },
+  "resolutions": {},
   "dependencies": {},
   "version": "0.0.0"
 }

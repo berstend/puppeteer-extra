@@ -1,11 +1,12 @@
 'use strict'
 
-const test = require('ava')
+import test from 'ava'
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
-const puppeteerVanilla = require('puppeteer')
-const { addExtra } = require('puppeteer-extra')
+import puppeteerVanilla from 'puppeteer'
+import { addExtra } from 'puppeteer-extra'
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
 test.beforeEach(t => {
   // Make sure we work with pristine modules
@@ -18,10 +19,9 @@ test.beforeEach(t => {
 })
 
 test('will bind launched browser events to plugins', async t => {
-  const PLUGIN_EVENTS = []
+  const PLUGIN_EVENTS: string[] = []
 
   const puppeteer = addExtra(puppeteerVanilla)
-  const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
   class Plugin extends PuppeteerExtraPlugin {
     constructor(opts = {}) {
@@ -33,39 +33,51 @@ test('will bind launched browser events to plugins', async t => {
 
     onPluginRegistered() {
       PLUGIN_EVENTS.push('onPluginRegistered')
+      return Promise.resolve();
     }
     beforeLaunch() {
       PLUGIN_EVENTS.push('beforeLaunch')
+      return Promise.resolve();
     }
     afterLaunch() {
       PLUGIN_EVENTS.push('afterLaunch')
+      return Promise.resolve();
     }
     beforeConnect() {
       PLUGIN_EVENTS.push('beforeConnect')
+      return Promise.resolve();
     }
     afterConnect() {
       PLUGIN_EVENTS.push('afterConnect')
+      return Promise.resolve();
     }
     onBrowser() {
       PLUGIN_EVENTS.push('onBrowser')
+      return Promise.resolve();
     }
     onTargetCreated() {
       PLUGIN_EVENTS.push('onTargetCreated')
+      return Promise.resolve();
     }
     onPageCreated() {
       PLUGIN_EVENTS.push('onPageCreated')
+      return Promise.resolve();
     }
     onTargetChanged() {
       PLUGIN_EVENTS.push('onTargetChanged')
+      return Promise.resolve();
     }
     onTargetDestroyed() {
       PLUGIN_EVENTS.push('onTargetDestroyed')
+      return Promise.resolve();
     }
     onDisconnected() {
       PLUGIN_EVENTS.push('onDisconnected')
+      return Promise.resolve();
     }
     onClose() {
       PLUGIN_EVENTS.push('onClose')
+      return Promise.resolve();
     }
   }
 
@@ -81,9 +93,11 @@ test('will bind launched browser events to plugins', async t => {
   const page = await browser.newPage().catch(console.log)
   t.true(PLUGIN_EVENTS.includes('onTargetCreated'))
   t.true(PLUGIN_EVENTS.includes('onPageCreated'))
-  await page.goto('about:blank#foo').catch(console.log)
+  if (page)
+    await page.goto('about:blank#foo').catch(console.log)
   t.true(PLUGIN_EVENTS.includes('onTargetChanged'))
-  await page.close().catch(console.log)
+  if (page)
+    await page.close().catch(console.log)
   t.true(PLUGIN_EVENTS.includes('onTargetDestroyed'))
   await browser.close().catch(console.log)
   t.true(PLUGIN_EVENTS.includes('onDisconnected'))
@@ -91,7 +105,7 @@ test('will bind launched browser events to plugins', async t => {
 })
 
 test('will bind connected browser events to plugins', async t => {
-  const PLUGIN_EVENTS = []
+  const PLUGIN_EVENTS: string[] = [];
 
   // Launch vanilla puppeteer browser with no plugins
 
@@ -103,7 +117,6 @@ test('will bind connected browser events to plugins', async t => {
   const browserWSEndpoint = browserVanilla.wsEndpoint()
 
   const puppeteer = addExtra(puppeteerVanilla)
-  const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
   class Plugin extends PuppeteerExtraPlugin {
     constructor(opts = {}) {
@@ -115,39 +128,51 @@ test('will bind connected browser events to plugins', async t => {
 
     onPluginRegistered() {
       PLUGIN_EVENTS.push('onPluginRegistered')
+      return Promise.resolve();
     }
     beforeLaunch() {
       PLUGIN_EVENTS.push('beforeLaunch')
+      return Promise.resolve();
     }
     afterLaunch() {
       PLUGIN_EVENTS.push('afterLaunch')
+      return Promise.resolve();
     }
     beforeConnect() {
       PLUGIN_EVENTS.push('beforeConnect')
+      return Promise.resolve();
     }
     afterConnect() {
       PLUGIN_EVENTS.push('afterConnect')
+      return Promise.resolve();
     }
     onBrowser() {
       PLUGIN_EVENTS.push('onBrowser')
+      return Promise.resolve();
     }
     onTargetCreated() {
       PLUGIN_EVENTS.push('onTargetCreated')
+      return Promise.resolve();
     }
     onPageCreated() {
       PLUGIN_EVENTS.push('onPageCreated')
+      return Promise.resolve();
     }
     onTargetChanged() {
       PLUGIN_EVENTS.push('onTargetChanged')
+      return Promise.resolve();
     }
     onTargetDestroyed() {
       PLUGIN_EVENTS.push('onTargetDestroyed')
+      return Promise.resolve();
     }
     onDisconnected() {
       PLUGIN_EVENTS.push('onDisconnected')
+      return Promise.resolve();
     }
     onClose() {
       PLUGIN_EVENTS.push('onClose')
+      return Promise.resolve();
     }
   }
 
@@ -162,14 +187,17 @@ test('will bind connected browser events to plugins', async t => {
   t.true(PLUGIN_EVENTS.includes('beforeConnect'))
   t.true(PLUGIN_EVENTS.includes('afterConnect'))
   t.true(PLUGIN_EVENTS.includes('onBrowser'))
-  const page = await browser.newPage()
-  t.true(PLUGIN_EVENTS.includes('onTargetCreated'))
-  t.true(PLUGIN_EVENTS.includes('onPageCreated'))
-  await page.goto('about:blank#foo').catch(console.log)
-  t.true(PLUGIN_EVENTS.includes('onTargetChanged'))
-  await page.close().catch(console.log)
-  t.true(PLUGIN_EVENTS.includes('onTargetDestroyed'))
-  await browser.close().catch(console.log)
-  t.true(PLUGIN_EVENTS.includes('onDisconnected'))
-  t.true(!PLUGIN_EVENTS.includes('onClose'))
+
+  if (browser) {
+    const page = await browser.newPage()
+    t.true(PLUGIN_EVENTS.includes('onTargetCreated'))
+    t.true(PLUGIN_EVENTS.includes('onPageCreated'))
+    await page.goto('about:blank#foo').catch(console.log)
+    t.true(PLUGIN_EVENTS.includes('onTargetChanged'))
+    await page.close().catch(console.log)
+    t.true(PLUGIN_EVENTS.includes('onTargetDestroyed'))
+    await browser.close().catch(console.log)
+    t.true(PLUGIN_EVENTS.includes('onDisconnected'))
+    t.true(!PLUGIN_EVENTS.includes('onClose'))
+  }
 })

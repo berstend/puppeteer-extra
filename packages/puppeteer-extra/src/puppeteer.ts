@@ -24,4 +24,6 @@ export { BrowserFetcherOptions } from 'puppeteer'
 
 export type AllLaunchOptions = LaunchOptions & BrowserLaunchArgumentOptions & BrowserConnectOptions;
 
-export type VanillaPuppeteer = puppeteer.Puppeteer;
+export interface VanillaPuppeteerNode extends Pick<puppeteer.PuppeteerNode, 'connect' | 'defaultArgs' | 'executablePath' | 'launch' | 'createBrowserFetcher'> {}
+
+export interface VanillaPuppeteer extends Pick<puppeteer.PuppeteerNode, 'connect' | 'launch' > {}

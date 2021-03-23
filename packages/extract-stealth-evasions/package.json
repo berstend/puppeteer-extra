@@ -27,5 +27,8 @@
     "puppeteer-extra-plugin-stealth": "^2.7.6",
     "terser": "^5.1.0",
     "yargs": "^15.4.1"
+  },
+  "devDependencies": {
+    "puppeteer": "8.0.0"
   }
 }

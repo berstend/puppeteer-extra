@@ -10,10 +10,10 @@ var chrome: any;
 
 
 test('stealth: will add convincing chrome.app object', async t => {
-  const puppeteer = addExtra(vanillaPuppeteer as any as VanillaPuppeteer).use(Plugin({}))
+  const puppeteer = addExtra(vanillaPuppeteer).use(Plugin({}))
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
-
+  
   const results = await page.evaluate(() => {
     const catchErr = (fn: Function, ...args: any[]) => {
       try {

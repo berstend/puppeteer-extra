@@ -43,7 +43,7 @@
     ]
   },
   "devDependencies": {
-    "ava": "2.4.0",
+    "ava": "3.15.0",
     "documentation-markdown-themes": "^12.1.5",
     "fpcollect": "^1.0.4",
     "fpscanner": "^0.1.5",

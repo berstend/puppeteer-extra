@@ -36,7 +36,7 @@ const getFingerPrint = async (puppeteer: any, pageFn: any) => {
 export const getVanillaFingerPrint = async (pageFn: any) =>
   getFingerPrint(vanillaPuppeteer, pageFn)
 export const getStealthFingerPrint = async (Plugin: any, pageFn: any, pluginOptions = null) =>
-  getFingerPrint(addExtra(vanillaPuppeteer as any as VanillaPuppeteer).use(Plugin(pluginOptions)), pageFn)
+  getFingerPrint(addExtra(vanillaPuppeteer).use(Plugin(pluginOptions)), pageFn)
 
 // Expecting the input string to be in one of these formats:
 // - The UA string
