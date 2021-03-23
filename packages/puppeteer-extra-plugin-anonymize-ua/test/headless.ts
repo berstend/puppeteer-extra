@@ -1,8 +1,8 @@
 'use strict'
 
-const test = require('ava')
+import test from 'ava'
 
-const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
+const PUPPETEER_ARGS: string[] = ['--no-sandbox', '--disable-setuid-sandbox']
 
 test.beforeEach(t => {
   // Make sure we work with pristine modules

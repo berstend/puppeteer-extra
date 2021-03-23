@@ -1,10 +1,8 @@
-'use strict'
-
 const PLUGIN_NAME = 'stealth'
 
-const test = require('ava')
+import test from 'ava'
 
-const Plugin = require('.')
+import Plugin from '.'
 
 test('is a function', async t => {
   t.is(typeof Plugin, 'function')

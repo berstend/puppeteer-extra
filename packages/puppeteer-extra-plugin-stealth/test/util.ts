@@ -1,7 +1,7 @@
 import { Page } from "puppeteer";
 
 import assert from 'assert'
-import { addExtra, VanillaPuppeteer } from 'puppeteer-extra'
+import { addExtra } from 'puppeteer-extra'
 export { addExtra, VanillaPuppeteer } from 'puppeteer-extra'
 
 export { default as vanillaPuppeteer} from 'puppeteer'
@@ -17,7 +17,7 @@ const getFingerPrintFromPage = async (page: Page) => {
 
 export const dummyHTMLPath = require('path').join(__dirname, './fixtures/dummy.html')
 
-const getFingerPrint = async (puppeteer: any, pageFn: any) => {
+const getFingerPrint = async (puppeteer: any, pageFn?: any) => {
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
   await page.goto('file://' + dummyHTMLPath)
@@ -33,9 +33,9 @@ const getFingerPrint = async (puppeteer: any, pageFn: any) => {
   return { ...fingerPrint, pageFnResult }
 }
 
-export const getVanillaFingerPrint = async (pageFn: any) =>
+export const getVanillaFingerPrint = async (pageFn?: any) =>
   getFingerPrint(vanillaPuppeteer, pageFn)
-export const getStealthFingerPrint = async (Plugin: any, pageFn: any, pluginOptions = null) =>
+export const getStealthFingerPrint = async (Plugin: any, pageFn?: any, pluginOptions = null) =>
   getFingerPrint(addExtra(vanillaPuppeteer).use(Plugin(pluginOptions)), pageFn)
 
 // Expecting the input string to be in one of these formats:

@@ -1,9 +1,10 @@
-const test = require('ava')
+import test from 'ava'
 
+// no typing available
 const fpscanner = require('fpscanner')
 
-const { getVanillaFingerPrint, getStealthFingerPrint, compareLooseVersionStrings } = require('./util')
-const Plugin = require('../.')
+import { getVanillaFingerPrint, getStealthFingerPrint, compareLooseVersionStrings } from './util'
+import Plugin from '../.'
 
 // Fix CI issues with old versions
 const isOldPuppeteerVersion = () => {
@@ -21,7 +22,7 @@ test('vanilla: will fail multiple fpscanner tests', async t => {
   const fingerPrint = await getVanillaFingerPrint()
   const testedFingerPrints = fpscanner.analyseFingerprint(fingerPrint)
   const failedChecks = Object.values(testedFingerPrints).filter(
-    val => val.consistent < 3
+    (val: any) => val.consistent < 3
   )
 
   if (isOldPuppeteerVersion()) {
@@ -35,8 +36,8 @@ test('stealth: will not fail a single fpscanner test', async t => {
   const fingerPrint = await getStealthFingerPrint(Plugin)
   const testedFingerPrints = fpscanner.analyseFingerprint(fingerPrint)
   const failedChecks = Object.values(testedFingerPrints).filter(
-    val => val.consistent < 3
-  )
+    (val: any) => val.consistent < 3
+  ) as {consistent: number, name: string}[]
 
   if (failedChecks.length) {
     console.warn('The following fingerprints failed:', failedChecks)

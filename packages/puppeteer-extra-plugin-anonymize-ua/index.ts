@@ -1,6 +1,6 @@
 'use strict'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
 /**
  * Anonymize the User-Agent on all pages.
@@ -54,6 +54,6 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
+export = function(pluginConfig?: any) {
   return new Plugin(pluginConfig)
 }

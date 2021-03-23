@@ -1,26 +1,33 @@
 'use strict'
 
-const debug = require('debug')('remote-devtools')
+import modDebug from 'debug'
+
+import got from 'got'
+import http from 'http'
+import httpProxy from 'http-proxy'
+import localtunnel from 'localtunnel'
+
+import httpAuth from 'http-auth'
+import getPort from 'get-port'
+import randomstring from 'randomstring'
+import urlParse from 'url-parse'
+
 const ow = require('ow')
-
-const got = require('got')
-const http = require('http')
-const httpProxy = require('http-proxy')
-const localtunnel = require('localtunnel')
-
-const httpAuth = require('http-auth')
 const modifyResponse = require('http-proxy-response-rewrite')
-const getPort = require('get-port')
-const randomstring = require('randomstring')
-const urlParse = require('url-parse')
+const debug = modDebug('remote-devtools')
 
 /**
  * Base class handling common stuff
  *
  * @ignore
  */
-class DevToolsCommon {
-  constructor(webSocketDebuggerUrl, opts = {}) {
+export class DevToolsCommon {
+  public opts: any
+  public wsUrl: string
+  public wsHost: string
+  public wsPort: string
+
+  constructor(webSocketDebuggerUrl, opts = {} as any) {
     ow(webSocketDebuggerUrl, ow.string)
     ow(webSocketDebuggerUrl, ow.string.includes('ws://'))
     ow(opts, ow.object.plain)
@@ -57,7 +64,7 @@ class DevToolsCommon {
  *
  * @ignore
  */
-class DevToolsLocal extends DevToolsCommon {
+export class DevToolsLocal extends DevToolsCommon {
   constructor(webSocketDebuggerUrl, opts = {}) {
     super(webSocketDebuggerUrl, opts)
   }
@@ -85,7 +92,12 @@ class DevToolsLocal extends DevToolsCommon {
  *
  * @ignore
  */
-class DevToolsTunnel extends DevToolsCommon {
+export class DevToolsTunnel extends DevToolsCommon {
+  server: any;
+  tunnel: any;
+  tunnelHost: any;
+  proxyServer: any;
+
   constructor(webSocketDebuggerUrl, opts = {}) {
     super(webSocketDebuggerUrl, opts)
 
@@ -165,11 +177,11 @@ class DevToolsTunnel extends DevToolsCommon {
       const isValid = username === user && password === pass
       return callback(isValid)
     })
-    basicAuth.on('fail', (result, req) => {
+    basicAuth.on('fail', (result) => {
       debug(`User authentication failed: ${result.user}`)
     })
-    basicAuth.on('error', (error, req) => {
-      debug(`Authentication error: ${error.code + ' - ' + error.message}`)
+    basicAuth.on('error', (error) => {
+      debug(`Authentication error: ${(error as any).code + ' - ' + error.message}`)
     })
     return basicAuth
   }
@@ -205,7 +217,7 @@ class DevToolsTunnel extends DevToolsCommon {
   }
   _createProxyServer(targetHost = 'localhost', targetPort) {
     // eslint-disable-next-line
-    const proxyServer = new httpProxy.createProxyServer({
+    const proxyServer = httpProxy.createProxyServer({
       // eslint-disable-line
       target: { host: targetHost, port: parseInt(targetPort) }
     })
@@ -214,7 +226,7 @@ class DevToolsTunnel extends DevToolsCommon {
       // https://github.com/GoogleChrome/puppeteer/issues/2242
       proxyReq.setHeader('Host', 'localhost')
     })
-    proxyServer.on('proxyRes', (proxyRes, req, res, options) => {
+    proxyServer.on('proxyRes', (proxyRes, req, res) => {
       debug('proxyRes', req.url)
       if (req.url === '/') {
         delete proxyRes.headers['content-length']
@@ -261,4 +273,3 @@ class DevToolsTunnel extends DevToolsCommon {
   }
 }
 
-module.exports = { DevToolsCommon, DevToolsLocal, DevToolsTunnel }

@@ -1,10 +1,9 @@
-'use strict'
+import test from 'ava'
+import { EventEmitter, Page } from 'puppeteer'
 
-const test = require('ava')
+const PUPPETEER_ARGS: string[] = ['--no-sandbox', '--disable-setuid-sandbox']
 
-const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
-
-const waitEvent = function(emitter, eventName) {
+const waitEvent = function(emitter: EventEmitter, eventName: string) {
   return new Promise(resolve => emitter.once(eventName, resolve))
 }
 
@@ -33,7 +32,7 @@ test('known issue: will not remove headless from implicitly created popup pages'
     // Does NOT work:
     // https://github.com/GoogleChrome/puppeteer/issues/2669
     page.evaluate(url => window.open(url), 'about:blank')
-    const popupTarget = await waitEvent(browser, 'targetcreated')
+    const popupTarget: any = await waitEvent(browser, 'targetcreated')
     const popupPage = await popupTarget.page()
     const ua3 = await popupPage.evaluate(() => window.navigator.userAgent)
     // Test against the problem until it's fixed

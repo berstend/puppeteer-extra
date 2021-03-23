@@ -2,23 +2,23 @@
 
 const PLUGIN_NAME = 'anonymize-ua'
 
-const test = require('ava')
+import test from 'ava'
 
-const Plugin = require('.')
+import Plugin from '.'
 
 test('is a function', async t => {
   t.is(typeof Plugin, 'function')
 })
 
 test('should have the basic class members', async t => {
-  const instance = new Plugin()
+  const instance = Plugin()
 
   t.is(instance.name, PLUGIN_NAME)
   t.true(instance._isPuppeteerExtraPlugin)
 })
 
 test('should have the public child class members', async t => {
-  const instance = new Plugin()
+  const instance = Plugin()
   const prototype = Object.getPrototypeOf(instance)
   const childClassMembers = Object.getOwnPropertyNames(prototype)
 
@@ -30,7 +30,7 @@ test('should have the public child class members', async t => {
 })
 
 test('should have opts with default values', async t => {
-  const instance = new Plugin()
+  const instance = Plugin()
   const opts = instance.opts
 
   t.is(opts.stripHeadless, true)

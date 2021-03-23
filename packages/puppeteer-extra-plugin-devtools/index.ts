@@ -1,8 +1,6 @@
-'use strict'
-
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
-const RemoteDevTools = require('./lib/RemoteDevTools')
-const ow = require('ow')
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import * as RemoteDevTools from './lib/RemoteDevTools'
+import ow from 'ow'
 
 /**
  * As the tunnel page is public the plugin will require basic auth.
@@ -32,6 +30,8 @@ const ow = require('ow')
  * })
  */
 class Plugin extends PuppeteerExtraPlugin {
+  _browserSessions: any;
+
   constructor(opts = {}) {
     super(opts)
 
@@ -236,6 +236,6 @@ class Tunnel extends RemoteDevTools.DevToolsTunnel {
   }
 }
 
-module.exports = function(pluginConfig) {
+module.exports = function(pluginConfig: any) {
   return new Plugin(pluginConfig)
 }
