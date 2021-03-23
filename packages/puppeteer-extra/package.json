@@ -13,15 +13,17 @@
   ],
   "scripts": {
     "clean": "rimraf dist/*",
+    "tscheck": "tsc --pretty --noEmit",
     "prebuild": "run-s clean",
     "build": "run-s build:tsc build:rollup",
     "build:tsc": "tsc --module commonjs",
     "build:rollup": "rollup -c rollup.config.ts",
     "docs": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API ./src/index.ts",
     "postdocs": "npx prettier --write readme.md",
+    "lint": "eslint --ext .js .",
     "test:ts": "ava -v --serial --concurrency 1 --fail-fast --config ava.config-ts.js",
     "test:js": "ava -v --serial --concurrency 1 --fail-fast",
-    "test": "run-p test:ts",
+    "test": "run-p test:ts lint",
     "test-ci": "run-s test"
   },
   "keywords": [
