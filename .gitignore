@@ -62,3 +62,7 @@ packages/puppeteer-extra-plugin-stealth/evasions/chrome.app/index.test.js
 packages/puppeteer-extra-plugin-stealth/evasions/chrome.runtime/index.test.js
 packages/puppeteer-extra-plugin-stealth/test/util.js
 packages/puppeteer-extra-plugin-recaptcha/package-lock.json
+packages/puppeteer-extra-plugin-stealth/index.test.js
+packages/puppeteer-extra-plugin-stealth/test/cat-and-mouse.test.js
+packages/puppeteer-extra-plugin-stealth/test/fpscanner.test.js
+packages/puppeteer-extra-plugin-stealth/test/service-worker.test.js

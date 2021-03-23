@@ -1,6 +1,5 @@
-'use strict'
-
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+import { Page } from 'puppeteer'
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
 /**
  * Convenience function to wait for navigation to complete after clicking on an element.
@@ -21,7 +20,7 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  *   page.click('input#submitData', clickOptions),
  * ])
  */
-class Plugin extends PuppeteerExtraPlugin {
+class ClickAndWaitPlugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
     super(opts)
   }
@@ -30,7 +29,7 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'click-and-wait'
   }
 
-  async clickAndWaitForNavigation(selector, clickOptions, waitOptions) {
+  async clickAndWaitForNavigation(this: Page, selector: string, clickOptions, waitOptions) {
     return Promise.all([
       this.waitForNavigation(waitOptions),
       this.click(selector, clickOptions)
@@ -39,11 +38,11 @@ class Plugin extends PuppeteerExtraPlugin {
     })
   }
 
-  async onPageCreated(page) {
-    page.clickAndWaitForNavigation = this.clickAndWaitForNavigation.bind(page)
+  async onPageCreated(page: Page) {
+    (page as any & PuppeteerExtraPlugin).clickAndWaitForNavigation = this.clickAndWaitForNavigation.bind(page)
   }
 }
 
-module.exports = function(pluginConfig) {
-  return new Plugin(pluginConfig)
+exports = function(pluginConfig?: {}) {
+  return new ClickAndWaitPlugin(pluginConfig)
 }

@@ -1,6 +1,6 @@
-'use strict'
-
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+import { HTTPRequest } from 'puppeteer'
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { Page } from 'puppeteer-extra/dist/puppeteer'
 
 /**
  * Block resources (images, media, css, etc.) in puppeteer.
@@ -38,7 +38,7 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * blockResourcesPlugin.blockedTypes.add('script')
  * await page.goto('http://www.youtube.com', {waitUntil: 'domcontentloaded'})
  */
-class Plugin extends PuppeteerExtraPlugin {
+class BlockResourcesPlugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
     super(opts)
   }
@@ -94,7 +94,7 @@ class Plugin extends PuppeteerExtraPlugin {
   /**
    * @private
    */
-  onRequest(request) {
+  onRequest(request: HTTPRequest) {
     const type = request.resourceType()
     const shouldBlock = this.blockedTypes.has(type)
     this.debug('onRequest', { type, shouldBlock })
@@ -104,13 +104,15 @@ class Plugin extends PuppeteerExtraPlugin {
   /**
    * @private
    */
-  async onPageCreated(page) {
+  async onPageCreated(page: Page) {
     this.debug('onPageCreated', { blockedTypes: this.blockedTypes })
     await page.setRequestInterception(true)
     page.on('request', this.onRequest.bind(this))
   }
 }
 
-module.exports = function(pluginConfig) {
-  return new Plugin(pluginConfig)
+export = function(pluginConfig?: {availableTypes?: Set<string>, blockedTypes?: Set<string>}) {
+  return new BlockResourcesPlugin(pluginConfig)
 }
+
+
