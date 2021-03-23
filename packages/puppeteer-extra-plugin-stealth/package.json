@@ -12,7 +12,7 @@
     "clean": "rimraf dist/*",
     "tscheck": "tsc --pretty --noEmit",
     "prebuild": "run-s clean",
-    "build": "run-s build:tsc build:rollup",
+    "build": "run-s build:tsc",
     "build:tsc": "tsc --module commonjs",
     "build:rollup": "rollup -c rollup.config.ts",
     "docs": "run-s docs-for-plugin postdocs-for-plugin docs-for-evasions postdocs-for-evasions types",
