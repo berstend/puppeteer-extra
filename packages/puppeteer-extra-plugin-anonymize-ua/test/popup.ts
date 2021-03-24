@@ -1,5 +1,5 @@
 import test from 'ava'
-import { EventEmitter, Page } from 'puppeteer'
+import { EventEmitter } from 'puppeteer'
 
 const PUPPETEER_ARGS: string[] = ['--no-sandbox', '--disable-setuid-sandbox']
 
@@ -31,7 +31,7 @@ test('known issue: will not remove headless from implicitly created popup pages'
 
     // Does NOT work:
     // https://github.com/GoogleChrome/puppeteer/issues/2669
-    page.evaluate(url => window.open(url), 'about:blank')
+    page.evaluate((url: string) => window.open(url), 'about:blank')
     const popupTarget: any = await waitEvent(browser, 'targetcreated')
     const popupPage = await popupTarget.page()
     const ua3 = await popupPage.evaluate(() => window.navigator.userAgent)

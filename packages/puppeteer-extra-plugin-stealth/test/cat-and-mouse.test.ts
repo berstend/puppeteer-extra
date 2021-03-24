@@ -1,7 +1,9 @@
 import test from 'ava'
 
-import { vanillaPuppeteer, addExtra, compareLooseVersionStrings } from './util'
+import * as util from './util'
 import Plugin from '..'
+
+var compareLooseVersionStrings: any;
 
 // Fix CI issues with old versions
 const isOldPuppeteerVersion = () => {
@@ -13,11 +15,11 @@ const isOldPuppeteerVersion = () => {
 /* global HTMLIFrameElement */
 /* global Notification */
 test('stealth: will pass Paul Irish', async t => {
-  const browser = await addExtra(vanillaPuppeteer)
+  const browser = await util.addExtra(util.vanillaPuppeteer)
     .use(Plugin())
     .launch({ headless: true })
   const page = await browser.newPage()
-  await page.exposeFunction('compareLooseVersionStrings', compareLooseVersionStrings)
+  await page.exposeFunction('compareLooseVersionStrings', util.compareLooseVersionStrings)
   const detectionResults = await page.evaluate(detectHeadless)
   await browser.close()
 

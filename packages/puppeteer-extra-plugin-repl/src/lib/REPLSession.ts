@@ -1,10 +1,20 @@
-const ow = require('ow')
-const readline = require('./super-readline')
+import ow from 'ow'
+import * as readline from './super-readline'
 
 class REPLSession {
-  constructor(opts) {
+  private _obj: any;
+  private _meta: {
+    type: string;
+    name: string;
+    members: string[];
+  }
+  private _rl!: readline.SuperInterface;
+  private _completions: string[];
+  private _closePromise?: Promise<void>;
+
+  constructor(opts: {obj: any}) {
     ow(opts, ow.object.hasKeys('obj'))
-    ow(opts.obj, ow.object.hasKeys('constructor'))
+    ow(opts.obj.constructor, ow.function)
 
     this._obj = opts.obj
     this._meta = {
@@ -13,14 +23,14 @@ class REPLSession {
       members:
         Object.getOwnPropertyNames(Object.getPrototypeOf(this._obj)) || []
     }
-    this._completions = [].concat(this.extraMethods, this._meta.members)
+    this._completions = [...this.extraMethods, ...this._meta.members]
   }
 
-  get extraMethods() {
+  get extraMethods(): string[] {
     return ['inspect', 'exit']
   }
 
-  async start() {
+  async start(): Promise<void> {
     this._createInterface()
     this._showIntro()
     this._rl.prompt()
@@ -56,7 +66,7 @@ class REPLSession {
     this._rl.showTabCompletions()
   }
 
-  async _onLineInput(line) {
+  async _onLineInput(line: string) {
     if (!line) {
       return this._rl.prompt()
     }
@@ -69,7 +79,7 @@ class REPLSession {
     this._rl.prompt()
   }
 
-  async _evalAsync(cmd) {
+  async _evalAsync(cmd: string) {
     try {
       // eslint-disable-next-line no-eval
       const out = await eval(cmd)
@@ -80,4 +90,4 @@ class REPLSession {
   }
 }
 
-module.exports = REPLSession
+export = REPLSession

@@ -1,13 +1,21 @@
-const chalk = require('chalk')
-
-const {
+import {
   Interface,
+  ReadLineOptions,
+} from 'readline'
+
+export {
   clearLine,
   clearScreenDown,
   cursorTo,
   emitKeypressEvents,
-  moveCursor
-} = require('readline')
+  moveCursor,
+} from 'readline'
+
+export { default as chalk } from 'chalk'
+
+// see https://github.com/nodejs/node/blob/master/lib/readline.js
+
+type SuperReadLineOptions = ReadLineOptions & { colors?: { prompt?: (text: string) => void, completer?: (text: string) => void } };
 
 /**
  * Extends the native readline interface with color support.
@@ -38,15 +46,26 @@ const {
  *
  * rl.prompt()
  */
-class SuperInterface extends Interface {
-  constructor(options) {
+export class SuperInterface extends Interface {
+  _colors: { prompt?: (text: string) => void, completer?: (text: string) => void };
+  _writingTabComplete: boolean
+  _prompt: string;
+
+  constructor(options: SuperReadLineOptions) {
     super(options)
     this._colors = options.colors || {}
+    this._prompt = options.prompt || '> ';
     this._writingTabComplete = false
   }
 
-  _tabComplete(lastKeypressWasTab) {
+  setPrompt(prompt: string) {
+    this._prompt = prompt;
+    super.setPrompt(prompt);
+  };
+
+  _tabComplete(this: any, lastKeypressWasTab: any) {
     this._writingTabComplete = true
+    // @ts-ignore
     super._tabComplete(lastKeypressWasTab)
     this._writingTabComplete = false
   }
@@ -55,25 +74,28 @@ class SuperInterface extends Interface {
     this._tabComplete(true)
   }
 
-  _writeToOutput(stringToWrite) {
+  _writeToOutput(stringToWrite: string) {
     // colorize prompt itself
     const startsWithPrompt = stringToWrite.startsWith(this._prompt)
     if (this._colors.prompt && startsWithPrompt) {
       stringToWrite = `${this._colors.prompt(
         this._prompt
       )}${stringToWrite.replace(this._prompt, '')}`
+      // @ts-ignore
       return super._writeToOutput(stringToWrite)
     }
     // colorize completer output
     if (this._colors.completer && this._writingTabComplete) {
+      // @ts-ignore
       return super._writeToOutput(this._colors.completer(stringToWrite))
     }
     // anything else
+    // @ts-ignore
     super._writeToOutput(stringToWrite)
   }
 }
 
-const createSuperInterface = function(options) {
+export const createInterface = function (options: SuperReadLineOptions) {
   return new SuperInterface(options)
 }
 
@@ -82,24 +104,11 @@ const createSuperInterface = function(options) {
  *
  * @ignore
  */
-const defaultCompleter = completions => line => {
-  const hits = completions.filter(c => c.startsWith(line))
+export const defaultCompleter = (completions: string[]) => (line: string) => {
+  const hits = completions.filter((c: string) => c.startsWith(line))
   // show all completions if none found
   const arr = hits.length ? hits : completions
   return [arr, line]
 }
 
-module.exports = {
-  // customized exports:
-  chalk,
-  Interface: SuperInterface,
-  createInterface: createSuperInterface,
-  defaultCompleter,
-
-  // default readline exports:
-  clearLine,
-  clearScreenDown,
-  cursorTo,
-  emitKeypressEvents,
-  moveCursor
-}
+export default SuperInterface;

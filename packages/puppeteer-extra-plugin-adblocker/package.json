@@ -22,7 +22,7 @@
     "docs": "node -e 0",
     "test:js": "ava -v --serial --concurrency 1 --fail-fast",
     "test:ts": "ava -v --serial --concurrency 1 --fail-fast --config ava.config-ts.js",
-    "test": "run-p test:js lint",
+    "test": "run-p test:ts",
     "pretest-ci": "run-s build",
     "test-ci-back": "ava --concurrency 1 --serial --fail-fast -v",
     "test-ci": "run-s test"

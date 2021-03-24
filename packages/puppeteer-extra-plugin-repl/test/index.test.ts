@@ -2,7 +2,7 @@ const PLUGIN_NAME = 'repl'
 
 import test from 'ava'
 
-import Plugin from '.'
+import Plugin from '../src'
 
 test('is a function', async t => {
   t.is(typeof Plugin, 'function')

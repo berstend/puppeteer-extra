@@ -1,7 +1,11 @@
 'use strict'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
-const REPLSession = require('./lib/REPLSession')
+import { Page } from 'puppeteer'
+import { PluginRequirements, PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import REPLSession from './lib/REPLSession'
+
+interface PluginOptions { addToPuppeteerClass: boolean }
+
 
 /**
  * Interrupt your puppeteer code with an interactive REPL.
@@ -44,7 +48,7 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'repl'
   }
 
-  get defaults() {
+  get defaults() : PluginOptions{
     return { addToPuppeteerClass: true }
   }
 
@@ -53,7 +57,7 @@ class Plugin extends PuppeteerExtraPlugin {
    *
    * @ignore
    */
-  get requirements() {
+  get requirements(): PluginRequirements {
     return new Set(['runLast'])
   }
 
@@ -75,7 +79,7 @@ class Plugin extends PuppeteerExtraPlugin {
    * const repl = require('puppeteer-extra-plugin-repl')()
    * await repl.repl(<object or class instance to inspect>)
    */
-  async repl(obj) {
+  async repl(obj: any): Promise<void> {
     return new REPLSession({ obj }).start()
   }
 
@@ -84,16 +88,16 @@ class Plugin extends PuppeteerExtraPlugin {
    *
    * @ignore
    */
-  async onPageCreated(page) {
+  async onPageCreated(page: Page) {
     if (!this.opts.addToPuppeteerClass) {
       return
     }
-    page.repl = () => this.repl(page)
+    ;(page as any).repl = () => this.repl(page)
     const browser = page.browser()
-    browser.repl = () => this.repl(browser)
+    ;(browser as any).repl = () => this.repl(browser)
   }
 }
 
-module.exports = function(pluginConfig) {
+export = function(pluginConfig?: any) {
   return new Plugin(pluginConfig)
 }

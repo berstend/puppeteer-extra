@@ -7,14 +7,17 @@ import http from 'http'
 import httpProxy from 'http-proxy'
 import localtunnel from 'localtunnel'
 
-import httpAuth from 'http-auth'
+import httpAuth, {basic} from 'http-auth'
 import getPort from 'get-port'
 import randomstring from 'randomstring'
 import urlParse from 'url-parse'
 
-const ow = require('ow')
+import ow from 'ow'
+
 const modifyResponse = require('http-proxy-response-rewrite')
 const debug = modDebug('remote-devtools')
+
+type Basic = ReturnType<typeof basic>
 
 /**
  * Base class handling common stuff
@@ -22,16 +25,16 @@ const debug = modDebug('remote-devtools')
  * @ignore
  */
 export class DevToolsCommon {
-  public opts: any
+  public opts: DevToolsTunnelOptions
   public wsUrl: string
   public wsHost: string
   public wsPort: string
 
-  constructor(webSocketDebuggerUrl: string, opts = {} as any) {
+  constructor(webSocketDebuggerUrl: string, opts = {} as Partial<DevToolsTunnelOptions>) {
     ow(webSocketDebuggerUrl, ow.string)
     ow(webSocketDebuggerUrl, ow.string.includes('ws://'))
     ow(opts, ow.object.plain)
-    this.opts = opts
+    this.opts = opts as DevToolsTunnelOptions
 
     this.wsUrl = webSocketDebuggerUrl
     const wsUrlParts = urlParse(this.wsUrl)
@@ -41,20 +44,13 @@ export class DevToolsCommon {
   }
 
   async fetchVersion() {
-    const { body } = await got(
-      `http://${this.wsHost}:${this.wsPort}/json/version`,
-      {
-        json: true
-      }
-    )
+    const { body } = await got(`http://${this.wsHost}:${this.wsPort}/json/version`).json()
     return body
   }
 
   async fetchList() {
     const { body } = await got(
-      `http://${this.wsHost}:${this.wsPort}/json/list`,
-      { json: true }
-    )
+      `http://${this.wsHost}:${this.wsPort}/json/list`).json()
     return body
   }
 }
@@ -78,6 +74,14 @@ export class DevToolsLocal extends DevToolsCommon {
   }
 }
 
+
+interface DevToolsTunnelOptions {
+  prefix: string;
+  subdomain: string | null;
+  auth: { user: string | null, pass: string | null };
+  localtunnel: any;
+}
+
 /**
  * Create a proxy + tunnel to make a local devTools session accessible from the internet.
  *
@@ -98,7 +102,7 @@ export class DevToolsTunnel extends DevToolsCommon {
   tunnelHost: any;
   proxyServer: any;
 
-  constructor(webSocketDebuggerUrl, opts = {}) {
+  constructor(webSocketDebuggerUrl: string, opts = {} as Partial<DevToolsTunnelOptions>) {
     super(webSocketDebuggerUrl, opts)
 
     this.server = null
@@ -108,7 +112,7 @@ export class DevToolsTunnel extends DevToolsCommon {
     this.opts = Object.assign(this.defaults, opts)
   }
 
-  get defaults() {
+  get defaults(): DevToolsTunnelOptions {
     return {
       prefix: 'devtools-tunnel',
       subdomain: null,
@@ -121,11 +125,11 @@ export class DevToolsTunnel extends DevToolsCommon {
     return this.tunnel.url
   }
 
-  getUrlForPageId(pageId) {
+  getUrlForPageId(pageId: string) {
     return `https://${this.tunnelHost}/devtools/inspector.html?wss=${this.tunnelHost}/devtools/page/${pageId}`
   }
 
-  async create() {
+  async create(): Promise<this> {
     const subdomain =
       this.opts.subdomain || this._generateSubdomain(this.opts.prefix)
     const basicAuth = this.opts.auth.user
@@ -163,7 +167,7 @@ export class DevToolsTunnel extends DevToolsCommon {
     return this
   }
 
-  _generateSubdomain(prefix) {
+  _generateSubdomain(prefix: string): string {
     const rand = randomstring.generate({
       length: 10,
       readable: true,
@@ -172,7 +176,7 @@ export class DevToolsTunnel extends DevToolsCommon {
     return `${prefix}-${rand}`
   }
 
-  _createBasicAuth(user, pass) {
+  _createBasicAuth(user: string, pass: string): Basic {
     const basicAuth = httpAuth.basic({}, (username, password, callback) => {
       const isValid = username === user && password === pass
       return callback(isValid)
@@ -195,7 +199,7 @@ export class DevToolsTunnel extends DevToolsCommon {
    *
    * @ignore
    */
-  _modifyFetchToIncludeCredentials(body) {
+  _modifyFetchToIncludeCredentials(body: string) {
     if (!body) {
       return
     }
@@ -204,7 +208,7 @@ export class DevToolsTunnel extends DevToolsCommon {
     return body
   }
 
-  _modifyJSONResponse(body) {
+  _modifyJSONResponse(body: string) {
     if (!body) {
       return
     }
@@ -215,7 +219,7 @@ export class DevToolsTunnel extends DevToolsCommon {
     debug('list body:after', body)
     return body
   }
-  _createProxyServer(targetHost = 'localhost', targetPort) {
+  _createProxyServer(targetHost = 'localhost', targetPort: string) {
     // eslint-disable-next-line
     const proxyServer = httpProxy.createProxyServer({
       // eslint-disable-line
@@ -248,7 +252,7 @@ export class DevToolsTunnel extends DevToolsCommon {
     return proxyServer
   }
 
-  async _createServer(port, auth = null) {
+  async _createServer(port: string | number, auth = null) {
     const server = http.createServer(auth, (req, res) => {
       this.proxyServer.web(req, res)
     })
@@ -260,7 +264,7 @@ export class DevToolsTunnel extends DevToolsCommon {
     return server
   }
 
-  async _createTunnel(options) {
+  async _createTunnel(options: number | localtunnel.TunnelConfig & { port: number }) {
     const tunnel = await localtunnel(options)
 
     tunnel.on('close', () => {

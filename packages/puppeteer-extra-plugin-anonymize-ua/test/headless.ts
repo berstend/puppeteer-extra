@@ -54,7 +54,7 @@ test('will use a custom fn to modify the user-agent', async t => {
   const puppeteer = require('puppeteer-extra')
   puppeteer.use(
     require('puppeteer-extra-plugin-anonymize-ua')({
-      customFn: ua => 'MyCoolAgent/' + ua.replace('Chrome', 'Beer')
+      customFn: (ua: string) => 'MyCoolAgent/' + ua.replace('Chrome', 'Beer')
     })
   )
 

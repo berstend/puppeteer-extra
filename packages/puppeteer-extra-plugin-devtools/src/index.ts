@@ -2,6 +2,7 @@ import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 import * as RemoteDevTools from './lib/RemoteDevTools'
 import ow from 'ow'
 import { Browser, Page } from 'puppeteer';
+import { DevToolsTunnel } from './lib/RemoteDevTools'
 
 /**
  * As the tunnel page is public the plugin will require basic auth.
@@ -31,7 +32,7 @@ import { Browser, Page } from 'puppeteer';
  * })
  */
 class Plugin extends PuppeteerExtraPlugin {
-  _browserSessions: any;
+  _browserSessions: {[key:string]: DevToolsTunnel};
 
   constructor(opts = {}) {
     super(opts)
@@ -89,10 +90,8 @@ class Plugin extends PuppeteerExtraPlugin {
 
     const wsEndpoint = browser.wsEndpoint()
     if (!this._browserSessions[wsEndpoint]) {
-      this._browserSessions[wsEndpoint] = await new Tunnel(
-        wsEndpoint,
-        this.opts
-      ).create()
+      const tunnel = new Tunnel(wsEndpoint, this.opts);
+      this._browserSessions[wsEndpoint] = await tunnel.create()
     }
 
     this._printGeneratedPasswordWhenNotOverridden(

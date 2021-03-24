@@ -1,4 +1,4 @@
-const test = require('ava')
+import test from 'ava'
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
