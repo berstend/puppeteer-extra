@@ -34,6 +34,8 @@ function display(error, stdout, stderr) {
     console.log(`${stdout}`);
 }
 
+exec(`yarn add lerna --dev`, display);
+
 // console.log(`Calling yarn`);
 // exec(`yarn`, display);
 
@@ -46,18 +48,29 @@ if (platform === 'darwin' || platform === 'freebsd' || platform === 'freebsd') {
 }
 
 const tsDir = path.join('packages', 'puppeteer-extra', 'src');
+// const adblockerPath = path.join('packages', 'puppeteer-extra-plugin-adblocker')
+const adblockerPathFull = path.resolve('packages', 'puppeteer-extra-plugin-adblocker')
+
+
+let cliqz = '';
+let mode = '';
 if (major >= 8) {
-    console.log('change @cliqz/adblocker-puppeteer version to 1.20.3');
-    exec(`npx json -I -f packages/puppeteer-extra-plugin-adblocker/package.json -e 'this.dependencies["@cliqz/adblocker-puppeteer']="1.20.3"'`, display);
-    fs.copyFileSync(path.join(tsDir, 'puppeteer.ts.new'), path.join(tsDir, 'puppeteer.ts'))
+    cliqz = '1.20.3';
+    mode = 'new';
+    console.log(`removing old @types/puppeteer`);
     exec(`yarn lerna exec 'yarn remove @types/puppeteer || true'`, display);
 } else {
-    console.log('change @cliqz/adblocker-puppeteer version to 1.19');
-    exec(`npx json -I -f packages/puppeteer-extra-plugin-adblocker/package.json -e 'this.dependencies["@cliqz/adblocker-puppeteer"]="1.19"'`, display);
-    fs.copyFileSync(path.join(tsDir, 'puppeteer.ts.legacy'), path.join(tsDir, 'puppeteer.ts'))
-    console.log(`installing @types/puppeteer Done`);
+    cliqz = '1.19';
+    mode = 'legacy';
+    console.log(`installing @types/puppeteer`);
     exec(`yarn lerna add --dev @types/puppeteer`, display);
 }
+fs.copyFileSync(path.join(tsDir, `puppeteer.ts.${mode}`), path.join(tsDir, 'puppeteer.ts'))
+
+console.log(`change @cliqz/adblocker-puppeteer version to ${cliqz}`);
+exec(`yarn add --dev @cliqz/adblocker-puppeteer@${cliqz}`, {cwd: adblockerPathFull}, display);
+
+//exec(`npx json -I -f packages/puppeteer-extra-plugin-adblocker/package.json -e 'this.dependencies["@cliqz/adblocker-puppeteer']="1.20.3"'`, display);
 console.log(`installing puppeteer@${version}`);
 exec(`yarn lerna add --dev puppeteer@${version}`, display);
 console.log(`installing puppeteer@${version} Done`);
