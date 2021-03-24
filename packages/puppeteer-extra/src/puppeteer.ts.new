@@ -1,6 +1,8 @@
 // A wildcard import would result in a `require("puppeteer")` statement
 // at the top of the transpiled js file, not what we want. :-/
 
+import puppeteer from 'puppeteer'
+
 import { LaunchOptions } from 'puppeteer'
 import { BrowserLaunchArgumentOptions } from 'puppeteer'
 import { BrowserConnectOptions } from 'puppeteer'
@@ -21,3 +23,7 @@ export { BrowserLaunchArgumentOptions } from 'puppeteer'
 export { BrowserFetcherOptions } from 'puppeteer'
 
 export type AllLaunchOptions = LaunchOptions & BrowserLaunchArgumentOptions & BrowserConnectOptions;
+
+export interface VanillaPuppeteerNode extends Pick<puppeteer.PuppeteerNode, 'connect' | 'defaultArgs' | 'executablePath' | 'launch' | 'createBrowserFetcher'> {}
+
+export interface VanillaPuppeteer extends Pick<puppeteer.PuppeteerNode, 'connect' | 'launch' > {}
