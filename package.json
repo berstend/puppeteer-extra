@@ -21,6 +21,7 @@
     "packages/*"
   ],
   "devDependencies": {
+    "chalk": "^4.1.0",
     "eslint": "^6.7.1",
     "eslint-config-prettier": "^6.7.0",
     "eslint-config-prettier-standard": "^3.0.1",

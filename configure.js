@@ -1,7 +1,8 @@
+const chalk = require('chalk');
 const os = require('os');
 const fs = require('fs');
 const path = require('path');
-const { exec } = require("child_process");
+const { execSync } = require("child_process");
 
 const argv = process.argv.filter(a=> a.match(/^[0-9.]+$/));
 if  (argv.length != 1) {
@@ -34,22 +35,31 @@ function display(error, stdout, stderr) {
     console.log(`${stdout}`);
 }
 
-console.log(`installing lerna`);
-exec(`yarn add lerna --ignore-workspace-root-check --dev`, display);
-
-// console.log(`Calling yarn`);
-// exec(`yarn`, display);
-
-if (platform === 'darwin' || platform === 'freebsd' || platform === 'freebsd') {
-    console.log(`OS: ${platform}, enabling fsevents`);
-    exec(`npx json -I -f package.json -e 'this.resolutions={"**/fsevents": "^2.1.2"}'`, display);
-} else {
-    console.log(`OS: ${platform}, diabling fsevents`);
-    exec(`npx json -I -f package.json -e 'this.resolutions={}'`, display);
+function prntLog(text, status) {
+    console.log(chalk.greenBright(text), chalk.yellow(status));
+    if (status === 'Done')
+        console.log();
 }
 
+
+prntLog(`Installing lerna 4`, `Start`);
+execSync(`yarn add lerna@^4.0.0 --ignore-workspace-root-check --dev`, display);
+prntLog(`Installing lerna 4`, `Done`);
+
+// console.log(`Calling yarn`);
+// execSync(`yarn`, display);
+
+prntLog(`configuring fsevents`, `Start`);
+if (platform === 'darwin' || platform === 'freebsd' || platform === 'freebsd') {
+    console.log(`OS: ${platform}, enabling fsevents`);
+    execSync(`npx json -I -f package.json -e 'this.resolutions={"**/fsevents": "^2.1.2"}'`, {encoding: 'utf-8'}, display);
+} else {
+    console.log(`OS: ${platform}, diabling fsevents`);
+    execSync(`npx json -I -f package.json -e 'this.resolutions={}'`, {encoding: 'utf-8'}, display);
+}
+prntLog(`configuring fsevents`, `Done`);
+
 const tsDir = path.join('packages', 'puppeteer-extra', 'src');
-// const adblockerPath = path.join('packages', 'puppeteer-extra-plugin-adblocker')
 const adblockerPathFull = path.resolve('packages', 'puppeteer-extra-plugin-adblocker')
 
 let cliqz = '';
@@ -57,23 +67,30 @@ let mode = '';
 if (major >= 8) {
     cliqz = '1.20.3';
     mode = 'new';
-    console.log(`removing old @types/puppeteer`);
-    // exec(`yarn lerna exec 'yarn remove @types/puppeteer || true'`, display);
+    prntLog(`removing old @types/puppeteer`, `Start`);
     const modules = fs.readdirSync('packages');
     for (const module of modules) {
-        exec(`yarn remove @types/puppeteer`, {cwd: path.resolve('packages', module)});
+        try {
+        execSync(`yarn remove @types/puppeteer`, {cwd: path.resolve('packages', module), encoding: 'utf-8'});
+        } catch (e) {}
     }
+    prntLog(`removing old @types/puppeteer`, `Done`);
 } else {
     cliqz = '1.19';
     mode = 'legacy';
-    console.log(`installing @types/puppeteer`);
-    exec(`yarn lerna add --dev @types/puppeteer`, display);
+    prntLog(`installing @types/puppeteer`, `Start`);
+    execSync(`yarn lerna add --dev @types/puppeteer`, {encoding: 'utf-8'}, display);
+    prntLog(`installing @types/puppeteer`, `Done`);
 }
+
+prntLog(`activating puppeteer.ts${mode}`, `Start`);
 fs.copyFileSync(path.join(tsDir, `puppeteer.ts.${mode}`), path.join(tsDir, 'puppeteer.ts'))
+prntLog(`activating puppeteer.ts${mode}`, `Done`);
 
-console.log(`change @cliqz/adblocker-puppeteer version to ${cliqz}`);
-exec(`yarn add @cliqz/adblocker-puppeteer@${cliqz}`, {cwd: adblockerPathFull}, display);
+prntLog(`Change @cliqz/adblocker-puppeteer version to ${cliqz}`, `Start`);
+execSync(`yarn add @cliqz/adblocker-puppeteer@${cliqz}`, {cwd: adblockerPathFull, encoding: 'utf-8'}, display);
+prntLog(`Change @cliqz/adblocker-puppeteer version to ${cliqz}`, `Done`);
 
-console.log(`installing puppeteer@${version}`);
-exec(`yarn lerna add --dev puppeteer@${version}`, display);
-console.log(`installing puppeteer@${version} Done`);
+prntLog(`installing puppeteer@${version}`, `Start`);
+execSync(`yarn lerna add --dev puppeteer@${version}`, {encoding: 'utf-8'}, display);
+prntLog(`installing puppeteer@${version}`, `Done`);

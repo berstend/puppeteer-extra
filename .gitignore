@@ -66,3 +66,4 @@ packages/puppeteer-extra-plugin-stealth/index.test.js
 packages/puppeteer-extra-plugin-stealth/test/cat-and-mouse.test.js
 packages/puppeteer-extra-plugin-stealth/test/fpscanner.test.js
 packages/puppeteer-extra-plugin-stealth/test/service-worker.test.js
+.vscode/launch.json
