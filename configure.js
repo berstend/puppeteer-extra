@@ -34,6 +34,7 @@ function display(error, stdout, stderr) {
     console.log(`${stdout}`);
 }
 
+console.log(`installing lerna`);
 exec(`yarn add lerna --ignore-workspace-root-check --dev`, display);
 
 // console.log(`Calling yarn`);
@@ -50,7 +51,6 @@ if (platform === 'darwin' || platform === 'freebsd' || platform === 'freebsd') {
 const tsDir = path.join('packages', 'puppeteer-extra', 'src');
 // const adblockerPath = path.join('packages', 'puppeteer-extra-plugin-adblocker')
 const adblockerPathFull = path.resolve('packages', 'puppeteer-extra-plugin-adblocker')
-
 
 let cliqz = '';
 let mode = '';
