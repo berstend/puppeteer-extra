@@ -1,14 +1,14 @@
 import { Page } from 'puppeteer'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
-//export interface WindowOuterDimensionsPluginOptions {}
+interface WindowOuterDimensionsPluginOptions {}
 
 /**
  * Fix missing window.outerWidth/window.outerHeight in headless mode
  * Will also set the viewport to match window size, unless specified by user
  */
 class WindowOuterDimensionsPlugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+  constructor(opts: Partial<WindowOuterDimensionsPluginOptions> = {}) {
     super(opts)
   }
 
@@ -40,6 +40,6 @@ class WindowOuterDimensionsPlugin extends PuppeteerExtraPlugin {
   }
 }
 
-export = function(pluginConfig: any) {
+export = function(pluginConfig: Partial<WindowOuterDimensionsPluginOptions>) {
   return new WindowOuterDimensionsPlugin(pluginConfig)
 }

@@ -3,6 +3,9 @@ import { Page } from 'puppeteer'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 import withUtils from '../_utils/withUtils'
 
+interface NavigatorPermissionsPluginOption {
+}
+
 /**
  * Fix `Notification.permission` behaving weirdly in headless mode
  *
@@ -10,7 +13,7 @@ import withUtils from '../_utils/withUtils'
  */
 
 class NavigatorPermissionsPlugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+  constructor(opts: Partial<NavigatorPermissionsPluginOption> = {}) {
     super(opts)
   }
 
@@ -20,7 +23,7 @@ class NavigatorPermissionsPlugin extends PuppeteerExtraPlugin {
 
   /* global Notification Permissions PermissionStatus */
   async onPageCreated(page: Page) {
-    await withUtils(page).evaluateOnNewDocument((utils: typeof Utils, opts: any) => {
+    await withUtils(page).evaluateOnNewDocument((utils: typeof Utils, opts: NavigatorPermissionsPluginOption) => {
       const isSecure = document.location.protocol.startsWith('https')
 
       // In headful on secure origins the permission should be "default", not "denied"
@@ -64,6 +67,6 @@ class NavigatorPermissionsPlugin extends PuppeteerExtraPlugin {
   }
 }
 
-export = function (pluginConfig: any) {
+export = function (pluginConfig: Partial<NavigatorPermissionsPluginOption>) {
   return new NavigatorPermissionsPlugin(pluginConfig)
 }

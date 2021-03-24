@@ -3,11 +3,13 @@ import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 import withUtils from '../_utils/withUtils'
 import { Page } from 'puppeteer'
 
+interface ChromeAppPluginOption {
+}
 /**
  * Mock the `chrome.app` object if not available (e.g. when running headless).
  */
 class ChromeAppPlugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+  constructor(opts: Partial<ChromeAppPluginOption> = {}) {
     super(opts)
   }
 
@@ -95,6 +97,6 @@ class ChromeAppPlugin extends PuppeteerExtraPlugin {
   }
 }
 
-export = function(pluginConfig: any) {
+export = function(pluginConfig: Partial<ChromeAppPluginOption>) {
   return new ChromeAppPlugin(pluginConfig)
 }

@@ -10,6 +10,8 @@ import { generateFunctionMocks } from './functionMocks';
 
 const data = require('./data.json')
 
+interface NavigatorPluginOption {
+}
 /**
  * In headless mode `navigator.mimeTypes` and `navigator.plugins` are empty.
  * This plugin emulates both of these with functional mocks to match regular headful Chrome.
@@ -22,7 +24,7 @@ const data = require('./data.json')
  * @see https://developer.mozilla.org/en-US/docs/Web/API/PluginArray
  */
 class NavigatorPlugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+  constructor(opts: Partial<NavigatorPluginOption> = {}) {
     super(opts)
   }
 
@@ -94,6 +96,6 @@ class NavigatorPlugin extends PuppeteerExtraPlugin {
   }
 }
 
-export = function(pluginConfig: any) {
+export = function(pluginConfig: Partial<NavigatorPluginOption>) {
   return new NavigatorPlugin(pluginConfig)
 }

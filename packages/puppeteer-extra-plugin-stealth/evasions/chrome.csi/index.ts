@@ -3,6 +3,7 @@ import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 import withUtils from '../_utils/withUtils'
 import { Page } from 'puppeteer'
 
+interface ChromeCsiPluginOption {}
 /**
  * Mock the `chrome.csi` function if not available (e.g. when running headless).
  * It's a deprecated (but unfortunately still existing) chrome specific API to fetch browser timings.
@@ -21,7 +22,7 @@ import { Page } from 'puppeteer'
  *
  */
 class ChromeCsiPlugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+  constructor(opts: Partial<ChromeCsiPluginOption> = {}) {
     super(opts)
   }
 
@@ -69,6 +70,6 @@ class ChromeCsiPlugin extends PuppeteerExtraPlugin {
   }
 }
 
-export = function(pluginConfig: any) {
+export = function(pluginConfig: Partial<ChromeCsiPluginOption>) {
   return new ChromeCsiPlugin(pluginConfig)
 }

@@ -499,7 +499,7 @@ const utils = {
   // Proxy handler templates for re-usability
   makeHandler: () => ({
     // Used by simple `navigator` getter evasions
-    getterValue: (value: readonly string[]) => ({
+    getterValue: (value: readonly string[] | string | number) => ({
       apply(target: any, ctx: any, args?: any[]) {
         // Let's fetch the value first, to trigger and escalate potential errors
         // Illegal invocations like `navigator.__proto__.vendor` will throw here

@@ -3,6 +3,10 @@ import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 import Utils from '../_utils'
 import withUtils from '../_utils/withUtils'
 
+interface NavigatorVendorPluginOption {
+  vendor: string;
+}
+
 /**
  * By default puppeteer will have a fixed `navigator.vendor` property.
  *
@@ -27,7 +31,7 @@ import withUtils from '../_utils/withUtils'
  *
  */
 class NavigatorVendorPlugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+  constructor(opts: Partial<NavigatorVendorPluginOption> = {}) {
     super(opts)
   }
 
@@ -35,7 +39,7 @@ class NavigatorVendorPlugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/navigator.vendor'
   }
 
-  get defaults() {
+  get defaults(): NavigatorVendorPluginOption {
     return {
       vendor: 'Google Inc.'
     }
@@ -47,7 +51,7 @@ class NavigatorVendorPlugin extends PuppeteerExtraPlugin {
     })
 
     await withUtils(page).evaluateOnNewDocument(
-      (utils: typeof Utils, { opts }: {opts: any}) => {
+      (utils: typeof Utils, { opts }: {opts: NavigatorVendorPluginOption}) => {
         utils.replaceGetterWithProxy(
           Object.getPrototypeOf(navigator),
           'vendor',
@@ -61,4 +65,4 @@ class NavigatorVendorPlugin extends PuppeteerExtraPlugin {
   } // onPageCreated
 }
 
-export = (opts: any) => new NavigatorVendorPlugin(opts)
+export = (opts: Partial<NavigatorVendorPluginOption>) => new NavigatorVendorPlugin(opts)

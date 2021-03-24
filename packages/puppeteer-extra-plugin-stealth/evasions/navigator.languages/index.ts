@@ -4,6 +4,10 @@ import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 import withUtils from '../_utils/withUtils'
 import { Page } from 'puppeteer'
 
+interface NavigatorLanguagesPluginOption {
+  languages: string[];
+}
+
 /**
  * Pass the Languages Test. Allows setting custom languages.
  *
@@ -11,7 +15,7 @@ import { Page } from 'puppeteer'
  * @param {Array<string>} [opts.languages] - The languages to use (default: `['en-US', 'en']`)
  */
 class NavigatorLanguagesPlugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+  constructor(opts: Partial<NavigatorLanguagesPluginOption> = {}) {
     super(opts)
   }
 
@@ -27,7 +31,7 @@ class NavigatorLanguagesPlugin extends PuppeteerExtraPlugin {
 
   async onPageCreated(page: Page) {
     await withUtils(page).evaluateOnNewDocument(
-      (utils: typeof Utils, { opts }: {opts: any}) => {
+      (utils: typeof Utils, { opts }: {opts: NavigatorLanguagesPluginOption}) => {
         const languages: string[] = opts.languages.length
           ? opts.languages
           : ['en-US', 'en']
@@ -44,6 +48,6 @@ class NavigatorLanguagesPlugin extends PuppeteerExtraPlugin {
   }
 }
 
-export = function (pluginConfig: any) {
+export = function (pluginConfig: Partial<NavigatorLanguagesPluginOption>) {
   return new NavigatorLanguagesPlugin(pluginConfig)
 }

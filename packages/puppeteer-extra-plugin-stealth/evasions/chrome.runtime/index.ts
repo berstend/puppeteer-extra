@@ -5,11 +5,15 @@ import { Page } from 'puppeteer'
 
 const STATIC_DATA = require('./staticData.json')
 
+interface ChromeRuntimePluginOption {
+  runOnInsecureOrigins: boolean;
+}
+
 /**
  * Mock the `chrome.runtime` object if not available (e.g. when running headless) and on a secure site.
  */
 class ChromeRuntimePlugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+  constructor(opts: Partial<ChromeRuntimePluginOption> = {}) {
     super(opts)
   }
 
@@ -17,13 +21,13 @@ class ChromeRuntimePlugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/chrome.runtime'
   }
 
-  get defaults() {
+  get defaults(): ChromeRuntimePluginOption {
     return { runOnInsecureOrigins: false } // Override for testing
   }
 
   async onPageCreated(page: Page) {
     await withUtils(page).evaluateOnNewDocument(
-      (utils: typeof Utils, { opts, STATIC_DATA }: { opts: any, STATIC_DATA: any[] }) => {
+      (utils: typeof Utils, { opts, STATIC_DATA }: { opts: ChromeRuntimePluginOption, STATIC_DATA: any[] }) => {
         const {chrome} = window as any
         if (!chrome) {
           // Use the exact property descriptor found in headful Chrome
@@ -249,6 +253,6 @@ class ChromeRuntimePlugin extends PuppeteerExtraPlugin {
   }
 }
 
-export = function(pluginConfig: any) {
+export = function(pluginConfig: Partial<ChromeRuntimePluginOption>) {
   return new ChromeRuntimePlugin(pluginConfig)
 }

@@ -1,6 +1,13 @@
 import { Page } from 'puppeteer'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 import withUtils from '../_utils/withUtils'
+import utilsGlobal from '../_utils'
+
+interface WebGlVendorPluginOption {
+  vendor: string; 
+  renderer: string;
+}
+
 /**
  * Fix WebGL Vendor/Renderer being set to Google in headless mode
  *
@@ -11,7 +18,7 @@ import withUtils from '../_utils/withUtils'
  * @param {string} [opts.renderer] - The renderer string (default: `Intel Iris OpenGL Engine`)
  */
 class WebGlVendorPlugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+  constructor(opts: Partial<WebGlVendorPluginOption> = {}) {
     super(opts)
   }
 
@@ -21,7 +28,7 @@ class WebGlVendorPlugin extends PuppeteerExtraPlugin {
 
   /* global WebGLRenderingContext WebGL2RenderingContext */
   async onPageCreated(page: Page) {
-    await withUtils(page).evaluateOnNewDocument((utils: any, opts: any) => {
+    await withUtils(page).evaluateOnNewDocument((utils: typeof utilsGlobal, opts: WebGlVendorPluginOption) => {
       const getParameterProxyHandler = {
         apply: function(target: any, ctx: any, args: any) {
           const param = (args || [])[0]
@@ -50,6 +57,4 @@ class WebGlVendorPlugin extends PuppeteerExtraPlugin {
   }
 }
 
-export = function(pluginConfig: any) {
-  return new WebGlVendorPlugin(pluginConfig)
-}
+export = (pluginConfig: Partial<WebGlVendorPluginOption>) => new WebGlVendorPlugin(pluginConfig)

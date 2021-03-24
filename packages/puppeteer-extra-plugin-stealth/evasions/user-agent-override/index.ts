@@ -1,6 +1,12 @@
 import { CDPSession, Page } from 'puppeteer';
 import { PluginData, PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
+
+interface UserAgentOverridePluginOption {
+  userAgent: string | null,
+  locale: string,
+  maskLinux: boolean,
+}
 /**
  * Fixes the UserAgent info (composed of UA string, Accept-Language, Platform, and UA hints).
  *
@@ -41,7 +47,7 @@ import { PluginData, PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 class UserAgentOverridePlugin extends PuppeteerExtraPlugin {
   private _headless?: boolean;
 
-  constructor(opts = {}) {
+  constructor(opts: Partial<UserAgentOverridePluginOption> = {}) {
     super(opts)
 
     this._headless = false
@@ -55,7 +61,7 @@ class UserAgentOverridePlugin extends PuppeteerExtraPlugin {
     return new Set(['user-preferences'])
   }
 
-  get defaults() {
+  get defaults(): UserAgentOverridePluginOption {
     return {
       userAgent: null,
       locale: 'en-US,en',
@@ -203,4 +209,4 @@ class UserAgentOverridePlugin extends PuppeteerExtraPlugin {
   }
 }
 
-export = (opts: any) => new UserAgentOverridePlugin(opts)
+export = (opts: Partial<UserAgentOverridePluginOption>) => new UserAgentOverridePlugin(opts)

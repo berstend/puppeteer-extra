@@ -3,6 +3,9 @@ import { Page } from 'puppeteer'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 import withUtils from '../_utils/withUtils'
 
+interface IframeContentWindowPluginOption {
+}
+
 /**
  * Fix for the HEADCHR_IFRAME detection (iframe.contentWindow.chrome), hopefully this time without breaking iframes.
  * Note: Only `srcdoc` powered iframes cause issues due to a chromium bug:
@@ -10,7 +13,7 @@ import withUtils from '../_utils/withUtils'
  * https://github.com/puppeteer/puppeteer/issues/1106
  */
 class IframeContentWindowPlugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+  constructor(opts: Partial<IframeContentWindowPluginOption> = {}) {
     super(opts)
   }
 
@@ -24,7 +27,7 @@ class IframeContentWindowPlugin extends PuppeteerExtraPlugin {
   }
 
   async onPageCreated(page: Page) {
-    await withUtils(page).evaluateOnNewDocument((utils: typeof Utils, opts: any) => {
+    await withUtils(page).evaluateOnNewDocument((utils: typeof Utils, IframeContentWindowPluginOption: any) => {
       try {
         // Adds a contentWindow proxy to the provided iframe element
         const addContentWindowProxy = (iframe: any) => {
@@ -126,6 +129,6 @@ class IframeContentWindowPlugin extends PuppeteerExtraPlugin {
   }
 }
 
-export = function(pluginConfig: any) {
+export = function(pluginConfig: Partial<IframeContentWindowPluginOption>) {
   return new IframeContentWindowPlugin(pluginConfig)
 }
