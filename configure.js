@@ -34,8 +34,8 @@ function display(error, stdout, stderr) {
     console.log(`${stdout}`);
 }
 
-console.log(`Calling yarn`);
-exec(`yarn`, display);
+// console.log(`Calling yarn`);
+// exec(`yarn`, display);
 
 if (platform === 'darwin' || platform === 'freebsd' || platform === 'freebsd') {
     console.log(`OS: ${platform}, enabling fsevents`);
@@ -48,12 +48,12 @@ if (platform === 'darwin' || platform === 'freebsd' || platform === 'freebsd') {
 const tsDir = path.join('packages', 'puppeteer-extra', 'src');
 if (major >= 8) {
     console.log('change @cliqz/adblocker-puppeteer version to 1.20.3');
-    exec(`npx json -I -f package.json -e 'this.dependencies.@cliqz/adblocker-puppeteer=1.20.3'`, display);
+    exec(`npx json -I -f packages/puppeteer-extra-plugin-adblocker/package.json -e 'this.dependencies["@cliqz/adblocker-puppeteer']="1.20.3"'`, display);
     fs.copyFileSync(path.join(tsDir, 'puppeteer.ts.new'), path.join(tsDir, 'puppeteer.ts'))
     exec(`yarn lerna exec 'yarn remove @types/puppeteer || true'`, display);
 } else {
     console.log('change @cliqz/adblocker-puppeteer version to 1.19');
-    exec(`npx json -I -f package.json -e 'this.dependencies.@cliqz/adblocker-puppeteer=1.19'`, display);
+    exec(`npx json -I -f packages/puppeteer-extra-plugin-adblocker/package.json -e 'this.dependencies["@cliqz/adblocker-puppeteer"]="1.19"'`, display);
     fs.copyFileSync(path.join(tsDir, 'puppeteer.ts.legacy'), path.join(tsDir, 'puppeteer.ts'))
     console.log(`installing @types/puppeteer Done`);
     exec(`yarn lerna add --dev @types/puppeteer`, display);
