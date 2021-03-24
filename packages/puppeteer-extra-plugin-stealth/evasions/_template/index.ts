@@ -1,5 +1,5 @@
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
-import Puppeteer from 'puppeteer/lib/types'
+import { Page } from 'puppeteer'
 
 interface PluginOptions {
 }
@@ -18,7 +18,7 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/_template'
   }
 
-  async onPageCreated(page: Puppeteer.Page): Promise<void> {
+  async onPageCreated(page: Page): Promise<void> {
     await page.evaluateOnNewDocument(() => {
       console.debug('hello world')
     })

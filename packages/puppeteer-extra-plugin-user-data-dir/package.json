@@ -13,7 +13,7 @@
     "test-ci": "run-s test"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "keywords": [
     "puppeteer",

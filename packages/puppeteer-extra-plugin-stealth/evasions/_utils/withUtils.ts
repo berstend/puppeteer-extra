@@ -1,4 +1,4 @@
-import Puppeteer from "puppeteer/lib/types"
+import { Page } from "puppeteer"
 import utils from './index'
 
 /**
@@ -6,7 +6,7 @@ import utils from './index'
  *
  * @param {Puppeteer.Page} page
  */
-export = (page: Puppeteer.Page ) => ({
+export = (page: Page ) => ({
   /**
    * Simple `page.evaluate` replacement to preload utils
    */

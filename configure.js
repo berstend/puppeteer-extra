@@ -34,7 +34,7 @@ function display(error, stdout, stderr) {
     console.log(`${stdout}`);
 }
 
-exec(`yarn add lerna --dev`, display);
+exec(`yarn add lerna --ignore-workspace-root-check --dev`, display);
 
 // console.log(`Calling yarn`);
 // exec(`yarn`, display);
@@ -58,7 +58,11 @@ if (major >= 8) {
     cliqz = '1.20.3';
     mode = 'new';
     console.log(`removing old @types/puppeteer`);
-    exec(`yarn lerna exec 'yarn remove @types/puppeteer || true'`, display);
+    // exec(`yarn lerna exec 'yarn remove @types/puppeteer || true'`, display);
+    const modules = fs.readdirSync('packages');
+    for (const module of modules) {
+        exec(`yarn remove @types/puppeteer`, {cwd: path.resolve('packages', module)});
+    }
 } else {
     cliqz = '1.19';
     mode = 'legacy';
@@ -68,9 +72,8 @@ if (major >= 8) {
 fs.copyFileSync(path.join(tsDir, `puppeteer.ts.${mode}`), path.join(tsDir, 'puppeteer.ts'))
 
 console.log(`change @cliqz/adblocker-puppeteer version to ${cliqz}`);
-exec(`yarn add --dev @cliqz/adblocker-puppeteer@${cliqz}`, {cwd: adblockerPathFull}, display);
+exec(`yarn add @cliqz/adblocker-puppeteer@${cliqz}`, {cwd: adblockerPathFull}, display);
 
-//exec(`npx json -I -f packages/puppeteer-extra-plugin-adblocker/package.json -e 'this.dependencies["@cliqz/adblocker-puppeteer']="1.20.3"'`, display);
 console.log(`installing puppeteer@${version}`);
 exec(`yarn lerna add --dev puppeteer@${version}`, display);
 console.log(`installing puppeteer@${version} Done`);

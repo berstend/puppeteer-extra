@@ -38,7 +38,7 @@
     "pupeteer"
   ],
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "devDependencies": {
     "ava": "3.15.0",

@@ -1,5 +1,30 @@
-import { MouseButton, Page, WaitForOptions } from 'puppeteer'
+import { Page } from 'puppeteer'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+
+// copy from pptr 8.0.0
+type PuppeteerLifeCycleEvent =
+  | 'load'
+  | 'domcontentloaded'
+  | 'networkidle0'
+  | 'networkidle2';
+
+// copy from pptr 8.0.0
+interface WaitForOptions {
+  /**
+   * Maximum wait time in milliseconds, defaults to 30 seconds, pass `0` to
+   * disable the timeout.
+   *
+   * @remarks
+   * The default value can be changed by using the
+   * {@link Page.setDefaultTimeout} or {@link Page.setDefaultNavigationTimeout}
+   * methods.
+   */
+  timeout?: number;
+  waitUntil?: PuppeteerLifeCycleEvent | PuppeteerLifeCycleEvent[];
+}
+
+// copy from pptr 8.0.0
+type MouseButton = 'left' | 'right' | 'middle';
 
 /**
  * Convenience function to wait for navigation to complete after clicking on an element.

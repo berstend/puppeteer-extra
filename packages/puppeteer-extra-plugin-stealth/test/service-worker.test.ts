@@ -6,7 +6,10 @@ import http from 'http'
 import fs from 'fs'
 import net from 'net'
 import path from 'path'
-import { Browser, Page, WebWorker } from 'puppeteer'
+import { Browser, Page } from 'puppeteer'
+
+// puppeteer.WebWorker
+type WebWorker = { evaluate: (pageFunction: Function | string, ...args: any[]) => Promise<any>};
 
 // Create a simple HTTP server. Service Workers cannot be served from file:// URIs
 const httpServer = async () => {
@@ -48,7 +51,7 @@ test.before(async t => {
   const workerP: Promise<WebWorker> = new Promise(resolve => {
     browser.on('targetcreated', async target => {
       if (target.type() === 'service_worker') {
-        resolve(target.worker())
+        resolve(target.worker() as any as WebWorker)
       }
     })
   })

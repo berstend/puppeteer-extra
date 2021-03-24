@@ -11,7 +11,7 @@
   "author": "berstend",
   "license": "MIT",
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "keywords": [
     "puppeteer",
