@@ -1,8 +1,6 @@
-'use strict'
+import test from 'ava'
 
-const test = require('ava')
-
-const readline = require('./super-readline')
+import * as readline from '../../src/lib/super-readline'
 
 test('is an object', async t => {
   t.is(typeof readline, 'object')

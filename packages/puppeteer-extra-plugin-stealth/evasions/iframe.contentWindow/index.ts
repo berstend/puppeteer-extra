@@ -1,4 +1,3 @@
-'use strict'
 import Utils from '../_utils'
 import { Page } from 'puppeteer'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'

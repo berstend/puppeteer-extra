@@ -1,5 +1,3 @@
-'use strict'
-
 //
 // With debug logs:
 // DEBUG=puppeteer-extra,puppeteer-extra-plugin,puppeteer-extra-plugin:* node example.js
@@ -16,8 +14,9 @@
 //   console.log('all done')
 // })()
 
-const puppeteer = require('puppeteer-extra')
+import puppeteer from 'puppeteer-extra'
 const blockResourcesPlugin = require('puppeteer-extra-plugin-block-resources')()
+
 puppeteer.use(blockResourcesPlugin)
 ;(async () => {
   const browser = await puppeteer.launch({ headless: false })

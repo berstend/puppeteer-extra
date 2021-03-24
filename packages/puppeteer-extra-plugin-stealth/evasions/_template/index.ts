@@ -1,8 +1,5 @@
-'use strict'
-
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 import Puppeteer from 'puppeteer/lib/types'
-
 
 interface PluginOptions {
 }

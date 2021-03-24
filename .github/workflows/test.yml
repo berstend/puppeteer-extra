@@ -49,6 +49,7 @@ jobs:
 
       - name: 'Fix for: error fsevents@2.1.2: The platform "linux" is incompatible with this module.'
         run: npx json -I -f package.json -e 'this.resolutions={}'
+        # run: npx json -I -f package.json -e 'this.resolutions={"**/fsevents": "^2.1.2"}'
 
       - name: yarn install
         uses: bahmutov/npm-install@v1
@@ -56,7 +57,7 @@ jobs:
       - name: yarn bootstrap
         run: yarn bootstrap
 
-      - name: install puppeteer ${{ matrix.puppeteer_version }}
+      - name: install puppeteer@${{ matrix.puppeteer_version }}
         run: yarn lerna add --dev puppeteer@${{ matrix.puppeteer_version }}
 
       - name: lerna link

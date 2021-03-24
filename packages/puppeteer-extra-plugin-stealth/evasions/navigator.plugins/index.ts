@@ -1,5 +1,3 @@
-'use strict'
-
 import { Page } from 'puppeteer'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 import Utils from '../_utils'
@@ -9,7 +7,7 @@ import { generateMimeTypeArray } from './mimeTypes';
 import { generatePluginArray } from './plugins';
 import { generateMagicArray } from  './magicArray';
 import { generateFunctionMocks } from './functionMocks';
-1
+
 const data = require('./data.json')
 
 /**

@@ -1,5 +1,3 @@
-'use strict'
-
 import { Page } from 'puppeteer'
 import { PluginRequirements, PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 import REPLSession from './lib/REPLSession'

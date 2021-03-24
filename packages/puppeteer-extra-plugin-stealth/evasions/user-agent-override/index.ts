@@ -1,5 +1,3 @@
-'use strict'
-
 import { CDPSession, Page } from 'puppeteer';
 // import { AllLaunchOptions } from 'puppeteer-extra';
 import { PluginData, PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'

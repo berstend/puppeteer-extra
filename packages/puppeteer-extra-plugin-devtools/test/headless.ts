@@ -16,7 +16,6 @@ test('will create a tunnel', async t => {
   devtools.setAuthCredentials('bob', 'swordfish')
 
   await puppeteer.launch({ args: PUPPETEER_ARGS }).then(async browser => {
-    debugger;
     const tunnel = await devtools.createTunnel(browser)
     t.true(tunnel.url.includes('https://devtools-tunnel-'))
     // t.true(tunnel.url.includes('.localtunnel.me')) // old value

@@ -1,5 +1,3 @@
-'use strict'
-
 import modDebug from 'debug'
 
 import got from 'got'

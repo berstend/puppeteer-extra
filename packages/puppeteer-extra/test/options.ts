@@ -1,5 +1,3 @@
-'use strict'
-
 import test, { beforeEach } from 'ava'
 import puppeteer from 'puppeteer-extra'
 import { PluginData, PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
