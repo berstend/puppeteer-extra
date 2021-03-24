@@ -1,6 +1,27 @@
-import { HTTPRequest } from 'puppeteer'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
-import { Page } from 'puppeteer-extra/dist/puppeteer'
+import { Page } from 'puppeteer'
+
+/**
+ * Typing copyed from Puppeter
+ */
+export type ResourceType = ('Document' | 'Stylesheet' | 'Image' | 'Media' | 'Font' | 'Script' | 'TextTrack' | 'XHR' | 'Fetch' | 'EventSource' | 'WebSocket' | 'Manifest' | 'SignedExchange' | 'Ping' | 'CSPViolationReport' | 'Preflight' | 'Other');
+export declare type ErrorCode = 'aborted' | 'accessdenied' | 'addressunreachable' | 'blockedbyclient' | 'blockedbyresponse' | 'connectionaborted' | 'connectionclosed' | 'connectionfailed' | 'connectionrefused' | 'connectionreset' | 'internetdisconnected' | 'namenotresolved' | 'timedout' | 'failed';
+export declare interface ContinueRequestOverrides {
+  /**
+   * If set, the request URL will change. This is not a redirect.
+   */
+  url?: string;
+  method?: string;
+  postData?: string;
+  headers?: Record<string, string>;
+}
+
+interface HTTPRequest {
+  resourceType(): Lowercase<ResourceType>;
+  abort(errorCode?: ErrorCode): Promise<void>;
+  continue(overrides?: ContinueRequestOverrides): Promise<void>;
+}
+
 
 /**
  * Block resources (images, media, css, etc.) in puppeteer.
