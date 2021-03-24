@@ -1,8 +1,6 @@
 // A wildcard import would result in a `require("puppeteer")` statement
 // at the top of the transpiled js file, not what we want. :-/
 
-import * as PuppeteerNode from 'puppeteer'
-
 import { LaunchOptions } from 'puppeteer'
 import { BrowserOptions as BrowserConnectOptions } from 'puppeteer'
 import { ChromeArgOptions as BrowserLaunchArgumentOptions } from 'puppeteer'
@@ -24,6 +22,24 @@ export { FetcherOptions as BrowserFetcherOptions } from 'puppeteer'
 
 export type AllLaunchOptions = LaunchOptions & BrowserLaunchArgumentOptions & BrowserConnectOptions;
 
-export interface VanillaPuppeteerNode extends Pick<puppeteer.PuppeteerNode, 'connect' | 'defaultArgs' | 'executablePath' | 'launch' | 'createBrowserFetcher'> {}
+import * as Puppeteer from 'puppeteer'
 
-export interface VanillaPuppeteer extends Pick<puppeteer.PuppeteerNode, 'connect' | 'launch' > {}
+/**
+ * Original Puppeteer API
+ * @private
+ */
+ export interface VanillaPuppeteer {
+    /** Attaches Puppeteer to an existing Chromium instance */
+    connect(options?: Puppeteer.ConnectOptions): Promise<Puppeteer.Browser>
+    /** The default flags that Chromium will be launched with */
+    defaultArgs(options?: Puppeteer.ChromeArgOptions): string[]
+    /** Path where Puppeteer expects to find bundled Chromium */
+    executablePath(): string
+    /** The method launches a browser instance with given arguments. The browser will be closed when the parent node.js process is closed. */
+    launch(options?: Puppeteer.LaunchOptions): Promise<Puppeteer.Browser>
+    /** This methods attaches Puppeteer to an existing Chromium instance. */
+    createBrowserFetcher(
+      options?: Puppeteer.FetcherOptions
+    ): Puppeteer.BrowserFetcher
+  }
+  export type VanillaPuppeteerNode = VanillaPuppeteer;
