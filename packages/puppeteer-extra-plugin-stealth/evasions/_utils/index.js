@@ -465,7 +465,8 @@ utils.chromiumVersion = () =>
     const fromString = (str = '') =>
       (str.match(/Chrome\/(?<version>[\d.]+)?/) || { groups: {} }).groups
         .version
-    const fromUserAgent = () => fromString(navigator?.userAgent)
+    const fromUserAgent = () =>
+      fromString(typeof navigator === 'undefined' ? '' : navigator.userAgent)
     return { compare, is, semver, fromString, fromUserAgent }
   })()
 
