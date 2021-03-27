@@ -121,7 +121,7 @@ async function detectHeadless() {
     if (permissions.hasOwnProperty('query')) return true // eslint-disable-line
   })
 
-  if ((await compareLooseVersionStrings(navigator.userAgent, '90')) < 0) {
+  if ((await compareLooseVersionStrings(navigator.userAgent, '90.0.0.0')) < 0) {
     await test('navigator.plugins empty', _ => {
       return navigator.plugins.length === 0
     })
