@@ -153,7 +153,7 @@ async function detectHeadless() {
 
     // Here we would need to rerun all tests with `iframe.contentWindow` as `window`
     // Example:
-    return iframe.contentWindow.navigator.plugins.length === 0
+    // return iframe.contentWindow.navigator.plugins.length === 0
   })
 
   // This detects that a devtools protocol agent is attached.

@@ -50,7 +50,7 @@ test('stealth: will not fail a single fpscanner test', async t => {
     // Updated navigator.webdriver behavior breaks the fpscanner tests.
     t.is(failedChecks.length, 2)
     t.is(failedChecks[0].name, 'WEBDRIVER')
-    t.is(failedChecks[1].name, 'PLUGINS')
+    t.is(failedChecks[1].name, 'HEADCHR_PLUGINS')
   } else {
     t.is(failedChecks.length, 0)
   }
