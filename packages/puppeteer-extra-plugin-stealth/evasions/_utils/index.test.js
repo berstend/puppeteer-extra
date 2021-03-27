@@ -224,22 +224,21 @@ function toStringTest(obj) {
 - Function.prototype.toString.call(obj): ${Function.prototype.toString.call(
     obj
   )}
-- Function.prototype.valueOf.call(obj) + "": ${
-    Function.prototype.valueOf.call(obj) + ''
-  }
-- obj.toString === Function.prototype.toString: ${
-    obj.toString === Function.prototype.toString
-  }
+- Function.prototype.valueOf.call(obj) + "": ${Function.prototype.valueOf.call(
+    obj
+  ) + ''}
+- obj.toString === Function.prototype.toString: ${obj.toString ===
+    Function.prototype.toString}
 `.trim()
 }
 
 test('patchToString: passes all toString tests', async t => {
-  const toStringVanilla = await (async function () {
+  const toStringVanilla = await (async function() {
     const browser = await vanillaPuppeteer.launch({ headless: true })
     const page = await browser.newPage()
     return page.evaluate(toStringTest, 'HTMLMediaElement.prototype.canPlayType')
   })()
-  const toStringStealth = await (async function () {
+  const toStringStealth = await (async function() {
     const browser = await vanillaPuppeteer.launch({ headless: true })
     const page = await browser.newPage()
     await withUtils(page).evaluate(utils => {
@@ -277,17 +276,20 @@ test('patchToString: passes stack trace tests', async t => {
         Object.getOwnPropertyDescriptor(Function.prototype, 'toString').get
       ).toString()
     } catch (err) {
-      return err.stack.split('\n').slice(0, 2).join('|')
+      return err.stack
+        .split('\n')
+        .slice(0, 2)
+        .join('|')
     }
     return 'error not thrown'
   }
 
-  const toStringVanilla = await (async function () {
+  const toStringVanilla = await (async function() {
     const browser = await vanillaPuppeteer.launch({ headless: true })
     const page = await browser.newPage()
     return page.evaluate(toStringStackTrace)
   })()
-  const toStringStealth = await (async function () {
+  const toStringStealth = await (async function() {
     const browser = await vanillaPuppeteer.launch({ headless: true })
     const page = await browser.newPage()
     await withUtils(page).evaluate(utils => {
@@ -483,5 +485,36 @@ test('cache: will prevent leaks through overriding methods', async t => {
   t.deepEqual(results, {
     vanilla: true,
     stealth: false
+  })
+})
+
+test('chromiumVersion: will have the expected methods', async t => {
+  const browser = await vanillaPuppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const results = await withUtils(page).evaluate(utils => {
+    return {
+      fromUserAgent: !!utils.chromiumVersion().fromUserAgent(),
+      fromString: !!utils
+        .chromiumVersion()
+        .fromString(
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/88.0.4298.0 Safari/537.36'
+        ),
+      newerThan: utils
+        .chromiumVersion()
+        .is('91.0.4460.0')
+        .newerThan('88.0.4298.0'),
+      newerEqualsThan: utils
+        .chromiumVersion()
+        .is('91.0.4460.0')
+        .newerEqualThan('91.0.4460.0')
+    }
+  })
+
+  t.deepEqual(results, {
+    fromUserAgent: true,
+    fromString: true,
+    newerThan: true,
+    newerEqualsThan: true
   })
 })

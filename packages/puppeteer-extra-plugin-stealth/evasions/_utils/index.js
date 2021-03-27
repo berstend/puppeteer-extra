@@ -27,7 +27,7 @@ utils.stripProxyFromErrors = (handler = {}) => {
   // We wrap each trap in the handler in a try/catch and modify the error stack if they throw
   const traps = Object.getOwnPropertyNames(handler)
   traps.forEach(trap => {
-    newHandler[trap] = function () {
+    newHandler[trap] = function() {
       try {
         // Forward the call to the defined proxy handler
         return handler[trap].apply(this, arguments || [])
@@ -200,7 +200,7 @@ utils.makeNativeString = (name = '') => {
  */
 utils.patchToString = (obj, str = '') => {
   const handler = {
-    apply: function (target, ctx) {
+    apply: function(target, ctx) {
       // This fixes e.g. `HTMLMediaElement.prototype.canPlayType.toString + ""`
       if (ctx === Function.prototype.toString) {
         return utils.makeNativeString('toString')
@@ -249,7 +249,7 @@ utils.patchToStringNested = (obj = {}) => {
  */
 utils.redirectToString = (proxyObj, originalObj) => {
   const handler = {
-    apply: function (target, ctx) {
+    apply: function(target, ctx) {
       // This fixes e.g. `HTMLMediaElement.prototype.canPlayType.toString + ""`
       if (ctx === Function.prototype.toString) {
         return utils.makeNativeString('toString')
@@ -385,7 +385,10 @@ utils.createProxy = (pseudoTarget, handler) => {
  */
 utils.splitObjPath = objPath => ({
   // Remove last dot entry (property) ==> `HTMLMediaElement.prototype`
-  objName: objPath.split('.').slice(0, -1).join('.'),
+  objName: objPath
+    .split('.')
+    .slice(0, -1)
+    .join('.'),
   // Extract last dot entry ==> `canPlayType`
   propName: objPath.split('.').slice(-1)[0]
 })
@@ -432,6 +435,39 @@ utils.execRecursively = (obj = {}, typeFilter = [], fn) => {
   recurse(obj)
   return obj
 }
+
+/**
+ * Utility method to parse/compare versions of chromium based browsers.
+ */
+utils.chromiumVersion = () =>
+  (() => {
+    const compare = (newVer = '', oldVer = '') => {
+      const oldParts = oldVer.split('.')
+      const newParts = newVer.split('.')
+      for (let i = 0; i < newParts.length; i++) {
+        const a = ~~newParts[i] // parse int
+        const b = ~~oldParts[i] // parse int
+        if (a > b) return 1
+        if (a < b) return -1
+      }
+      return 0
+    }
+    const is = a => ({
+      newerThan: b => compare(a, b) === 1,
+      newerEqualThan: b => [1, 0].includes(compare(a, b)),
+      olderThan: b => compare(a, b) === -1,
+      olderEqualThan: b => [-1, 0].includes(compare(a, b))
+    })
+    const semver = (versionStr = '') => {
+      const [major, minor, build, patch] = versionStr.split('.').map(x => ~~x) // parse int
+      return { major, minor, build, patch }
+    }
+    const fromString = (str = '') =>
+      (str.match(/Chrome\/(?<version>[\d.]+)?/) || { groups: {} }).groups
+        .version
+    const fromUserAgent = () => fromString(navigator?.userAgent)
+    return { compare, is, semver, fromString, fromUserAgent }
+  })()
 
 /**
  * Everything we run through e.g. `page.evaluate` runs in the browser context, not the NodeJS one.

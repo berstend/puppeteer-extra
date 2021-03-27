@@ -16,6 +16,9 @@ const data = require('./data.json')
  * In headless mode `navigator.mimeTypes` and `navigator.plugins` are empty.
  * This plugin emulates both of these with functional mocks to match regular headful Chrome.
  *
+ * Note: Starting from v90 chromium returns an empty plugin and mimeTypes array
+ * @see https://www.chromestatus.com/features/5741884322349056
+ *
  * Note: mimeTypes and plugins cross-reference each other, so it makes sense to do them at the same time.
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/API/NavigatorPlugins/mimeTypes
@@ -41,6 +44,19 @@ class Plugin extends PuppeteerExtraPlugin {
         const hasPlugins = 'plugins' in navigator && navigator.plugins.length
         if (hasPlugins) {
           return // nothing to do here
+        }
+
+        const currentVersion = utils.chromiumVersion().fromUserAgent()
+        if (!currentVersion) {
+          return // We're not running in a chromium based browser
+        }
+
+        const noNeed = utils
+          .chromiumVersion()
+          .is(currentVersion)
+          .newerEqualThan('90')
+        if (noNeed) {
+          return // Chromium 90 and up return empty plugins and mimeTypes
         }
 
         const mimeTypes = fns.generateMimeTypeArray(utils, fns)(data.mimeTypes)
