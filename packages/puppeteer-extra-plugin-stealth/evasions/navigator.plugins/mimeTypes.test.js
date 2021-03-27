@@ -1,8 +1,14 @@
-const test = require('ava')
+let test = require('ava')
 
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
 
 const Plugin = require('.')
+
+if (~~require('puppeteer/package.json').version.split('.')[0] >= 7) {
+  // https://github.com/puppeteer/puppeteer/blob/main/docs/api.md
+  console.log('Skipping tests for chromium >= 90')
+  test = test.skip
+}
 
 test('stealth: will have convincing mimeTypes', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())

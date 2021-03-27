@@ -1,4 +1,10 @@
-const test = require('ava')
+let test = require('ava')
+
+if (~~require('puppeteer/package.json').version.split('.')[0] >= 7) {
+  // https://github.com/puppeteer/puppeteer/blob/main/docs/api.md
+  console.log('Skipping tests for chromium >= 90')
+  test = test.skip
+}
 
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
 

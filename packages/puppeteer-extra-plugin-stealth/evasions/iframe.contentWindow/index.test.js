@@ -198,16 +198,16 @@ test('stealth: it will emulate advanved contentWindow features correctly', async
       return iframe.contentWindow !== window
     })()
 
-    results.hasPlugins = (() => {
-      return iframe.contentWindow.navigator.plugins.length > 0
-    })()
+    // results.hasPlugins = (() => {
+    //   return iframe.contentWindow.navigator.plugins.length > 0
+    // })()
 
-    results.hasSameNumberOfPlugins = (() => {
-      return (
-        window.navigator.plugins.length ===
-        iframe.contentWindow.navigator.plugins.length
-      )
-    })()
+    // results.hasSameNumberOfPlugins = (() => {
+    //   return (
+    //     window.navigator.plugins.length ===
+    //     iframe.contentWindow.navigator.plugins.length
+    //   )
+    // })()
 
     results.SelfIsNotWindow = (() => {
       return iframe.contentWindow.self !== window
@@ -248,8 +248,8 @@ test('stealth: it will emulate advanved contentWindow features correctly', async
   t.true(results.descriptorsOK)
   t.true(results.doesExist)
   t.true(results.isNotAClone)
-  t.true(results.hasPlugins)
-  t.true(results.hasSameNumberOfPlugins)
+  // t.true(results.hasPlugins)
+  // t.true(results.hasSameNumberOfPlugins)
   t.true(results.SelfIsNotWindow)
   t.true(results.SelfIsNotWindowTop)
   t.true(results.TopIsNotSame)
@@ -276,7 +276,6 @@ test('regression: new method will not break recaptcha popup', async t => {
   await page.click('#tswsubmit')
   await page.waitForTimeout(1000)
 
-
   const { hasRecaptchaPopup } = await page.evaluate(() => {
     const hasRecaptchaPopup = !!document.querySelectorAll(
       `iframe[title="recaptcha challenge"]`
@@ -298,7 +297,7 @@ test('regression: old method indeed did break recaptcha popup', async t => {
   await page.evaluateOnNewDocument(() => {
     // eslint-disable-next-line
     Object.defineProperty(HTMLIFrameElement.prototype, 'contentWindow', {
-      get: function () {
+      get: function() {
         return window
       }
     })
