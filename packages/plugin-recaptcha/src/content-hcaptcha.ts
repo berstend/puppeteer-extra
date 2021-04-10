@@ -16,7 +16,7 @@ export class HcaptchaContentScript {
   private opts: types.ContentScriptOpts
   private data: types.ContentScriptData
 
-  private baseUrl = 'https://assets.hcaptcha.com/captcha/v1/'
+  private baseUrl = 'assets.hcaptcha.com/captcha/v1/'
 
   constructor(
     opts = ContentScriptDefaultOpts,
@@ -57,7 +57,7 @@ export class HcaptchaContentScript {
   /** Regular checkboxes */
   private _findRegularCheckboxes() {
     const nodeList = document.querySelectorAll<HTMLIFrameElement>(
-      `iframe[src^='${this.baseUrl}'][data-hcaptcha-widget-id]:not([src*='invisible'])`
+      `iframe[src*='${this.baseUrl}'][data-hcaptcha-widget-id]:not([src*='invisible'])`
     )
     return Array.from(nodeList)
   }
@@ -65,7 +65,7 @@ export class HcaptchaContentScript {
   /** Find active challenges from invisible hcaptchas */
   private _findActiveChallenges() {
     const nodeList = document.querySelectorAll<HTMLIFrameElement>(
-      `div[style*='visible'] iframe[src^='${this.baseUrl}'][src*='hcaptcha-challenge.html'][src*='invisible']`
+      `div[style*='visible'] iframe[src*='${this.baseUrl}'][src*='hcaptcha-challenge.html'][src*='invisible']`
     )
     return Array.from(nodeList)
   }
