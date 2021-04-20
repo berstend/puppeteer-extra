@@ -2,19 +2,28 @@
   "name": "puppeteer-extra-plugin-anonymize-ua",
   "version": "2.2.17",
   "description": "Anonymize User-Agent in puppeteer.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "repository": "berstend/puppeteer-extra",
   "author": "berstend",
   "license": "MIT",
   "scripts": {
+    "clean": "rimraf dist/*",
+    "tscheck": "tsc --pretty --noEmit",
+    "prebuild": "run-s clean",
+    "build": "run-s build:tsc",
+    "build:tsc": "tsc --module commonjs",
+    "build:rollup": "rollup -c rollup.config.ts",
     "docs": "node -e 0",
+    "postdocs": "node -e 0",
     "lint": "eslint --ext .js .",
     "test:js": "ava -v --serial --concurrency 1 --fail-fast",
-    "test": "run-p test:js lint",
+    "test:ts": "ava -v --serial --concurrency 1 --fail-fast --config ava.config-ts.js",
+    "test": "run-p test:ts",
+    "pretest-ci": "run-s build",
     "test-ci": "run-s test"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "keywords": [
     "puppeteer",
@@ -27,9 +36,9 @@
     "pupeteer"
   ],
   "devDependencies": {
-    "ava": "2.4.0",
+    "ava": "3.15.0",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "^2.0.0",
+    "puppeteer": "8.0.0",
     "puppeteer-extra": "^3.1.18",
     "puppeteer-extra-plugin-devtools": "^2.2.17"
   },

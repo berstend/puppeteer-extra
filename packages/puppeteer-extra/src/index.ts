@@ -5,24 +5,7 @@ const debug = Debug('puppeteer-extra')
 
 import merge from 'deepmerge'
 
-/**
- * Original Puppeteer API
- * @private
- */
-export interface VanillaPuppeteer {
-  /** Attaches Puppeteer to an existing Chromium instance */
-  connect(options?: Puppeteer.ConnectOptions): Promise<Puppeteer.Browser>
-  /** The default flags that Chromium will be launched with */
-  defaultArgs(options?: Puppeteer.ChromeArgOptions): string[]
-  /** Path where Puppeteer expects to find bundled Chromium */
-  executablePath(): string
-  /** The method launches a browser instance with given arguments. The browser will be closed when the parent node.js process is closed. */
-  launch(options?: Puppeteer.LaunchOptions): Promise<Puppeteer.Browser>
-  /** This methods attaches Puppeteer to an existing Chromium instance. */
-  createBrowserFetcher(
-    options?: Puppeteer.FetcherOptions
-  ): Puppeteer.BrowserFetcher
-}
+export { AllLaunchOptions, VanillaPuppeteer, VanillaPuppeteerNode } from './puppeteer';
 
 /**
  * Minimal plugin interface
@@ -64,11 +47,11 @@ interface BrowserInternals extends Puppeteer.Browser {
  *   await browser.close()
  * })()
  */
-export class PuppeteerExtra implements VanillaPuppeteer {
+export class PuppeteerExtra implements Puppeteer.VanillaPuppeteer {
   private _plugins: PuppeteerExtraPlugin[] = []
 
   constructor(
-    private _pptr?: VanillaPuppeteer,
+    private _pptr?: Puppeteer.VanillaPuppeteer,
     private _requireError?: Error
   ) {}
 
@@ -113,9 +96,9 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    *
    * @private
    */
-  get pptr(): VanillaPuppeteer {
+  get pptr(): Puppeteer.VanillaPuppeteerNode {
     if (this._pptr) {
-      return this._pptr
+      return this._pptr as Puppeteer.VanillaPuppeteerNode
     }
 
     // Whoopsie
@@ -150,10 +133,10 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    *
    * @param options - See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions).
    */
-  async launch(options?: Puppeteer.LaunchOptions): Promise<Puppeteer.Browser> {
+  async launch(options?: Puppeteer.AllLaunchOptions): Promise<Puppeteer.Browser> {
     // Ensure there are certain properties (e.g. the `options.args` array)
     const defaultLaunchOptions = { args: [] }
-    options = merge(defaultLaunchOptions, options || {} as any)
+    options = merge(defaultLaunchOptions, options || {})
     this.resolvePluginDependencies()
     this.orderPlugins()
 
@@ -187,7 +170,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    * @param options - See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerconnectoptions).
    */
   async connect(
-    options?: Puppeteer.ConnectOptions
+    options: Puppeteer.ConnectOptions
   ): Promise<Puppeteer.Browser> {
     this.resolvePluginDependencies()
     this.orderPlugins()
@@ -212,7 +195,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    *
    * @param options - See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerdefaultargsoptions).
    */
-  defaultArgs(options?: Puppeteer.ChromeArgOptions): string[] {
+  defaultArgs(options?: Puppeteer.BrowserLaunchArgumentOptions): string[] {
     return this.pptr.defaultArgs(options)
   }
 
@@ -227,7 +210,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    * @param options - See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteercreatebrowserfetcheroptions).
    */
   createBrowserFetcher(
-    options?: Puppeteer.FetcherOptions
+    options: Puppeteer.BrowserFetcherOptions
   ): Puppeteer.BrowserFetcher {
     return this.pptr.createBrowserFetcher(options)
   }
@@ -516,7 +499,8 @@ export default defaultExport
  * @param puppeteer Any puppeteer API-compatible puppeteer implementation or version.
  * @return A fresh PuppeteerExtra instance using the provided puppeteer
  */
-export const addExtra = (puppeteer: VanillaPuppeteer): PuppeteerExtra =>
+export const addExtra = (puppeteer: Puppeteer.VanillaPuppeteer
+  ): PuppeteerExtra =>
   new PuppeteerExtra(puppeteer)
 
 /**
@@ -526,7 +510,7 @@ export const addExtra = (puppeteer: VanillaPuppeteer): PuppeteerExtra =>
  * @return Either a Puppeteer instance or an Error, which we'll throw later if need be.
  * @private
  */
-function requireVanillaPuppeteer(): [VanillaPuppeteer?, Error?] {
+function requireVanillaPuppeteer(): [Puppeteer.VanillaPuppeteer?, Error?] {
   try {
     return [require('puppeteer-core'), undefined]
   } catch (_) {

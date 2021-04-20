@@ -1,5 +1,5 @@
 import debug, { Debugger } from 'debug'
-import * as Puppeteer from 'puppeteer'
+import Puppeteer from 'puppeteer'
 
 /** @private */
 const merge = require('merge-deep')
@@ -8,9 +8,8 @@ export interface PluginOptions {
   [key: string]: any
 }
 export interface PluginData {
-  name: {
-    [key: string]: any
-  }
+  name: string,
+  //{[key: string]: any}
   value: {
     [key: string]: any
   }
@@ -535,7 +534,7 @@ export abstract class PuppeteerExtraPlugin {
     // Pre filter pages for plugin developers convenience
     if (target.type() === 'page') {
       const page = await target.page()
-      if (this.onPageCreated) {
+      if (page && this.onPageCreated) {
         await this.onPageCreated(page)
       }
     }

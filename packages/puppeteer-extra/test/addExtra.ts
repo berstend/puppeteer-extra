@@ -30,7 +30,7 @@ test('can work with puppeteer-firefox', async t => {
   const browser = await puppeteer.launch({ headless: true })
   t.truthy(await browser.version())
   const page = await browser.newPage()
-  await page.goto('https://example.com')
+  await page.goto('https://example.com'.replace('https:', 'http:'))
   const title = await page.title()
   t.true(title && title.toLowerCase().includes('example domain'))
   await browser.close()

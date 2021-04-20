@@ -74,7 +74,7 @@ test('will not throw when no captchas are found', async (t) => {
   })
   const page = await browser.newPage()
 
-  const url = 'https://www.example.com'
+  const url = 'https://www.example.com'.replace('https:', 'http:')
   await page.goto(url, { waitUntil: 'networkidle0' })
 
   const { captchas, error } = await (page as any).findRecaptchas()

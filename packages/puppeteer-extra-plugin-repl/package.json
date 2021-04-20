@@ -8,13 +8,21 @@
   "author": "nswbmw & berstend",
   "license": "MIT",
   "scripts": {
+    "clean": "rimraf dist/*",
+    "tscheck": "tsc --pretty --noEmit",
+    "prebuild": "run-s clean",
+    "build": "run-s build:tsc",
+    "build:tsc": "tsc --module commonjs",
+    "build:rollup": "rollup -c rollup.config.ts",
     "docs": "node -e 0",
     "lint": "eslint --ext .js .",
-    "test": "run-p lint",
+    "test:ts": "ava -v --serial --concurrency 1 --fail-fast --config ava.config-ts.js",
+    "test:js": "ava -v --serial --concurrency 1 --fail-fast",
+    "test": "run-p test:ts",
     "test-ci": "run-s test"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "keywords": [
     "puppeteer",
@@ -30,15 +38,15 @@
     "pupeteer"
   ],
   "devDependencies": {
-    "ava": "2.4.0",
+    "ava": "3.15.0",
     "mock-stdin": "^0.3.1",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "^2.0.0"
+    "puppeteer": "8.0.0"
   },
   "dependencies": {
     "chalk": "^3.0.0",
     "debug": "^4.1.1",
-    "ow": "^0.4.0",
+    "ow": "^0.23.0",
     "puppeteer-extra-plugin": "^3.1.9"
   },
   "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"

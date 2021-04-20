@@ -6,7 +6,7 @@
   "license": "MIT",
   "main": "packages/puppeteer-extra/index.js",
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
@@ -21,6 +21,7 @@
     "packages/*"
   ],
   "devDependencies": {
+    "chalk": "^4.1.0",
     "eslint": "^6.7.1",
     "eslint-config-prettier": "^6.7.0",
     "eslint-config-prettier-standard": "^3.0.1",
@@ -30,7 +31,7 @@
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "lerna": "^3.19.0",
+    "lerna": "^4.0.0",
     "lerna-update-wizard": "^0.17.5",
     "prettier": "^1.19.1",
     "prettier-config-standard": "^1.0.1"
@@ -38,9 +39,7 @@
   "optionalDependencies": {
     "fsevents": "^2.1.2"
   },
-  "resolutions": {
-    "**/fsevents": "^2.1.2"
-  },
+  "resolutions": {},
   "dependencies": {},
   "version": "0.0.0"
 }

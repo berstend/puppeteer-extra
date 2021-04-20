@@ -11,7 +11,7 @@
   "author": "berstend",
   "license": "MIT",
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "keywords": [
     "puppeteer",
@@ -27,5 +27,8 @@
     "puppeteer-extra-plugin-stealth": "^2.7.6",
     "terser": "^5.1.0",
     "yargs": "^15.4.1"
+  },
+  "devDependencies": {
+    "puppeteer": "8.0.0"
   }
 }
