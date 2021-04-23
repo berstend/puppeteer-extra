@@ -117,6 +117,10 @@ export class RecaptchaContentScript {
         `iframe[src^='https://www.google.com/recaptcha/api2/anchor'][name^="a-"]`
         + ', ' +
         `iframe[src^='https://www.google.com/recaptcha/enterprise/anchor'][name^="a-"]`
+        + ', ' +
+        `iframe[src^='https://www.recaptcha.net/recaptcha/api2/anchor'][name^="a-"]`
+        + ', ' +
+        `iframe[src^='https://www.recaptcha.net/recaptcha/enterprise/anchor'][name^="a-"]`
       )
     )
   }
@@ -129,6 +133,14 @@ export class RecaptchaContentScript {
       `iframe[src^='https://www.google.com/recaptcha/enterprise/anchor'][name^="a-${
         id || ''
       }"]`
+      + ', ' +
+      `iframe[src^='https://www.recaptcha.net/recaptcha/api2/anchor'][name^="a-${
+        id || ''
+      }"]`
+      + ', ' +
+      `iframe[src^='https://www.recaptcha.net/recaptcha/enterprise/anchor'][name^="a-${
+        id || ''
+      }"]`
     )
   }
 
@@ -139,6 +151,14 @@ export class RecaptchaContentScript {
       }"]`
       + ', ' +
       `iframe[src^='https://www.google.com/recaptcha/enterprise/bframe'][name^="c-${
+        id || ''
+      }"]`
+      + ', ' +
+      `iframe[src^='https://www.recaptcha.net/recaptcha/api2/bframe'][name^="c-${
+        id || ''
+      }"]`
+      + ', ' +
+      `iframe[src^='https://www.recaptcha.net/recaptcha/enterprise/bframe'][name^="c-${
         id || ''
       }"]`
     )
@@ -197,6 +217,14 @@ export class RecaptchaContentScript {
             }"]`
             + ', ' +
             `iframe[src^='https://www.google.com/recaptcha/enterprise/bframe'][name^="c-${
+              id || ''
+            }"]`
+            + ', ' +
+            `iframe[src^='https://www.recaptcha.net/recaptcha/api2/bframe'][name^="c-${
+              id || ''
+            }"]`
+            + ', ' +
+            `iframe[src^='https://www.recaptcha.net/recaptcha/enterprise/bframe'][name^="c-${
               id || ''
             }"]`
           ).length
