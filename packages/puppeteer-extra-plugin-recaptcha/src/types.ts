@@ -30,10 +30,11 @@ export type RecaptchaPluginPageAdditions = {
   solveRecaptchas: () => Promise<SolveRecaptchasResult>
 }
 
-export interface SolutionProvider {
+export interface SolutionProvider<TOpts = any> {
   id?: string
   token?: string
   fn?: (captchas: CaptchaInfo[], token?: string) => Promise<GetSolutionsResult>
+  opts?: TOpts // Optional options ;-)
 }
 
 export interface FindRecaptchasResult {
@@ -61,6 +62,8 @@ export interface CaptchaInfo {
   widgetId?: number
   sitekey?: string
   s?: string // new google site specific property
+  isEnterprise?: boolean
+  action?: string // Optional action (v3/enterprise): https://developers.google.com/recaptcha/docs/v3#actions
   callback?: string | Function
   hasResponseElement?: boolean
   url?: string

@@ -6,7 +6,7 @@ import { addExtra } from 'puppeteer-extra'
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
-test('will solve reCAPTCHAs', async (t) => {
+test('will solve reCAPTCHAs', async t => {
   if (!process.env.TWOCAPTCHA_TOKEN) {
     t.truthy('foo')
     console.log('TWOCAPTCHA_TOKEN not set, skipping test.')
@@ -17,14 +17,14 @@ test('will solve reCAPTCHAs', async (t) => {
   const recaptchaPlugin = RecaptchaPlugin({
     provider: {
       id: '2captcha',
-      token: process.env.TWOCAPTCHA_TOKEN,
-    },
+      token: process.env.TWOCAPTCHA_TOKEN
+    }
   })
   puppeteer.use(recaptchaPlugin)
 
   const browser = await puppeteer.launch({
     args: PUPPETEER_ARGS,
-    headless: true,
+    headless: true
   })
   const page = await browser.newPage()
 
@@ -45,7 +45,7 @@ test('will solve reCAPTCHAs', async (t) => {
   await browser.close()
 })
 
-test('will solve hCAPTCHAs', async (t) => {
+test('will solve hCAPTCHAs', async t => {
   if (!process.env.TWOCAPTCHA_TOKEN) {
     t.truthy('foo')
     console.log('TWOCAPTCHA_TOKEN not set, skipping test.')
@@ -56,14 +56,14 @@ test('will solve hCAPTCHAs', async (t) => {
   const recaptchaPlugin = RecaptchaPlugin({
     provider: {
       id: '2captcha',
-      token: process.env.TWOCAPTCHA_TOKEN,
-    },
+      token: process.env.TWOCAPTCHA_TOKEN
+    }
   })
   puppeteer.use(recaptchaPlugin)
 
   const browser = await puppeteer.launch({
     args: PUPPETEER_ARGS,
-    headless: true,
+    headless: true
   })
   const page = await browser.newPage()
 
@@ -78,6 +78,49 @@ test('will solve hCAPTCHAs', async (t) => {
   t.is(solutions.length, 1)
   t.is(solved.length, 1)
   t.is(solved[0]._vendor, 'hcaptcha')
+  t.is(solved[0].isSolved, true)
+
+  await browser.close()
+})
+
+test('will solve reCAPTCHA enterprise', async t => {
+  if (!process.env.TWOCAPTCHA_TOKEN) {
+    t.truthy('foo')
+    console.log('TWOCAPTCHA_TOKEN not set, skipping test.')
+    return
+  }
+
+  const puppeteer = addExtra(require('puppeteer'))
+  const recaptchaPlugin = RecaptchaPlugin({
+    provider: {
+      id: '2captcha',
+      token: process.env.TWOCAPTCHA_TOKEN,
+      opts: {
+        useEnterpriseFlag: false // Not sure but using the enterprise flag makes it worse
+      }
+    }
+  })
+  puppeteer.use(recaptchaPlugin)
+
+  const browser = await puppeteer.launch({
+    args: PUPPETEER_ARGS,
+    headless: true
+  })
+  const page = await browser.newPage()
+
+  const url =
+    'https://berstend.github.io/static/recaptcha/enterprise-checkbox-explicit.html'
+  await page.goto(url, { waitUntil: 'networkidle0' })
+
+  const result = await (page as any).solveRecaptchas()
+
+  const { captchas, solutions, solved, error } = result
+  t.falsy(error)
+
+  t.is(captchas.length, 1)
+  t.is(solutions.length, 1)
+  t.is(solved.length, 1)
+  t.is(solved[0]._vendor, 'recaptcha')
   t.is(solved[0].isSolved, true)
 
   await browser.close()

@@ -16,6 +16,16 @@ export interface DecodeRecaptchaAsyncResult {
   invalid?: any
 }
 
+export interface TwoCaptchaProviderOpts {
+  useEnterpriseFlag?: boolean
+  useActionValue?: boolean
+}
+
+const providerOptsDefaults: TwoCaptchaProviderOpts = {
+  useEnterpriseFlag: false, // Seems to make solving chance worse?
+  useActionValue: true
+}
+
 async function decodeRecaptchaAsync(
   token: string,
   vendor: types.CaptchaVendor,
@@ -24,7 +34,7 @@ async function decodeRecaptchaAsync(
   extraData: any,
   opts = { pollingInterval: 2000 }
 ): Promise<DecodeRecaptchaAsyncResult> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const cb = (err: any, result: any, invalid: any) =>
       resolve({ err, result, invalid })
     try {
@@ -43,21 +53,24 @@ async function decodeRecaptchaAsync(
 
 export async function getSolutions(
   captchas: types.CaptchaInfo[] = [],
-  token?: string
+  token: string = '',
+  opts: TwoCaptchaProviderOpts = {}
 ): Promise<types.GetSolutionsResult> {
+  opts = { ...providerOptsDefaults, ...opts }
   const solutions = await Promise.all(
-    captchas.map((c) => getSolution(c, token || ''))
+    captchas.map(c => getSolution(c, token, opts))
   )
-  return { solutions, error: solutions.find((s) => !!s.error) }
+  return { solutions, error: solutions.find(s => !!s.error) }
 }
 
 async function getSolution(
   captcha: types.CaptchaInfo,
-  token: string
+  token: string,
+  opts: TwoCaptchaProviderOpts
 ): Promise<types.CaptchaSolution> {
   const solution: types.CaptchaSolution = {
     _vendor: captcha._vendor,
-    provider: PROVIDER_ID,
+    provider: PROVIDER_ID
   }
   try {
     if (!captcha || !captcha.sitekey || !captcha.url || !captcha.id) {
@@ -69,6 +82,12 @@ async function getSolution(
     const extraData = {}
     if (captcha.s) {
       extraData['data-s'] = captcha.s // google site specific property
+    }
+    if (opts.useActionValue && captcha.action) {
+      extraData['action'] = captcha.action // Optional v3/enterprise action
+    }
+    if (opts.useEnterpriseFlag && captcha.isEnterprise) {
+      extraData['enterprise'] = 1
     }
     const { err, result, invalid } = await decodeRecaptchaAsync(
       token,
