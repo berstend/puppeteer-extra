@@ -8,6 +8,11 @@ export const ContentScriptDefaultData: types.ContentScriptData = {
   solutions: []
 }
 
+interface FrameSources {
+  anchor: string[]
+  bframe: string[]
+}
+
 /**
  * Content script for Recaptcha handling (runs in browser context)
  * @note External modules are not supported here (due to content script isolation)
@@ -15,6 +20,7 @@ export const ContentScriptDefaultData: types.ContentScriptData = {
 export class RecaptchaContentScript {
   private opts: types.ContentScriptOpts
   private data: types.ContentScriptData
+  private frameSources: FrameSources
 
   constructor(
     opts = ContentScriptDefaultOpts,
@@ -22,6 +28,8 @@ export class RecaptchaContentScript {
   ) {
     this.opts = opts
     this.data = data
+
+    this.frameSources = this._generateFrameSources()
   }
 
   // Poor mans _.pluck
@@ -114,45 +122,19 @@ export class RecaptchaContentScript {
   private _findVisibleIframeNodes() {
     return Array.from(
       document.querySelectorAll<HTMLIFrameElement>(
-        `iframe[src^='https://www.google.com/recaptcha/api2/anchor'][name^="a-"]` +
-          ', ' +
-          `iframe[src^='https://www.google.com/recaptcha/enterprise/anchor'][name^="a-"]` +
-          ', ' +
-          `iframe[src^='https://www.recaptcha.net/recaptcha/api2/anchor'][name^="a-"]` +
-          ', ' +
-          `iframe[src^='https://www.recaptcha.net/recaptcha/enterprise/anchor'][name^="a-"]`
+        this.getFrameSelectorForId('anchor', '') // intentionally blank
       )
     )
   }
   private _findVisibleIframeNodeById(id?: string) {
     return document.querySelector<HTMLIFrameElement>(
-      `iframe[src^='https://www.google.com/recaptcha/api2/anchor'][name^="a-${id ||
-        ''}"]` +
-        ', ' +
-        `iframe[src^='https://www.google.com/recaptcha/enterprise/anchor'][name^="a-${id ||
-          ''}"]` +
-        ', ' +
-        `iframe[src^='https://www.recaptcha.net/recaptcha/api2/anchor'][name^="a-${id ||
-          ''}"]` +
-        ', ' +
-        `iframe[src^='https://www.recaptcha.net/recaptcha/enterprise/anchor'][name^="a-${id ||
-          ''}"]`
+      this.getFrameSelectorForId('anchor', id)
     )
   }
 
-  private _hideChallengeWindowIfPresent(id?: string) {
+  private _hideChallengeWindowIfPresent(id: string = '') {
     let frame: HTMLElement | null = document.querySelector<HTMLIFrameElement>(
-      `iframe[src^='https://www.google.com/recaptcha/api2/bframe'][name^="c-${id ||
-        ''}"]` +
-        ', ' +
-        `iframe[src^='https://www.google.com/recaptcha/enterprise/bframe'][name^="c-${id ||
-          ''}"]` +
-        ', ' +
-        `iframe[src^='https://www.recaptcha.net/recaptcha/api2/bframe'][name^="c-${id ||
-          ''}"]` +
-        ', ' +
-        `iframe[src^='https://www.recaptcha.net/recaptcha/enterprise/bframe'][name^="c-${id ||
-          ''}"]`
+      this.getFrameSelectorForId('bframe', id)
     )
     if (!frame) {
       return
@@ -167,6 +149,39 @@ export class RecaptchaContentScript {
     if (frame) {
       frame.style.visibility = 'hidden'
     }
+  }
+
+  // There's so many different possible deployments URLs that we better generate them
+  private _generateFrameSources(): FrameSources {
+    const protos = ['http', 'https']
+    const hosts = [
+      'google.com',
+      'www.google.com',
+      'recaptcha.net',
+      'www.recaptcha.net'
+    ]
+    const origins = protos.flatMap(proto =>
+      hosts.map(host => `${proto}://${host}`)
+    )
+    const paths = {
+      anchor: ['/recaptcha/api2/anchor', '/recaptcha/enterprise/anchor'],
+      bframe: ['/recaptcha/api2/bframe', '/recaptcha/enterprise/bframe']
+    }
+    return {
+      anchor: origins.flatMap(origin =>
+        paths.anchor.map(path => `${origin}${path}`)
+      ),
+      bframe: origins.flatMap(origin =>
+        paths.bframe.map(path => `${origin}${path}`)
+      )
+    }
+  }
+
+  private getFrameSelectorForId(type: 'anchor' | 'bframe' = 'anchor', id = '') {
+    const namePrefix = type === 'anchor' ? 'a' : 'c'
+    return this.frameSources[type]
+      .map(src => `iframe[src^='${src}'][name^="${namePrefix}-${id}"]`)
+      .join(',')
   }
 
   private getClients() {
@@ -203,19 +218,8 @@ export class RecaptchaContentScript {
       .filter(id => id)
       .filter(
         id =>
-          document.querySelectorAll(
-            `iframe[src^='https://www.google.com/recaptcha/api2/bframe'][name^="c-${id ||
-              ''}"]` +
-              ', ' +
-              `iframe[src^='https://www.google.com/recaptcha/enterprise/bframe'][name^="c-${id ||
-                ''}"]` +
-              ', ' +
-              `iframe[src^='https://www.recaptcha.net/recaptcha/api2/bframe'][name^="c-${id ||
-                ''}"]` +
-              ', ' +
-              `iframe[src^='https://www.recaptcha.net/recaptcha/enterprise/bframe'][name^="c-${id ||
-                ''}"]`
-          ).length
+          document.querySelectorAll(this.getFrameSelectorForId('bframe', id))
+            .length
       )
   }
 
