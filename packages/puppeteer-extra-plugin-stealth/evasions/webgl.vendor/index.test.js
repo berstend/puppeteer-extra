@@ -7,6 +7,7 @@ const {
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
 
 const Plugin = require('.')
+const { errors } = require('puppeteer')
 
 test('vanilla: videoCard is Google Inc', async t => {
   const pageFn = async page => await page.evaluate(() => window.chrome) // eslint-disable-line
@@ -200,4 +201,21 @@ test('stealth: sets user opts correctly', async t => {
   t.is(videoCardInfo.error, undefined)
   t.is(videoCardInfo.vendor, 'alice')
   t.is(videoCardInfo.renderer, 'bob')
+})
+
+test('stealth: does not affect protoype', async t => {
+  const puppeteer = addExtra(vanillaPuppeteer).use(
+    Plugin({ vendor: 'alice', renderer: 'bob' })
+  )
+  const browser = await puppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const result = await page.evaluate(() => {
+    try {
+      return WebGLRenderingContext.prototype.getParameter(37445)
+    } catch (err) {
+      return err.message
+    }
+  })
+  t.is(result, 'Illegal invocation')
 })
