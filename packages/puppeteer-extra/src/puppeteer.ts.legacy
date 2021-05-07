@@ -2,8 +2,8 @@
 // at the top of the transpiled js file, not what we want. :-/
 
 import { LaunchOptions } from 'puppeteer'
-import { BrowserLaunchArgumentOptions } from 'puppeteer'
-import { BrowserConnectOptions } from 'puppeteer'
+import { BrowserOptions as BrowserConnectOptions } from 'puppeteer'
+import { ChromeArgOptions as BrowserLaunchArgumentOptions } from 'puppeteer'
 
 export { Browser } from 'puppeteer'
 export { Page } from 'puppeteer'
@@ -12,12 +12,12 @@ export { LaunchOptions } from 'puppeteer'
 export { BrowserFetcher } from 'puppeteer'
 
 // BrowserOptions renamed to BrowserConnectOptions in pptr 8.0.0
-export { BrowserConnectOptions } from 'puppeteer'
+export { BrowserOptions as BrowserConnectOptions} from 'puppeteer'
 
 // ChromeArgOptions renamed to BrowserLaunchArgumentOptions in pptr 8.0.0
-export { BrowserLaunchArgumentOptions } from 'puppeteer'
+export { ChromeArgOptions as BrowserLaunchArgumentOptions } from 'puppeteer'
 
 // FetcherOptions renamed to BrowserFetcherOptions in pptr 8.0.0
-export { BrowserFetcherOptions } from 'puppeteer'
+export { FetcherOptions as BrowserFetcherOptions } from 'puppeteer'
 
 export type AllLaunchOptions = LaunchOptions & BrowserLaunchArgumentOptions & BrowserConnectOptions;

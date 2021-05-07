@@ -13,14 +13,14 @@ export interface VanillaPuppeteer {
   /** Attaches Puppeteer to an existing Chromium instance */
   connect(options?: Puppeteer.ConnectOptions): Promise<Puppeteer.Browser>
   /** The default flags that Chromium will be launched with */
-  defaultArgs(options?: Puppeteer.ChromeArgOptions): string[]
+  defaultArgs(options?: Puppeteer.BrowserLaunchArgumentOptions): string[]
   /** Path where Puppeteer expects to find bundled Chromium */
   executablePath(): string
   /** The method launches a browser instance with given arguments. The browser will be closed when the parent node.js process is closed. */
-  launch(options?: Puppeteer.LaunchOptions): Promise<Puppeteer.Browser>
+  launch(options?: Puppeteer.AllLaunchOptions): Promise<Puppeteer.Browser>
   /** This methods attaches Puppeteer to an existing Chromium instance. */
   createBrowserFetcher(
-    options?: Puppeteer.FetcherOptions
+    options?: Puppeteer.BrowserFetcherOptions
   ): Puppeteer.BrowserFetcher
 }
 
@@ -150,10 +150,10 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    *
    * @param options - See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions).
    */
-  async launch(options?: Puppeteer.LaunchOptions): Promise<Puppeteer.Browser> {
+  async launch(options?: Puppeteer.AllLaunchOptions): Promise<Puppeteer.Browser> {
     // Ensure there are certain properties (e.g. the `options.args` array)
     const defaultLaunchOptions = { args: [] }
-    options = merge(defaultLaunchOptions, options || {} as any)
+    options = merge(defaultLaunchOptions, options || {})
     this.resolvePluginDependencies()
     this.orderPlugins()
 
@@ -212,7 +212,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    *
    * @param options - See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerdefaultargsoptions).
    */
-  defaultArgs(options?: Puppeteer.ChromeArgOptions): string[] {
+  defaultArgs(options?: Puppeteer.BrowserLaunchArgumentOptions): string[] {
     return this.pptr.defaultArgs(options)
   }
 
@@ -227,7 +227,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    * @param options - See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteercreatebrowserfetcheroptions).
    */
   createBrowserFetcher(
-    options?: Puppeteer.FetcherOptions
+    options?: Puppeteer.BrowserFetcherOptions
   ): Puppeteer.BrowserFetcher {
     return this.pptr.createBrowserFetcher(options)
   }

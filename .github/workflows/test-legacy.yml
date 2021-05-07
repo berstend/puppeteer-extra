@@ -1,4 +1,4 @@
-name: Test
+name: Test-legacy
 
 on:
   pull_request:
@@ -30,7 +30,14 @@ jobs:
           # - 14
           - 12
         puppeteer_version:
-          - 8.0.0 # Chromium 90.0.4427.0, Feb 18, 2021
+          # - 7.0.0 # Chromium 90.0.4403.0, Feb 3, 2021
+          # - 5.0.0 # Chromium 83.0.4103.0, Jul 2, 2020
+          - 2.1.1 # Chromium 79.0.3942.0, Oct 24 2019
+          # - 2.0.0 # Chromium 79.0.3942.0, Oct 24 2019
+          # - 1.20.0 # Chromium 78.0.3882.0, Sep 13 2019
+          # - 1.15.0 # Chromium 75.0.3765.0, Apr 26 2019
+          # - 1.9.0 # Chromium 71.0.3563.0, Oct 4, 2018
+          # - 1.6.2 # Chromium 69.0.3494.0, Aug 1, 2018
 
         os:
           - ubuntu-latest
@@ -49,6 +56,12 @@ jobs:
       - name: 'Fix for: error fsevents@2.1.2: The platform "linux" is incompatible with this module.'
         run: npx json -I -f package.json -e 'this.resolutions={}'
 
+      - name: 'use old patch @types/puppeteer'
+        run: cp packages/puppeteer-extra/src/puppeteer.ts.legacy packages/puppeteer-extra/src/puppeteer.ts 
+
+      - name: 'rollback @cliqz/adblocker-puppeteer to version 1.19'
+        run: sed -i.bak s/1.20.3/1.19/ packages/puppeteer-extra-plugin-adblocker/package.json
+
       - name: yarn install
         uses: bahmutov/npm-install@v1
 
@@ -57,6 +70,9 @@ jobs:
 
       - name: install puppeteer ${{ matrix.puppeteer_version }}
         run: yarn lerna add --dev puppeteer@${{ matrix.puppeteer_version }}
+
+      - name: 'add @types/puppeteer for pptr v8-'
+        run: yarn lerna add --dev @types/puppeteer
 
       - name: lerna link
         run: yarn lerna link
