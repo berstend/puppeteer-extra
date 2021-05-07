@@ -1,7 +1,8 @@
 import * as types from './types'
 
 export const ContentScriptDefaultOpts: types.ContentScriptOpts = {
-  visualFeedback: true
+  visualFeedback: true,
+  debugBinding: undefined
 }
 
 export const ContentScriptDefaultData: types.ContentScriptData = {
@@ -28,8 +29,15 @@ export class RecaptchaContentScript {
   ) {
     this.opts = opts
     this.data = data
-
     this.frameSources = this._generateFrameSources()
+    this.log('Intialized', { url: document.location.href, opts: this.opts })
+  }
+
+  /** Log using debug binding if available */
+  private log = (message: string, data?: any) => {
+    if (this.opts.debugBinding && window.top[this.opts.debugBinding]) {
+      window.top[this.opts.debugBinding](message, JSON.stringify(data))
+    }
   }
 
   // Poor mans _.pluck
@@ -44,6 +52,20 @@ export class RecaptchaContentScript {
       (typeof elem.getClientRects === 'function' &&
         elem.getClientRects().length)
     )
+
+  /** Check if an element is in the current viewport */
+  private _isInViewport(elem: any) {
+    const rect = elem.getBoundingClientRect()
+    return (
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.bottom <=
+        (window.innerHeight ||
+          (document.documentElement.clientHeight &&
+            rect.right <=
+              (window.innerWidth || document.documentElement.clientWidth)))
+    )
+  }
 
   // Recaptcha client is a nested, circular object with object keys that seem generated
   // We flatten that object a couple of levels deep for easy access to certain keys we're interested in.
@@ -136,6 +158,7 @@ export class RecaptchaContentScript {
     let frame: HTMLElement | null = document.querySelector<HTMLIFrameElement>(
       this.getFrameSelectorForId('bframe', id)
     )
+    this.log(' - _hideChallengeWindowIfPresent', { id, hasFrame: !!frame })
     if (!frame) {
       return
     }
@@ -196,7 +219,7 @@ export class RecaptchaContentScript {
 
   private getVisibleIframesIds() {
     // Find all regular visible recaptcha boxes through their iframes
-    return this._findVisibleIframeNodes()
+    const result = this._findVisibleIframeNodes()
       .filter($f => this._isVisible($f))
       .map($f => this._paintCaptchaBusy($f))
       .filter($f => $f && $f.getAttribute('name'))
@@ -205,11 +228,14 @@ export class RecaptchaContentScript {
         rawId => rawId.split('-').slice(-1)[0] // a-841543e13666 => 841543e13666
       )
       .filter(id => id)
+    this.log('getVisibleIframesIds', result)
+    return result
   }
 
+  // TODO: Obsolete with recent changes
   private getInvisibleIframesIds() {
     // Find all invisible recaptcha boxes through their iframes (only the ones with an active challenge window)
-    return this._findVisibleIframeNodes()
+    const result = this._findVisibleIframeNodes()
       .filter($f => $f && $f.getAttribute('name'))
       .map($f => $f.getAttribute('name') || '') // a-841543e13666
       .map(
@@ -221,6 +247,8 @@ export class RecaptchaContentScript {
           document.querySelectorAll(this.getFrameSelectorForId('bframe', id))
             .length
       )
+    this.log('getInvisibleIframesIds', result)
+    return result
   }
 
   private getIframesIds() {
@@ -229,17 +257,58 @@ export class RecaptchaContentScript {
       ...this.getVisibleIframesIds(),
       ...this.getInvisibleIframesIds()
     ]
+    this.log('getIframesIds', results)
     // Deduplicate results by using the unique id as key
-    return [...new Map(results.map((x: any) => [x.id, x])).values()]
+    const dedup = Array.from(new Set(results))
+    this.log('getIframesIds - dedup', dedup)
+    return dedup
   }
 
   private isEnterpriseCaptcha(id?: string) {
-    if (!id) return
+    if (!id) return false
     // The only way to determine if a captcha is an enterprise one is by looking at their iframes
     const prefix = 'iframe[src*="/recaptcha/"][src*="/enterprise/"]'
     const nameSelectors = [`[name^="a-${id}"]`, `[name^="c-${id}"]`]
     const fullSelector = nameSelectors.map(name => prefix + name).join(',')
     return document.querySelectorAll(fullSelector).length > 0
+  }
+
+  private isInvisible(id?: string) {
+    if (!id) return false
+    const selector = `iframe[src*="/recaptcha/"][src*="/anchor"][name="a-${id}"][src*="&size=invisible"]`
+    return document.querySelectorAll(selector).length > 0
+  }
+
+  /** Whether an active challenge popup is open */
+  private hasActiveChallengePopup(id?: string) {
+    if (!id) return false
+    const selector = `iframe[src*="/recaptcha/"][src*="/bframe"][name="c-${id}"]`
+    const elem = document.querySelector(selector)
+    if (!elem) {
+      return false
+    }
+    return this._isInViewport(elem) // note: _isVisible doesn't work here as the outer div is hidden, not the iframe itself
+  }
+
+  /** Whether an (invisible) captcha has a challenge bframe - otherwise it's a score based captcha */
+  private hasChallengeFrame(id?: string) {
+    if (!id) return false
+    return (
+      document.querySelectorAll(this.getFrameSelectorForId('bframe', id))
+        .length > 0
+    )
+  }
+
+  private isInViewport(id?: string) {
+    if (!id) return
+    const prefix = 'iframe[src*="recaptcha"]'
+    const nameSelectors = [`[name^="a-${id}"]`, `[name^="c-${id}"]`]
+    const fullSelector = nameSelectors.map(name => prefix + name).join(',')
+    const elem = document.querySelector(fullSelector)
+    if (!elem) {
+      return false
+    }
+    return this._isInViewport(elem)
   }
 
   private getResponseInputById(id?: string) {
@@ -264,10 +333,15 @@ export class RecaptchaContentScript {
     let client: any = Object.values(clients || {})
       .filter(obj => this._getKeyByValue(obj, id))
       .shift() // returns first entry in array or undefined
+    this.log(' - getClientById:client', { id, hasClient: !!client })
     if (!client) return
     client = this._flattenObject(client) as any
     client.widgetId = client.id
     client.id = id
+    this.log(' - getClientById:client:flatten', {
+      id,
+      hasClient: !!client
+    })
     return client
   }
 
@@ -306,20 +380,35 @@ export class RecaptchaContentScript {
     try {
       await this._waitUntilDocumentReady()
       const clients = this.getClients()
+      this.log('findRecaptchas', {
+        url: document.location.href,
+        hasClients: !!clients
+      })
       if (!clients) return result
       result.captchas = this.getIframesIds()
         .map(id => this.getClientById(id))
         .map(client => this.extractInfoFromClient(client))
         .map(info => {
+          this.log(' - captchas:info', info)
           if (!info) return
           const $input = this.getResponseInputById(info.id)
           info.hasResponseElement = !!$input
           return info
         })
-        .filter(info => info)
+        .filter(info => !!info && !!info.sitekey)
         .map(info => {
-          if (this.isEnterpriseCaptcha(info.id)) {
-            info.isEnterprise = true
+          info.sitekey = info.sitekey.trim()
+          info.isEnterprise = this.isEnterpriseCaptcha(info.id)
+          info.isInViewport = this.isInViewport(info.id)
+          info.isInvisible = this.isInvisible(info.id)
+          info._type = 'checkbox'
+          if (info.isInvisible) {
+            info._type = 'invisible'
+            info.hasActiveChallengePopup = this.hasActiveChallengePopup(info.id)
+            info.hasChallengeFrame = this.hasChallengeFrame(info.id)
+            if (!info.hasChallengeFrame) {
+              info._type = 'score'
+            }
           }
           return info
         })
@@ -327,6 +416,10 @@ export class RecaptchaContentScript {
       result.error = error
       return result
     }
+    this.log('findRecaptchas - result', {
+      captchaNum: result.captchas.length,
+      result
+    })
     return result
   }
 
@@ -338,6 +431,12 @@ export class RecaptchaContentScript {
     try {
       await this._waitUntilDocumentReady()
       const clients = this.getClients()
+      this.log('enterRecaptchaSolutions', {
+        url: document.location.href,
+        hasClients: !!clients,
+        solutionNum: this.data.solutions.length
+      })
+
       if (!clients) {
         result.error = 'No recaptchas found'
         return result
@@ -348,56 +447,65 @@ export class RecaptchaContentScript {
         return result
       }
 
-      result.solved = this.getIframesIds()
-        .map(id => this.getClientById(id))
-        .map(client => {
-          const solved: types.CaptchaSolved = {
-            _vendor: 'recaptcha',
-            id: client.id,
-            responseElement: false,
-            responseCallback: false
-          }
-          const $iframe = this._findVisibleIframeNodeById(solved.id)
-          if (!$iframe) {
-            solved.error = `Iframe not found for id '${solved.id}'`
-            return solved
-          }
-          const solution = solutions.find(s => s.id === solved.id)
-          if (!solution || !solution.text) {
-            solved.error = `Solution not found for id '${solved.id}'`
-            return solved
-          }
+      result.solved = this.data.solutions.map(solution => {
+        const client = this.getClientById(solution.id)
+        this.log(' - client', !!client)
+        const solved: types.CaptchaSolved = {
+          _vendor: 'recaptcha',
+          id: client.id,
+          responseElement: false,
+          responseCallback: false
+        }
+        const $iframe = this._findVisibleIframeNodeById(solved.id)
+        this.log(' - $iframe', !!$iframe)
+        if (!$iframe) {
+          solved.error = `Iframe not found for id '${solved.id}'`
+          return solved
+        }
+
+        if (this.hasActiveChallengePopup(solved.id)) {
           // Hide if present challenge window
           this._hideChallengeWindowIfPresent(solved.id)
-          // Enter solution in response textarea
-          const $input = this.getResponseInputById(solved.id)
-          if ($input) {
-            $input.innerHTML = solution.text
-            solved.responseElement = true
-          }
-          // Enter solution in optional callback
-          if (client.callback) {
-            try {
-              if (typeof client.callback === 'function') {
-                client.callback.call(window, solution.text)
-              } else {
-                eval(client.callback).call(window, solution.text) // tslint:disable-line
-              }
-              solved.responseCallback = true
-            } catch (error) {
-              solved.error = error
+        }
+
+        // Enter solution in response textarea
+        const $input = this.getResponseInputById(solved.id)
+        this.log(' - $input', !!$input)
+        if ($input) {
+          $input.innerHTML = solution.text
+          solved.responseElement = true
+        }
+        // Enter solution in optional callback
+        this.log(' - callback', !!client.callback)
+        if (client.callback) {
+          try {
+            this.log(' - callback - type', {
+              typeof: typeof client.callback,
+              value: '' + client.callback
+            })
+            if (typeof client.callback === 'function') {
+              client.callback.call(window, solution.text)
+            } else {
+              eval(client.callback).call(window, solution.text) // tslint:disable-line
+              this.log(' - callback - aftereval')
             }
+            solved.responseCallback = true
+          } catch (error) {
+            solved.error = error
           }
-          // Finishing up
-          solved.isSolved = solved.responseCallback || solved.responseElement
-          solved.solvedAt = new Date()
-          this._paintCaptchaSolved($iframe)
-          return solved
-        })
+        }
+        // Finishing up
+        solved.isSolved = solved.responseCallback || solved.responseElement
+        solved.solvedAt = new Date()
+        this._paintCaptchaSolved($iframe)
+        this.log(' - solved', solved)
+        return solved
+      })
     } catch (error) {
       result.error = error
       return result
     }
+    this.log('enterRecaptchaSolutions - finished', result)
     return result
   }
 }
