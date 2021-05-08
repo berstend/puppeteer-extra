@@ -73,7 +73,7 @@ puppeteer
 
 ## Status
 
-- ✅ **`puppeeteer-extra` with stealth passes all public bot tests.**
+- ✅ **`puppeteer-extra` with stealth passes all public bot tests.**
 
 Please note: I consider this a friendly competition in a rather interesting cat and mouse game. If the other team (👋) wants to detect headless chromium there are still ways to do that (at least I noticed a few, which I'll tackle in future updates).
 
