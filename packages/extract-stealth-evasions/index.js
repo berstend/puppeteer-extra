@@ -83,6 +83,13 @@ puppeteer
   })
 
 function patchEval(f, args) {
+  if (argv.minify !== true) {
+    let reg = (new Error()).stack.match(/\/evasions\/(?!_utils)([^\/]+)\//);
+    if (reg)
+      scripts += '\n\n/**\nEVASION '+reg[1]+'\n**/\n';
+    else
+      scripts += '\n\n/**\nEVASION\n**/\n';
+  }
   // Check if there are options supplied
   if (typeof args !== 'undefined') {
     scripts += '(' + f.toString() + ')(' + JSON.stringify(args) + ');\n'
