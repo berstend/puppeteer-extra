@@ -274,6 +274,11 @@ utils.replaceGetterWithProxy = (obj, propName, handler, modType = 'get') => {
   return true
 }
 
+utils.makeNameNative = (fn, name) => {
+  Object.defineProperty(fn, 'name', { value: name })
+  return fn
+}
+
 /**
  * All-in-one method to mock a non-existing property with a JS Proxy using the provided Proxy handler with traps.
  *
