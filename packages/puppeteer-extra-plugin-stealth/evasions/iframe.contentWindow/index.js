@@ -82,7 +82,7 @@ class Plugin extends PuppeteerExtraPlugin {
           Object.defineProperty(iframe, 'srcdoc', {
             configurable: true, // Important, so we can reset this later
             get: function() {
-              return changed ? _iframe.srcdoc : _srcdoc
+              return changed ? _iframe.srcdoc : _srcdoc // This may seem unnecessary to do, but I include it in case an antibot copies get to a local variable and tests it after they change srcdoc
             },
             set: function(newValue) {
               changed = true

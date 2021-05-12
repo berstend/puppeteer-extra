@@ -1,6 +1,7 @@
 'use strict'
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+const utils = require('../_utils/index')
 
 /**
  * Fixes the UserAgent info (composed of UA string, Accept-Language, Platform, and UA hints).
@@ -177,12 +178,35 @@ class Plugin extends PuppeteerExtraPlugin {
       opts: this.opts
     })
 
+    const runtimeUtils = mainFunction =>
+      `(...args) => (({ _utilsFns, _mainFunction, _args }) => {
+          // Add this point we cannot use our utililty functions as they're just strings, we need to materialize them first
+          const utils = Object.fromEntries(
+              Object.entries(_utilsFns).map(([key, value]) => [key, eval(value)]) // eslint-disable-line no-eval
+          )
+          utils.init()
+          return eval(_mainFunction)(utils, ..._args) // eslint-disable-line no-eval
+      })({
+          _utilsFns: ${JSON.stringify(utils.stringifyFns(utils))},
+          _mainFunction: ${mainFunction},
+          _args: args || []
+      })`
+
     const sess = await target.createCDPSession()
     sess.send('Network.setUserAgentOverride', override)
     sess.send('Runtime.enable')
     sess.send('Runtime.evaluate', {
-      expression:`Object.defineProperty(navigator.__proto__,"platform",{value:"${override.platform}"});Object.defineProperty(navigator.__proto__,"userAgent",{get:()=>"${override.userAgent}"})`
+      expression: `
+      (${runtimeUtils(`
+        (utils)=>{
+          const proto=Object.getPrototypeOf(navigator);
+          utils.replaceGetterWithProxy(proto,'platform',{apply:()=>"${override.platform}"})
+          utils.replaceGetterWithProxy(proto,'userAgent',{apply:()=>"${override.userAgent}"})
+        }
+      `)})()
+      `
     })
+    sess.send('Runtime.disable')
   }
 
   async beforeLaunch(options) {

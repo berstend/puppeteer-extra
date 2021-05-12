@@ -23,7 +23,7 @@ utils.init = () => {
  * @param {object} handler - The JS Proxy handler to wrap
  */
 utils.stripProxyFromErrors = (handler = {}) => {
-  const Error = window.Error
+  const Error = globalThis.Error
   const newHandler = {}
   // We wrap each trap in the handler in a try/catch and modify the error stack if they throw
   const traps = Object.getOwnPropertyNames(handler)
@@ -262,12 +262,13 @@ utils.replaceWithProxy = (obj, propName, handler) => {
  * @param {string} propName - The name of the property to replace
  * @param {object} handler - The JS Proxy handler to use
  */
-utils.replaceGetterWithProxy = (obj, propName, handler) => {
-  const fn = Object.getOwnPropertyDescriptor(obj, propName).get
+utils.replaceGetterWithProxy = (obj, propName, handler, modType = 'get') => {
+  const fn = Object.getOwnPropertyDescriptor(obj, propName)?.[modType]
   const fnStr = fn.toString() // special getter function string
   const proxyObj = new Proxy(fn, utils.stripProxyFromErrors(handler))
+  console.log(proxyObj)
 
-  utils.replaceProperty(obj, propName, { get: proxyObj })
+  utils.replaceProperty(obj, propName, { [modType]: proxyObj })
   utils.patchToString(proxyObj, fnStr)
 
   return true
