@@ -9,41 +9,57 @@ module.exports = page => ({
   /**
    * Simple `page.evaluate` replacement to preload utils
    */
-  evaluate: async function (mainFunction, ...args) {
+  evaluate: async function(mainFunction, ...args) {
+    console.log('sourceString', page._client.sourceString)
     return page.evaluate(
-      ({ _utilsFns, _mainFunction, _args }) => {
+      ({ _utilsFns, _mainFunction, _args }, sourceString, sourceUrl) => {
         // Add this point we cannot use our utililty functions as they're just strings, we need to materialize them first
         const utils = Object.fromEntries(
-          Object.entries(_utilsFns).map(([key, value]) => [key, eval(value)]) // eslint-disable-line no-eval
+          Object.entries(_utilsFns).map(([key, value]) => [
+            key,
+            eval(`${value}${sourceString}`) // eslint-disable-line no-eval
+          ])
         )
+        utils.sourceString = sourceString
+        utils.sourceUrl = sourceUrl
         utils.init()
-        return eval(_mainFunction)(utils, ..._args) // eslint-disable-line no-eval
+        return eval(`${_mainFunction}${sourceString}`)(utils, ..._args) // eslint-disable-line no-eval
       },
       {
         _utilsFns: utils.stringifyFns(utils),
         _mainFunction: mainFunction.toString(),
         _args: args || []
-      }
+      },
+      page._client.sourceString,
+      page._client.sourceUrl
     )
   },
   /**
    * Simple `page.evaluateOnNewDocument` replacement to preload utils
    */
-  evaluateOnNewDocument: async function (mainFunction, ...args) {
+  evaluateOnNewDocument: async function(mainFunction, ...args) {
+    console.log('sourceString', page._client.sourceString)
     return page.evaluateOnNewDocument(
-      ({ _utilsFns, _mainFunction, _args }) => {
+      ({ _utilsFns, _mainFunction, _args }, sourceString, sourceUrl) => {
         // Add this point we cannot use our utililty functions as they're just strings, we need to materialize them first
         const utils = Object.fromEntries(
-          Object.entries(_utilsFns).map(([key, value]) => [key, eval(value)]) // eslint-disable-line no-eval
+          Object.entries(_utilsFns).map(([key, value]) => [
+            key,
+            eval(`${value}${sourceString}`) // eslint-disable-line no-eval
+          ])
         )
+        utils.sourceString = sourceString
+        utils.sourceUrl = sourceUrl
         utils.init()
-        return eval(_mainFunction)(utils, ..._args) // eslint-disable-line no-eval
+        return eval(`${_mainFunction}${sourceString}`)(utils, ..._args) // eslint-disable-line no-eval
       },
       {
         _utilsFns: utils.stringifyFns(utils),
         _mainFunction: mainFunction.toString(),
         _args: args || []
-      }
+      },
+      page._client.sourceString,
+      page._client.sourceUrl
     )
   }
 })

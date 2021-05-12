@@ -23,6 +23,11 @@ class Plugin extends PuppeteerExtraPlugin {
 
     // Intercept CDP commands and strip identifying and unnecessary sourceURL
     // https://github.com/puppeteer/puppeteer/blob/9b3005c105995cd267fdc7fb95b78aceab82cf0e/new-docs/puppeteer.cdpsession.md
+
+    // Replace with a random string
+    page._client.sourceUrl = Math.floor(Math.random() * 10000000).toString(16)
+    page._client.sourceString = `//# sourceURL=${page._client.sourceUrl}`
+
     const debug = this.debug
     page._client.send = (function(originalMethod, context) {
       return async function() {
@@ -30,10 +35,18 @@ class Plugin extends PuppeteerExtraPlugin {
         const next = async () => {
           try {
             return await originalMethod.apply(context, [method, paramArgs])
-          } catch(error) {
+          } catch (error) {
             // This seems to happen sometimes when redirects cause other outstanding requests to be cut short
-            if (error instanceof Error && error.message.includes(`Protocol error (Network.getResponseBody): No resource with given identifier found`)) {
-              debug(`Caught and ignored an error about a missing network resource.`, { error })
+            if (
+              error instanceof Error &&
+              error.message.includes(
+                `Protocol error (Network.getResponseBody): No resource with given identifier found`
+              )
+            ) {
+              debug(
+                `Caught and ignored an error about a missing network resource.`,
+                { error }
+              )
             } else {
               throw error
             }
@@ -60,7 +73,7 @@ class Plugin extends PuppeteerExtraPlugin {
         debug('Stripping sourceURL', { method })
         paramArgs[methodsToPatch[method]] = paramArgs[
           methodsToPatch[method]
-        ].replace(SOURCE_URL_SUFFIX, '')
+        ].replace(SOURCE_URL_SUFFIX, page._client.sourceString)
 
         return next()
       }

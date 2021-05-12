@@ -47,17 +47,23 @@ class Plugin extends PuppeteerExtraPlugin {
             }
           }
 
+          const contentDocGetter = Object.getOwnPropertyDescriptor(
+            Object.getPrototypeOf(iframe),
+            'contentDocument'
+          ).get
+
           if (!iframe.contentWindow) {
             const proxy = new Proxy(window, contentWindowProxy)
+            // TODO make this getter/setter stealthy using utils
             Object.defineProperty(iframe, 'contentWindow', {
               get() {
-                return proxy
+                return contentDocGetter.apply(iframe) ? proxy : null
               },
               set(newValue) {
                 return newValue // contentWindow is immutable
               },
               enumerable: true,
-              configurable: false
+              configurable: true
             })
           }
         }
@@ -69,15 +75,17 @@ class Plugin extends PuppeteerExtraPlugin {
           // We need to keep the originals around
           const _iframe = iframe
           const _srcdoc = _iframe.srcdoc
+          let changed = false
 
           // Add hook for the srcdoc property
           // We need to be very surgical here to not break other iframes by accident
           Object.defineProperty(iframe, 'srcdoc', {
             configurable: true, // Important, so we can reset this later
             get: function() {
-              return _iframe.srcdoc
+              return changed ? _iframe.srcdoc : _srcdoc
             },
             set: function(newValue) {
+              changed = true
               addContentWindowProxy(this)
               // Reset property, the hook is only needed once
               Object.defineProperty(iframe, 'srcdoc', {

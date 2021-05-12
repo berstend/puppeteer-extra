@@ -23,95 +23,36 @@ utils.init = () => {
  * @param {object} handler - The JS Proxy handler to wrap
  */
 utils.stripProxyFromErrors = (handler = {}) => {
+  const Error = window.Error
   const newHandler = {}
   // We wrap each trap in the handler in a try/catch and modify the error stack if they throw
   const traps = Object.getOwnPropertyNames(handler)
   traps.forEach(trap => {
-    newHandler[trap] = function () {
+    newHandler[trap] = function() {
+      const normalStackMax = Error.stackTraceLimit
+      Error.stackTraceLimit = normalStackMax + 2
       try {
         // Forward the call to the defined proxy handler
-        return handler[trap].apply(this, arguments || [])
+        const ret = handler[trap].apply(this, arguments || [])
+        Error.stackTraceLimit = normalStackMax
+        return ret
       } catch (err) {
+        Error.stackTraceLimit = normalStackMax
         // Stack traces differ per browser, we only support chromium based ones currently
-        if (!err || !err.stack || !err.stack.includes(`at `)) {
-          throw err
+        if (typeof err?.stack === 'string') {
+          err.stack = err.stack
+            .replace('at Object.toString (', 'at Function.toString (')
+            .split('\n')
+            .filter(line => !line.includes(utils.sourceUrl))
+            .slice(0, normalStackMax + 1)
+            .join('\n')
         }
-
-        // When something throws within one of our traps the Proxy will show up in error stacks
-        // An earlier implementation of this code would simply strip lines with a blacklist,
-        // but it makes sense to be more surgical here and only remove lines related to our Proxy.
-        // We try to use a known "anchor" line for that and strip it with everything above it.
-        // If the anchor line cannot be found for some reason we fall back to our blacklist approach.
-
-        const stripWithBlacklist = (stack, stripFirstLine = true) => {
-          const blacklist = [
-            `at Reflect.${trap} `, // e.g. Reflect.get or Reflect.apply
-            `at Object.${trap} `, // e.g. Object.get or Object.apply
-            `at Object.newHandler.<computed> [as ${trap}] ` // caused by this very wrapper :-)
-          ]
-          return (
-            err.stack
-              .split('\n')
-              // Always remove the first (file) line in the stack (guaranteed to be our proxy)
-              .filter((line, index) => !(index === 1 && stripFirstLine))
-              // Check if the line starts with one of our blacklisted strings
-              .filter(line => !blacklist.some(bl => line.trim().startsWith(bl)))
-              .join('\n')
-          )
-        }
-
-        const stripWithAnchor = (stack, anchor) => {
-          const stackArr = stack.split('\n')
-          anchor = anchor || `at Object.newHandler.<computed> [as ${trap}] ` // Known first Proxy line in chromium
-          const anchorIndex = stackArr.findIndex(line =>
-            line.trim().startsWith(anchor)
-          )
-          if (anchorIndex === -1) {
-            return false // 404, anchor not found
-          }
-          // Strip everything from the top until we reach the anchor line
-          // Note: We're keeping the 1st line (zero index) as it's unrelated (e.g. `TypeError`)
-          stackArr.splice(1, anchorIndex)
-          return stackArr.join('\n')
-        }
-
-        // Special cases due to our nested toString proxies
-        err.stack = err.stack.replace(
-          'at Object.toString (',
-          'at Function.toString ('
-        )
-        if ((err.stack || '').includes('at Function.toString (')) {
-          err.stack = stripWithBlacklist(err.stack, false)
-          throw err
-        }
-
-        // Try using the anchor method, fallback to blacklist if necessary
-        err.stack = stripWithAnchor(err.stack) || stripWithBlacklist(err.stack)
 
         throw err // Re-throw our now sanitized error
       }
     }
   })
   return newHandler
-}
-
-/**
- * Strip error lines from stack traces until (and including) a known line the stack.
- *
- * @param {object} err - The error to sanitize
- * @param {string} anchor - The string the anchor line starts with
- */
-utils.stripErrorWithAnchor = (err, anchor) => {
-  const stackArr = err.stack.split('\n')
-  const anchorIndex = stackArr.findIndex(line => line.trim().startsWith(anchor))
-  if (anchorIndex === -1) {
-    return err // 404, anchor not found
-  }
-  // Strip everything from the top until we reach the anchor line (remove anchor line as well)
-  // Note: We're keeping the 1st line (zero index) as it's unrelated (e.g. `TypeError`)
-  stackArr.splice(1, anchorIndex)
-  err.stack = stackArr.join('\n')
-  return err
 }
 
 /**
@@ -200,7 +141,7 @@ utils.makeNativeString = (name = '') => {
  */
 utils.patchToString = (obj, str = '') => {
   const handler = {
-    apply: function (target, ctx) {
+    apply: function(target, ctx) {
       // This fixes e.g. `HTMLMediaElement.prototype.canPlayType.toString + ""`
       if (ctx === Function.prototype.toString) {
         return utils.makeNativeString('toString')
@@ -249,7 +190,7 @@ utils.patchToStringNested = (obj = {}) => {
  */
 utils.redirectToString = (proxyObj, originalObj) => {
   const handler = {
-    apply: function (target, ctx) {
+    apply: function(target, ctx) {
       // This fixes e.g. `HTMLMediaElement.prototype.canPlayType.toString + ""`
       if (ctx === Function.prototype.toString) {
         return utils.makeNativeString('toString')
@@ -385,7 +326,10 @@ utils.createProxy = (pseudoTarget, handler) => {
  */
 utils.splitObjPath = objPath => ({
   // Remove last dot entry (property) ==> `HTMLMediaElement.prototype`
-  objName: objPath.split('.').slice(0, -1).join('.'),
+  objName: objPath
+    .split('.')
+    .slice(0, -1)
+    .join('.'),
   // Extract last dot entry ==> `canPlayType`
   propName: objPath.split('.').slice(-1)[0]
 })
@@ -403,7 +347,7 @@ utils.splitObjPath = objPath => ({
  */
 utils.replaceObjPathWithProxy = (objPath, handler) => {
   const { objName, propName } = utils.splitObjPath(objPath)
-  const obj = eval(objName) // eslint-disable-line no-eval
+  const obj = eval(objName + utils.sourceString) // eslint-disable-line no-eval
   return utils.replaceWithProxy(obj, propName, handler)
 }
 
@@ -473,10 +417,10 @@ utils.materializeFns = (fnStrObj = { hello: "() => 'world'" }) => {
     Object.entries(fnStrObj).map(([key, value]) => {
       if (value.startsWith('function')) {
         // some trickery is needed to make oldschool functions work :-)
-        return [key, eval(`() => ${value}`)()] // eslint-disable-line no-eval
+        return [key, eval(`() => ${value}${utils.sourceString}`)()] // eslint-disable-line no-eval
       } else {
         // arrow functions just work
-        return [key, eval(value)] // eslint-disable-line no-eval
+        return [key, eval(value + utils.sourceString)] // eslint-disable-line no-eval
       }
     })
   )

@@ -62,11 +62,11 @@ class Plugin extends PuppeteerExtraPlugin {
     }
   }
 
-  async onPageCreated(page) {
+  async onTargetCreated(target) {
     // Determine the full user agent string, strip the "Headless" part
     let ua =
       this.opts.userAgent ||
-      (await page.browser().userAgent()).replace('HeadlessChrome/', 'Chrome/')
+      (await target.browser().userAgent()).replace('HeadlessChrome/', 'Chrome/')
 
     if (
       this.opts.maskLinux &&
@@ -79,7 +79,7 @@ class Plugin extends PuppeteerExtraPlugin {
     // Full version number from Chrome
     const uaVersion = ua.includes('Chrome/')
       ? ua.match(/Chrome\/([\d|.]+)/)[1]
-      : (await page.browser().version()).match(/\/([\d|.]+)/)[1]
+      : (await target.browser().version()).match(/\/([\d|.]+)/)[1]
 
     // Get platform identifier (short or long version)
     const _getPlatform = (extended = false) => {
@@ -177,7 +177,12 @@ class Plugin extends PuppeteerExtraPlugin {
       opts: this.opts
     })
 
-    page._client.send('Network.setUserAgentOverride', override)
+    const sess = await target.createCDPSession()
+    sess.send('Network.setUserAgentOverride', override)
+    sess.send('Runtime.enable')
+    sess.send('Runtime.evaluate', {
+      expression:`Object.defineProperty(navigator.__proto__,"platform",{value:"${override.platform}"});Object.defineProperty(navigator.__proto__,"userAgent",{get:()=>"${override.userAgent}"})`
+    })
   }
 
   async beforeLaunch(options) {

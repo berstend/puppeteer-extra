@@ -80,6 +80,7 @@ class StealthPlugin extends PuppeteerExtraPlugin {
 
   get defaults() {
     const availableEvasions = new Set([
+      'sourceurl',
       'chrome.app',
       'chrome.csi',
       'chrome.loadTimes',
@@ -91,7 +92,6 @@ class StealthPlugin extends PuppeteerExtraPlugin {
       'navigator.permissions',
       'navigator.plugins',
       'navigator.webdriver',
-      'sourceurl',
       'user-agent-override',
       'webgl.vendor',
       'window.outerdimensions'

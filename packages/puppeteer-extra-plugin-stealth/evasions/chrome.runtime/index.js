@@ -123,7 +123,7 @@ class Plugin extends PuppeteerExtraPlugin {
         utils.mockWithProxy(
           window.chrome.runtime,
           'sendMessage',
-          function sendMessage() {},
+          ()=>{},
           sendMessageHandler
         )
 
@@ -210,7 +210,7 @@ class Plugin extends PuppeteerExtraPlugin {
         utils.mockWithProxy(
           window.chrome.runtime,
           'connect',
-          function connect() {},
+          ()=>{},
           connectHandler
         )
 
