@@ -365,7 +365,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
       let dep = null
 
       const pnpInUse = process.versions.pnp != null;
-      const yarnExtensionsInstalled = require('pnpapi').VERSIONS.getAllLocators != null;
+      const yarnExtensionsInstalled = pnpInUse && require('pnpapi').VERSIONS.getAllLocators != null;
 
       try {
         // Try to require and instantiate the stated dependency

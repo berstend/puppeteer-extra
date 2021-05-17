@@ -63,7 +63,7 @@
     "puppeteer-extra-plugin": "^3.1.9"
   },
   "peerDependencies": {
-    "puppeteer": "5.x || 6.x || 7.x || 8.x",
+    "puppeteer": "*",
     "puppeteer-extra": "*"
   },
   "gitHead": "72fe830c158f1e971c8499fdd5232338dd53c220"
