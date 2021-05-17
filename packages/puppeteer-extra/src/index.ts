@@ -345,7 +345,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
     }
     debug('dependencies missing', missingPlugins)
     // Loop through all dependencies declared missing by plugins
-    for (let name of [...missingPlugins]) {
+    for (let { name, requiredBy } of [...missingPlugins]) {
       // Check if the dependency hasn't been registered as plugin already.
       // This might happen when multiple plugins have nested dependencies.
       if (this.pluginNames.includes(name)) {
@@ -356,17 +356,37 @@ export class PuppeteerExtra implements VanillaPuppeteer {
       name = name.startsWith('puppeteer-extra-plugin')
         ? name
         : `puppeteer-extra-plugin-${name}`
+      requiredBy = requiredBy.startsWith('puppeteer-extra-plugin')
+        ? requiredBy
+        : `puppeteer-extra-plugin-${requiredBy}`
       // In case a module sub resource is requested print out the main package name
       // e.g. puppeteer-extra-plugin-stealth/evasions/console.debug => puppeteer-extra-plugin-stealth
       const packageName = name.split('/')[0]
       let dep = null
+
+      const pnpInUse = process.versions.pnp != null;
+      const yarnExtensionsInstalled = require('pnpapi').VERSIONS.getAllLocators != null;
+
       try {
         // Try to require and instantiate the stated dependency
-        dep = require(name)()
+        dep = pnpInUse && yarnExtensionsInstalled ? this.resolvePnpPlugin(name, requiredBy) : require(name)()
         // Register it with `puppeteer-extra` as plugin
         this.use(dep)
       } catch (err) {
-        console.warn(`
+        if (pnpInUse && !yarnExtensionsInstalled) {
+          console.warn(`
+          A plugin listed '${name}' as dependency,
+          but PnP could not load the module. Please add it into your yarnrc.yml's packageExtensions:
+
+          packageExtensions:
+            puppeteer-extra@*:
+              dependencies:
+                ${packageName}: "*"
+
+          Note: Consider updating Yarn to v2.3.0 or later to use puppeteer-extra's native PnP support.
+          `)
+        } else {
+          console.warn(`
           A plugin listed '${name}' as dependency,
           which is currently missing. Please install it:
 
@@ -375,6 +395,8 @@ export class PuppeteerExtra implements VanillaPuppeteer {
           Note: You don't need to require the plugin yourself,
           unless you want to modify it's default settings.
           `)
+        }
+
         throw err
       }
       // Handle nested dependencies :D
@@ -382,6 +404,27 @@ export class PuppeteerExtra implements VanillaPuppeteer {
         this.resolvePluginDependencies()
       }
     }
+  }
+
+  /**
+   * Resolves a plugin through Yarn's PnP system.
+   *
+   * Requires Yarn v2.3.0+ due to using the Yarn extension method getAllLocators.
+   *
+   * @private
+   */
+  private resolvePnpPlugin(pluginName: string, requiredBy: string) {
+    const pnpapi = require('pnpapi');
+    const requiredByPackageName = requiredBy.split('/')[0]
+
+    const packageList = pnpapi.getAllLocators();
+    const requiredByPackageLocators = packageList.filter((pack: any) => pack.name === requiredByPackageName);
+    const requiredByPossiblePackageInfos = requiredByPackageLocators.map((locator: any) => pnpapi.getPackageInformation(locator));
+    const selectedLocator = requiredByPossiblePackageInfos.find((info: any) => info.linkType === 'HARD') || requiredByPossiblePackageInfos[0];
+
+    const pluginResolution = pnpapi.resolveRequest(pluginName, selectedLocator.packageLocation);
+
+    return require(pluginResolution)();
   }
 
   /**
