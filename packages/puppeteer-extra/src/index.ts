@@ -356,9 +356,6 @@ export class PuppeteerExtra implements VanillaPuppeteer {
       name = name.startsWith('puppeteer-extra-plugin')
         ? name
         : `puppeteer-extra-plugin-${name}`
-      requiredBy = requiredBy.startsWith('puppeteer-extra-plugin')
-        ? requiredBy
-        : `puppeteer-extra-plugin-${requiredBy}`
       // In case a module sub resource is requested print out the main package name
       // e.g. puppeteer-extra-plugin-stealth/evasions/console.debug => puppeteer-extra-plugin-stealth
       const packageName = name.split('/')[0]
@@ -415,14 +412,8 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    */
   private resolvePnpPlugin(pluginName: string, requiredBy: string) {
     const pnpapi = require('pnpapi');
-    const requiredByPackageName = requiredBy.split('/')[0]
 
-    const packageList = pnpapi.getAllLocators();
-    const requiredByPackageLocators = packageList.filter((pack: any) => pack.name === requiredByPackageName);
-    const requiredByPossiblePackageInfos = requiredByPackageLocators.map((locator: any) => pnpapi.getPackageInformation(locator));
-    const selectedLocator = requiredByPossiblePackageInfos.find((info: any) => info.linkType === 'HARD') || requiredByPossiblePackageInfos[0];
-
-    const pluginResolution = pnpapi.resolveRequest(pluginName, selectedLocator.packageLocation);
+    const pluginResolution = pnpapi.resolveRequest(pluginName, requiredBy);
 
     return require(pluginResolution)();
   }

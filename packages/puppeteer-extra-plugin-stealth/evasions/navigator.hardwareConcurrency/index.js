@@ -22,6 +22,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/navigator.hardwareConcurrency'
   }
 
+  get filename() {
+    return __filename
+  }
+
   get defaults() {
     return {
       hardwareConcurrency: 4

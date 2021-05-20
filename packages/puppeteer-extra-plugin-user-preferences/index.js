@@ -43,6 +43,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'user-preferences'
   }
 
+  get filename() {
+    return __filename
+  }
+
   get requirements() {
     return new Set(['runLast', 'dataFromPlugins'])
   }

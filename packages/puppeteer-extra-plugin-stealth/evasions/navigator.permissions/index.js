@@ -19,6 +19,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/navigator.permissions'
   }
 
+  get filename() {
+    return __filename
+  }
+
   /* global Notification Permissions PermissionStatus */
   async onPageCreated(page) {
     await withUtils(page).evaluateOnNewDocument((utils, opts) => {

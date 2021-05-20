@@ -15,6 +15,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/sourceurl'
   }
 
+  get filename() {
+    return __filename
+  }
+
   async onPageCreated(page) {
     if (!page || !page._client || !page._client.send) {
       this.debug('Warning, missing properties to intercept CDP.', { page })

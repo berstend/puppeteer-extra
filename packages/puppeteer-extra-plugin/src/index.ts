@@ -94,6 +94,18 @@ export abstract class PuppeteerExtraPlugin {
   }
 
   /**
+   * Plugin filename (required).
+   *
+   * For Yarn PnP to resolve dependencies.
+   *
+   * @example
+   * get filename () { return __filename }
+   */
+  get filename(): string {
+    throw new Error('Plugin must override "filename" with __filename')
+  }
+
+  /**
    * Plugin defaults (optional).
    *
    * If defined will be ([deep-](https://github.com/jonschlinkert/merge-deep))merged with the (optional) user supplied options (supplied during plugin instantiation).
@@ -461,7 +473,7 @@ export abstract class PuppeteerExtraPlugin {
   _getMissingDependencies(plugins: any) {
     const pluginNames = new Set(plugins.map((p: any) => p.name))
     const missing = new Set(
-      Array.from(this.dependencies.values()).filter((x) => !pluginNames.has(x)).map((x) => ({ name: x, requiredBy: this.name }))
+      Array.from(this.dependencies.values()).filter((x) => !pluginNames.has(x)).map((x) => ({ name: x, requiredBy: this.filename }))
     )
     return missing
   }

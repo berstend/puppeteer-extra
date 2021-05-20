@@ -50,6 +50,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/user-agent-override'
   }
 
+  get filename() {
+    return __filename
+  }
+
   get dependencies() {
     return new Set(['user-preferences'])
   }

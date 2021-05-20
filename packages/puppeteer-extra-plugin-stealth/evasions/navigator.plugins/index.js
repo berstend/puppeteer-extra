@@ -32,6 +32,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/navigator.plugins'
   }
 
+  get filename() {
+    return __filename
+  }
+
   async onPageCreated(page) {
     await withUtils(page).evaluateOnNewDocument(
       (utils, { fns, data }) => {

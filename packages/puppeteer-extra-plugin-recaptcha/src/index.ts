@@ -34,6 +34,10 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
     return 'recaptcha'
   }
 
+  get filename() {
+    return __filename
+  }
+
   get defaults(): types.PluginOptions {
     return {
       visualFeedback: true,

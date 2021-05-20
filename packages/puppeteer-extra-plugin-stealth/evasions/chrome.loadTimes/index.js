@@ -28,6 +28,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/chrome.loadTimes'
   }
 
+  get filename() {
+    return __filename
+  }
+
   async onPageCreated(page) {
     await withUtils(page).evaluateOnNewDocument(
       (utils, { opts }) => {

@@ -37,6 +37,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'flash'
   }
 
+  get filename() {
+    return __filename
+  }
+
   get defaults() {
     return {
       allowFlash: true,

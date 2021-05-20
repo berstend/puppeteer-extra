@@ -30,6 +30,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'anonymize-ua'
   }
 
+  get filename() {
+    return __filename
+  }
+
   get defaults() {
     return {
       stripHeadless: true,

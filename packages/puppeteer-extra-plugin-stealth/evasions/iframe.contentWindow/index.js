@@ -19,6 +19,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/iframe.contentWindow'
   }
 
+  get filename() {
+    return __filename
+  }
+
   get requirements() {
     // Make sure `chrome.runtime` has ran, we use data defined by it (e.g. `window.chrome`)
     return new Set(['runLast'])

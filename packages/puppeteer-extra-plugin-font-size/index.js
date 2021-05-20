@@ -24,6 +24,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'font-size'
   }
 
+  get filename() {
+    return __filename
+  }
+
   get defaults() {
     return { defaultFontSize: 20 }
   }

@@ -43,6 +43,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'devtools'
   }
 
+  get filename() {
+    return __filename
+  }
+
   get defaults() {
     return {
       prefix: 'devtools-tunnel',

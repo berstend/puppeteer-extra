@@ -34,6 +34,10 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
     return 'adblocker'
   }
 
+  get filename() {
+    return __filename
+  }
+
   get defaults(): PluginOptions {
     return {
       blockTrackers: false,
