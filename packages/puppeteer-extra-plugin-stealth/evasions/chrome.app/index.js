@@ -16,6 +16,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/chrome.app'
   }
 
+  get filename() {
+    return __filename
+  }
+
   async onPageCreated(page) {
     await withUtils(page).evaluateOnNewDocument(utils => {
       if (!window.chrome) {

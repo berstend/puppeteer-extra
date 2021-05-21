@@ -40,6 +40,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'user-data-dir'
   }
 
+  get filename() {
+    return __filename
+  }
+
   get requirements() {
     return new Set(['runLast', 'dataFromPlugins'])
   }

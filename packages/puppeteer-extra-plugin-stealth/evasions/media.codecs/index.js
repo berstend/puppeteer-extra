@@ -17,6 +17,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/media.codecs'
   }
 
+  get filename() {
+    return __filename
+  }
+
   async onPageCreated(page) {
     await withUtils(page).evaluateOnNewDocument(utils => {
       /**

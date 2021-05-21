@@ -36,6 +36,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/navigator.vendor'
   }
 
+  get filename() {
+    return __filename
+  }
+
   get defaults() {
     return {
       vendor: 'Google Inc.'

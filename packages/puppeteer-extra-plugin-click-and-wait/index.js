@@ -30,6 +30,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'click-and-wait'
   }
 
+  get filename() {
+    return __filename
+  }
+
   async clickAndWaitForNavigation(selector, clickOptions, waitOptions) {
     return Promise.all([
       this.waitForNavigation(waitOptions),

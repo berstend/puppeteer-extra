@@ -44,6 +44,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'repl'
   }
 
+  get filename() {
+    return __filename
+  }
+
   get defaults() {
     return { addToPuppeteerClass: true }
   }

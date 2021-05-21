@@ -22,6 +22,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/webgl.vendor'
   }
 
+  get filename() {
+    return __filename
+  }
+
   /* global WebGLRenderingContext WebGL2RenderingContext */
   async onPageCreated(page) {
     await withUtils(page).evaluateOnNewDocument((utils, opts) => {

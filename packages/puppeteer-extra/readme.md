@@ -99,7 +99,6 @@ puppeteer
 ![typings](https://i.imgur.com/bNtuTOt.png 'Typings')
 
 </details>
-
 <details>
  <summary><strong>Multiple puppeteers with different plugins</strong></summary><br/>
 

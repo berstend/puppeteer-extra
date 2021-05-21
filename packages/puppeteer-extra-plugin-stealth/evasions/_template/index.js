@@ -16,6 +16,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/_template'
   }
 
+  get filename() {
+    return __filename
+  }
+
   async onPageCreated(page) {
     await page.evaluateOnNewDocument(() => {
       console.debug('hello world')

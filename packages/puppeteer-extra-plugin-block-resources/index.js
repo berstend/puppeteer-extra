@@ -47,6 +47,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'block-resources'
   }
 
+  get filename() {
+    return __filename
+  }
+
   get defaults() {
     return {
       availableTypes: new Set([

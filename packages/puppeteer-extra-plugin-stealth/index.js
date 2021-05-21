@@ -78,6 +78,10 @@ class StealthPlugin extends PuppeteerExtraPlugin {
     return 'stealth'
   }
 
+  get filename() {
+    return __filename
+  }
+
   get defaults() {
     const availableEvasions = new Set([
       'chrome.app',

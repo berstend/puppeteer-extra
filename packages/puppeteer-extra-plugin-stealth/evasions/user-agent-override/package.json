@@ -1,4 +1,8 @@
 {
   "private": true,
-  "main": "index.js"
+  "main": "index.js",
+  "dependencies": {
+    "puppeteer-extra-plugin": "^3.1.9",
+    "puppeteer-extra-plugin-user-preferences": "^2.2.12"
+  }
 }

@@ -47,5 +47,8 @@
     "randomstring": "^1.1.5",
     "url-parse": "^1.4.0"
   },
+  "peerDependencies": {
+    "puppeteer-extra": "*"
+  },
   "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }

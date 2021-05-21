@@ -18,6 +18,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/chrome.runtime'
   }
 
+  get filename() {
+    return __filename
+  }
+
   get defaults() {
     return { runOnInsecureOrigins: false } // Override for testing
   }

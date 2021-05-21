@@ -345,7 +345,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
     }
     debug('dependencies missing', missingPlugins)
     // Loop through all dependencies declared missing by plugins
-    for (let name of [...missingPlugins]) {
+    for (let { name, requiredBy } of [...missingPlugins]) {
       // Check if the dependency hasn't been registered as plugin already.
       // This might happen when multiple plugins have nested dependencies.
       if (this.pluginNames.includes(name)) {
@@ -360,9 +360,10 @@ export class PuppeteerExtra implements VanillaPuppeteer {
       // e.g. puppeteer-extra-plugin-stealth/evasions/console.debug => puppeteer-extra-plugin-stealth
       const packageName = name.split('/')[0]
       let dep = null
+
       try {
         // Try to require and instantiate the stated dependency
-        dep = require(name)()
+        dep = require(require.resolve(name, { paths: [requiredBy] }))()
         // Register it with `puppeteer-extra` as plugin
         this.use(dep)
       } catch (err) {
@@ -375,6 +376,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
           Note: You don't need to require the plugin yourself,
           unless you want to modify it's default settings.
           `)
+
         throw err
       }
       // Handle nested dependencies :D

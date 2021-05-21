@@ -15,6 +15,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/navigator.webdriver'
   }
 
+  get filename() {
+    return __filename
+  }
+
   async onPageCreated(page) {
     await page.evaluateOnNewDocument(() => {
       if (navigator.webdriver === false) {

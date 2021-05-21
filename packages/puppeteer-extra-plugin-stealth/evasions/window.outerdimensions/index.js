@@ -15,6 +15,10 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/window.outerdimensions'
   }
 
+  get filename() {
+    return __filename
+  }
+
   async onPageCreated(page) {
     // Chrome returns undefined, Firefox false
     await page.evaluateOnNewDocument(() => {
