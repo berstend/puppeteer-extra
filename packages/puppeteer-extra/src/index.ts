@@ -361,29 +361,13 @@ export class PuppeteerExtra implements VanillaPuppeteer {
       const packageName = name.split('/')[0]
       let dep = null
 
-      const pnpInUse = process.versions.pnp != null;
-      const yarnExtensionsInstalled = pnpInUse && require('pnpapi').VERSIONS.getAllLocators != null;
-
       try {
         // Try to require and instantiate the stated dependency
-        dep = pnpInUse && yarnExtensionsInstalled ? this.resolvePnpPlugin(name, requiredBy) : require(name)()
+        dep = require(require.resolve(name, { paths: [requiredBy] }))()
         // Register it with `puppeteer-extra` as plugin
         this.use(dep)
       } catch (err) {
-        if (pnpInUse && !yarnExtensionsInstalled) {
-          console.warn(`
-          A plugin listed '${name}' as dependency,
-          but PnP could not load the module. Please add it into your yarnrc.yml's packageExtensions:
-
-          packageExtensions:
-            puppeteer-extra@*:
-              dependencies:
-                ${packageName}: "*"
-
-          Note: Consider updating Yarn to v2.3.0 or later to use puppeteer-extra's native PnP support.
-          `)
-        } else {
-          console.warn(`
+        console.warn(`
           A plugin listed '${name}' as dependency,
           which is currently missing. Please install it:
 
@@ -392,7 +376,6 @@ export class PuppeteerExtra implements VanillaPuppeteer {
           Note: You don't need to require the plugin yourself,
           unless you want to modify it's default settings.
           `)
-        }
 
         throw err
       }
@@ -401,21 +384,6 @@ export class PuppeteerExtra implements VanillaPuppeteer {
         this.resolvePluginDependencies()
       }
     }
-  }
-
-  /**
-   * Resolves a plugin through Yarn's PnP system.
-   *
-   * Requires Yarn v2.3.0+ due to using the Yarn extension method getAllLocators.
-   *
-   * @private
-   */
-  private resolvePnpPlugin(pluginName: string, requiredBy: string) {
-    const pnpapi = require('pnpapi');
-
-    const pluginResolution = pnpapi.resolveRequest(pluginName, requiredBy);
-
-    return require(pluginResolution)();
   }
 
   /**

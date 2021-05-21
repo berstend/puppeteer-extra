@@ -100,22 +100,6 @@ puppeteer
 
 </details>
 <details>
- <summary><strong>Yarn Plug'n'play usage</strong></summary><br/>
-
-> Plug'n'play is supported if Yarn v2.3.0 or later is installed.
-> 
-> Otherwise, you will need to add the plugins & it's dependencies into the `packageExtensions` in the `yarnrc.yml` so puppeteer-extra can import them.
-
-```yaml
-packageExtensions:
-  puppeteer-extra@*:
-    dependencies:
-      puppeteer-extra-plugin-adblocker: "*"
-      puppeteer-extra-plugin-stealth: "*"
-```
-
-</details>
-<details>
  <summary><strong>Multiple puppeteers with different plugins</strong></summary><br/>
 
 ```js
