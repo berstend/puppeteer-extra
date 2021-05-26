@@ -489,7 +489,7 @@ utils.makeHandler = () => ({
     apply(target, ctx, args) {
       // Let's fetch the value first, to trigger and escalate potential errors
       // Illegal invocations like `navigator.__proto__.vendor` will throw here
-      ret = utils.cache.Reflect.apply(...arguments)
+      utils.cache.Reflect.apply(...arguments)
       return value
     }
   })
