@@ -74,7 +74,7 @@ export class HumanizePlugin extends AutomationExtraPlugin<HumanizePluginOpts> {
 
         try {
           // TODO: Imitate regular page.click options (delay, etc)
-          return await cursor.click(selector)
+          return await cursor.click(selector, options)
         } catch (err) {
           console.warn(
             `An error occured clicking on "${selector}":`,
