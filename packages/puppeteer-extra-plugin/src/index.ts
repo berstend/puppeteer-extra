@@ -508,13 +508,22 @@ export abstract class PuppeteerExtraPlugin {
         browser.on('disconnected', this.onClose.bind(this))
 
         if (opts.options.handleSIGINT !== false) {
-          process.on('SIGINT', this.onClose.bind(this))
+          process.once('SIGINT', () => {
+            this.onClose()
+            process.kill(process.pid, `SIGINT`)
+          })
         }
         if (opts.options.handleSIGTERM !== false) {
-          process.on('SIGTERM', this.onClose.bind(this))
+          process.once('SIGTERM', () => {
+            this.onClose()
+            process.kill(process.pid, `SIGTERM`)
+          })
         }
         if (opts.options.handleSIGHUP !== false) {
-          process.on('SIGHUP', this.onClose.bind(this))
+          process.once('SIGHUP', () => {
+            this.onClose()
+            process.kill(process.pid, `SIGHUP`)
+          })
         }
       }
     }
