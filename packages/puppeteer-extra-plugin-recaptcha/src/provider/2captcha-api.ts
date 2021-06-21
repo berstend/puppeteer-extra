@@ -7,8 +7,8 @@ var url = require('url')
 var querystring = require('querystring')
 
 var apiKey
-var apiInUrl = 'http://2captcha.com/in.php'
-var apiResUrl = 'http://2captcha.com/res.php'
+var apiInUrl = 'http://azcaptcha.com/in.php'
+var apiResUrl = 'http://azcaptcha.com/res.php'
 var apiMethod = 'base64'
 var SOFT_ID = '2589'
 
