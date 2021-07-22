@@ -1,6 +1,7 @@
 'use strict'
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+const debug = require('debug')('puppeteer-extra-plugin:user-agent-override')
 
 /**
  * Fixes the UserAgent info (composed of UA string, Accept-Language, Platform, and UA hints).
@@ -60,6 +61,10 @@ class Plugin extends PuppeteerExtraPlugin {
       locale: 'en-US,en',
       maskLinux: true
     }
+  }
+  async onDisconnected() {
+    debug('onDisconnected')
+    
   }
 
   async onPageCreated(page) {
