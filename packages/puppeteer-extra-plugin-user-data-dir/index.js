@@ -6,9 +6,7 @@ const fse = require('fs-extra')
 const os = require('os')
 const path = require('path')
 const debug = require('debug')('puppeteer-extra-plugin:user-data-dir')
-
 const mkdtempAsync = util.promisify(fs.mkdtemp)
-
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
 /**
@@ -108,8 +106,8 @@ class Plugin extends PuppeteerExtraPlugin {
     await this.writeFilesToProfile()
   }
 
-  async onClose() {
-    debug('onClose')
+  async onDisconnected() {
+    debug('onDisconnected')
     if (this.shouldDeleteDirectory) {
       this.deleteUserDataDir()
     }
