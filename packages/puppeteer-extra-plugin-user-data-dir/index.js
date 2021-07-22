@@ -108,8 +108,8 @@ class Plugin extends PuppeteerExtraPlugin {
     await this.writeFilesToProfile()
   }
 
-  async onClose() {
-    debug('onClose')
+  async onDisconnected() {
+    debug('onDisconnected')
     if (this.shouldDeleteDirectory) {
       this.deleteUserDataDir()
     }
