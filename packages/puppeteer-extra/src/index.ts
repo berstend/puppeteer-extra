@@ -17,7 +17,7 @@ export interface VanillaPuppeteer {
   /** Path where Puppeteer expects to find bundled Chromium */
   executablePath(): string
   /** The method launches a browser instance with given arguments. The browser will be closed when the parent node.js process is closed. */
-  launch(options?: Puppeteer.LaunchOptions): Promise<Puppeteer.Browser>
+  launch(options?: Puppeteer.LaunchOptions & Puppeteer.BrowserLaunchArgumentOptions & Puppeteer.BrowserConnectOptions): Promise<Puppeteer.Browser>
   /** This methods attaches Puppeteer to an existing Chromium instance. */
   createBrowserFetcher(
     options?: Puppeteer.FetcherOptions
