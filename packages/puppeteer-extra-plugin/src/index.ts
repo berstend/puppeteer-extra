@@ -1,4 +1,4 @@
-import debug, { Debugger } from 'debug'
+import { debug, Debugger } from 'debug'
 import * as Puppeteer from 'puppeteer'
 
 /** @private */
@@ -535,7 +535,7 @@ export abstract class PuppeteerExtraPlugin {
     // Pre filter pages for plugin developers convenience
     if (target.type() === 'page') {
       const page = await target.page()
-      if (this.onPageCreated) {
+      if (this.onPageCreated && page) {
         await this.onPageCreated(page)
       }
     }
