@@ -39,14 +39,12 @@
     "node": ">=8"
   },
   "devDependencies": {
-    "@types/puppeteer": "5.4.3",
-    "ava": "^2.4.0",
-    "documentation-markdown-themes": "^12.1.5",
+    "ava": "^3.15.0",
+    "documentation-markdown-themes": "^13.1.2",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "^2.0.0",
+    "puppeteer": "^10.2.0",
     "puppeteer-extra-plugin": "^3.1.9",
     "puppeteer-extra-plugin-anonymize-ua": "^2.2.17",
-    "puppeteer-firefox": "^0.5.0",
     "rimraf": "^3.0.0",
     "rollup": "^1.27.5",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -57,16 +55,15 @@
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^9.0.0",
-    "typescript": "^3.7.4"
+    "typescript": "^4.3.5"
   },
   "peerDependencies": {
     "puppeteer": "*"
   },
+  "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3",
   "dependencies": {
-    "@types/debug": "^4.1.0",
-    "@types/puppeteer": "5.4.3",
-    "debug": "^4.1.1",
+    "@types/debug": "^4.1.7",
+    "debug": "^4.3.2",
     "deepmerge": "^4.2.2"
-  },
-  "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
+  }
 }

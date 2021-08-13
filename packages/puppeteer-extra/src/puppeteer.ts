@@ -3,8 +3,8 @@
 
 export { Browser } from 'puppeteer'
 export { Page } from 'puppeteer'
-export { ConnectOptions } from 'puppeteer'
-export { ChromeArgOptions } from 'puppeteer'
+export { ConnectOptions, BrowserConnectOptions } from 'puppeteer'
+export { ProductLauncher } from 'puppeteer'
 export { LaunchOptions } from 'puppeteer'
-export { FetcherOptions } from 'puppeteer'
-export { BrowserFetcher } from 'puppeteer'
+export { BrowserLaunchArgumentOptions } from 'puppeteer'
+export { BrowserFetcher, BrowserFetcherOptions } from 'puppeteer'
