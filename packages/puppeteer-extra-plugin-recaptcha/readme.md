@@ -1,4 +1,4 @@
-# puppeteer-extra-plugin-recaptcha [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test/master)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](http://scraping-chat.cf) [![npm](https://img.shields.io/npm/v/puppeteer-extra-plugin-recaptcha.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin-recaptcha)
+# puppeteer-extra-plugin-recaptcha [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test/master)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](http://scraping-chat.cf) [![npm](https://img.shields.io/npm/dt/puppeteer-extra-plugin-recaptcha.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin-recaptcha) [![npm](https://img.shields.io/npm/v/puppeteer-extra-plugin-recaptcha.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin-recaptcha)
 
 > A [puppeteer-extra](https://github.com/berstend/puppeteer-extra) plugin to solve reCAPTCHAs and hCaptchas automatically.
 
@@ -25,7 +25,7 @@ npm install puppeteer puppeteer-extra puppeteer-extra-plugin-recaptcha
 
 ##### Latest
 
-> 🎁 **Note:** Until we've automated changelog updates in markdown files please follow the `#announcements` channel in our [discord server](https://discord.gg/vz7PeKk) for the latest updates and changelog info.
+> 🎁 **Note:** Until we've automated changelog updates in markdown files please follow the `#announcements` channel in our [discord server](https://extra.community/) for the latest updates and changelog info.
 
 _Older changelog:_
 
@@ -73,14 +73,14 @@ puppeteer.use(
   RecaptchaPlugin({
     provider: {
       id: '2captcha',
-      token: 'XXXXXXX', // REPLACE THIS WITH YOUR OWN 2CAPTCHA API KEY ⚡
+      token: 'XXXXXXX' // REPLACE THIS WITH YOUR OWN 2CAPTCHA API KEY ⚡
     },
-    visualFeedback: true, // colorize reCAPTCHAs (violet = detected, green = solved)
+    visualFeedback: true // colorize reCAPTCHAs (violet = detected, green = solved)
   })
 )
 
 // puppeteer usage as normal
-puppeteer.launch({ headless: true }).then(async (browser) => {
+puppeteer.launch({ headless: true }).then(async browser => {
   const page = await browser.newPage()
   await page.goto('https://www.google.com/recaptcha/api2/demo')
 
@@ -89,7 +89,7 @@ puppeteer.launch({ headless: true }).then(async (browser) => {
 
   await Promise.all([
     page.waitForNavigation(),
-    page.click(`#recaptcha-demo-submit`),
+    page.click(`#recaptcha-demo-submit`)
   ])
   await page.screenshot({ path: 'response.png', fullPage: true })
   await browser.close()
@@ -110,13 +110,13 @@ puppeteer.use(
   RecaptchaPlugin({
     provider: {
       id: '2captcha',
-      token: 'ENTER_YOUR_2CAPTCHA_API_KEY_HERE',
-    },
+      token: 'ENTER_YOUR_2CAPTCHA_API_KEY_HERE'
+    }
   })
 )
 
 // Puppeteer usage as normal (headless is "false" just for this demo)
-puppeteer.launch({ headless: false }).then(async (browser) => {
+puppeteer.launch({ headless: false }).then(async browser => {
   const page = await browser.newPage()
   await page.goto('https://www.google.com/recaptcha/api2/demo')
 
@@ -125,7 +125,7 @@ puppeteer.launch({ headless: false }).then(async (browser) => {
 
   await Promise.all([
     page.waitForNavigation(),
-    page.click(`#recaptcha-demo-submit`),
+    page.click(`#recaptcha-demo-submit`)
   ])
   await page.screenshot({ path: 'response.png', fullPage: true })
   await browser.close()
@@ -176,11 +176,15 @@ You can easily use your own provider as well, by providing the plugin a function
 
 - When summoned with `page.solveRecaptchas()` the plugin will attempt to find any active reCAPTCHAs & hCaptchas, extract their configuration, pass that on to the specified solutions provider, take the solutions and put them back into the page (triggering any callback that might be required).
 
+### Is this production ready?
+
+- Yes, the plugin is actively maintained, has been battle-hardened over several years and is used in high workload production setups.
+
 ### How do reCAPTCHAs work?
 
 - reCAPTCHAs use a per-site `sitekey`. Interestingly enough the response token after solving a challenge is (currently) not tied to a specific session or IP and can be passed on to others (until they expire). This is how the external solutions provider work: They're being given a `sitekey` and URL, solve the challenge and respond with a response token.
 
-- This plugin automates all these steps in a generic way (detecting captchas, extracting their config and `sitekey`) as well as triggering the (optional) response callback the site owner might have specified.
+- This plugin automates all these steps in a generic and robust way (detecting captchas, extracting their config and `sitekey`) as well as triggering the (optional) response callback the site owner might have specified.
 
 ### Are ordinary image captchas supported as well?
 
@@ -213,13 +217,37 @@ By default the plugin will never throw, but return any errors silently in the `{
 
 For convenience and because it looks cool the plugin will "colorize" reCAPTCHAs depending on their state (violet = detected and being solved, green = solved). You can turn that feature off by passing `visualFeedback: false` to the plugin initializer.
 
+### Options
+
+```ts
+interface PluginOptions {
+  /** Visualize reCAPTCHAs based on their state */
+  visualFeedback: boolean // default: true
+  /** Throw on errors instead of returning them in the error property */
+  throwOnError: boolean // default: false
+  /** Only solve captchas and challenges visible in the browser viewport */
+  solveInViewportOnly: boolean // default: false
+  /** Solve scored based captchas with no challenge (e.g. reCAPTCHA v3) */
+  solveScoreBased: boolean // default: false
+  /** Solve invisible captchas that have no active challenge */
+  solveInactiveChallenges: boolean // default: false
+}
+```
+
 ### Result object
 
 ```js
-const { captchas, solutions, solved, error } = await page.solveRecaptchas()
+const {
+  captchas,
+  filtered,
+  solutions,
+  solved,
+  error
+} = await page.solveRecaptchas()
 ```
 
 - `captchas` is an array of captchas found in the page
+- `filtered` is an array of captchas that have been detected but are ignored due to plugin options
 - `solutions` is an array of solutions returned from the provider
 - `solved` is an array of "solved" (= solution entered) captchas on the page
 
@@ -228,27 +256,62 @@ const { captchas, solutions, solved, error } = await page.solveRecaptchas()
 `page.solveRecaptchas()` is a convenience method that wraps the following steps:
 
 ```js
-let { captchas, error } = await page.findRecaptchas()
+let { captchas, filtered, error } = await page.findRecaptchas()
 let { solutions, error } = await page.getRecaptchaSolutions(captchas)
 let { solved, error } = await page.enterRecaptchaSolutions(solutions)
 ```
 
+## Troubleshooting
+
 ### Solving captchas in iframes
 
-By default the plugin will only solve reCAPTCHAs showing up on the immediate page. In case you encounter captchas in frames the plugin extends the `Puppeteer.Frame` object with custom methods as well (since `v3.1.5`):
+By default the plugin will only solve reCAPTCHAs showing up on the immediate page. In case you encounter captchas in frames the plugin extends the `Puppeteer.Frame` object with custom methods as well:
 
 ```js
 // Loop over all potential frames on that page
 for (const frame of page.mainFrame().childFrames()) {
-  // Attempt to solve any potential reCAPTCHAs in those frames
+  // Attempt to solve any potential captchas in those frames
   await frame.solveRecaptchas()
 }
 ```
 
-## API
+In addition you might want to disable site isolation, so puppeteer is able to access [cross-origin iframes](https://github.com/puppeteer/puppeteer/issues/2548):
 
-I'm currently reimplementing autogenerated API docs using typedoc (instead of jsdoc/documentation.js). Docs will be updated soon. :)
+```js
+puppeteer.launch({
+  args: [
+    '--disable-features=IsolateOrigins,site-per-process',
+    '--flag-switches-begin --disable-site-isolation-trials --flag-switches-end'
+  ]
+})
+```
 
-## Todo
+### Solving captchas in pre-existing browser pages
 
-- Trigger the captcha checkbox first and only use an external provider when presented with a challenge (we might get lucky and save a few cents).
+In case you're not using `browser.newPage()` but re-use the existing `about:blank` tab (which is not recommended for various reasons) you will experience a `page.solveRecaptchas is not a function` error, as the plugin hasn't hooked into this page yet. As a workaround you can manually add existing pages to the lifecycle methods of the plugin:
+
+```js
+const recaptcha = RecaptchaPlugin()
+const pages = await browser.pages()
+for (const page in pages) {
+  // Add plugin methods to existing pages
+  await recaptcha.onPageCreated(page)
+}
+```
+
+### Tips
+
+- Make sure to use debug logging if something is not working right or when reporting issues.
+- Check for ignored captchas in the filtered array in case a captcha you intend to solve is being ignored, filtered captchas will state the reason why they have been ignored (or better: which plugin option is responsible)
+- Keep in mind that by default the plugin will only solve "active" captchas (the means a visible checkbox or an active challenge popup). In extreme cases (like a very weird or super slow loading site) you can help the plugin by making sure the captcha you intend to solve is there before calling `page.solveRecaptchas`:
+
+```js
+await page.waitForSelector('iframe[src*="recaptcha/"]')
+await page.solveRecaptchas()
+```
+
+---
+
+## License
+
+Copyright © 2018 - 2021, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](https://github.com/berstend). Released under the MIT License.
