@@ -51,6 +51,42 @@ test('stealth: will not break iframes', async t => {
   t.is(realReturn, 'TESTSTRING')
 })
 
+test('vanilla: will not have contentWindow[0]', async t => {
+  const browser = await vanillaPuppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const zero = await page.evaluate(returnValue => {
+    const { document } = window // eslint-disable-line
+    const body = document.querySelector('body')
+    const iframe = document.createElement('iframe')
+    iframe.srcdoc = 'foobar'
+    body.appendChild(iframe)
+    return typeof iframe.contentWindow[0]
+  })
+  await browser.close()
+
+  t.is(zero, 'undefined')
+})
+
+test('stealth: will not have contentWindow[0]', async t => {
+  const browser = await addExtra(vanillaPuppeteer)
+    .use(Plugin())
+    .launch({ headless: true })
+  const page = await browser.newPage()
+
+  const zero = await page.evaluate(returnValue => {
+    const { document } = window // eslint-disable-line
+    const body = document.querySelector('body')
+    const iframe = document.createElement('iframe')
+    iframe.srcdoc = 'foobar'
+    body.appendChild(iframe)
+    return typeof iframe.contentWindow[0]
+  })
+  await browser.close()
+
+  t.is(zero, 'undefined')
+})
+
 test('vanilla: will not have chrome runtine in any frame', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
