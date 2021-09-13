@@ -1,7 +1,7 @@
 {
   "private": true,
   "description": "Modular framework to teach Puppeteer new tricks.",
-  "repository": "atomicfi/puppeteer-extra",
+  "repository": "https://github.com/atomicfi/puppeteer-extra",
   "author": "bubbomb",
   "license": "MIT",
   "main": "packages/puppeteer-extra/index.js",
@@ -42,5 +42,6 @@
     "**/fsevents": "^2.1.2"
   },
   "dependencies": {},
-  "version": "0.0.0"
+  "version": "0.0.0",
+  "name": "puppeteer-extra"
 }
