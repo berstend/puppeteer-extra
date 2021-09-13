@@ -1,8 +1,8 @@
 {
   "private": true,
   "description": "Modular framework to teach Puppeteer new tricks.",
-  "repository": "berstend/puppeteer-extra",
-  "author": "berstend",
+  "repository": "atomicfi/puppeteer-extra",
+  "author": "bubbomb",
   "license": "MIT",
   "main": "packages/puppeteer-extra/index.js",
   "engines": {
@@ -15,7 +15,7 @@
     "test": "lerna run test --concurrency 1 --stream",
     "test-ci": "lerna run test-ci --concurrency 1 --stream",
     "prepare": "lerna run prepare",
-    "release": "lerna publish --npm-client npm"
+    "release": "yes | lerna publish  --registry 'https://npm.pkg.github.com/' --yes --no-changelog"
   },
   "workspaces": [
     "packages/*"
