@@ -1,5 +1,5 @@
 {
-  "packages": ["packages/*"],
+  "packages": ["packages/puppeteer-extra"],
   "version": "independent",
   "useWorkspaces": true,
   "npmClient": "yarn"
