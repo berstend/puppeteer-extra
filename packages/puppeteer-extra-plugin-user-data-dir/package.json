@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-user-data-dir",
-  "version": "2.2.12",
+  "version": "2.2.13",
   "description": "Custom user data directory for puppeteer.",
   "main": "index.js",
   "repository": "berstend/puppeteer-extra",
