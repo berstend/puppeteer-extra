@@ -67,7 +67,7 @@ class Plugin extends PuppeteerExtraPlugin {
     try {
       // We're doing it sync to improve chances to cleanup
       // correctly in the event of ultimate disaster.
-      fse.rmdirSync(this._userDataDir, { recursive: true })
+      fse.rmSync(this._userDataDir, { recursive: true })
     } catch (e) {
       debug(e)
     }
