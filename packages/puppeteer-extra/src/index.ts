@@ -1,4 +1,5 @@
-import * as Puppeteer from './puppeteer'
+/// <reference path="./puppeteer-legacy.d.ts" />
+import { PuppeteerNode, Browser, Page } from 'puppeteer'
 
 import Debug from 'debug'
 const debug = Debug('puppeteer-extra')
@@ -9,20 +10,15 @@ import merge from 'deepmerge'
  * Original Puppeteer API
  * @private
  */
-export interface VanillaPuppeteer {
-  /** Attaches Puppeteer to an existing Chromium instance */
-  connect(options?: Puppeteer.ConnectOptions): Promise<Puppeteer.Browser>
-  /** The default flags that Chromium will be launched with */
-  defaultArgs(options?: Puppeteer.ChromeArgOptions): string[]
-  /** Path where Puppeteer expects to find bundled Chromium */
-  executablePath(): string
-  /** The method launches a browser instance with given arguments. The browser will be closed when the parent node.js process is closed. */
-  launch(options?: Puppeteer.LaunchOptions): Promise<Puppeteer.Browser>
-  /** This methods attaches Puppeteer to an existing Chromium instance. */
-  createBrowserFetcher(
-    options?: Puppeteer.FetcherOptions
-  ): Puppeteer.BrowserFetcher
-}
+export interface VanillaPuppeteer
+  extends Pick<
+    PuppeteerNode,
+    | 'connect'
+    | 'defaultArgs'
+    | 'executablePath'
+    | 'launch'
+    | 'createBrowserFetcher'
+  > {}
 
 /**
  * Minimal plugin interface
@@ -37,8 +33,8 @@ export interface PuppeteerExtraPlugin {
  * We need to hook into non-public APIs in rare occasions to fix puppeteer bugs. :(
  * @private
  */
-interface BrowserInternals extends Puppeteer.Browser {
-  _createPageInContext(contextId?: string): Promise<Puppeteer.Page>
+interface BrowserInternals extends Browser {
+  _createPageInContext(contextId?: string): Promise<Page>
 }
 
 /**
@@ -150,10 +146,12 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    *
    * @param options - See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerlaunchoptions).
    */
-  async launch(options?: Puppeteer.LaunchOptions): Promise<Puppeteer.Browser> {
+  async launch(
+    options?: Parameters<VanillaPuppeteer['launch']>[0]
+  ): ReturnType<VanillaPuppeteer['launch']> {
     // Ensure there are certain properties (e.g. the `options.args` array)
     const defaultLaunchOptions = { args: [] }
-    options = merge(defaultLaunchOptions, options || {} as any)
+    options = merge(defaultLaunchOptions, options || {})
     this.resolvePluginDependencies()
     this.orderPlugins()
 
@@ -187,8 +185,8 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    * @param options - See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerconnectoptions).
    */
   async connect(
-    options?: Puppeteer.ConnectOptions
-  ): Promise<Puppeteer.Browser> {
+    options: Parameters<VanillaPuppeteer['connect']>[0]
+  ): ReturnType<VanillaPuppeteer['connect']> {
     this.resolvePluginDependencies()
     this.orderPlugins()
 
@@ -212,7 +210,9 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    *
    * @param options - See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteerdefaultargsoptions).
    */
-  defaultArgs(options?: Puppeteer.ChromeArgOptions): string[] {
+  defaultArgs(
+    options?: Parameters<VanillaPuppeteer['defaultArgs']>[0]
+  ): ReturnType<VanillaPuppeteer['defaultArgs']> {
     return this.pptr.defaultArgs(options)
   }
 
@@ -227,8 +227,8 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    * @param options - See [puppeteer docs](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#puppeteercreatebrowserfetcheroptions).
    */
   createBrowserFetcher(
-    options?: Puppeteer.FetcherOptions
-  ): Puppeteer.BrowserFetcher {
+    options: Parameters<VanillaPuppeteer['createBrowserFetcher']>[0]
+  ): ReturnType<VanillaPuppeteer['createBrowserFetcher']> {
     return this.pptr.createBrowserFetcher(options)
   }
 
@@ -535,6 +535,6 @@ function requireVanillaPuppeteer(): [VanillaPuppeteer?, Error?] {
   try {
     return [require('puppeteer'), undefined]
   } catch (err) {
-    return [undefined, err]
+    return [undefined, err as Error]
   }
 }
