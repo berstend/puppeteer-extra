@@ -72,6 +72,11 @@ yarn lernaupdate
 # If in doubt :-(
 yarn lerna exec "rm -f yarn.lock; rm -rf node_modules; echo 0"
 rm -f yarn.lock &&  rm -rf node_modules && yarn cache clean
+
+
+# Test a local monorepo package in an outside folder as it would've been installed from the registry
+# Change PACKAGE_DIR to the path of this monorepo and PACKAGE to the package you wish to install
+PACKAGE=puppeteer-extra PACKAGE_DIR=/Users/foo/puppeteer-extra/packages && yarn remove $(echo $PACKAGE); true && rm -f $(pwd)/$(echo $PACKAGE)-latest.tgz && yarn --cwd $(echo $PACKAGE_DIR)/$(echo $PACKAGE) pack --filename $(pwd)/$(echo $PACKAGE)-latest.tgz && YARN_CACHE_FOLDER=/tmp/yarn yarn add file:$(pwd)/$(echo $PACKAGE)-latest.tgz && rm -rf /tmp/yarn
 ```
 
 #### Publishing
