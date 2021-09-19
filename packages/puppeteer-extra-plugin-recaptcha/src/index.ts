@@ -133,7 +133,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
         (function() {
           return Object.keys((window.___grecaptcha_cfg || {}).clients || {}).length
         })()
-      `,
+      `, '',
           { polling: 200, timeout: 10 * 1000 }
         )
         .catch(this.debug)
@@ -150,7 +150,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
         (function() {
           return window.hcaptcha
         })()
-      `,
+      `, '',
         { polling: 200, timeout: 10 * 1000 }
       )
       this.debug('wait:hasHcaptchaScriptTag - end', new Date()) // used as timer
