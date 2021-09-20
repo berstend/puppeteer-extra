@@ -24,8 +24,7 @@
     "./src/**/*.tsx",
     "./src/**/*.ts",
     "./src/**/*.test.ts",
-    "./test/**/*.ts",
-    "./node_modules/@types/puppeteer/index.d.ts"
+    "./test/**/*.ts"
   ],
   "exclude": ["node_modules", "dist", "./test/**/*.spec.ts"]
 }
