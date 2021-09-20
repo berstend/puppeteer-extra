@@ -43,7 +43,7 @@
     "pupeteer"
   ],
   "devDependencies": {
-    "@types/node": "14.17.6",
+    "@types/node": "14.14.34",
     "ava": "2.4.0",
     "documentation-markdown-themes": "^12.1.5",
     "npm-run-all": "^4.1.5",

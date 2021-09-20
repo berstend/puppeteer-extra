@@ -17,8 +17,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": false,
     "pretty": true,
-    "stripInternal": true,
-    "types": ["node"]
+    "stripInternal": true
   },
   "include": [
     "./src/**/*.tsx",
