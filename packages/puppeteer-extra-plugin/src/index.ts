@@ -536,7 +536,10 @@ export abstract class PuppeteerExtraPlugin {
     if (target.type() === 'page') {
       try {
         const page = await target.page()
-        const validPage = page && page.isClosed && !page.isClosed()
+        if (!page) {
+          return
+        }
+        const validPage = 'isClosed' in page && !page.isClosed()
         if (this.onPageCreated && validPage) {
           await this.onPageCreated(page)
         }
