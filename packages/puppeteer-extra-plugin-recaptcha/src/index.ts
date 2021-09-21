@@ -20,7 +20,6 @@ export const BuiltinSolutionProviders: types.SolutionProvider[] = [
  * @noInheritDoc
  */
 export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
-  public opts: types.PluginOptions
   private contentScriptDebug: debug.Debugger
 
   constructor(opts: Partial<types.PluginOptions>) {
@@ -42,6 +41,10 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
       solveScoreBased: false,
       solveInactiveChallenges: false
     }
+  }
+
+  get opts(): types.PluginOptions {
+    return super.opts as any
   }
 
   get contentScriptOpts(): types.ContentScriptOpts {
