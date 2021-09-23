@@ -17,9 +17,17 @@
     "prepare": "lerna run prepare",
     "release": "lerna publish --npm-client npm"
   },
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/@types",
+      "**/@types/**",
+      "**/typescript",
+      "**/typescript/**"
+    ]
+  },
   "devDependencies": {
     "eslint": "^6.7.1",
     "eslint-config-prettier": "^6.7.0",

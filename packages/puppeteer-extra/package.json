@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra",
-  "version": "3.1.18",
+  "version": "3.2.0",
   "description": "Teach puppeteer new tricks through plugins.",
   "repository": "berstend/puppeteer-extra",
   "author": "berstend",
@@ -14,7 +14,7 @@
   "scripts": {
     "clean": "rimraf dist/*",
     "prebuild": "run-s clean",
-    "build": "run-s build:tsc build:rollup",
+    "build": "run-s build:tsc build:rollup ambient-dts",
     "build:tsc": "tsc --module commonjs",
     "build:rollup": "rollup -c rollup.config.ts",
     "docs": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API ./src/index.ts",
@@ -22,7 +22,10 @@
     "test:ts": "ava -v --config ava.config-ts.js",
     "test:js": "ava -v --serial --concurrency 1 --fail-fast",
     "test": "run-p test:js test:ts",
-    "test-ci": "run-s test"
+    "test-ci": "run-s test",
+    "ambient-dts": "run-s ambient-dts-copy ambient-dts-fix-path",
+    "ambient-dts-copy": "copyfiles -u 1 \"src/**/*.d.ts\" dist",
+    "ambient-dts-fix-path": "replace-in-files --string='/// <reference path=\"../src/' --replacement='/// <reference path=\"../dist/' 'dist/**/*.d.ts'"
   },
   "keywords": [
     "puppeteer",
@@ -39,13 +42,12 @@
     "node": ">=8"
   },
   "devDependencies": {
-    "@types/puppeteer": "5.4.3",
     "ava": "^2.4.0",
     "documentation-markdown-themes": "^12.1.5",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "^2.0.0",
-    "puppeteer-extra-plugin": "^3.1.9",
-    "puppeteer-extra-plugin-anonymize-ua": "^2.2.17",
+    "puppeteer": "9",
+    "puppeteer-extra-plugin": "^3.2.0",
+    "puppeteer-extra-plugin-anonymize-ua": "^2.3.0",
     "puppeteer-firefox": "^0.5.0",
     "rimraf": "^3.0.0",
     "rollup": "^1.27.5",
@@ -57,14 +59,14 @@
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^9.0.0",
-    "typescript": "^3.7.4"
+    "typescript": "4.4.3"
   },
   "peerDependencies": {
     "puppeteer": "*"
   },
   "dependencies": {
     "@types/debug": "^4.1.0",
-    "@types/puppeteer": "5.4.3",
+    "@types/puppeteer": "*",
     "debug": "^4.1.1",
     "deepmerge": "^4.2.2"
   },

@@ -1,5 +1,5 @@
 import debug, { Debugger } from 'debug'
-import * as Puppeteer from 'puppeteer'
+import * as Puppeteer from './puppeteer'
 
 /** @private */
 const merge = require('merge-deep')
@@ -461,7 +461,7 @@ export abstract class PuppeteerExtraPlugin {
   _getMissingDependencies(plugins: any) {
     const pluginNames = new Set(plugins.map((p: any) => p.name))
     const missing = new Set(
-      Array.from(this.dependencies.values()).filter((x) => !pluginNames.has(x))
+      Array.from(this.dependencies.values()).filter(x => !pluginNames.has(x))
     )
     return missing
   }
@@ -534,9 +534,17 @@ export abstract class PuppeteerExtraPlugin {
     if (this.onTargetCreated) await this.onTargetCreated(target)
     // Pre filter pages for plugin developers convenience
     if (target.type() === 'page') {
-      const page = await target.page()
-      if (this.onPageCreated) {
-        await this.onPageCreated(page)
+      try {
+        const page = await target.page()
+        if (!page) {
+          return
+        }
+        const validPage = 'isClosed' in page && !page.isClosed()
+        if (this.onPageCreated && validPage) {
+          await this.onPageCreated(page)
+        }
+      } catch (err) {
+        console.error(err)
       }
     }
   }
