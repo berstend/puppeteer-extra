@@ -45,7 +45,7 @@
     "ow": "^0.4.0",
     "puppeteer-extra-plugin": "^3.2.0",
     "randomstring": "^1.1.5",
-    "url-parse": "^1.4.0"
+    "url-parse": "^1.5.3"
   },
   "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }
