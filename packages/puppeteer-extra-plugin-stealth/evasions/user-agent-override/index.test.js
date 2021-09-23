@@ -306,7 +306,7 @@ test('stealth: test if UA hints are correctly set - Windows 10 Generic', async t
   const majorVersion = parseInt(
     (await browser.version()).match(/\/([^\.]+)/)[1]
   )
-  if (majorVersion < 88) {
+  if (majorVersion < 90) {
     t.truthy('foo')
     console.log('Skipping test, browser version too old', majorVersion)
     return
