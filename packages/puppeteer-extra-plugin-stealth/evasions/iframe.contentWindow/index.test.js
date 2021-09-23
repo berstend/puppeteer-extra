@@ -133,6 +133,36 @@ test('vanilla: will not have chrome runtine in any frame', async t => {
   t.is(typeof srcdociframe, 'undefined')
 })
 
+test('vanilla: will return empty srcdoc by default', async t => {
+  const browser = await vanillaPuppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const srcdoc = await page.evaluate(returnValue => {
+    const { document } = window // eslint-disable-line
+    const iframe = document.createElement('iframe')
+    return iframe.srcdoc
+  })
+  await browser.close()
+
+  t.is(srcdoc, '')
+})
+
+test('stealth: will return empty srcdoc by default', async t => {
+  const browser = await addExtra(vanillaPuppeteer)
+    .use(Plugin())
+    .launch({ headless: true })
+  const page = await browser.newPage()
+
+  const srcdoc = await page.evaluate(returnValue => {
+    const { document } = window // eslint-disable-line
+    const iframe = document.createElement('iframe')
+    return iframe.srcdoc
+  })
+  await browser.close()
+
+  t.is(srcdoc, '')
+})
+
 test('stealth: it will cover all frames including srcdoc', async t => {
   // const browser = await vanillaPuppeteer.launch({ headless: false })
   const browser = await addExtra(vanillaPuppeteer)
