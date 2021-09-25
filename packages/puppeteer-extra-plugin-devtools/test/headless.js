@@ -19,26 +19,26 @@ test('will create a tunnel', async t => {
   await puppeteer.launch({ args: PUPPETEER_ARGS }).then(async browser => {
     const tunnel = await devtools.createTunnel(browser)
     t.true(tunnel.url.includes('https://devtools-tunnel-'))
-    t.true(tunnel.url.includes('.localtunnel.me'))
-    browser.close()
+    await browser.close()
   })
   t.true(true)
 })
 
-test('will create a tunnel with custom localtunnel options', async t => {
-  const puppeteer = require('puppeteer-extra')
-  const devtools = require('puppeteer-extra-plugin-devtools')({
-    auth: { user: 'francis', pass: 'president' },
-    localtunnel: {
-      host: 'https://tunnel.datahub.at'
-    }
-  })
-  puppeteer.use(devtools)
+// Note: https://tunnel.datahub.at is gone and I don't have an alternative currently
+// test('will create a tunnel with custom localtunnel options', async t => {
+//   const puppeteer = require('puppeteer-extra')
+//   const devtools = require('puppeteer-extra-plugin-devtools')({
+//     auth: { user: 'francis', pass: 'president' },
+//     localtunnel: {
+//       host: 'https://tunnel.datahub.at'
+//     }
+//   })
+//   puppeteer.use(devtools)
 
-  await puppeteer.launch({ args: PUPPETEER_ARGS }).then(async browser => {
-    const tunnel = await devtools.createTunnel(browser)
-    t.true(tunnel.url.includes('.tunnel.datahub.at'))
-    browser.close()
-  })
-  t.true(true)
-})
+//   await puppeteer.launch({ args: PUPPETEER_ARGS }).then(async browser => {
+//     const tunnel = await devtools.createTunnel(browser)
+//     t.true(tunnel.url.includes('.tunnel.datahub.at'))
+//     browser.close()
+//   })
+//   t.true(true)
+// })
