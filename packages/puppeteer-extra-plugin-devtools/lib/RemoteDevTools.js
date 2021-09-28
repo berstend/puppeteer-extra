@@ -265,7 +265,7 @@ class DevToolsTunnel extends DevToolsCommon {
     })
 
     tunnel.on('error', (err) => {
-      debug('tunnel errored', err)
+      console.log('tunnel error', err);
     })
 
     debug('tunnel:created', tunnel.url)
