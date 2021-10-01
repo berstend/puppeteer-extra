@@ -350,6 +350,11 @@ _Please note that they're hosted outside the main project and not under our cont
 - Minimize and maximize puppeteer in real time.
 - Great for manually solving captchas.
 
+#### [`puppeteer-extra-plugin-portal`](https://github.com/claabs/puppeteer-extra-plugin-portal)
+
+- Use the Chromium screencast API to remotely view and interact with puppeteer sessions.
+- Great for remotely intervening when an automated task gets stuck, like captchas.
+
 > Please check the `Contributing` section below if you're interested in creating a plugin as well.
 
 ---
