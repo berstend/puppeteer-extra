@@ -70,8 +70,6 @@ DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node myscript.js
 <details>
  <summary><strong>TypeScript usage</strong></summary><br/>
 
-**NOTE: `puppeteer` broke typings in recent versions, please install `puppeteer@5` for the time being (see [here](https://github.com/berstend/puppeteer-extra/issues/428#issuecomment-778679665) for more info).**
-
 > `puppeteer-extra` and most plugins are written in TS,
 > so you get perfect type support out of the box. :)
 
