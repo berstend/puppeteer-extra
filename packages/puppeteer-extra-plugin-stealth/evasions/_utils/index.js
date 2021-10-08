@@ -23,7 +23,16 @@ utils.init = () => {
  * @param {object} handler - The JS Proxy handler to wrap
  */
 utils.stripProxyFromErrors = (handler = {}) => {
-  const newHandler = {}
+  const newHandler = {
+    setPrototypeOf: function (target, proto) {
+      if (proto === null)
+        throw new TypeError('Cannot convert object to primitive value')
+      if (Object.getPrototypeOf(target) === Object.getPrototypeOf(proto)) {
+        throw new TypeError('Cyclic __proto__ value')
+      }
+      return Reflect.setPrototypeOf(target, proto)
+    }
+  }
   // We wrap each trap in the handler in a try/catch and modify the error stack if they throw
   const traps = Object.getOwnPropertyNames(handler)
   traps.forEach(trap => {
@@ -264,6 +273,10 @@ utils.redirectToString = (proxyObj, originalObj) => {
 
         // Return the toString representation of our original object if possible
         return originalObj + '' || fallback()
+      }
+
+      if (typeof ctx === 'undefined' || ctx === null) {
+        return target.call(ctx)
       }
 
       // Check if the toString protype of the context is the same as the global prototype,
