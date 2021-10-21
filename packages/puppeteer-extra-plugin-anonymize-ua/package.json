@@ -3,6 +3,7 @@
   "version": "2.3.3",
   "description": "Anonymize User-Agent in puppeteer.",
   "main": "index.js",
+  "types": "index.d.ts",
   "repository": "berstend/puppeteer-extra",
   "author": "berstend",
   "license": "MIT",
