@@ -113,7 +113,8 @@ test('redirectToString: is battle hardened', async t => {
         rawiframe:
           iframe.contentWindow.HTMLMediaElement.prototype.canPlayType + '',
         raw2: HTMLMediaElement.prototype.canPlayType.toString(),
-        rawiframe2: iframe.contentWindow.HTMLMediaElement.prototype.canPlayType.toString(),
+        rawiframe2:
+          iframe.contentWindow.HTMLMediaElement.prototype.canPlayType.toString(),
         direct: Function.prototype.toString.call(
           HTMLMediaElement.prototype.canPlayType
         ),
@@ -168,6 +169,49 @@ test('redirectToString: is battle hardened', async t => {
       iframeWithdirect: 'function toString() { [native code] }',
       iframeWithiframe: 'function toString() { [native code] }'
     }
+  })
+})
+
+test('redirectToString: has proper errors', async t => {
+  const browser = await vanillaPuppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  // Patch all documents including iframes
+  await withUtils(page).evaluateOnNewDocument(utils => {
+    // We redirect toString calls targeted at `canPlayType` to `getParameter`,
+    // so if everything works correctly we expect `getParameter` as response.
+    const proxyObj = HTMLMediaElement.prototype.canPlayType
+    const originalObj = WebGLRenderingContext.prototype.getParameter
+
+    utils.redirectToString(proxyObj, originalObj)
+  })
+  await page.goto('about:blank')
+
+  const result = await withUtils(page).evaluate(utils => {
+    const evalErr = (str = '') => {
+      try {
+        // eslint-disable-next-line no-eval
+        return eval(str)
+      } catch (err) {
+        return err.toString()
+      }
+    }
+
+    return {
+      blank: evalErr(`Function.prototype.toString.apply()`),
+      null: evalErr(`Function.prototype.toString.apply(null)`),
+      undef: evalErr(`Function.prototype.toString.apply(undefined)`),
+      emptyObject: evalErr(`Function.prototype.toString.apply({})`)
+    }
+  })
+  t.deepEqual(result, {
+    blank:
+      "TypeError: Function.prototype.toString requires that 'this' be a Function",
+    null: "TypeError: Function.prototype.toString requires that 'this' be a Function",
+    undef:
+      "TypeError: Function.prototype.toString requires that 'this' be a Function",
+    emptyObject:
+      "TypeError: Function.prototype.toString requires that 'this' be a Function"
   })
 })
 
@@ -483,5 +527,48 @@ test('cache: will prevent leaks through overriding methods', async t => {
   t.deepEqual(results, {
     vanilla: true,
     stealth: false
+  })
+})
+
+test('replaceWithProxy: will throw prototype errors', async t => {
+  const browser = await vanillaPuppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+  await page.goto('about:blank')
+
+  const result = await withUtils(page).evaluate(utils => {
+    utils.replaceWithProxy(HTMLMediaElement.prototype, 'canPlayType', {})
+
+    const evalErr = (str = '') => {
+      try {
+        // eslint-disable-next-line no-eval
+        return eval(str)
+      } catch (err) {
+        return err.toString()
+      }
+    }
+
+    return {
+      same: evalErr(
+        `Object.setPrototypeOf(HTMLMediaElement.prototype.canPlayType, HTMLMediaElement.prototype.canPlayType) + ""`
+      ),
+      sameString: evalErr(
+        `Object.setPrototypeOf(Function.prototype.toString, Function.prototype.toString) + ""`
+      ),
+      null: evalErr(
+        `Object.setPrototypeOf(Function.prototype.toString, null) + ""`
+      ),
+      undef: evalErr(
+        `Object.setPrototypeOf(Function.prototype.toString, undefined) + ""`
+      ),
+      none: evalErr(`Object.setPrototypeOf(Function.prototype.toString) + ""`)
+    }
+  })
+  t.deepEqual(result, {
+    same: 'TypeError: Cyclic __proto__ value',
+    sameString: 'TypeError: Cyclic __proto__ value',
+    null: 'TypeError: Cannot convert object to primitive value',
+    undef:
+      'TypeError: Object prototype may only be an Object or null: undefined',
+    none: 'TypeError: Object prototype may only be an Object or null: undefined'
   })
 })

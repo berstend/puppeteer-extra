@@ -260,3 +260,65 @@ test('stealth: test if UA hints are correctly set - Android 10', async t => {
     t.true(secondLoad.includes('sec-ch-ua-model: "SM-P205"'))
   }
 })
+
+async function userAgentData() {
+  if (!('userAgentData' in navigator)) {
+    return undefined
+  }
+
+  // https://wicg.github.io/ua-client-hints/#getHighEntropyValues
+  const UADataProps = ['brands', 'mobile']
+  const UADataValues = [
+    'architecture', // "arm"
+    'bitness', // "64"
+    'model', // "X644GTM"
+    'platform', // "PhoneOS"
+    'platformVersion', // "10A"
+    'uaFullVersion' // "73.32.AGX.5"
+  ]
+
+  const highEntropy = await navigator.userAgentData.getHighEntropyValues(
+    UADataValues
+  )
+
+  const result = {
+    ...highEntropy,
+    ...Object.fromEntries(UADataProps.map(k => [k, navigator.userAgentData[k]]))
+  }
+  return result
+}
+
+test('stealth: test if UA hints are correctly set - Windows 10 Generic', async t => {
+  const userAgent =
+    'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36'
+  const locale = 'en-AU'
+
+  const puppeteer = addExtra(vanillaPuppeteer).use(
+    Plugin({
+      userAgent,
+      locale
+    })
+  )
+  const browser = await puppeteer.launch({
+    headless: true
+  })
+
+  const majorVersion = parseInt(
+    (await browser.version()).match(/\/([^\.]+)/)[1]
+  )
+  if (majorVersion < 90) {
+    t.truthy('foo')
+    console.log('Skipping test, browser version too old', majorVersion)
+    return
+  }
+  const page = await browser.newPage()
+  await page.goto('https://example.com') // secure context
+
+  const results = await page.evaluate(userAgentData)
+  t.is(results.platform, 'Windows')
+  t.is(results.platformVersion, '10.0')
+  t.is(results.uaFullVersion, '99.0.9999.99')
+
+  const language = await page.evaluate(() => navigator.language)
+  t.is(language, locale)
+})

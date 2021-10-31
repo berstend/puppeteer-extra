@@ -23,7 +23,16 @@ utils.init = () => {
  * @param {object} handler - The JS Proxy handler to wrap
  */
 utils.stripProxyFromErrors = (handler = {}) => {
-  const newHandler = {}
+  const newHandler = {
+    setPrototypeOf: function (target, proto) {
+      if (proto === null)
+        throw new TypeError('Cannot convert object to primitive value')
+      if (Object.getPrototypeOf(target) === Object.getPrototypeOf(proto)) {
+        throw new TypeError('Cyclic __proto__ value')
+      }
+      return Reflect.setPrototypeOf(target, proto)
+    }
+  }
   // We wrap each trap in the handler in a try/catch and modify the error stack if they throw
   const traps = Object.getOwnPropertyNames(handler)
   traps.forEach(trap => {
@@ -266,6 +275,10 @@ utils.redirectToString = (proxyObj, originalObj) => {
         return originalObj + '' || fallback()
       }
 
+      if (typeof ctx === 'undefined' || ctx === null) {
+        return target.call(ctx)
+      }
+
       // Check if the toString protype of the context is the same as the global prototype,
       // if not indicates that we are doing a check across different windows., e.g. the iframeWithdirect` test case
       const hasSameProto = Object.getPrototypeOf(
@@ -489,11 +502,8 @@ utils.makeHandler = () => ({
     apply(target, ctx, args) {
       // Let's fetch the value first, to trigger and escalate potential errors
       // Illegal invocations like `navigator.__proto__.vendor` will throw here
-      const ret = utils.cache.Reflect.apply(...arguments)
-      if (args && args.length === 0) {
-        return value
-      }
-      return ret
+      utils.cache.Reflect.apply(...arguments)
+      return value
     }
   })
 })

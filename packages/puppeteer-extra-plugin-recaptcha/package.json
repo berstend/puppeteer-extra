@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-recaptcha",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "description": "A puppeteer-extra plugin to solve reCAPTCHAs and hCaptchas automatically.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -48,25 +48,29 @@
   ],
   "devDependencies": {
     "@types/debug": "^4.1.5",
-    "@types/node": "^13.1.4",
-    "@types/puppeteer": "5.4.3",
+    "@types/node": "14.17.6",
+    "@types/puppeteer": "*",
     "ava": "2.4.0",
     "copyfiles": "^2.1.1",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "^2.0.0",
-    "puppeteer-extra": "^3.1.18",
+    "puppeteer": "9",
+    "puppeteer-extra": "^3.2.0",
     "replace-in-files-cli": "^0.3.1",
     "rimraf": "^3.0.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-typescript2": "^0.25.2",
     "ts-node": "^8.5.4",
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^9.0.0",
-    "typescript": "^3.7.4"
+    "typescript": "4.4.3"
   },
   "dependencies": {
     "debug": "^4.1.1",
     "merge-deep": "^3.0.2",
-    "puppeteer-extra-plugin": "^3.1.9"
+    "puppeteer-extra-plugin": "^3.2.0"
   },
   "peerDependencies": {
     "puppeteer-extra": "*"

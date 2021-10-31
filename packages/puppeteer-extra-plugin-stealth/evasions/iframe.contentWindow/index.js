@@ -79,7 +79,7 @@ class Plugin extends PuppeteerExtraPlugin {
           Object.defineProperty(iframe, 'srcdoc', {
             configurable: true, // Important, so we can reset this later
             get: function() {
-              return _iframe.srcdoc
+              return _srcdoc
             },
             set: function(newValue) {
               addContentWindowProxy(this)
