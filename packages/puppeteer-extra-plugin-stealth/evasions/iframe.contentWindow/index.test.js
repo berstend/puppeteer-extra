@@ -216,6 +216,98 @@ test('stealth: it will cover all frames including srcdoc', async t => {
   }
 })
 
+test('vanilla: will allow to define property createElement', async t => {
+  const browser = await vanillaPuppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const document = await page.evaluate(() => {
+    const { document } = window // eslint-disable-line
+    return Object.defineProperty(document, 'createElement', { value: 'foo' })
+  })
+  await browser.close()
+
+  t.is(typeof document, 'object')
+})
+
+test('stealth: will allow to define property createElement', async t => {
+  const browser = await addExtra(vanillaPuppeteer)
+    .use(Plugin())
+    .launch({ headless: true })
+  const page = await browser.newPage()
+
+  const document = await page.evaluate(() => {
+    const { document } = window // eslint-disable-line
+    return Object.defineProperty(document, 'createElement', { value: 'foo' })
+  })
+  await browser.close()
+
+  t.is(typeof document, 'object')
+})
+
+test('vanilla: will allow to define property srcdoc', async t => {
+  const browser = await vanillaPuppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const iframe = await page.evaluate(() => {
+    const { document } = window // eslint-disable-line
+    const iframe = document.createElement('iframe')
+    iframe.srcdoc = 'foobar'
+    return Object.defineProperty(iframe, 'srcdoc', { value: 'baz' })
+  })
+  await browser.close()
+
+  t.is(typeof iframe, 'object')
+})
+
+test('stealth: will allow to define property srcdoc', async t => {
+  const browser = await addExtra(vanillaPuppeteer)
+    .use(Plugin())
+    .launch({ headless: true })
+  const page = await browser.newPage()
+
+  const iframe = await page.evaluate(() => {
+    const { document } = window // eslint-disable-line
+    const iframe = document.createElement('iframe')
+    iframe.srcdoc = 'foobar'
+    return Object.defineProperty(iframe, 'srcdoc', { value: 'baz' })
+  })
+  await browser.close()
+
+  t.is(typeof iframe, 'object')
+})
+
+test('vanilla: will allow to define property contentWindow', async t => {
+  const browser = await vanillaPuppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const iframe = await page.evaluate(() => {
+    const { document } = window // eslint-disable-line
+    const iframe = document.createElement('iframe')
+    iframe.srcdoc = 'foobar'
+    return Object.defineProperty(iframe, 'contentWindow', { value: 'baz' })
+  })
+  await browser.close()
+
+  t.is(typeof iframe, 'object')
+})
+
+test('stealth: will allow to define property contentWindow', async t => {
+  const browser = await addExtra(vanillaPuppeteer)
+    .use(Plugin())
+    .launch({ headless: true })
+  const page = await browser.newPage()
+
+  const iframe = await page.evaluate(() => {
+    const { document } = window // eslint-disable-line
+    const iframe = document.createElement('iframe')
+    iframe.srcdoc = 'foobar'
+    return Object.defineProperty(iframe, 'contentWindow', { value: 'baz' })
+  })
+  await browser.close()
+
+  t.is(typeof iframe, 'object')
+})
+
 /* global HTMLIFrameElement */
 test('stealth: it will emulate advanved contentWindow features correctly', async t => {
   // const browser = await vanillaPuppeteer.launch({ headless: false })

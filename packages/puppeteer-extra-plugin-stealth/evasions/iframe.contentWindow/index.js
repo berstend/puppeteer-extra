@@ -60,8 +60,8 @@ class Plugin extends PuppeteerExtraPlugin {
               set(newValue) {
                 return newValue // contentWindow is immutable
               },
-              enumerable: true,
-              configurable: false
+              configurable: true,
+              enumerable: true
             })
           }
         }
@@ -85,7 +85,6 @@ class Plugin extends PuppeteerExtraPlugin {
               addContentWindowProxy(this)
               // Reset property, the hook is only needed once
               Object.defineProperty(iframe, 'srcdoc', {
-                configurable: false,
                 writable: false,
                 value: _srcdoc
               })
@@ -116,7 +115,7 @@ class Plugin extends PuppeteerExtraPlugin {
           }
           // All this just due to iframes with srcdoc bug
           utils.replaceWithProxy(
-            document,
+            Document.prototype,
             'createElement',
             createElementHandler
           )
