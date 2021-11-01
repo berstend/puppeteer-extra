@@ -214,6 +214,10 @@ utils.patchToString = (obj, str = '') => {
       if (ctx === Function.prototype.toString) {
         return utils.makeNativeString('toString')
       }
+      // FIXME
+      if (target.call(ctx).startsWith('function contentWindow()')) {
+        return 'function get contentWindow() { [native code] }'
+      }
       // `toString` targeted at our proxied Object detected
       if (ctx === obj) {
         // We either return the optional string verbatim or derive the most desired result automatically

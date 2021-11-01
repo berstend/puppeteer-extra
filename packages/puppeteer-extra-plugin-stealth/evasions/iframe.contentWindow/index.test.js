@@ -39,7 +39,7 @@ test('stealth: will not break iframes', async t => {
     const { document } = window // eslint-disable-line
     const body = document.querySelector('body')
     const iframe = document.createElement('iframe')
-    iframe.srcdoc = 'foobar'
+    body.append(iframe)
     iframe.contentWindow.mySuperFunction = () => returnValue
     body.appendChild(iframe)
   }, testFuncReturnValue)
@@ -308,6 +308,38 @@ test('stealth: will allow to define property contentWindow', async t => {
   t.is(typeof iframe, 'object')
 })
 
+test('vanilla: will return undefined for getOwnPropertyDescriptor of contentWindow', async t => {
+  const browser = await vanillaPuppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+
+  const iframe = await page.evaluate(() => {
+    const { document } = window // eslint-disable-line
+    const iframe = document.createElement('iframe')
+    iframe.srcdoc = 'foobar'
+    return Object.getOwnPropertyDescriptor(iframe, 'contentWindow')
+  })
+  await browser.close()
+
+  t.is(iframe, undefined)
+})
+
+test('stealth: will return undefined for getOwnPropertyDescriptor of contentWindow', async t => {
+  const browser = await addExtra(vanillaPuppeteer)
+    .use(Plugin())
+    .launch({ headless: true })
+  const page = await browser.newPage()
+
+  const iframe = await page.evaluate(() => {
+    const { document } = window // eslint-disable-line
+    const iframe = document.createElement('iframe')
+    iframe.srcdoc = 'foobar'
+    return Object.getOwnPropertyDescriptor(iframe, 'contentWindow')
+  })
+  await browser.close()
+
+  t.is(iframe, undefined)
+})
+
 /* global HTMLIFrameElement */
 test('stealth: it will emulate advanved contentWindow features correctly', async t => {
   // const browser = await vanillaPuppeteer.launch({ headless: false })
@@ -333,13 +365,12 @@ test('stealth: it will emulate advanved contentWindow features correctly', async
     basicIframe.src = 'data:text/plain;charset=utf-8,foobar'
     document.body.appendChild(iframe)
 
-    results.descriptorsOK = (() => {
+    results.descriptors = (() => {
       // Verify iframe prototype isn't touched
       const descriptors = Object.getOwnPropertyDescriptors(
         HTMLIFrameElement.prototype
       )
-      const str = descriptors.contentWindow.get.toString()
-      return str === `function get contentWindow() { [native code] }`
+      return descriptors.contentWindow.get.toString()
     })()
 
     results.noProxySignature = (() => {
@@ -403,7 +434,7 @@ test('stealth: it will emulate advanved contentWindow features correctly', async
     return
   }
 
-  t.true(results.descriptorsOK)
+  t.is(results.descriptors, 'function get contentWindow() { [native code] }')
   t.true(results.doesExist)
   t.true(results.isNotAClone)
   t.true(results.hasPlugins)
