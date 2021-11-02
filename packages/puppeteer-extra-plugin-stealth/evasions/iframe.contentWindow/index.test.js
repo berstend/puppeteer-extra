@@ -41,7 +41,7 @@ test('stealth: will not break iframes', async t => {
     const iframe = document.createElement('iframe')
     body.append(iframe)
     iframe.contentWindow.mySuperFunction = () => returnValue
-    body.appendChild(iframe)
+   // body.appendChild(iframe)
   }, testFuncReturnValue)
   const realReturn = await page.evaluate(
     () => document.querySelector('iframe').contentWindow.mySuperFunction() // eslint-disable-line

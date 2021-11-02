@@ -27,18 +27,15 @@ class Plugin extends PuppeteerExtraPlugin {
   async onPageCreated(page) {
     await withUtils(page).evaluateOnNewDocument((utils, opts) => {
       try {
-        const cache = new Map()
-
-        // Adds a contentWindow proxy to the provided iframe element
-        const proxifyContentWindow = iframe => {
+        const getContentWindowProxy = iframe => {
           return new Proxy(window, {
-            get(target, key) {
+            get(target, key, proxy) {
               // We actually make this thing behave like a regular iframe window,
               // by intercepting calls to e.g. `.self` and redirect it to the correct thing. :)
               // That makes it possible for these assertions to be correct:
               // iframe.contentWindow.self === window.top // must be false
               if (key === 'self') {
-                return cache.get(iframe)
+                return proxy
               }
               // iframe.contentWindow.frameElement === iframe // must be true
               if (key === 'frameElement') {
@@ -53,21 +50,18 @@ class Plugin extends PuppeteerExtraPlugin {
           })
         }
 
+        const cache = new Map([[null, null]]);
         const handler = {
-          configurable: true,
-          enumerable: true,
-          get: function contentWindow() {
-            if (!this.isConnected) {
-              return null
+          get: function(nativeFn) {
+            const native = nativeFn();
+            if (!cache.has(native)) {
+                cache.set(native, getContentWindowProxy(this));
             }
-            if (!cache.has(this)) {
-              cache.set(this, proxifyContentWindow(this))
-            }
-            return cache.get(this)
+            return cache.get(native);
           }
         }
 
-        Object.defineProperty(
+        utils.replaceGetterSetter(
           // eslint-disable-next-line no-undef
           HTMLIFrameElement.prototype,
           'contentWindow',

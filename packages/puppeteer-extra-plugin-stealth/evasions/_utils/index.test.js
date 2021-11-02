@@ -572,3 +572,40 @@ test('replaceWithProxy: will throw prototype errors', async t => {
     none: 'TypeError: Object prototype may only be an Object or null: undefined'
   })
 })
+
+test('replaceGetterSetter', async t => {
+  const browser = await vanillaPuppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+  await page.goto('about:blank')
+
+  const results = await withUtils(page).evaluate(utils => {
+    const getDetails = a => ({
+      href: a.href,
+      typeof: typeof a.href,
+      json: JSON.stringify(Object.getOwnPropertyDescriptor(
+        HTMLAnchorElement.prototype, 'href')),
+      getToString: Object.getOwnPropertyDescriptor(
+        HTMLAnchorElement.prototype, 'href').get.toString(),
+      setToString: Object.getOwnPropertyDescriptor(
+        HTMLAnchorElement.prototype, 'href').set.toString()
+    })
+
+    const a1 = document.createElement('a')
+    a1.href = 'http://foo.com/'
+    const details1 = getDetails(a1)
+
+    let href = ''
+    utils.replaceGetterSetter(HTMLAnchorElement.prototype, 'href', {
+        get: function() { return href },
+        set: function(newValue) { href = newValue }
+    })
+
+    const a2 = document.createElement('a')
+    a2.href = 'http://foo.com/'
+    const details2 = getDetails(a2)
+
+    return [details1, details2]
+  })
+
+  t.deepEqual(results[1], results[0]);
+})
