@@ -27,37 +27,33 @@ class Plugin extends PuppeteerExtraPlugin {
   async onPageCreated(page) {
     await withUtils(page).evaluateOnNewDocument((utils, opts) => {
       try {
-        const getContentWindowProxy = iframe => {
-          return new Proxy(window, {
-            get(target, key, proxy) {
-              // We actually make this thing behave like a regular iframe window,
-              // by intercepting calls to e.g. `.self` and redirect it to the correct thing. :)
-              // That makes it possible for these assertions to be correct:
-              // iframe.contentWindow.self === window.top // must be false
-              if (key === 'self') {
-                return proxy
+        // Add a cache to not recreate the proxy and to keep the same object
+        // between two calls (to keep the possible modifications made by the
+        // website).
+        const proxifyContentWindow = utils.memoize(contentWindow => {
+          // If the iframe isn't in the DOM, it has no contentWindow.
+          if (contentWindow === null) {
+            return null
+          }
+          return new Proxy(contentWindow, {
+            get(target, prop) {
+              if (
+                prop === 'chrome' &&
+                Reflect.get(target, prop) === undefined
+              ) {
+                return window.chrome
               }
-              // iframe.contentWindow.frameElement === iframe // must be true
-              if (key === 'frameElement') {
-                return iframe
+              if (prop === 'navigator') {
+                return window.navigator
               }
-              // Intercept iframe.contentWindow[0] to hide the property 0 added by the proxy.
-              if (key === '0') {
-                return undefined
-              }
-              return Reflect.get(target, key)
+              return Reflect.get(target, prop)
             }
           })
-        }
+        })
 
-        const cache = new Map([[null, null]]);
         const handler = {
           get: function(nativeFn) {
-            const native = nativeFn();
-            if (!cache.has(native)) {
-                cache.set(native, getContentWindowProxy(this));
-            }
-            return cache.get(native);
+            return proxifyContentWindow(nativeFn())
           }
         }
 

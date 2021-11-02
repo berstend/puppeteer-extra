@@ -544,6 +544,39 @@ utils.makeHandler = () => ({
   })
 })
 
+/**
+ * Compare two arrays.
+ *
+ * @param {array} array1 - First array
+ * @param {array} array2 - Second array
+ */
+utils.arrayEquals = (array1, array2) => {
+  if (array1.length !== array2.length) {
+    return false
+  }
+  for (let i = 0; i < array1.length; ++i) {
+    if (array1[i] !== array2[i]) {
+      return false
+    }
+  }
+  return true
+}
+
+/**
+ * Cache the method return according to its arguments.
+ *
+ * @param {Function} fn - A function that will be cached
+ */
+utils.memoize = fn => {
+  const cache = []
+  return function(...args) {
+    if (!cache.some(c => utils.arrayEquals(c.key, args))) {
+      cache.push({ key: args, value: fn.apply(this, args) })
+    }
+    return cache.find(c => utils.arrayEquals(c.key, args)).value
+  }
+}
+
 // --
 // Stuff starting below this line is NodeJS specific.
 // --

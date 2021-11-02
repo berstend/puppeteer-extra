@@ -39,9 +39,9 @@ test('stealth: will not break iframes', async t => {
     const { document } = window // eslint-disable-line
     const body = document.querySelector('body')
     const iframe = document.createElement('iframe')
-    body.append(iframe)
+    body.srcdoc = 'foobar'
+    body.appendChild(iframe)
     iframe.contentWindow.mySuperFunction = () => returnValue
-   // body.appendChild(iframe)
   }, testFuncReturnValue)
   const realReturn = await page.evaluate(
     () => document.querySelector('iframe').contentWindow.mySuperFunction() // eslint-disable-line
@@ -133,36 +133,6 @@ test('vanilla: will not have chrome runtine in any frame', async t => {
   t.is(typeof srcdociframe, 'undefined')
 })
 
-test('vanilla: will return empty srcdoc by default', async t => {
-  const browser = await vanillaPuppeteer.launch({ headless: true })
-  const page = await browser.newPage()
-
-  const srcdoc = await page.evaluate(returnValue => {
-    const { document } = window // eslint-disable-line
-    const iframe = document.createElement('iframe')
-    return iframe.srcdoc
-  })
-  await browser.close()
-
-  t.is(srcdoc, '')
-})
-
-test('stealth: will return empty srcdoc by default', async t => {
-  const browser = await addExtra(vanillaPuppeteer)
-    .use(Plugin())
-    .launch({ headless: true })
-  const page = await browser.newPage()
-
-  const srcdoc = await page.evaluate(returnValue => {
-    const { document } = window // eslint-disable-line
-    const iframe = document.createElement('iframe')
-    return iframe.srcdoc
-  })
-  await browser.close()
-
-  t.is(srcdoc, '')
-})
-
 test('stealth: it will cover all frames including srcdoc', async t => {
   // const browser = await vanillaPuppeteer.launch({ headless: false })
   const browser = await addExtra(vanillaPuppeteer)
@@ -214,66 +184,6 @@ test('stealth: it will cover all frames including srcdoc', async t => {
     t.is(typeof sandboxSOASiframe, 'object')
     t.is(typeof srcdociframe, 'object')
   }
-})
-
-test('vanilla: will allow to define property createElement', async t => {
-  const browser = await vanillaPuppeteer.launch({ headless: true })
-  const page = await browser.newPage()
-
-  const document = await page.evaluate(() => {
-    const { document } = window // eslint-disable-line
-    return Object.defineProperty(document, 'createElement', { value: 'foo' })
-  })
-  await browser.close()
-
-  t.is(typeof document, 'object')
-})
-
-test('stealth: will allow to define property createElement', async t => {
-  const browser = await addExtra(vanillaPuppeteer)
-    .use(Plugin())
-    .launch({ headless: true })
-  const page = await browser.newPage()
-
-  const document = await page.evaluate(() => {
-    const { document } = window // eslint-disable-line
-    return Object.defineProperty(document, 'createElement', { value: 'foo' })
-  })
-  await browser.close()
-
-  t.is(typeof document, 'object')
-})
-
-test('vanilla: will allow to define property srcdoc', async t => {
-  const browser = await vanillaPuppeteer.launch({ headless: true })
-  const page = await browser.newPage()
-
-  const iframe = await page.evaluate(() => {
-    const { document } = window // eslint-disable-line
-    const iframe = document.createElement('iframe')
-    iframe.srcdoc = 'foobar'
-    return Object.defineProperty(iframe, 'srcdoc', { value: 'baz' })
-  })
-  await browser.close()
-
-  t.is(typeof iframe, 'object')
-})
-
-test('stealth: will allow to define property srcdoc', async t => {
-  const browser = await addExtra(vanillaPuppeteer)
-    .use(Plugin())
-    .launch({ headless: true })
-  const page = await browser.newPage()
-
-  const iframe = await page.evaluate(() => {
-    const { document } = window // eslint-disable-line
-    const iframe = document.createElement('iframe')
-    iframe.srcdoc = 'foobar'
-    return Object.defineProperty(iframe, 'srcdoc', { value: 'baz' })
-  })
-  await browser.close()
-
-  t.is(typeof iframe, 'object')
 })
 
 test('vanilla: will allow to define property contentWindow', async t => {
