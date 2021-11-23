@@ -39,7 +39,10 @@ const puppeteer = require('puppeteer-extra')
 // Add adblocker plugin, which will transparently block ads in all pages you
 // create using puppeteer.
 const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker')
-puppeteer.use(AdblockerPlugin())
+puppeteer.use(AdblockerPlugin({
+  // Optionally enable Cooperative Mode for several request interceptors
+  interceptResolutionPriority: 0
+}))
 
 // puppeteer usage as normal
 puppeteer.launch({ headless: true }).then(async (browser) => {

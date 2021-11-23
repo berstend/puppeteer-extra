@@ -17,7 +17,10 @@
 // })()
 
 const puppeteer = require('puppeteer-extra')
-const blockResourcesPlugin = require('puppeteer-extra-plugin-block-resources')()
+const blockResourcesPlugin = require('puppeteer-extra-plugin-block-resources')({
+  // Optionally enable Cooperative Mode for several request interceptors
+  interceptResolutionPriority: 0
+})
 puppeteer.use(blockResourcesPlugin)
 ;(async () => {
   const browser = await puppeteer.launch({ headless: false })
