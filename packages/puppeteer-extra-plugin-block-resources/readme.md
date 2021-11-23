@@ -35,7 +35,9 @@ Example:
 
 ```javascript
 puppeteer.use(require('puppeteer-extra-plugin-block-resources')({
-  blockedTypes: new Set(['image', 'stylesheet'])
+  blockedTypes: new Set(['image', 'stylesheet']),
+  // Optionally enable Cooperative Mode for several request interceptors
+  interceptResolutionPriority: 0
 }))
 
 //

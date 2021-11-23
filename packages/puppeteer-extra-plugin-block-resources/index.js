@@ -12,7 +12,9 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  *
  * @example
  * puppeteer.use(require('puppeteer-extra-plugin-block-resources')({
- *   blockedTypes: new Set(['image', 'stylesheet'])
+ *   blockedTypes: new Set(['image', 'stylesheet']),
+ *   // Optionally enable Cooperative Mode for several request interceptors
+ *   interceptResolutionPriority: 0
  * }))
  *
  * //
@@ -66,7 +68,7 @@ class Plugin extends PuppeteerExtraPlugin {
       ]),
       // Block nothing by default
       blockedTypes: new Set([]),
-      interceptResolutionPriority: 0
+      interceptResolutionPriority: undefined
     }
   }
 
@@ -130,12 +132,19 @@ class Plugin extends PuppeteerExtraPlugin {
 
     if (alreadyHandled) return
 
-    return shouldBlock
-      ? request.abort('blockedbyclient', this.interceptResolutionPriority)
-      : request.continue(
-          request.continueRequestOverrides(),
-          this.interceptResolutionPriority
-        )
+    if (shouldBlock) {
+      const abortArgs = request.continueRequestOverrides
+        ? ['blockedbyclient', this.interceptResolutionPriority]
+        : []
+
+      return request.abort(...abortArgs)
+    }
+
+    const continueArgs = request.continueRequestOverrides
+      ? [request.continueRequestOverrides(), this.interceptResolutionPriority]
+      : []
+
+    return request.continue(...continueArgs)
   }
 
   /**
