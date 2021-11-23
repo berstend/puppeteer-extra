@@ -65,7 +65,8 @@ class Plugin extends PuppeteerExtraPlugin {
         'other'
       ]),
       // Block nothing by default
-      blockedTypes: new Set([])
+      blockedTypes: new Set([]),
+      interceptResolutionPriority: 0
     }
   }
 
@@ -92,13 +93,49 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   /**
+   * Get the request interception resolution priority.
+   *
+   * Priority for Cooperative Intercept Mode can be configured either through `opts` or by modifying this property.
+   *
+   * @type {number} - A number for the request interception resolution priority.
+   */
+  get interceptResolutionPriority() {
+    return this.opts.interceptResolutionPriority
+  }
+
+  /**
    * @private
    */
   onRequest(request) {
     const type = request.resourceType()
     const shouldBlock = this.blockedTypes.has(type)
-    this.debug('onRequest', { type, shouldBlock })
-    return shouldBlock ? request.abort() : request.continue()
+
+    // Cooperative Intercept Mode only available in puppeteer@11+
+    const [currentResolution, currentPriority] = request.interceptResolution
+      ? request.interceptResolution()
+      : []
+
+    // Avoid using resolution `alreay-handled` with typo
+    // Requests are immediately handled in Legacy Mode
+    const alreadyHandled = currentResolution
+      ? currentResolution.endsWith('handled')
+      : true
+
+    this.debug('onRequest', {
+      type,
+      shouldBlock,
+      currentResolution,
+      currentPriority
+    })
+
+    if (alreadyHandled) return
+
+    return shouldBlock
+      ? request.abort('blockedbyclient', this.interceptResolutionPriority)
+      : request.continue(
+          request.continueRequestOverrides(),
+          this.interceptResolutionPriority
+        )
   }
 
   /**
