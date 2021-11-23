@@ -17,6 +17,8 @@ export interface PluginOptions {
   useCache: boolean
   /** Optional custom directory for adblocker cache files. Default: undefined */
   cacheDir?: string
+  /** Optional custom priority for interception resolution. Default: 0 */
+  interceptResolutionPriority?: number
 }
 
 /**
@@ -38,7 +40,8 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
     return {
       blockTrackers: false,
       useCache: true,
-      cacheDir: undefined
+      cacheDir: undefined,
+      interceptResolutionPriority: 0
     }
   }
 
@@ -99,8 +102,10 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
     if (this.blocker === undefined) {
       try {
         this.blocker = await this.loadFromCache()
+        this.blocker.setRequestInterceptionPriority(this.opts.interceptResolutionPriority)
       } catch (ex) {
         this.blocker = await this.loadFromRemote()
+        this.blocker.setRequestInterceptionPriority(this.opts.interceptResolutionPriority)
         await this.persistToCache(this.blocker)
       }
     }

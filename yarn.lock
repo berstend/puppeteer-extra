@@ -1092,39 +1092,39 @@
     "@babel/helper-validator-identifier" "^7.14.9"
     to-fast-properties "^2.0.0"
 
-"@cliqz/adblocker-content@^1.22.6":
-  version "1.22.6"
-  resolved "https://registry.yarnpkg.com/@cliqz/adblocker-content/-/adblocker-content-1.22.6.tgz#8a5910fd6b255eeeb697037a676fdc48b6bd7ce3"
-  integrity sha512-N9+ckQI+zJKlkdy6qPJsoyNU3yuxp7J2nwZq05WzfRxon9E3anODGKlZyn+MtfF9Vmmk7g+hObPFTganBx0q9Q==
+"@cliqz/adblocker-content@^1.23.0":
+  version "1.23.0"
+  resolved "https://registry.yarnpkg.com/@cliqz/adblocker-content/-/adblocker-content-1.23.0.tgz#4417a28d6018138956898efa141c9e6f52c9ec34"
+  integrity sha512-X1osDX8pWGE1wGFnJqdY4qnwHI9Kb48Tom8HeZWTYDsf8VN636xUB5e5s4YZCTSfn271tFHYSdXNx3+TZqkkkQ==
   dependencies:
-    "@cliqz/adblocker-extended-selectors" "^1.22.6"
+    "@cliqz/adblocker-extended-selectors" "^1.23.0"
 
-"@cliqz/adblocker-extended-selectors@^1.22.6":
-  version "1.22.6"
-  resolved "https://registry.yarnpkg.com/@cliqz/adblocker-extended-selectors/-/adblocker-extended-selectors-1.22.6.tgz#35042785eb3dc8e653070bb7013267f3953e7788"
-  integrity sha512-wB0lP2qoeU8s0NttcXGhYchYsAQwtTvjEOs5at5/CSbwfvFedFx29vnSpsPXaOKDEINqywVpCtUYoN8+wVgI1w==
+"@cliqz/adblocker-extended-selectors@^1.23.0":
+  version "1.23.0"
+  resolved "https://registry.yarnpkg.com/@cliqz/adblocker-extended-selectors/-/adblocker-extended-selectors-1.23.0.tgz#44e54a91ae6f4cbc24f76f5b0ce16ec03851c015"
+  integrity sha512-6Zl/wdGBuRd80ssmThOYS0L9u2t4lZElJXpxRB3Jp7uF6oL4LqSK4OKps4x8BktdQMgej6r5EhCh1avwu/13Bg==
 
-"@cliqz/adblocker-puppeteer@1.22.6":
-  version "1.22.6"
-  resolved "https://registry.yarnpkg.com/@cliqz/adblocker-puppeteer/-/adblocker-puppeteer-1.22.6.tgz#6b311c74ab8f144ab71f2c259b9e49fa76243e9b"
-  integrity sha512-Yg+64gsBfG8NKIJTKRg+sgK8G32W/z4qNEoMGdGJc7mdKVCn+y93WklDMO3pCy64u9jqUVS/Rd7z/Z96dX3K8Q==
+"@cliqz/adblocker-puppeteer@1.23.0":
+  version "1.23.0"
+  resolved "https://registry.yarnpkg.com/@cliqz/adblocker-puppeteer/-/adblocker-puppeteer-1.23.0.tgz#cacfb435f5f5941ec30f53b55fc5acb062d7b1a7"
+  integrity sha512-2WeltnghK1zpFI+DkE53UT7Fyn+RMsp9BhWXVqMUL09TF/o+uZroX42quA3xTY1/1SxX+0XTWEivmMX//9BxnQ==
   dependencies:
-    "@cliqz/adblocker" "^1.22.6"
-    "@cliqz/adblocker-content" "^1.22.6"
+    "@cliqz/adblocker" "^1.23.0"
+    "@cliqz/adblocker-content" "^1.23.0"
     tldts-experimental "^5.6.21"
 
-"@cliqz/adblocker@^1.22.6":
-  version "1.22.6"
-  resolved "https://registry.yarnpkg.com/@cliqz/adblocker/-/adblocker-1.22.6.tgz#400b8c41da9a9a3b45da8774d2cd4333960e8988"
-  integrity sha512-f3GNYRiGyplZ79OJA1NLEWrnjWgKKLudupt07pKroesATKxC75hoLushY8F94ensKOLTs/7MTQyYRieVXgOEKg==
+"@cliqz/adblocker@^1.23.0":
+  version "1.23.0"
+  resolved "https://registry.yarnpkg.com/@cliqz/adblocker/-/adblocker-1.23.0.tgz#a970d1199d36161a6154e27654cd7eb59a10a497"
+  integrity sha512-SRgSqEzFSN99zBeW3Or7ZW1uiIn+O2/Ol6KmZnsTZ/Wrn2RAQsm4wEzxPi6BSC3HpdJh2JdKuAwISavpmhuuvA==
   dependencies:
-    "@cliqz/adblocker-content" "^1.22.6"
-    "@cliqz/adblocker-extended-selectors" "^1.22.6"
+    "@cliqz/adblocker-content" "^1.23.0"
+    "@cliqz/adblocker-extended-selectors" "^1.23.0"
     "@remusao/guess-url-type" "^1.1.2"
     "@remusao/small" "^1.1.2"
     "@remusao/smaz" "^1.7.1"
-    "@types/chrome" "^0.0.157"
-    "@types/firefox-webext-browser" "^82.0.0"
+    "@types/chrome" "^0.0.159"
+    "@types/firefox-webext-browser" "^94.0.0"
     tldts-experimental "^5.6.21"
 
 "@concordance/react@^2.0.0":
@@ -2091,10 +2091,10 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@types/chrome@^0.0.157":
-  version "0.0.157"
-  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.157.tgz#5a50bd378f4f632383c6ebbc34c88fb87d501f58"
-  integrity sha512-q5SSmA9nKaDzFi8QkJW9kW8MYwWg9O7PKPUdBxsz+3rPcIF1Kxw0Bexpd70Uq1mU6PN4DBp4qKMXQDybUeiI9w==
+"@types/chrome@^0.0.159":
+  version "0.0.159"
+  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.159.tgz#0c1125fbb6d1fd64713e35de9aafbfd5a1b7a33a"
+  integrity sha512-WZBkNJGAwZuRgv/an94DANdzFtJK0TvlO/evMpJD/TYnkjIxynIAU6RM7M78e8tyig/vD6weQ9T1Ba7v8nYjXQ==
   dependencies:
     "@types/filesystem" "*"
     "@types/har-format" "*"
@@ -2123,10 +2123,10 @@
   resolved "https://registry.yarnpkg.com/@types/filewriter/-/filewriter-0.0.29.tgz#a48795ecadf957f6c0d10e0c34af86c098fa5bee"
   integrity sha512-BsPXH/irW0ht0Ji6iw/jJaK8Lj3FJemon2gvEqHKpCdDCeemHa+rI3WBGq5z7cDMZgoLjY40oninGxqk+8NzNQ==
 
-"@types/firefox-webext-browser@^82.0.0":
-  version "82.0.1"
-  resolved "https://registry.yarnpkg.com/@types/firefox-webext-browser/-/firefox-webext-browser-82.0.1.tgz#197dec1d175b099eb8dac92e9c9c9a5482a5dd8a"
-  integrity sha512-odcPKiJ34N8k53clIWen3hLvl09ja7SQ9NqtUbgmqeJ/a/ZRQiF665iXSFPcnl6cBn2XQgEg2lsUUApYNiyj+g==
+"@types/firefox-webext-browser@^94.0.0":
+  version "94.0.0"
+  resolved "https://registry.yarnpkg.com/@types/firefox-webext-browser/-/firefox-webext-browser-94.0.0.tgz#8a470475ab111e47d34e2599034e227feece09f9"
+  integrity sha512-DU6rySaklQlzc3tnVAFNgK2OGkOKCDze8ZlhQFtx+Ag4w2rzgNFoqlwQHrUqUogRJph7Gxf1M8e9n4mlYlragw==
 
 "@types/glob@^7.1.1":
   version "7.1.4"
