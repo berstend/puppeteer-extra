@@ -36,5 +36,5 @@ test('should have opts with default values', async t => {
   const instance = new Plugin()
   t.deepEqual(instance.opts.blockedTypes, new Set([]))
   t.is(instance.opts.availableTypes.size, 13)
-  t.is(instance.opts.interceptResolutionPriority, 0)
+  t.is(instance.opts.interceptResolutionPriority, undefined)
 })
