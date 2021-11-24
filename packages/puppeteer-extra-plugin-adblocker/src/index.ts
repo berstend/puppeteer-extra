@@ -13,6 +13,9 @@ const engineCacheFilename = `${pkg.name}-${pkg.version}-engine.bin`
 export interface PluginOptions {
   /** Whether or not to block trackers (in addition to ads). Default: false */
   blockTrackers: boolean
+  /** Whether or not to block trackers and other annoyances, including cookie
+      notices. Default: false */
+  blockTrackersAndAnnoyances: boolean
   /** Persist adblocker engine cache to disk for speedup. Default: true */
   useCache: boolean
   /** Optional custom directory for adblocker cache files. Default: undefined */
@@ -37,6 +40,7 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
   get defaults(): PluginOptions {
     return {
       blockTrackers: false,
+      blockTrackersAndAnnoyances: false,
       useCache: true,
       cacheDir: undefined
     }
@@ -81,8 +85,13 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
    * blocker).
    */
   private async loadFromRemote(): Promise<PuppeteerBlocker> {
-    this.debug('load from remote', { blockTrackers: this.opts.blockTrackers })
-    if (this.opts.blockTrackers === true) {
+    this.debug('load from remote', {
+      blockTrackers: this.opts.blockTrackers,
+      blockTrackersAndAnnoyances: this.opts.blockTrackersAndAnnoyances
+    })
+    if (this.opts.blockTrackersAndAnnoyances === true) {
+      return PuppeteerBlocker.fromPrebuiltFull(fetch)
+    } else if (this.opts.blockTrackers === true) {
       return PuppeteerBlocker.fromPrebuiltAdsAndTracking(fetch)
     } else {
       return PuppeteerBlocker.fromPrebuiltAdsOnly(fetch)
