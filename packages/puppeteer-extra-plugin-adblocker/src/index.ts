@@ -115,7 +115,7 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
   /**
    * Sets the request interception priority on the `PuppeteerBlocker` instance.
    */
-   private setRequestInterceptionPriority(): void {
+  private setRequestInterceptionPriority(): void {
     this.blocker?.setRequestInterceptionPriority(this.opts.interceptResolutionPriority)
   }
 
