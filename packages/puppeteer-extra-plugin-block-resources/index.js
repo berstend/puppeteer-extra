@@ -112,7 +112,7 @@ class Plugin extends PuppeteerExtraPlugin {
     const type = request.resourceType()
     const shouldBlock = this.blockedTypes.has(type)
 
-    // Cooperative Intercept Mode only available in puppeteer@11+
+    // Cooperative Intercept Mode only available in puppeteer@10.2+
     const [currentResolution, currentPriority] = request.interceptResolution
       ? request.interceptResolution()
       : []
