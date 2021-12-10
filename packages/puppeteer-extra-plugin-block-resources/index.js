@@ -112,15 +112,17 @@ class Plugin extends PuppeteerExtraPlugin {
     const type = request.resourceType()
     const shouldBlock = this.blockedTypes.has(type)
 
-    // Cooperative Intercept Mode only available in puppeteer@10.2+
-    const [currentResolution, currentPriority] = request.interceptResolution
-      ? request.interceptResolution()
+    // Check support for Cooperative Intercept Mode
+    const [
+      currentResolution,
+      currentPriority
+    ] = request.interceptResolutionState
+      ? request.interceptResolutionState()
       : []
 
-    // Avoid using resolution `alreay-handled` with typo
     // Requests are immediately handled in Legacy Mode
-    const alreadyHandled = currentResolution
-      ? currentResolution.endsWith('handled')
+    const alreadyHandled = request.isInterceptResolutionHandled
+      ? request.isInterceptResolutionHandled()
       : true
 
     this.debug('onRequest', {
