@@ -38,10 +38,11 @@ const puppeteer = require('puppeteer-extra')
 
 // Add adblocker plugin, which will transparently block ads in all pages you
 // create using puppeteer.
+const { DEFAULT_INTERCEPT_RESOLUTION_PRIORITY } = require('puppeteer')
 const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker')
 puppeteer.use(AdblockerPlugin({
   // Optionally enable Cooperative Mode for several request interceptors
-  interceptResolutionPriority: 0
+  interceptResolutionPriority: DEFAULT_INTERCEPT_RESOLUTION_PRIORITY
 }))
 
 // puppeteer usage as normal

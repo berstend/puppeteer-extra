@@ -11,10 +11,11 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * @param {Set<string>} [opts.blockedTypes] - Specify which resourceTypes to block (by default none)
  *
  * @example
+ * const { DEFAULT_INTERCEPT_RESOLUTION_PRIORITY } = require('puppeteer')
  * puppeteer.use(require('puppeteer-extra-plugin-block-resources')({
  *   blockedTypes: new Set(['image', 'stylesheet']),
  *   // Optionally enable Cooperative Mode for several request interceptors
- *   interceptResolutionPriority: 0
+ *   interceptResolutionPriority: DEFAULT_INTERCEPT_RESOLUTION_PRIORITY
  * }))
  *
  * //
@@ -126,7 +127,7 @@ class Plugin extends PuppeteerExtraPlugin {
     if (alreadyHandled) return
 
     if (shouldBlock) {
-      const abortArgs = request.continueRequestOverrides
+      const abortArgs = request.abortErrorReason
         ? ['blockedbyclient', this.interceptResolutionPriority]
         : []
 
