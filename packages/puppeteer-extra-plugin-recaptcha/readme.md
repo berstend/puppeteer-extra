@@ -280,7 +280,7 @@ In addition you might want to disable site isolation, so puppeteer is able to ac
 ```js
 puppeteer.launch({
   args: [
-    '--disable-features=IsolateOrigins,site-per-process',
+    '--disable-features=IsolateOrigins,site-per-process,SitePerProcess',
     '--flag-switches-begin --disable-site-isolation-trials --flag-switches-end'
   ]
 })
