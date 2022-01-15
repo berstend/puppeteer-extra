@@ -4,10 +4,11 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 const withUtils = require('../_utils/withUtils')
 
 /**
- * Pass the Languages Test. Allows setting custom languages.
+ * Pass the Languages Test. Allows setting custom language & languages.
  *
  * @param {Object} [opts] - Options
  * @param {Array<string>} [opts.languages] - The languages to use (default: `['en-US', 'en']`)
+ * @param {string} [opts.language] - The language to use (default: `'en-US'`)
  */
 class Plugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
@@ -25,11 +26,13 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   async onPageCreated(page) {
+    const languages = this.opts.languages.length
+      ? this.opts.languages
+      : ['en-US', 'en']
+    const language = this.opts.language || languages[0]
+
     await withUtils(page).evaluateOnNewDocument(
-      (utils, { opts }) => {
-        const languages = opts.languages.length
-          ? opts.languages
-          : ['en-US', 'en']
+      (utils, { languages }) => {
         utils.replaceGetterWithProxy(
           Object.getPrototypeOf(navigator),
           'languages',
@@ -37,7 +40,20 @@ class Plugin extends PuppeteerExtraPlugin {
         )
       },
       {
-        opts: this.opts
+        languages
+      }
+    )
+
+    await withUtils(page).evaluateOnNewDocument(
+      (utils, { language }) => {
+        utils.replaceGetterWithProxy(
+          Object.getPrototypeOf(navigator),
+          'language',
+          utils.makeHandler().getterValue(language)
+        )
+      },
+      {
+        language
       }
     )
   }
