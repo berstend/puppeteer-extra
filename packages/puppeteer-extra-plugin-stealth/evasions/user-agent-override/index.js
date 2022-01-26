@@ -129,14 +129,16 @@ class Plugin extends PuppeteerExtraPlugin {
       return greasedBrandVersionList
     }
 
+	const _padPlatformVersion = (version) => version+((version.split('.').length<=2)?'.0':'')
+
     // Return OS version
     const _getPlatformVersion = () => {
       if (ua.includes('Mac OS X ')) {
-        return ua.match(/Mac OS X ([^)]+)/)[1]
+        return _padPlatformVersion(ua.match(/Mac OS X ([^)]+)/)[1])
       } else if (ua.includes('Android ')) {
-        return ua.match(/Android ([^;]+)/)[1]
+        return _padPlatformVersion(ua.match(/Android ([^;]+)/)[1])
       } else if (ua.includes('Windows ')) {
-        return ua.match(/Windows .*?([\d|.]+);?/)[1]
+        return _padPlatformVersion(ua.match(/Windows .*?([\d|.]+);?/)[1])
       } else {
         return ''
       }
