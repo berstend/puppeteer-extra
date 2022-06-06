@@ -16,14 +16,14 @@
     "clean": "rimraf dist/*",
     "tscheck": "tsc --pretty --noEmit",
     "prebuild": "run-s clean",
-    "build": "run-s build:tsc build:rollup; node build_version_check.js",
-    "build_version_check": "node build_version_check.js",
+    "build": "run-s build:tsc build:rollup build-version-check",
+    "build-version-check": "node build_version_check.js",
     "build:tsc": "tsc --module commonjs",
     "build:rollup": "rollup -c rollup.config.ts",
     "docs": "node -e 0",
     "test": "ava",
     "pretest-ci": "run-s build",
-    "test-ci-back": "ava --concurrency 1 --serial --fail-fast -v",
+    "test-ci-back": "ava --serial --fail-fast",
     "test-ci": "exit 0"
   },
   "engines": {
