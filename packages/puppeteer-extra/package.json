@@ -23,7 +23,7 @@
     "test-ci": "run-s test",
     "ambient-dts": "run-s ambient-dts-copy ambient-dts-fix-path",
     "ambient-dts-copy": "copyfiles -u 1 \"src/**/*.d.ts\" dist",
-    "ambient-dts-fix-path": "replace-in-files --string='/// <reference path=\"../src/' --replacement='/// <reference path=\"../dist/' 'dist/**/*.d.ts'"
+    "ambient-dts-fix-path": "node ../post-replace.js"
   },
   "keywords": [
     "puppeteer",

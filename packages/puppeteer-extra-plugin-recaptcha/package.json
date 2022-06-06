@@ -27,7 +27,7 @@
     "test-ci": "ava --fail-fast --concurrency 2 -v",
     "ambient-dts": "run-s ambient-dts-copy ambient-dts-fix-path",
     "ambient-dts-copy": "copyfiles -u 1 \"src/**/*.d.ts\" dist",
-    "ambient-dts-fix-path": "replace-in-files --string='/// <reference path=\"../src/' --replacement='/// <reference path=\"../dist/' 'dist/**/*.d.ts'"
+    "ambient-dts-fix-path": "node ../post-replace.js"
   },
   "engines": {
     "node": ">=9.11.2"
