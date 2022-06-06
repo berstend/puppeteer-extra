@@ -35,7 +35,7 @@ test('will modify puppeteer launch options through plugins', async t => {
       options.timeout = 60 * 1000
       options.headless = true
     }
-    afterLaunch(browser, opts: any) {
+    afterLaunch(browser: any, opts: any) {
       FINAL_OPTIONS = opts.options
     }
   }
@@ -84,7 +84,7 @@ test('will modify puppeteer connect options through plugins', async t => {
       options.foo1 = 60 * 1000
       options.foo2 = true
     }
-    afterConnect(browser, opts: any) {
+    afterConnect(browser: any, opts: any) {
       FINAL_OPTIONS = opts.options
     }
   }
