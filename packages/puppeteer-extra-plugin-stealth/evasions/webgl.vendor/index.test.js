@@ -11,14 +11,12 @@ const Plugin = require('.')
 test('vanilla: videoCard is Google Inc', async t => {
   const pageFn = async page => await page.evaluate(() => window.chrome) // eslint-disable-line
   const { videoCard } = await getVanillaFingerPrint(pageFn)
-  if (JSON.stringify(videoCard).includes('Vulkan ')) {
-    console.log(videoCard)
-    console.log(videoCard)
-    console.log(videoCard)
-    console.log(videoCard)
-    console.log(videoCard)
-    console.log(videoCard)
-    // t.deepEqual(videoCard, ['Google Inc.', 'Google SwiftShader'])
+  if (videoCard[1].includes('Vulkan 1.2.0')) {
+    // pptr 12+
+    t.deepEqual(videoCard, [
+      'Google Inc. (Google)',
+      'ANGLE (Google, Vulkan 1.2.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver-5.0.0)'
+    ])
   } else {
     // old chrome
     t.deepEqual(videoCard, ['Google Inc.', 'Google SwiftShader'])
