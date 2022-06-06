@@ -43,16 +43,16 @@ export type PluginDependencies = Set<string>
  * @private
  */
 export interface PuppeteerExtraPlugin<OPTION = any> {
-  name: string
-  get defaults(): OPTION
-  get requirements(): PluginRequirements
-  get dependencies(): PluginDependencies
-  get data(): PluginData[]
-  get opts(): OPTION
-  _getMissingDependencies(plugins: PuppeteerExtraPlugin[]): Set<string>
-  getDataFromPlugins(name?: string): PluginData[]
-  _isPuppeteerExtraPlugin: boolean
-  [propName: string]: any
+  name: string;
+  get defaults(): OPTION;
+  get requirements(): PluginRequirements;
+  get dependencies(): PluginDependencies;
+  get data(): PluginData[];
+  get opts(): OPTION;
+  _getMissingDependencies(plugins: PuppeteerExtraPlugin[]): Set<string>;
+  getDataFromPlugins(name?: string): PluginData[];
+  _isPuppeteerExtraPlugin: boolean;
+  [propName: string]: any;
 }
 
 /**
