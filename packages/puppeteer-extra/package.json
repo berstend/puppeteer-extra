@@ -19,7 +19,7 @@
     "build:rollup": "rollup -c rollup.config.ts",
     "docs": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API ./src/index.ts",
     "postdocs": "npx prettier --write readme.md",
-    "test": "ava -v --serial --concurrency 1 --config ava.config-ts.js",
+    "test": "ava --serial",
     "test-ci": "run-s test",
     "ambient-dts": "run-s ambient-dts-copy ambient-dts-fix-path",
     "ambient-dts-copy": "copyfiles -u 1 \"src/**/*.d.ts\" dist",
@@ -67,6 +67,17 @@
     "@types/puppeteer": "*",
     "debug": "^4.1.1",
     "deepmerge": "^4.2.2"
+  },
+  "ava": {
+    "concurrency": 1,
+    "verbose": true,
+    "compileEnhancements": false,
+    "environmentVariables": {
+      "TS_NODE_COMPILER_OPTIONS": "{\"module\":\"commonjs\"}"
+    },
+    "files": ["test/*.ts"],
+    "extensions": ["ts"],
+    "require": ["ts-node/register"]
   },
   "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }
