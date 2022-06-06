@@ -275,23 +275,22 @@ test('stealth: error stack is fine', async t => {
     return catchErr(chrome.runtime.connect, '').stack
   })
 
-  console.log('-------------FIXXING--------------------------')
-  console.log(result.split('\n'))
-  console.log('-------------FIXXING--------------------------')
-
-  console.log('---------------------------------------')
-  console.log(result.split('\n'))
-  console.log('---------------------------------------')
-
-  /**
-   * OK:
-TypeError: Error in invocation of runtime.connect(optional string extensionId, optional object connectInfo): chrome.runtime.connect() called from a webpage must specify an Extension ID (string) for its first argument.␊
-  -       at catchErr (__puppeteer_evaluation_script__:4:19)␊
-  -       at __puppeteer_evaluation_script__:18:12
-   */
   if (result.split('\n').length === 3) {
+    /**
+     * PPTR up to 13
+     * TypeError: Error in invocation of runtime.connect(optional string extensionId, optional object connectInfo): chrome.runtime.connect() called from a webpage must specify an Extension ID (string) for its first argument.
+     *     at catchErr (__puppeteer_evaluation_script__:4:19)
+     *     at __puppeteer_evaluation_script__:18:12
+     */
     t.is(result.split('\n').length, 3)
   } else {
+    /**
+     * PPTR 14
+     * TypeError: Error in invocation of runtime.connect(optional string extensionId, optional object connectInfo): chrome.runtime.connect() called from a webpage must specify an Extension ID (string) for its first argument.
+     *     at newHandler.<computed> [as apply] (eval at <anonymous> (:4:65), <anonymous>:18:30)
+     *     at catchErr (__puppeteer_evaluation_script__:4:19)
+     *     at __puppeteer_evaluation_script__:18:12
+     */
     t.is(result.split('\n').length, 4)
   }
 })

@@ -16,9 +16,6 @@ export interface VanillaPuppeteer
 /** @private */
 const merge = require('merge-deep')
 
-export interface PluginOptions {
-  [key: string]: any
-}
 export interface PluginData {
   name: string;
   value: {
@@ -74,15 +71,15 @@ export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
  * })()
  *
  */
-export abstract class PuppeteerExtraPlugin {
+export abstract class PuppeteerExtraPlugin<OPTION = any> {
   /** @private */
   private _debugBase: Debugger
   /** @private */
-  private _opts: PluginOptions
+  private _opts: OPTION
   /** @private */
   private _childClassMembers: string[]
 
-  constructor(opts?: PluginOptions) {
+  constructor(opts?: OPTION) {
     this._debugBase = debug(`puppeteer-extra-plugin:base:${this.name}`)
     this._childClassMembers = []
 
@@ -126,8 +123,8 @@ export abstract class PuppeteerExtraPlugin {
    * // Users can overwrite plugin defaults during instantiation:
    * puppeteer.use(require('puppeteer-extra-plugin-foobar')({ makeWindows: false }))
    */
-  get defaults(): PluginOptions {
-    return {}
+  get defaults(): OPTION {
+    return {} as OPTION
   }
 
   /**
@@ -224,7 +221,7 @@ export abstract class PuppeteerExtraPlugin {
    *   this.debug(this.opts.foo) // => bar
    * }
    */
-  get opts(): PluginOptions {
+  get opts(): OPTION {
     return this._opts
   }
 
@@ -266,7 +263,7 @@ export abstract class PuppeteerExtraPlugin {
    * @param options - Puppeteer launch options
    */
    async beforeLaunch(options: PuppeteerLaunchOption): Promise<void | PuppeteerLaunchOption> {
-     return; // noop
+     // noop
   }
 
   /**
