@@ -49,7 +49,7 @@ test('will modify puppeteer launch options through plugins', async t => {
   t.deepEqual(FINAL_OPTIONS, {
     headless: true,
     timeout: 60000,
-    args: [].concat(PUPPETEER_ARGS, ['--foobar=true'])
+    args: ([] as string[]).concat(PUPPETEER_ARGS, ['--foobar=true'])
   })
 
   await browser.close()
