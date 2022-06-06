@@ -20,7 +20,7 @@
     "build:rollup": "rollup -c rollup.config.ts",
     "docs": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API ./src/index.ts",
     "postdocs": "npx prettier --write readme.md",
-    "test": "ava -v --config ava.config-ts.js",
+    "test": "ava",
     "pretest-ci": "run-s build",
     "test-ci": "ava --fail-fast -v"
   },
@@ -69,14 +69,14 @@
   "peerDependencies": {
     "puppeteer-extra": "*"
   },
-  "avaNext": {
+  "ava": {
     "concurrency": 1,
     "verbose": true,
     "compileEnhancements": false,
     "environmentVariables": {
       "TS_NODE_COMPILER_OPTIONS": "{\"module\":\"commonjs\"}"
     },
-    "files": ["test/*.ts"],
+    "files": ["src/**/*.test.ts"],
     "extensions": ["ts"],
     "require": ["ts-node/register"]
   },
