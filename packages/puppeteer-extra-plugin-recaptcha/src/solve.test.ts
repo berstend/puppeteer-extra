@@ -67,7 +67,7 @@ test('will solve hCAPTCHAs', async t => {
   })
   const page = await browser.newPage()
 
-  const url = 'http://democaptcha.com/demo-form-eng/hcaptcha.html'
+  const url = 'https://democaptcha.com/demo-form-eng/hcaptcha.html'
   await page.goto(url, { waitUntil: 'networkidle0' })
 
   const result = await (page as any).solveRecaptchas()
