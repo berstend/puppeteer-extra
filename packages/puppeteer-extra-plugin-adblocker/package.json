@@ -16,7 +16,7 @@
     "clean": "rimraf dist/*",
     "tscheck": "tsc --pretty --noEmit",
     "prebuild": "run-s clean",
-    "build": "run-s build:tsc build:rollup build-version-check",
+    "build": "run-s build:tsc build:rollup; node build_version_check.js",
     "build-version-check": "node build_version_check.js",
     "build:tsc": "tsc --module commonjs",
     "build:rollup": "rollup -c rollup.config.ts",
@@ -32,7 +32,8 @@
   "prettier": {
     "printWidth": 80,
     "semi": false,
-    "singleQuote": true
+    "singleQuote": true,
+    "endOfLine": "auto"
   },
   "keywords": [
     "puppeteer",

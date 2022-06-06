@@ -30,7 +30,8 @@
   "prettier": {
     "printWidth": 80,
     "semi": false,
-    "singleQuote": true
+    "singleQuote": true,
+    "endOfLine": "auto"
   },
   "keywords": [
     "puppeteer",
