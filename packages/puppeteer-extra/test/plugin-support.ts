@@ -1,6 +1,5 @@
-'use strict'
-
-const test = require('ava')
+import test from 'ava'
+declare const require: any;
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 const PAGE_TIMEOUT = 60 * 1000 // 60s

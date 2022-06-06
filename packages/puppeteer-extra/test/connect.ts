@@ -1,7 +1,7 @@
 import test from 'ava'
+declare const require: any;
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
-declare const require: any;
 
 test.beforeEach(t => {
   // Make sure we work with pristine modules
