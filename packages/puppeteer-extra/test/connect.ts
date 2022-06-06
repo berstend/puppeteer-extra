@@ -35,7 +35,8 @@ test('will remove headless from remote browser', async t => {
 
     await browser.close()
     t.true(true)
-  } catch (err) {
+  } catch (e) {
+    const err = e as Error;
     console.log(`Caught error:`, err)
     if (
       err.message &&
