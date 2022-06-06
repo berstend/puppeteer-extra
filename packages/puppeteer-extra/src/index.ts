@@ -42,13 +42,13 @@ export type PluginDependencies = Set<string>
  * Minimal plugin interface
  * @private
  */
-export interface PuppeteerExtraPlugin<OPTION = any> {
+export interface PuppeteerExtraPlugin {
   name: string;
-  get defaults(): OPTION;
+  get defaults(): any;
   get requirements(): PluginRequirements;
   get dependencies(): PluginDependencies;
   get data(): PluginData[];
-  get opts(): OPTION;
+  get opts(): any;
   _getMissingDependencies(plugins: PuppeteerExtraPlugin[]): Set<string>;
   getDataFromPlugins(name?: string): PluginData[];
   _isPuppeteerExtraPlugin: boolean;
