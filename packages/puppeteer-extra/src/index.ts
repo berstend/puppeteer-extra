@@ -424,7 +424,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    * @private
    */
    private async callPlugins(prop: '_bindBrowserEvents', browser: Browser, opts: BrowserEventOptions): Promise<void>;
-   private async callPlugins(prop: '_bindBrowserEvents', ...values: any[]): Promise<void> { 
+   private async callPlugins(prop: '_bindBrowserEvents', ...values: any[]): Promise<void> {
     for (const plugin of this.getPluginsByProp(prop)) {
       await plugin[prop].apply(plugin, values)
     }
