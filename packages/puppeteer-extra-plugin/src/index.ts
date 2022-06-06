@@ -269,7 +269,7 @@ export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
    * @param options - Puppeteer launch options
    */
   async beforeLaunch(options: PuppeteerLaunchOption): Promise<void | PuppeteerLaunchOption> {
-    // noop
+    return; // noop
   }
 
   /**
