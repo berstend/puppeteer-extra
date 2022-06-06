@@ -32,8 +32,9 @@ export type PluginRequirements = Set<'launch' | 'headful' | 'dataFromPlugins' | 
 export type PluginDependencies = Set<string>
  export interface PluginData {
    name: string,
-   value: any;
-   // { [key: string]: any } 
+   value: {
+    [key: string]: any
+  }
  } 
 
 
