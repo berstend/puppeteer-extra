@@ -17,7 +17,7 @@ test.beforeEach(t => {
 })
 
 test('will bind launched browser events to plugins', async t => {
-  const PLUGIN_EVENTS = []
+  const PLUGIN_EVENTS: string[] = [];
 
   const puppeteer = addExtra(puppeteerVanilla)
   const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
@@ -90,7 +90,7 @@ test('will bind launched browser events to plugins', async t => {
 })
 
 test('will bind connected browser events to plugins', async t => {
-  const PLUGIN_EVENTS = []
+  const PLUGIN_EVENTS: string[] = []
 
   // Launch vanilla puppeteer browser with no plugins
 
