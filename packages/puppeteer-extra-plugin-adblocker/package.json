@@ -20,7 +20,7 @@
     "build:tsc": "tsc --module commonjs",
     "build:rollup": "rollup -c rollup.config.ts",
     "docs": "node -e 0",
-    "test": "ava -v --config ava.config-ts.js",
+    "test": "ava",
     "pretest-ci": "run-s build",
     "test-ci-back": "ava --concurrency 1 --serial --fail-fast -v",
     "test-ci": "exit 0"
@@ -68,6 +68,17 @@
   },
   "peerDependencies": {
     "puppeteer-extra": "*"
+  },
+  "ava": {
+    "concurrency": 1,
+    "verbose": true,
+    "compileEnhancements": false,
+    "environmentVariables": {
+      "TS_NODE_COMPILER_OPTIONS": "{\"module\":\"commonjs\"}"
+    },
+    "files": ["src/*.test.ts"],
+    "extensions": ["ts"],
+    "require": ["ts-node/register"]
   },
   "gitHead": "72fe830c158f1e971c8499fdd5232338dd53c220"
 }

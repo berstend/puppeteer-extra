@@ -22,7 +22,7 @@
     "docs": "node -e 0",
     "predocs2": "rimraf docs/*",
     "docs2": "typedoc --module commonjs --readme none --target ES6 --theme markdown --excludeNotExported --excludeExternals --excludePrivate --out docs --mode file src/index.ts",
-    "test": "ava -v --config ava.config-ts.js",
+    "test": "ava",
     "pretest-ci": "run-s build",
     "test-ci": "ava --fail-fast --concurrency 2 -v",
     "ambient-dts": "run-s ambient-dts-copy ambient-dts-fix-path",
@@ -74,6 +74,17 @@
   },
   "peerDependencies": {
     "puppeteer-extra": "*"
+  },
+  "ava": {
+    "concurrency": 1,
+    "verbose": true,
+    "compileEnhancements": false,
+    "environmentVariables": {
+      "TS_NODE_COMPILER_OPTIONS": "{\"module\":\"commonjs\"}"
+    },
+    "files": ["src/*.test.ts"],
+    "extensions": ["ts"],
+    "require": ["ts-node/register"]
   },
   "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }
