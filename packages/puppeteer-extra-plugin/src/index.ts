@@ -1,9 +1,17 @@
+/// <reference path="./puppeteer-legacy.d.ts" />
 import debug, { Debugger } from 'debug'
 import * as Puppeteer from './puppeteer'
 import { PuppeteerNode } from './puppeteer'
 
-export interface VanillaPuppeteer extends Pick<PuppeteerNode, 'connect' | 'defaultArgs' | 'executablePath' | 'launch' | 'createBrowserFetcher'> {
-}
+export interface VanillaPuppeteer 
+  extends Pick<
+  PuppeteerNode, 
+  | 'connect' 
+  | 'defaultArgs' 
+  | 'executablePath' 
+  | 'launch' 
+  | 'createBrowserFetcher'>
+  { }
 
 /** @private */
 const merge = require('merge-deep')
@@ -258,7 +266,7 @@ export abstract class PuppeteerExtraPlugin {
    * @param options - Puppeteer launch options
    */
    async beforeLaunch(options: PuppeteerLaunchOption): Promise<void | PuppeteerLaunchOption> {
-    // noop
+     return; // noop
   }
 
   /**
