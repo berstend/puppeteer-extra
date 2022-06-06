@@ -77,7 +77,7 @@ export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
  * })()
  *
  */
- export default abstract class PuppeteerExtraPlugin<OPTION = any> {
+ export abstract class PuppeteerExtraPlugin<OPTION = any> {
   /** @private */
   private _debugBase: Debugger
   /** @private */
@@ -595,3 +595,5 @@ export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
     return true
   }
 }
+
+export default PuppeteerExtraPlugin;
