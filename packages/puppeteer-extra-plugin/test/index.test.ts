@@ -1,6 +1,6 @@
 import test from 'ava'
 
-import { PuppeteerExtraPlugin } from '.'
+import { PuppeteerExtraPlugin } from '../src'
 
 test('is a function', async t => {
   t.is(typeof PuppeteerExtraPlugin, 'function')

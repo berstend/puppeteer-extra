@@ -139,7 +139,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
     this.checkPluginRequirements(opts)
 
     const browser = await this.pptr.launch(options)
-    this._patchPageCreationMethods(browser)
+    this._patchPageCreationMethods(browser as BrowserInternals) // casts needed for pptr 8-
 
     await this.callPlugins('_bindBrowserEvents', browser, opts)
     return browser
@@ -170,7 +170,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
     this.checkPluginRequirements(opts)
 
     const browser = await this.pptr.connect(options)
-    this._patchPageCreationMethods(browser)
+    this._patchPageCreationMethods(browser as BrowserInternals) // casts needed for pptr 8-
 
     await this.callPlugins('_bindBrowserEvents', browser, opts)
     return browser
