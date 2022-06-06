@@ -9,7 +9,7 @@
   "scripts": {
     "docs": "node -e 0",
     "lint": "eslint --ext .js .",
-    "test-ava": "ava --fail-fast -v",
+    "test-ava": "ava -v",
     "test": "run-p lint test-ava",
     "test-ci": "run-s test"
   },

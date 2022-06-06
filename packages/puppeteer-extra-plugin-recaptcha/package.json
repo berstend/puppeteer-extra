@@ -24,7 +24,7 @@
     "docs2": "typedoc --module commonjs --readme none --target ES6 --theme markdown --excludeNotExported --excludeExternals --excludePrivate --out docs --mode file src/index.ts",
     "test": "ava",
     "pretest-ci": "run-s build",
-    "test-ci": "ava --fail-fast --concurrency 2 -v",
+    "test-ci": "ava --concurrency 2 -v",
     "ambient-dts": "run-s ambient-dts-copy ambient-dts-fix-path",
     "ambient-dts-copy": "copyfiles -u 1 \"src/**/*.d.ts\" dist",
     "ambient-dts-fix-path": "node ../post-replace.js"

@@ -22,7 +22,7 @@
     "postdocs": "npx prettier --write readme.md",
     "test": "ava",
     "pretest-ci": "run-s build",
-    "test-ci": "ava --fail-fast -v"
+    "test-ci": "ava"
   },
   "engines": {
     "node": ">=9.11.2"
