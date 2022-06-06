@@ -1,9 +1,6 @@
 import test from 'ava'
 
 import RecaptchaPlugin from '../src'
-// import * as types from './types'
-
-// import { Puppeteer } from './puppeteer-mods'
 
 import { addExtra } from 'puppeteer-extra'
 
