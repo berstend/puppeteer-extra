@@ -1,67 +1,12 @@
 /// <reference path="./puppeteer-legacy.d.ts" />
-import { PuppeteerNode, Browser, Page } from 'puppeteer'
+import { Browser } from 'puppeteer'
+import { VanillaPuppeteer, PuppeteerLaunchOption, BrowserEventOptions, PuppeteerExtraPlugin, BrowserInternals } from './deps';
+export { VanillaPuppeteer, PuppeteerLaunchOption, BrowserEventOptions, PuppeteerExtraPlugin } from './deps';
 
 import Debug from 'debug'
 const debug = Debug('puppeteer-extra')
 
 import merge from 'deepmerge'
-
-/**
- * Original Puppeteer API
- * @private
- */
-export interface VanillaPuppeteer
-  extends Pick<
-    PuppeteerNode,
-    | 'connect'
-    | 'defaultArgs'
-    | 'executablePath'
-    | 'launch'
-    | 'createBrowserFetcher'
-  > {}
-
-export declare type PuppeteerLaunchOption = Parameters<VanillaPuppeteer['launch']>[0];
-
-export interface BrowserEventOptions {
-  context: 'launch' | 'connect';
-  options: PuppeteerLaunchOption;
-  defaultArgs?: (options?: Parameters<VanillaPuppeteer['defaultArgs']>[0]) => ReturnType<VanillaPuppeteer['defaultArgs']>
-}
-
-export type PluginRequirements = Set<'launch' | 'headful' | 'dataFromPlugins' | 'runLast'>
-export type PluginDependencies = Set<string>
- export interface PluginData {
-   name: string,
-   value: {
-    [key: string]: any
-  }
- } 
-
-
-/**
- * Minimal plugin interface
- * @private
- */
-export interface PuppeteerExtraPlugin {
-  name: string;
-  get defaults(): any;
-  get requirements(): PluginRequirements;
-  get dependencies(): PluginDependencies;
-  get data(): PluginData[];
-  get opts(): any;
-  _getMissingDependencies(plugins: PuppeteerExtraPlugin[]): Set<string>;
-  getDataFromPlugins(name?: string): PluginData[];
-  _isPuppeteerExtraPlugin: boolean;
-  [propName: string]: any;
-}
-
-/**
- * We need to hook into non-public APIs in rare occasions to fix puppeteer bugs. :(
- * @private
- */
-interface BrowserInternals extends Browser {
-  _createPageInContext(contextId?: string): Promise<Page>
-}
 
 /**
  * Modular plugin framework to teach `puppeteer` new tricks.
