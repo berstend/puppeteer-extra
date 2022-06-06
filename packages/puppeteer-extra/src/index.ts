@@ -139,7 +139,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
     this.checkPluginRequirements(opts)
 
     const browser = await this.pptr.launch(options)
-    this._patchPageCreationMethods(browser as BrowserInternals)
+    this._patchPageCreationMethods(browser)
 
     await this.callPlugins('_bindBrowserEvents', browser, opts)
     return browser
@@ -170,7 +170,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
     this.checkPluginRequirements(opts)
 
     const browser = await this.pptr.connect(options)
-    this._patchPageCreationMethods(browser as BrowserInternals)
+    this._patchPageCreationMethods(browser)
 
     await this.callPlugins('_bindBrowserEvents', browser, opts)
     return browser
@@ -423,8 +423,8 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    * @param values - Any number of values
    * @private
    */
-   private async callPlugins(prop: '_bindBrowserEvents', browser: Browser, opts: BrowserEventOptions): Promise<void>;
-   private async callPlugins(prop: '_bindBrowserEvents', ...values: any[]): Promise<void> {
+  private async callPlugins(prop: '_bindBrowserEvents', browser: Browser, opts: BrowserEventOptions): Promise<void>;
+  private async callPlugins(prop: '_bindBrowserEvents', ...values: any[]): Promise<void> {
     for (const plugin of this.getPluginsByProp(prop)) {
       await plugin[prop].apply(plugin, values)
     }
