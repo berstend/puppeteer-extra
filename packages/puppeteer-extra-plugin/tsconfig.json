@@ -21,10 +21,6 @@
     "types": ["node"]
   },
   "include": [
-    "./src/**/*.tsx",
-    "./src/**/*.ts",
-    "./src/**/*.test.ts",
-    "./test/**/*.ts"
-  ],
-  "exclude": ["node_modules", "dist", "./test/**/*.spec.ts"]
+    "./src/index.ts",
+  ]
 }
