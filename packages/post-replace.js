@@ -13,7 +13,7 @@ for (const file of files.filter(n => n.endsWith('.d.ts'))) {
   )
   if (content.length !== newContent.length) {
     changes++
-    fs.writeFileSync(path.join(__dirname, 'dist', file), newContent)
+    fs.writeFileSync(path.join(workdir, file), newContent)
   }
 }
 if (changes) {
