@@ -1,5 +1,9 @@
 import debug, { Debugger } from 'debug'
 import * as Puppeteer from './puppeteer'
+//import { PuppeteerNode } from './puppeteer'
+
+//export interface VanillaPuppeteer extends Pick<PuppeteerNode, 'connect' | 'defaultArgs' | 'executablePath' | 'launch' | 'createBrowserFetcher'> {
+//}
 
 /** @private */
 const merge = require('merge-deep')
@@ -18,6 +22,10 @@ export type PluginDependencies = Set<string>
 export type PluginRequirements = Set<
   'launch' | 'headful' | 'dataFromPlugins' | 'runLast'
 >
+
+// export type ChildClassMembers = keyof PuppeteerExtraPlugin | 'constructor';
+
+// export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
 
 /**
  * Base class for `puppeteer-extra` plugins.
