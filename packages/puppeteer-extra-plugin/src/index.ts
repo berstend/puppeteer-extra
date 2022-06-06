@@ -1,9 +1,9 @@
 import debug, { Debugger } from 'debug'
 import * as Puppeteer from './puppeteer'
-//import { PuppeteerNode } from './puppeteer'
+import { PuppeteerNode } from './puppeteer'
 
-//export interface VanillaPuppeteer extends Pick<PuppeteerNode, 'connect' | 'defaultArgs' | 'executablePath' | 'launch' | 'createBrowserFetcher'> {
-//}
+export interface VanillaPuppeteer extends Pick<PuppeteerNode, 'connect' | 'defaultArgs' | 'executablePath' | 'launch' | 'createBrowserFetcher'> {
+}
 
 /** @private */
 const merge = require('merge-deep')
@@ -19,13 +19,11 @@ export interface PluginData {
 }
 
 export type PluginDependencies = Set<string>
-export type PluginRequirements = Set<
-  'launch' | 'headful' | 'dataFromPlugins' | 'runLast'
->
+export type PluginRequirements = Set<'launch' | 'headful' | 'dataFromPlugins' | 'runLast'>
 
-// export type ChildClassMembers = keyof PuppeteerExtraPlugin | 'constructor';
+export type ChildClassMembers = keyof PuppeteerExtraPlugin | 'constructor';
 
-// export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
+export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
 
 /**
  * Base class for `puppeteer-extra` plugins.
@@ -259,7 +257,7 @@ export abstract class PuppeteerExtraPlugin {
    *
    * @param options - Puppeteer launch options
    */
-  async beforeLaunch(options: any) {
+   async beforeLaunch(options: PuppeteerLaunchOption): Promise<void | PuppeteerLaunchOption> {
     // noop
   }
 
@@ -293,7 +291,7 @@ export abstract class PuppeteerExtraPlugin {
   async afterLaunch(
     browser: Puppeteer.Browser,
     opts = { options: {} as Puppeteer.LaunchOptions }
-  ) {
+  ): Promise<void> {
     // noop
   }
 
@@ -308,7 +306,7 @@ export abstract class PuppeteerExtraPlugin {
    * @param  {Object} options - Puppeteer connect options
    * @return {Object=}
    */
-  async beforeConnect(options: Puppeteer.ConnectOptions) {
+  async beforeConnect(options: Puppeteer.ConnectOptions): Promise<void | Puppeteer.ConnectOptions> {
     // noop
   }
 
@@ -322,7 +320,7 @@ export abstract class PuppeteerExtraPlugin {
    * @param  {Object} opts.options - Puppeteer connect options used.
    *
    */
-  async afterConnect(browser: Puppeteer.Browser, opts = {}) {
+  async afterConnect(browser: Puppeteer.Browser, opts = {}): Promise<void> {
     // noop
   }
 
@@ -351,7 +349,7 @@ export abstract class PuppeteerExtraPlugin {
    *
    * @param  {Puppeteer.Target} target
    */
-  async onTargetCreated(target: Puppeteer.Target) {
+  async onTargetCreated(target: Puppeteer.Target): Promise<void> {
     // noop
   }
 
@@ -374,7 +372,7 @@ export abstract class PuppeteerExtraPlugin {
    *   await page.setUserAgent(ua)
    * }
    */
-  async onPageCreated(page: Puppeteer.Page) {
+  async onPageCreated(page: Puppeteer.Page): Promise<void> {
     // noop
   }
 
@@ -387,7 +385,7 @@ export abstract class PuppeteerExtraPlugin {
    *
    * @param  {Puppeteer.Target} target
    */
-  async onTargetChanged(target: Puppeteer.Target) {
+  async onTargetChanged(target: Puppeteer.Target): Promise<void> {
     // noop
   }
 
@@ -400,7 +398,7 @@ export abstract class PuppeteerExtraPlugin {
    *
    * @param  {Puppeteer.Target} target
    */
-  async onTargetDestroyed(target: Puppeteer.Target) {
+  async onTargetDestroyed(target: Puppeteer.Target): Promise<void> {
     // noop
   }
 
@@ -411,7 +409,7 @@ export abstract class PuppeteerExtraPlugin {
    * - Chromium is closed or crashed
    * - The `browser.disconnect` method was called
    */
-  async onDisconnected() {
+  async onDisconnected(): Promise<void> {
     // noop
   }
 
@@ -464,7 +462,7 @@ export abstract class PuppeteerExtraPlugin {
    *
    * @private
    */
-  _getMissingDependencies(plugins: any) {
+  _getMissingDependencies(plugins: any): Set<string> {
     const pluginNames = new Set(plugins.map((p: any) => p.name))
     const missing = new Set(
       Array.from(this.dependencies.values()).filter(x => !pluginNames.has(x))
