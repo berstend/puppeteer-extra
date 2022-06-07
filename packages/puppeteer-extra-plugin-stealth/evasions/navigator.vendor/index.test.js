@@ -1,7 +1,7 @@
 const test = require('ava')
 
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
 test('vanilla: navigator.vendor is always Google Inc.', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })

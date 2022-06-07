@@ -1,7 +1,7 @@
 const test = require('ava')
 
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
 // Fixed since 2.1.1?
 // test('vanilla: Accept-Language header is missing', async t => {

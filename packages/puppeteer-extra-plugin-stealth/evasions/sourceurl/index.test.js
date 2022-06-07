@@ -1,7 +1,7 @@
 const test = require('ava')
 
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
 const TEST_HTML_FILE = require('path').join(__dirname, './_fixtures/test.html')
 

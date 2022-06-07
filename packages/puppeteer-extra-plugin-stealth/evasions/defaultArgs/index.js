@@ -40,8 +40,9 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
-  return new Plugin(pluginConfig)
+module.exports = {
+  default: function(pluginConfig) {
+    return new Plugin(pluginConfig)
+  },
+  argsToIgnore: argsToIgnore
 }
-
-module.exports.argsToIgnore = argsToIgnore

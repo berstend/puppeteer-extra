@@ -182,7 +182,9 @@ class StealthPlugin extends PuppeteerExtraPlugin<PluginOptions> {
  * @param {Set<string>} [opts.enabledEvasions] - Specify which evasions to use (by default all)
  */
 const defaultExport = (pluginConfig?: Partial<PluginOptions>) => new StealthPlugin(pluginConfig)
-module.exports = defaultExport
+module.exports = {
+  default: defaultExport
+}
 
 // const moduleExport = defaultExport
 // moduleExport.StealthPlugin = StealthPlugin

@@ -9,7 +9,7 @@ const {
 } = require('../../test/util')
 // const Plugin = require('.')
 // NOTE: We're using the full plugin for testing here as `iframe.contentWindow` uses data set by `chrome.runtime`
-const Plugin = require('puppeteer-extra-plugin-stealth')
+const { default: Plugin } = require('puppeteer-extra-plugin-stealth')
 
 // Fix CI issues with old versions
 const isOldPuppeteerVersion = () => {

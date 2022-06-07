@@ -62,5 +62,6 @@ class Plugin extends PuppeteerExtraPlugin {
   } // onPageCreated
 }
 
-const defaultExport = opts => new Plugin(opts)
-module.exports = defaultExport
+module.exports = {
+  default: opts => new Plugin(opts)
+}

@@ -5,7 +5,7 @@ const {
   addExtra,
   compareLooseVersionStrings
 } = require('./util')
-const Plugin = require('..')
+const { default: Plugin } = require('..')
 
 // Fix CI issues with old versions
 const isOldPuppeteerVersion = () => {
