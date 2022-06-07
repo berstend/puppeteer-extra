@@ -34,7 +34,10 @@
     "ava": "2.4.0",
     "mock-stdin": "^0.3.1",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "14.2.1"
+    "puppeteer": "14.2.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
   },
   "dependencies": {
     "chalk": "^3.0.0",

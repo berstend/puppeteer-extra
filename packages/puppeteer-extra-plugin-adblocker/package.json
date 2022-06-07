@@ -56,11 +56,11 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-sourcemaps": "^0.4.2",
     "rollup-plugin-typescript2": "^0.25.2",
-    "ts-node": "^8.5.4",
+    "ts-node": "^10.8.1",
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^9.0.0",
-    "typescript": "4.4.4"
+    "typescript": "^4.7.3"
   },
   "dependencies": {
     "@cliqz/adblocker-puppeteer": "1.22.6",
@@ -78,9 +78,15 @@
     "environmentVariables": {
       "TS_NODE_COMPILER_OPTIONS": "{\"module\":\"commonjs\"}"
     },
-    "files": ["test/*.test.ts"],
-    "extensions": ["ts"],
-    "require": ["ts-node/register"]
+    "files": [
+      "test/*.test.ts"
+    ],
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
   },
   "gitHead": "72fe830c158f1e971c8499fdd5232338dd53c220"
 }
