@@ -30,10 +30,18 @@ class Plugin extends PuppeteerExtraPlugin {
         const next = async () => {
           try {
             return await originalMethod.apply(context, [method, paramArgs])
-          } catch(error) {
+          } catch (error) {
             // This seems to happen sometimes when redirects cause other outstanding requests to be cut short
-            if (error instanceof Error && error.message.includes(`Protocol error (Network.getResponseBody): No resource with given identifier found`)) {
-              debug(`Caught and ignored an error about a missing network resource.`, { error })
+            if (
+              error instanceof Error &&
+              error.message.includes(
+                `Protocol error (Network.getResponseBody): No resource with given identifier found`
+              )
+            ) {
+              debug(
+                `Caught and ignored an error about a missing network resource.`,
+                { error }
+              )
             } else {
               throw error
             }

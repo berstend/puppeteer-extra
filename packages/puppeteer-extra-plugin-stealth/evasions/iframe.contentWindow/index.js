@@ -45,7 +45,7 @@ class Plugin extends PuppeteerExtraPlugin {
               }
               // Intercept iframe.contentWindow[0] to hide the property 0 added by the proxy.
               if (key === '0') {
-                  return undefined
+                return undefined
               }
               return Reflect.get(target, key)
             }

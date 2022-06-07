@@ -159,9 +159,7 @@ const _testUAHint = async (userAgent, locale) => {
     args: ['--enable-features=UserAgentClientHint']
   })
 
-  const majorVersion = parseInt(
-    (await browser.version()).match(/\/([^\.]+)/)[1]
-  )
+  const majorVersion = parseInt((await browser.version()).match(/\/([^.]+)/)[1])
   if (majorVersion < 88) {
     return null // Skip test on browsers that don't support UA hints
   }
@@ -303,9 +301,7 @@ test('stealth: test if UA hints are correctly set - Windows 10 Generic', async t
     headless: true
   })
 
-  const majorVersion = parseInt(
-    (await browser.version()).match(/\/([^\.]+)/)[1]
-  )
+  const majorVersion = parseInt((await browser.version()).match(/\/([^.]+)/)[1])
   if (majorVersion < 90) {
     t.truthy('foo')
     console.log('Skipping test, browser version too old', majorVersion)

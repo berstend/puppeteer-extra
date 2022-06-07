@@ -2,7 +2,11 @@ const test = require('ava')
 
 const fpscanner = require('fpscanner')
 
-const { getVanillaFingerPrint, getStealthFingerPrint, compareLooseVersionStrings } = require('./util')
+const {
+  getVanillaFingerPrint,
+  getStealthFingerPrint,
+  compareLooseVersionStrings
+} = require('./util')
 const Plugin = require('../.')
 
 // Fix CI issues with old versions

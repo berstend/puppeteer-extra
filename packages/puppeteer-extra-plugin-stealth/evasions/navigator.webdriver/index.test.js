@@ -1,6 +1,10 @@
 const test = require('ava')
 
-const { vanillaPuppeteer, addExtra, compareLooseVersionStrings } = require('../../test/util')
+const {
+  vanillaPuppeteer,
+  addExtra,
+  compareLooseVersionStrings
+} = require('../../test/util')
 const Plugin = require('.')
 
 function getExpectedValue(looseVersionString) {
