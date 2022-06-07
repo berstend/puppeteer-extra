@@ -1,4 +1,4 @@
-import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 
 export interface PluginOptions {
 }
@@ -17,7 +17,7 @@ export interface PluginOptions {
     return 'stealth/evasions/sourceurl'
   }
 
-  async onPageCreated(page) {
+  async onPageCreated(page: PuppeteerPage): Promise<void> {
     if (!page || !page._client || !page._client.send) {
       this.debug('Warning, missing properties to intercept CDP.', { page })
       return

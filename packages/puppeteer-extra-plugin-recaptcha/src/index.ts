@@ -334,7 +334,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
     prop.solveRecaptchas = async () => this.solveRecaptchas(prop)
   }
 
-  async onPageCreated(page: Page) {
+  async onPageCreated(page: Page): Promise<void> {
     this.debug('onPageCreated', page.url())
     // Make sure we can run our content script
     await page.setBypassCSP(true)

@@ -1,4 +1,4 @@
-import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 
 export interface PluginOptions {
 }
@@ -16,7 +16,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
     return 'stealth/evasions/navigator.webdriver'
   }
 
-  async onPageCreated(page) {
+  async onPageCreated(page: PuppeteerPage): Promise<void> {
     await page.evaluateOnNewDocument(() => {
       if (navigator.webdriver === false) {
         // Post Chrome 89.0.4339.0 and already good

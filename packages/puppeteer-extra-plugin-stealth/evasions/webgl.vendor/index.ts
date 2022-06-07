@@ -1,4 +1,4 @@
-import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 import { withUtils } from '../_utils/withUtils'
 
 export interface PluginOptions {
@@ -24,7 +24,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   }
 
   /* global WebGLRenderingContext WebGL2RenderingContext */
-  async onPageCreated(page) {
+  async onPageCreated(page: PuppeteerPage): Promise<void> {
     await withUtils(page).evaluateOnNewDocument((utils, opts) => {
       const getParameterProxyHandler = {
         apply: function(target, ctx, args) {

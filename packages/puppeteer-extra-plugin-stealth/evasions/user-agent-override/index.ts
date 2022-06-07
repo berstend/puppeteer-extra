@@ -1,4 +1,4 @@
-import { PluginData, PluginDependencies, PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { PluginData, PluginDependencies, PuppeteerPage, PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
 export interface PluginOptions {
   userAgent: string | null,
@@ -68,7 +68,7 @@ export interface PluginOptions {
     }
   }
 
-  async onPageCreated(page) {
+  async onPageCreated(page: PuppeteerPage): Promise<void> {
     // Determine the full user agent string, strip the "Headless" part
     let ua =
       this.opts.userAgent ||

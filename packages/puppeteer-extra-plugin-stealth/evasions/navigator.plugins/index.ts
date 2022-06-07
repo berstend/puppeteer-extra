@@ -1,4 +1,4 @@
-import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 import { withUtils } from '../_utils/withUtils'
 import { utils } from '../_utils'
 import { generateMimeTypeArray } from './mimeTypes'
@@ -32,7 +32,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
     return 'stealth/evasions/navigator.plugins'
   }
 
-  async onPageCreated(page) {
+  async onPageCreated(page: PuppeteerPage): Promise<void> {
     await withUtils(page).evaluateOnNewDocument(
       (utils, { fns, data }) => {
         fns = utils.materializeFns(fns)

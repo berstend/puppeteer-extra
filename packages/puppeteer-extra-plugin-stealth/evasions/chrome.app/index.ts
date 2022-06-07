@@ -1,4 +1,4 @@
-import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 import { withUtils } from '../_utils/withUtils'
 
 declare var window: any;
@@ -18,7 +18,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
     return 'stealth/evasions/chrome.app'
   }
 
-  async onPageCreated(page) {
+  async onPageCreated(page: PuppeteerPage): Promise<void> {
     await withUtils(page).evaluateOnNewDocument(utils => {
       if (!window.chrome) {
         // Use the exact property descriptor found in headful Chrome

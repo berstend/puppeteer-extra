@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs'
 import os from 'os'
 import path from 'path'
-
+import { Page } from 'puppeteer'
 import { PuppeteerBlocker } from '@cliqz/adblocker-puppeteer'
 import fetch from 'node-fetch'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
@@ -126,9 +126,9 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
   /**
    * Enable adblocking in `page`.
    */
-  async onPageCreated(page: any) {
+  async onPageCreated(page: Page): Promise<void> {
     this.debug('onPageCreated')
-    ;(await this.getBlocker()).enableBlockingInPage(page)
+    ;(await this.getBlocker()).enableBlockingInPage(page as any)
   }
 }
 

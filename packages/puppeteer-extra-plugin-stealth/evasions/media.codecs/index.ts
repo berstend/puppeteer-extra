@@ -1,4 +1,4 @@
-import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 import { withUtils } from '../_utils/withUtils'
 
 export interface PluginOptions {
@@ -17,7 +17,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
     return 'stealth/evasions/media.codecs'
   }
 
-  async onPageCreated(page) {
+  async onPageCreated(page: PuppeteerPage): Promise<void> {
     await withUtils(page).evaluateOnNewDocument(utils => {
       /**
        * Input might look funky, we need to normalize it so e.g. whitespace isn't an issue for our spoofing.

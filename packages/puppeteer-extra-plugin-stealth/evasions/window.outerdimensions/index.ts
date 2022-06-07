@@ -1,4 +1,4 @@
-import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 
 export interface PluginOptions {
 }
@@ -16,7 +16,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
     return 'stealth/evasions/window.outerdimensions'
   }
 
-  async onPageCreated(page) {
+  async onPageCreated(page: PuppeteerPage): Promise<void> {
     // Chrome returns undefined, Firefox false
     await page.evaluateOnNewDocument(() => {
       try {

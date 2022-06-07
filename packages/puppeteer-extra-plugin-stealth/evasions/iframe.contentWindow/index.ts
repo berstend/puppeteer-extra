@@ -1,4 +1,4 @@
-import { PluginRequirements, PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { PluginRequirements, PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 import { withUtils } from '../_utils/withUtils'
 
 export interface PluginOptions {
@@ -24,7 +24,7 @@ export interface PluginOptions {
     return new Set(['runLast'])
   }
 
-  async onPageCreated(page) {
+  async onPageCreated(page: PuppeteerPage): Promise<void> {
     await withUtils(page).evaluateOnNewDocument((utils, opts) => {
       try {
         // Adds a contentWindow proxy to the provided iframe element

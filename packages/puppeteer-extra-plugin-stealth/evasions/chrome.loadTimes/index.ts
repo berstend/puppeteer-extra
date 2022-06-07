@@ -1,4 +1,4 @@
-import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 import { withUtils } from '../_utils/withUtils'
 
 declare var window: any;
@@ -30,7 +30,7 @@ export interface PluginOptions {
     return 'stealth/evasions/chrome.loadTimes'
   }
 
-  async onPageCreated(page) {
+  async onPageCreated(page: PuppeteerPage): Promise<void> {
     await withUtils(page).evaluateOnNewDocument(
       (utils, { opts }) => {
         if (!window.chrome) {

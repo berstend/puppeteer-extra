@@ -1,6 +1,4 @@
-'use strict'
-
-import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 import { withUtils } from '../_utils/withUtils'
 
 export interface PluginOptions {
@@ -28,7 +26,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
     }
   }
 
-  async onPageCreated(page) {
+  async onPageCreated(page: PuppeteerPage): Promise<void> {
     await withUtils(page).evaluateOnNewDocument(
       (utils, { opts }) => {
         const languages = opts.languages.length
