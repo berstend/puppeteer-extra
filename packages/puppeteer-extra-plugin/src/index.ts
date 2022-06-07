@@ -36,7 +36,7 @@ export type ChildClassMembers = keyof PuppeteerExtraPlugin | 'constructor';
 
 export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
 // types aliases
-export type PuppeteerPage = Puppeteer.Page & { _client?: { send: (message: any, payload: any) => void } };
+export type PuppeteerPage = Puppeteer.Page & { _client?: { send: (message: Function, payload: any[]) => void } };
 export type PuppeteerTarget = Puppeteer.Target;
 export type PuppeteerBrowser = Puppeteer.Browser;
 export type PuppeteerConnectOptions = Puppeteer.ConnectOptions;
@@ -83,7 +83,7 @@ export type PuppeteerConnectOptions = Puppeteer.ConnectOptions;
  * })()
  *
  */
- export abstract class PuppeteerExtraPlugin<OPTION = any> {
+ export abstract class PuppeteerExtraPlugin<OPTION = {}> {
   /** @private */
   private _debugBase: Debugger
   /** @private */
@@ -353,7 +353,7 @@ export type PuppeteerConnectOptions = Puppeteer.ConnectOptions;
    *
    * @param browser - The `puppeteer` browser instance.
    */
-  public async onBrowser(browser: PuppeteerBrowser, opts: any): Promise<void> {
+  public async onBrowser(browser: PuppeteerBrowser, opts: BrowserEventOptions): Promise<void> {
     // noop
   }
 
