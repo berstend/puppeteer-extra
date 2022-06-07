@@ -35,7 +35,11 @@ export type PluginRequirements = Set<'launch' | 'headful' | 'dataFromPlugins' | 
 export type ChildClassMembers = keyof PuppeteerExtraPlugin | 'constructor';
 
 export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
-
+// types aliases
+export type PuppeteerPage = Puppeteer.Page;
+export type PuppeteerTarget = Puppeteer.Target;
+export type PuppeteerBrowser = Puppeteer.Browser;
+export type PuppeteerConnectOptions = Puppeteer.ConnectOptions;
 /**
  * Base class for `puppeteer-extra` plugins.
  *
@@ -302,7 +306,7 @@ export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
    * }
    */
   async afterLaunch(
-    browser: Puppeteer.Browser,
+    browser: PuppeteerBrowser,
     opts: BrowserEventOptions // = { options: {} as Puppeteer.LaunchOptions }
   ): Promise<void> {
     // noop
@@ -319,7 +323,7 @@ export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
    * @param  {Object} options - Puppeteer connect options
    * @return {Object=}
    */
-  async beforeConnect(options: Puppeteer.ConnectOptions): Promise<void | Puppeteer.ConnectOptions> {
+  async beforeConnect(options: PuppeteerConnectOptions): Promise<void | PuppeteerConnectOptions> {
     // noop
   }
 
@@ -333,7 +337,7 @@ export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
    * @param  {Object} opts.options - Puppeteer connect options used.
    *
    */
-  async afterConnect(browser: Puppeteer.Browser, opts: BrowserEventOptions): Promise<void> {
+  async afterConnect(browser: PuppeteerBrowser, opts: BrowserEventOptions): Promise<void> {
     // noop
   }
 
@@ -349,7 +353,7 @@ export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
    *
    * @param browser - The `puppeteer` browser instance.
    */
-  public async onBrowser(browser: Puppeteer.Browser, opts: any): Promise<void> {
+  public async onBrowser(browser: PuppeteerBrowser, opts: any): Promise<void> {
     // noop
   }
 
@@ -362,7 +366,7 @@ export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
    *
    * @param  {Puppeteer.Target} target
    */
-  async onTargetCreated(target: Puppeteer.Target): Promise<void> {
+  async onTargetCreated(target: PuppeteerTarget): Promise<void> {
     // noop
   }
 
@@ -373,7 +377,7 @@ export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
    *
    * > Note: This includes browser instances created through `.launch()` as well as `.connect()`.
    *
-   * @param  {Puppeteer.Target} target
+   * @param  {Puppeteer.Page} page
    *
    * @example
    * async onPageCreated (page) {
@@ -385,7 +389,7 @@ export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
    *   await page.setUserAgent(ua)
    * }
    */
-  async onPageCreated(page: Puppeteer.Page): Promise<void> {
+  async onPageCreated(page: PuppeteerPage): Promise<void> {
     // noop
   }
 
@@ -398,7 +402,7 @@ export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
    *
    * @param  {Puppeteer.Target} target
    */
-  async onTargetChanged(target: Puppeteer.Target): Promise<void> {
+  async onTargetChanged(target: PuppeteerTarget): Promise<void> {
     // noop
   }
 
@@ -411,7 +415,7 @@ export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
    *
    * @param  {Puppeteer.Target} target
    */
-  async onTargetDestroyed(target: Puppeteer.Target): Promise<void> {
+  async onTargetDestroyed(target: PuppeteerTarget): Promise<void> {
     // noop
   }
 
@@ -498,7 +502,7 @@ export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
    *
    * @private
    */
-  async _bindBrowserEvents(browser: Puppeteer.Browser, opts: BrowserEventOptions): Promise<void> {
+  async _bindBrowserEvents(browser: PuppeteerBrowser, opts: BrowserEventOptions): Promise<void> {
     if (
       this._hasChildClassMember('onTargetCreated') ||
       this._hasChildClassMember('onPageCreated')
@@ -547,7 +551,7 @@ export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
   /**
    * @private
    */
-  async _onTargetCreated(target: Puppeteer.Target): Promise<void> {
+  async _onTargetCreated(target: PuppeteerTarget): Promise<void> {
     if (this.onTargetCreated) await this.onTargetCreated(target)
     // Pre filter pages for plugin developers convenience
     if (target.type() === 'page') {
