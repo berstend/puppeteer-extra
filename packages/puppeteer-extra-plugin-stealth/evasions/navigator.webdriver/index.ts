@@ -1,17 +1,18 @@
-'use strict'
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+export interface PluginOptions {
+}
 
 /**
  * Pass the Webdriver Test.
  * Will delete `navigator.webdriver` property.
  */
-class Plugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }
 
-  get name() {
+  get name(): 'stealth/evasions/navigator.webdriver' {
     return 'stealth/evasions/navigator.webdriver'
   }
 
@@ -45,8 +46,4 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = {
-  default: function(pluginConfig) {
-    return new Plugin(pluginConfig)
-  }
-}
+export default (pluginConfig?: Partial<PluginOptions>) => new Plugin(pluginConfig)

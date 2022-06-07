@@ -50,3 +50,9 @@ packages/puppeteer-extra-plugin-stealth/evasions/chrome.loadTimes/index.js
 packages/puppeteer-extra-plugin-stealth/evasions/chrome.csi/index.js
 packages/puppeteer-extra-plugin-stealth/evasions/_template/index.js
 packages/puppeteer-extra-plugin-stealth/evasions/*/index.d.ts
+packages/puppeteer-extra-plugin-stealth/evasions/defaultArgs/index.js
+packages/puppeteer-extra-plugin-stealth/evasions/iframe.contentWindow/index.js
+packages/puppeteer-extra-plugin-stealth/evasions/media.codecs/index.js
+packages/puppeteer-extra-plugin-stealth/evasions/navigator.hardwareConcurrency/index.js
+packages/puppeteer-extra-plugin-stealth/evasions/navigator.vendor/index.js
+packages/puppeteer-extra-plugin-stealth/evasions/navigator.webdriver/index.js

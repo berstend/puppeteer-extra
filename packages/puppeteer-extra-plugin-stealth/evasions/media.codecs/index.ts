@@ -1,6 +1,9 @@
-'use strict'
+import { PluginRequirements, PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { withUtils } from '../_utils/withUtils'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+export interface PluginOptions {
+}
+
 
 const { withUtils } = require('../_utils/withUtils')
 
@@ -8,12 +11,12 @@ const { withUtils } = require('../_utils/withUtils')
  * Fix Chromium not reporting "probably" to codecs like `videoEl.canPlayType('video/mp4; codecs="avc1.42E01E"')`.
  * (Chromium doesn't support proprietary codecs, only Chrome does)
  */
-class Plugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }
 
-  get name() {
+  get name(): 'stealth/evasions/media.codecs' {
     return 'stealth/evasions/media.codecs'
   }
 
@@ -86,8 +89,4 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = {
-  default: function(pluginConfig) {
-    return new Plugin(pluginConfig)
-  }
-}
+export default (pluginConfig?: Partial<PluginOptions>) => new Plugin(pluginConfig)

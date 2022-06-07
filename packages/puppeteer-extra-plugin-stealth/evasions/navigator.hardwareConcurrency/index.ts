@@ -1,8 +1,9 @@
-'use strict'
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { withUtils } from '../_utils/withUtils'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
-
-const { withUtils } = require('../_utils/withUtils')
+export interface PluginOptions {
+  hardwareConcurrency: number
+}
 
 /**
  * Set the hardwareConcurrency to 4 (optionally configurable with `hardwareConcurrency`)
@@ -13,16 +14,16 @@ const { withUtils } = require('../_utils/withUtils')
  * @param {number} [opts.hardwareConcurrency] - The value to use in `navigator.hardwareConcurrency` (default: `4`)
  */
 
-class Plugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }
 
-  get name() {
+  get name(): 'stealth/evasions/navigator.hardwareConcurrency' {
     return 'stealth/evasions/navigator.hardwareConcurrency'
   }
 
-  get defaults() {
+  get defaults(): PluginOptions {
     return {
       hardwareConcurrency: 4
     }
@@ -44,8 +45,5 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = {
-  default: function(pluginConfig) {
-    return new Plugin(pluginConfig)
-  }
-}
+export default (pluginConfig?: Partial<PluginOptions>) => new Plugin(pluginConfig)
+

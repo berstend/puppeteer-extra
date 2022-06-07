@@ -1,8 +1,9 @@
-'use strict'
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { withUtils } from '../_utils/withUtils'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
-
-const { withUtils } = require('../_utils/withUtils')
+export interface PluginOptions {
+  vendor: string
+}
 
 /**
  * By default puppeteer will have a fixed `navigator.vendor` property.
@@ -27,16 +28,16 @@ const { withUtils } = require('../_utils/withUtils')
  * @param {string} [opts.vendor] - The vendor to use in `navigator.vendor` (default: `Google Inc.`)
  *
  */
-class Plugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }
 
-  get name() {
+  get name(): 'stealth/evasions/navigator.vendor' {
     return 'stealth/evasions/navigator.vendor'
   }
 
-  get defaults() {
+  get defaults(): PluginOptions {
     return {
       vendor: 'Google Inc.'
     }
@@ -62,6 +63,4 @@ class Plugin extends PuppeteerExtraPlugin {
   } // onPageCreated
 }
 
-module.exports = {
-  default: opts => new Plugin(opts)
-}
+export default (pluginConfig?: Partial<PluginOptions>) => new Plugin(pluginConfig)

@@ -16,7 +16,7 @@ const STATIC_DATA = require('./staticData.json')
     super(opts)
   }
 
-  get name() {
+  get name():'stealth/evasions/chrome.runtime' {
     return 'stealth/evasions/chrome.runtime'
   }
 

@@ -1,8 +1,8 @@
-'use strict'
+import { PluginRequirements, PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { withUtils } from '../_utils/withUtils'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
-
-const { withUtils } = require('../_utils/withUtils')
+export interface PluginOptions {
+}
 
 /**
  * Fix for the HEADCHR_IFRAME detection (iframe.contentWindow.chrome), hopefully this time without breaking iframes.
@@ -10,16 +10,16 @@ const { withUtils } = require('../_utils/withUtils')
  *
  * https://github.com/puppeteer/puppeteer/issues/1106
  */
-class Plugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }
 
-  get name() {
+  get name(): 'stealth/evasions/iframe.contentWindow' {
     return 'stealth/evasions/iframe.contentWindow'
   }
 
-  get requirements() {
+  get requirements(): PluginRequirements {
     // Make sure `chrome.runtime` has ran, we use data defined by it (e.g. `window.chrome`)
     return new Set(['runLast'])
   }
@@ -131,8 +131,4 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = {
-  default: function(pluginConfig) {
-    return new Plugin(pluginConfig)
-  }
-}
+export default (pluginConfig?: Partial<PluginOptions>) => new Plugin(pluginConfig)
