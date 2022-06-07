@@ -1,4 +1,5 @@
 /* global MimeType MimeTypeArray Plugin PluginArray  */
+import Utils from '../_utils'
 
 /**
  * Generate a convincing and functional MimeType or Plugin array from scratch.
@@ -6,7 +7,7 @@
  *
  * Note: This is meant to be run in the context of the page.
  */
-module.exports.generateMagicArray = (utils, fns) =>
+export const generateMagicArray = (utils: typeof Utils, fns: any) =>
   function(
     dataArray = [],
     proto = MimeTypeArray.prototype,
@@ -14,7 +15,7 @@ module.exports.generateMagicArray = (utils, fns) =>
     itemMainProp = 'type'
   ) {
     // Quick helper to set props with the same descriptors vanilla is using
-    const defineProp = (obj, prop, value) =>
+    const defineProp = (obj: Object, prop: string, value: any) =>
       Object.defineProperty(obj, prop, {
         value,
         writable: false,
@@ -23,7 +24,7 @@ module.exports.generateMagicArray = (utils, fns) =>
       })
 
     // Loop over our fake data and construct items
-    const makeItem = data => {
+    const makeItem = (data: {[key: string]: any}): any => {
       const item = {}
       for (const prop of Object.keys(data)) {
         if (prop.startsWith('__')) {
@@ -34,12 +35,12 @@ module.exports.generateMagicArray = (utils, fns) =>
       return patchItem(item, data)
     }
 
-    const patchItem = (item, data) => {
+    const patchItem = (item: any, data: any): any => {
       let descriptor = Object.getOwnPropertyDescriptors(item)
 
       // Special case: Plugins have a magic length property which is not enumerable
       // e.g. `navigator.plugins[i].length` should always be the length of the assigned mimeTypes
-      if (itemProto === Plugin.prototype) {
+      if (itemProto as any === Plugin.prototype) {
         descriptor = {
           ...descriptor,
           length: {
@@ -55,7 +56,7 @@ module.exports.generateMagicArray = (utils, fns) =>
       const obj = Object.create(itemProto, descriptor)
 
       // Virtually all property keys are not enumerable in vanilla
-      const blacklist = [...Object.keys(data), 'length', 'enabledPlugin']
+      const blacklist: Array<string | Symbol> = [...Object.keys(data), 'length', 'enabledPlugin']
       return new Proxy(obj, {
         ownKeys(target) {
           return Reflect.ownKeys(target).filter(k => !blacklist.includes(k))
@@ -69,7 +70,7 @@ module.exports.generateMagicArray = (utils, fns) =>
       })
     }
 
-    const magicArray = []
+    const magicArray: any[] = []
 
     // Loop through our fake data and use that to create convincing entities
     dataArray.forEach(data => {
@@ -82,7 +83,7 @@ module.exports.generateMagicArray = (utils, fns) =>
     })
 
     // This is the best way to fake the type to make sure this is false: `Array.isArray(navigator.mimeTypes)`
-    const magicArrayObj = Object.create(proto, {
+    const magicArrayObj = (Object as any).create(proto, {
       ...Object.getOwnPropertyDescriptors(magicArray),
 
       // There's one ugly quirk we unfortunately need to take care of:
@@ -114,7 +115,7 @@ module.exports.generateMagicArray = (utils, fns) =>
         if (key === 'namedItem') {
           return functionMocks.namedItem
         }
-        if (proto === PluginArray.prototype && key === 'refresh') {
+        if (proto as any === PluginArray.prototype && key === 'refresh') {
           return functionMocks.refresh
         }
         // Everything else can pass through as normal
@@ -126,7 +127,7 @@ module.exports.generateMagicArray = (utils, fns) =>
         // My guess is that it has to do with the recent change of not allowing data enumeration and this being implemented weirdly
         // For that reason we just completely fake the available property names based on our data to match what regular Chrome is doing
         // Specific issues when not patching this: `length` property is available, direct `types` props (e.g. `obj['application/pdf']`) are missing
-        const keys = []
+        const keys: any[] = []
         const typeProps = magicArray.map(mt => mt[itemMainProp])
         typeProps.forEach((_, i) => keys.push(`${i}`))
         typeProps.forEach(propName => keys.push(propName))
