@@ -34,3 +34,6 @@ testing/
 
 *.tgz*
 
+packages/puppeteer-extra-plugin-stealth/index.d.ts
+packages/puppeteer-extra-plugin-stealth/index.js
+packages/puppeteer-extra-plugin-stealth/**/*.map
