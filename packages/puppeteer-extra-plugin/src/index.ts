@@ -36,7 +36,7 @@ export type ChildClassMembers = keyof PuppeteerExtraPlugin | 'constructor';
 
 export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
 // types aliases
-export type PuppeteerPage = Puppeteer.Page & { _client?: { send: (message: Function, payload: any[]) => void } };
+export type PuppeteerPage = Puppeteer.Page & { _client?: { send: (message: Function | string, payload: any) => void } };
 export type PuppeteerTarget = Puppeteer.Target;
 export type PuppeteerBrowser = Puppeteer.Browser;
 export type PuppeteerConnectOptions = Puppeteer.ConnectOptions;

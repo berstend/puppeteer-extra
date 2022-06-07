@@ -22,7 +22,7 @@ export interface PluginOptions {
 /**
  * A puppeteer-extra plugin to automatically block ads and trackers.
  */
-export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
+export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin<PluginOptions> {
   private blocker: PuppeteerBlocker | undefined
 
   constructor(opts: Partial<PluginOptions>) {
