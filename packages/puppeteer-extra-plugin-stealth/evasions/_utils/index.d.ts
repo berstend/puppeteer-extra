@@ -207,7 +207,7 @@ export declare const utils: {
      *
      * @param {object} fnObj - An object containing functions as properties
      */
-    stringifyFns: (fnObj?: any) => any;
+    stringifyFns: (fnObj?: {[key: string] : Function | any}) => {[key: string]: string};
     /**
      * Utility function to reverse the process of `utils.stringifyFns`.
      * Will materialize an object with stringified functions (supports classic and fat arrow functions).

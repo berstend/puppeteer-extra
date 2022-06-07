@@ -10,7 +10,7 @@
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "strict": false,
+    "strict": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": false,
     "noUnusedLocals": true,

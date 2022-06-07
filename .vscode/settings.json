@@ -7,15 +7,13 @@
         "packages/puppeteer-extra-plugin-stealth/evasions/_utils/withUtils.js": true,
         "packages/puppeteer-extra-plugin-stealth/evasions/_template/index.js": true,
         "packages/puppeteer-extra-plugin-stealth/evasions/_template/index.d.ts": true,
-
         "packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/mimeTypes.js": true,
         "packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/mimeTypes.d.ts": true,
-
         "packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/plugins.js": true,
         "packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/plugins.d.ts": true,
-
         "packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/functionMocks.js": true,
         "packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/functionMocks.d.ts": true,
-
+        "packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/magicArray.js": true,
+        "packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/magicArray.d.ts": true,
     }
 }

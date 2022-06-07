@@ -29,7 +29,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
 
   async onPageCreated(page: PuppeteerPage): Promise<void> {
     await withUtils(page).evaluateOnNewDocument(
-      (utils: typeof Utils, { opts }) => {
+      (utils: typeof Utils, opts: PluginOptions) => {
         const languages = opts.languages.length
           ? opts.languages
           : ['en-US', 'en']
@@ -39,9 +39,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
           utils.makeHandler().getterValue(Object.freeze([...languages]))
         )
       },
-      {
-        opts: this.opts
-      }
+      this.opts
     )
   }
 }

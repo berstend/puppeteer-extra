@@ -10,9 +10,9 @@ export const withUtils = (page: PuppeteerPage) => ({
   /**
    * Simple `page.evaluate` replacement to preload utils
    */
-  evaluate: async function(mainFunction: any, ...args: any[]) {
+  evaluate: async function(mainFunction: Function, ...args: any[]) {
     return page.evaluate(
-      ({ _utilsFns, _mainFunction, _args }) => {
+      ({ _utilsFns, _mainFunction, _args }: {_utilsFns: {[key: string]: string}, _mainFunction: string, _args: unknown[]}) => {
         // Add this point we cannot use our utililty functions as they're just strings, we need to materialize them first
         const utils = Object.fromEntries(
           Object.entries(_utilsFns).map(([key, value]) => [key, eval(value as string)]) // eslint-disable-line no-eval
@@ -32,10 +32,10 @@ export const withUtils = (page: PuppeteerPage) => ({
    */
   evaluateOnNewDocument: async function(mainFunction: any, ...args: any[]) {
     return page.evaluateOnNewDocument(
-      ({ _utilsFns, _mainFunction, _args }) => {
+      ({ _utilsFns, _mainFunction, _args }: {_utilsFns: {[key: string]: string}, _mainFunction: string, _args: unknown[]}) => {
         // Add this point we cannot use our utililty functions as they're just strings, we need to materialize them first
         const utils = Object.fromEntries(
-          Object.entries(_utilsFns).map(([key, value]) => [key, eval(value as string)]) // eslint-disable-line no-eval
+          Object.entries(_utilsFns).map(([key, value]) => [key, eval(value)]) // eslint-disable-line no-eval
         )
         utils.init()
         return eval(_mainFunction)(utils, ..._args) // eslint-disable-line no-eval
