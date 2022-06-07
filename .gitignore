@@ -56,3 +56,9 @@ packages/puppeteer-extra-plugin-stealth/evasions/media.codecs/index.js
 packages/puppeteer-extra-plugin-stealth/evasions/navigator.hardwareConcurrency/index.js
 packages/puppeteer-extra-plugin-stealth/evasions/navigator.vendor/index.js
 packages/puppeteer-extra-plugin-stealth/evasions/navigator.webdriver/index.js
+packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/index.js
+packages/puppeteer-extra-plugin-stealth/evasions/sourceurl/index.js
+packages/puppeteer-extra-plugin-stealth/evasions/user-agent-override/index.js
+packages/puppeteer-extra-plugin-stealth/evasions/webgl.vendor/index.js
+packages/puppeteer-extra-plugin-stealth/evasions/window.outerdimensions/index.js
+packages/puppeteer-extra-plugin-stealth/evasions/sourceurl/index.js

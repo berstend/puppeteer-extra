@@ -1,6 +1,10 @@
-'use strict'
+import { PluginData, PluginDependencies, PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+export interface PluginOptions {
+  userAgent: string | null,
+  locale: string,
+  maskLinux: boolean,
+}
 
 /**
  * Fixes the UserAgent info (composed of UA string, Accept-Language, Platform, and UA hints).
@@ -39,22 +43,24 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * @param {boolean} [opts.maskLinux] - Wether to hide Linux as platform in the user agent or not - true by default
  *
  */
-class Plugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+  private _headless?: boolean | 'chrome' = false;
+
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
 
     this._headless = false
   }
 
-  get name() {
+  get name(): 'stealth/evasions/user-agent-override' {
     return 'stealth/evasions/user-agent-override'
   }
 
-  get dependencies() {
+  get dependencies(): PluginDependencies {
     return new Set(['user-preferences'])
   }
 
-  get defaults() {
+  get defaults(): PluginOptions {
     return {
       userAgent: null,
       locale: 'en-US,en',
@@ -105,7 +111,7 @@ class Plugin extends PuppeteerExtraPlugin {
         [1, 2, 0],
         [2, 0, 1],
         [2, 1, 0]
-      ][seed % 6]
+      ][Number(seed) % 6]
       const escapedChars = [' ', ' ', ';']
 
       const greaseyBrand = `${escapedChars[order[0]]}Not${
@@ -130,7 +136,7 @@ class Plugin extends PuppeteerExtraPlugin {
     }
 
     // Return OS version
-    const _getPlatformVersion = () => {
+    const _getPlatformVersion = (): string => {
       if (ua.includes('Mac OS X ')) {
         return ua.match(/Mac OS X ([^)]+)/)[1]
       } else if (ua.includes('Android ')) {
@@ -163,7 +169,7 @@ class Plugin extends PuppeteerExtraPlugin {
         model: _getPlatformModel(),
         mobile: _getMobile()
       }
-    }
+    } as any
 
     // In case of headless, override the acceptLanguage in CDP.
     // This is not preferred, as it messed up the header order.
@@ -180,17 +186,17 @@ class Plugin extends PuppeteerExtraPlugin {
     page._client.send('Network.setUserAgentOverride', override)
   }
 
-  async beforeLaunch(options) {
+  async beforeLaunch(options): Promise<void> {
     // Check if launched headless
     this._headless = options.headless
   }
 
-  async beforeConnect() {
+  async beforeConnect(): Promise<void> {
     // Treat browsers using connect() as headless browsers
     this._headless = true
   }
 
-  get data() {
+  get data(): PluginData[] {
     return [
       {
         name: 'userPreferences',
@@ -202,6 +208,4 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = {
-  default: opts => new Plugin(opts)
-}
+export default (pluginConfig?: Partial<PluginOptions>) => new Plugin(pluginConfig)

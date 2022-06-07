@@ -1,6 +1,5 @@
-'use strict'
-
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { withUtils } from '../_utils/withUtils'
 
 const { utils } = require('../_utils')
 const { withUtils } = require('../_utils/withUtils')
@@ -11,6 +10,9 @@ const { generateMagicArray } = require('./magicArray')
 const { generateFunctionMocks } = require('./functionMocks')
 
 const data = require('./data.json')
+
+export interface PluginOptions {
+}
 
 /**
  * In headless mode `navigator.mimeTypes` and `navigator.plugins` are empty.
@@ -23,12 +25,13 @@ const data = require('./data.json')
  * @see https://developer.mozilla.org/en-US/docs/Web/API/NavigatorPlugins/plugins
  * @see https://developer.mozilla.org/en-US/docs/Web/API/PluginArray
  */
-class Plugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }
 
-  get name() {
+
+  get name(): 'stealth/evasions/navigator.plugins' {
     return 'stealth/evasions/navigator.plugins'
   }
 
@@ -96,8 +99,4 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = {
-  default: function(pluginConfig) {
-    return new Plugin(pluginConfig)
-  }
-}
+export default (pluginConfig?: Partial<PluginOptions>) => new Plugin(pluginConfig)

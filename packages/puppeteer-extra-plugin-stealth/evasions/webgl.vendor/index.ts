@@ -1,9 +1,10 @@
-'use strict'
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { withUtils } from '../_utils/withUtils'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
-
-const { withUtils } = require('../_utils/withUtils')
-
+export interface PluginOptions {
+  vendor: string; 
+  renderer: string;
+}
 /**
  * Fix WebGL Vendor/Renderer being set to Google in headless mode
  *
@@ -13,12 +14,12 @@ const { withUtils } = require('../_utils/withUtils')
  * @param {string} [opts.vendor] - The vendor string to use (default: `Intel Inc.`)
  * @param {string} [opts.renderer] - The renderer string (default: `Intel Iris OpenGL Engine`)
  */
-class Plugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }
 
-  get name() {
+  get name(): 'stealth/evasions/webgl.vendor' {
     return 'stealth/evasions/webgl.vendor'
   }
 
@@ -54,8 +55,4 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = {
-  default: function(pluginConfig) {
-    return new Plugin(pluginConfig)
-  }
-}
+export default (pluginConfig?: Partial<PluginOptions>) => new Plugin(pluginConfig)
