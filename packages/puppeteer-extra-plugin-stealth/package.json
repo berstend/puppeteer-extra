@@ -19,7 +19,7 @@
     "build:rollup": "rollup -c rollup.config.ts",
     "lint": "eslint --ext .js .",
     "lint:ts": "node -e 0",
-    "test:js": "ava --concurrency 1 -v",
+    "test:js": "ava",
     "test": "run-p test:js lint:ts",
     "test-ci": "run-s test:js",
     "types": "npx --package typescript@3.7 tsc --emitDeclarationOnly --declaration --allowJs index.js"
@@ -41,6 +41,9 @@
   ],
   "ava": {
     "timeout": "40s",
+    "failFast": true,
+    "concurrency": 1,
+    "verbose": true,
     "files": [
       "*.test.js",
       "test/*.test.js",
