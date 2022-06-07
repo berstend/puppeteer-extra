@@ -3,6 +3,9 @@ import { withUtils } from '../_utils/withUtils'
 import Utils from '../_utils/'
 
 export interface PluginOptions {
+  /**
+   * lang like ['en-US', 'en']
+   */
   languages: string[];
 }
 
@@ -13,7 +16,7 @@ export interface PluginOptions {
  * @param {Array<string>} [opts.languages] - The languages to use (default: `['en-US', 'en']`)
  */
 class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
-  constructor(opts = {}) {
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }
 

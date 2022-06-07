@@ -30,7 +30,7 @@ export const withUtils = (page: PuppeteerPage) => ({
   /**
    * Simple `page.evaluateOnNewDocument` replacement to preload utils
    */
-  evaluateOnNewDocument: async function(mainFunction: any, ...args: any[]) {
+  evaluateOnNewDocument: async function(mainFunction: {[key: string]: any}, ...args: any[]) {
     return page.evaluateOnNewDocument(
       ({ _utilsFns, _mainFunction, _args }: {_utilsFns: {[key: string]: string}, _mainFunction: string, _args: unknown[]}) => {
         // Add this point we cannot use our utililty functions as they're just strings, we need to materialize them first
