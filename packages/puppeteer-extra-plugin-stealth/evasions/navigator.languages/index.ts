@@ -1,5 +1,6 @@
 import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 import { withUtils } from '../_utils/withUtils'
+import Utils from '../_utils/'
 
 export interface PluginOptions {
   languages: string[];
@@ -28,7 +29,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
 
   async onPageCreated(page: PuppeteerPage): Promise<void> {
     await withUtils(page).evaluateOnNewDocument(
-      (utils, { opts }) => {
+      (utils: typeof Utils, { opts }) => {
         const languages = opts.languages.length
           ? opts.languages
           : ['en-US', 'en']

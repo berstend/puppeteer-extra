@@ -1,5 +1,6 @@
 import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 import { withUtils } from '../_utils/withUtils'
+import Utils from '../_utils/'
 
 declare var window: any;
 
@@ -32,7 +33,7 @@ export interface PluginOptions {
 
   async onPageCreated(page: PuppeteerPage): Promise<void> {
     await withUtils(page).evaluateOnNewDocument(
-      (utils, { opts }) => {
+      (utils: typeof Utils, { opts }) => {
         if (!window.chrome) {
           // Use the exact property descriptor found in headful Chrome
           // fetch it via `Object.getOwnPropertyDescriptor(window, 'chrome')`
@@ -113,9 +114,9 @@ export interface PluginOptions {
         const { timing } = window.performance
 
         // Truncate number to specific number of decimals, most of the `loadTimes` stuff has 3
-        function toFixed(num, fixed) {
+        function toFixed(num: number, fixed: number) {
           var re = new RegExp('^-?\\d+(?:.\\d{0,' + (fixed || -1) + '})?')
-          return num.toString().match(re)[0]
+          return num.toString().match(re)![0]
         }
 
         const timingInfo = {

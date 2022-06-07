@@ -1,5 +1,6 @@
 import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 import { withUtils } from '../_utils/withUtils'
+import Utils from '../_utils/'
 
 declare var window: any;
 
@@ -26,7 +27,7 @@ const STATIC_DATA = require('./staticData.json')
 
   async onPageCreated(page: PuppeteerPage): Promise<void> {
     await withUtils(page).evaluateOnNewDocument(
-      (utils: any, { opts, STATIC_DATA }) => {
+      (utils: typeof Utils, { opts, STATIC_DATA }) => {
         if (!window.chrome) {
           // Use the exact property descriptor found in headful Chrome
           // fetch it via `Object.getOwnPropertyDescriptor(window, 'chrome')`
@@ -59,7 +60,7 @@ const STATIC_DATA = require('./staticData.json')
           sendMessage: null
         }
 
-        const makeCustomRuntimeErrors = (preamble, method, extensionId) => ({
+        const makeCustomRuntimeErrors = (preamble: string, method: string, extensionId: string) => ({
           NoMatchingSignature: new TypeError(
             preamble + `No matching signature.`
           ),
@@ -74,12 +75,12 @@ const STATIC_DATA = require('./staticData.json')
 
         // Valid Extension IDs are 32 characters in length and use the letter `a` to `p`:
         // https://source.chromium.org/chromium/chromium/src/+/master:components/crx_file/id_util.cc;drc=14a055ccb17e8c8d5d437fe080faba4c6f07beac;l=90
-        const isValidExtensionID = str =>
+        const isValidExtensionID = (str: string) =>
           str.length === 32 && str.toLowerCase().match(/^[a-p]+$/)
 
         /** Mock `chrome.runtime.sendMessage` */
         const sendMessageHandler = {
-          apply: function(target, ctx, args) {
+          apply: function(target: any, ctx: any, args: [string, ...any]) {
             const [extensionId, options, responseCallback] = args || []
 
             // Define custom errors
@@ -135,7 +136,7 @@ const STATIC_DATA = require('./staticData.json')
          * @see https://developer.chrome.com/apps/runtime#method-connect
          */
         const connectHandler = {
-          apply: function(target, ctx, args) {
+          apply: function(target: any, ctx: any, args: any[]) {
             const [extensionId, connectInfo] = args || []
 
             // Define custom errors
@@ -170,7 +171,7 @@ const STATIC_DATA = require('./staticData.json')
             }
 
             // There's another edge-case here: extensionId is optional so we might find a connectInfo object as first param, which we need to validate
-            const validateConnectInfo = ci => {
+            const validateConnectInfo = (ci: Object) => {
               // More than a first param connectInfo as been provided
               if (args.length > 1) {
                 throw Errors.NoMatchingSignature
@@ -187,7 +188,7 @@ const STATIC_DATA = require('./staticData.json')
                     errorPreamble + `Unexpected property: '${k}'.`
                   )
                 }
-                const MismatchError = (propName, expected, found) =>
+                const MismatchError = (propName: string, expected: string, found: string) =>
                   TypeError(
                     errorPreamble +
                       `Error at property '${propName}': Invalid type: expected ${expected}, found ${found}.`

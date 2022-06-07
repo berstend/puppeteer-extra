@@ -1,15 +1,16 @@
-import { utils } from './index'
+import { PuppeteerPage } from 'puppeteer-extra-plugin'
+import { utils } from './'
 
 /**
  * Wrap a page with utilities.
  *
  * @param {Puppeteer.Page} page
  */
-export const withUtils = page => ({
+export const withUtils = (page: PuppeteerPage) => ({
   /**
    * Simple `page.evaluate` replacement to preload utils
    */
-  evaluate: async function(mainFunction, ...args) {
+  evaluate: async function(mainFunction: any, ...args: any[]) {
     return page.evaluate(
       ({ _utilsFns, _mainFunction, _args }) => {
         // Add this point we cannot use our utililty functions as they're just strings, we need to materialize them first
@@ -29,7 +30,7 @@ export const withUtils = page => ({
   /**
    * Simple `page.evaluateOnNewDocument` replacement to preload utils
    */
-  evaluateOnNewDocument: async function(mainFunction, ...args) {
+  evaluateOnNewDocument: async function(mainFunction: any, ...args: any[]) {
     return page.evaluateOnNewDocument(
       ({ _utilsFns, _mainFunction, _args }) => {
         // Add this point we cannot use our utililty functions as they're just strings, we need to materialize them first

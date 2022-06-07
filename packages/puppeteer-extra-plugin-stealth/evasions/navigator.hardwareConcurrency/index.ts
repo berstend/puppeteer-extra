@@ -1,5 +1,6 @@
 import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 import { withUtils } from '../_utils/withUtils'
+import Utils from '../_utils/'
 
 export interface PluginOptions {
   hardwareConcurrency: number
@@ -31,7 +32,7 @@ export interface PluginOptions {
 
   async onPageCreated(page: PuppeteerPage): Promise<void> {
     await withUtils(page).evaluateOnNewDocument(
-      (utils, { opts }) => {
+      (utils: typeof Utils, { opts }) => {
         utils.replaceGetterWithProxy(
           Object.getPrototypeOf(navigator),
           'hardwareConcurrency',

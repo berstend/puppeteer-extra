@@ -1,5 +1,6 @@
 import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 import { withUtils } from '../_utils/withUtils'
+import Utils from '../_utils/'
 
 export interface PluginOptions {
   vendor: string
@@ -49,7 +50,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
     })
 
     await withUtils(page).evaluateOnNewDocument(
-      (utils, { opts }) => {
+      (utils: typeof Utils, { opts }) => {
         utils.replaceGetterWithProxy(
           Object.getPrototypeOf(navigator),
           'vendor',

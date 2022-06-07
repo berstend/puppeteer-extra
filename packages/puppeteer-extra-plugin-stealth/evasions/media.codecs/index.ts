@@ -1,5 +1,6 @@
 import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 import { withUtils } from '../_utils/withUtils'
+import Utils from '../_utils/'
 
 export interface PluginOptions {
 }
@@ -18,7 +19,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   }
 
   async onPageCreated(page: PuppeteerPage): Promise<void> {
-    await withUtils(page).evaluateOnNewDocument(utils => {
+    await withUtils(page).evaluateOnNewDocument((utils: typeof Utils) => {
       /**
        * Input might look funky, we need to normalize it so e.g. whitespace isn't an issue for our spoofing.
        *
@@ -29,9 +30,9 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
        * audio/ogg; codecs="vorbis"
        * @param {String} arg
        */
-      const parseInput = arg => {
+        const parseInput = (arg: string): { mime: string, codecStr: string, codecs: string[] } => {
         const [mime, codecStr] = arg.trim().split(';')
-        let codecs = []
+        let codecs: string[] = []
         if (codecStr && codecStr.includes('codecs="')) {
           codecs = codecStr
             .trim()
@@ -51,7 +52,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
 
       const canPlayType = {
         // Intercept certain requests
-        apply: function(target, ctx, args) {
+        apply: function(target: any, ctx: any, args: string[]) {
           if (!args || !args.length) {
             return target.apply(ctx, args)
           }

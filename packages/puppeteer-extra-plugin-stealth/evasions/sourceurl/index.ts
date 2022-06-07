@@ -56,7 +56,7 @@ export interface PluginOptions {
 
         // To find the methods/props in question check `_evaluateInternal` at:
         // https://github.com/puppeteer/puppeteer/blob/main/src/common/ExecutionContext.ts#L186
-        const methodsToPatch = {
+        const methodsToPatch: {[key: string]: string} = {
           'Runtime.evaluate': 'expression',
           'Runtime.callFunctionOn': 'functionDeclaration'
         }

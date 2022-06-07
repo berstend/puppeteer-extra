@@ -1,5 +1,6 @@
 import { PluginRequirements, PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 import { withUtils } from '../_utils/withUtils'
+import Utils from '../_utils/'
 
 export interface PluginOptions {
 }
@@ -25,12 +26,12 @@ export interface PluginOptions {
   }
 
   async onPageCreated(page: PuppeteerPage): Promise<void> {
-    await withUtils(page).evaluateOnNewDocument((utils, opts) => {
+    await withUtils(page).evaluateOnNewDocument((utils: typeof Utils, opts: {}) => {
       try {
         // Adds a contentWindow proxy to the provided iframe element
-        const addContentWindowProxy = iframe => {
+        const addContentWindowProxy = (iframe: any) => {
           const contentWindowProxy = {
-            get(target, key) {
+            get(target: any, key: string) {
               // Now to the interesting part:
               // We actually make this thing behave like a regular iframe window,
               // by intercepting calls to e.g. `.self` and redirect it to the correct thing. :)
@@ -67,7 +68,7 @@ export interface PluginOptions {
         }
 
         // Handles iframe element creation, augments `srcdoc` property so we can intercept further
-        const handleIframeCreation = (target, thisArg, args) => {
+        const handleIframeCreation = (target: Function, thisArg: any, args: any[]) => {
           const iframe = target.apply(thisArg, args)
 
           // We need to keep the originals around
@@ -100,10 +101,10 @@ export interface PluginOptions {
           /* global document */
           const createElementHandler = {
             // Make toString() native
-            get(target, key) {
+            get(target: any, key: string) {
               return Reflect.get(target, key)
             },
-            apply: function(target, thisArg, args) {
+            apply: function(target: Function, thisArg: any, args: any[]) {
               const isIframe =
                 args && args.length && `${args[0]}`.toLowerCase() === 'iframe'
               if (!isIframe) {

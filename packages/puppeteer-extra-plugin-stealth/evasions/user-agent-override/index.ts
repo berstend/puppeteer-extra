@@ -83,9 +83,8 @@ export interface PluginOptions {
     }
 
     // Full version number from Chrome
-    const uaVersion = ua.includes('Chrome/')
-      ? ua.match(/Chrome\/([\d|.]+)/)[1]
-      : (await page.browser().version()).match(/\/([\d|.]+)/)[1]
+    const m = ua.match(/Chrome\/([\d|.]+)/);
+    const uaVersion = m ? m[1] : (await page.browser().version()).match(/\/([\d|.]+)/)![1]
 
     // Get platform identifier (short or long version)
     const _getPlatform = (extended = false) => {
@@ -137,23 +136,24 @@ export interface PluginOptions {
 
     // Return OS version
     const _getPlatformVersion = (): string => {
-      if (ua.includes('Mac OS X ')) {
-        return ua.match(/Mac OS X ([^)]+)/)[1]
-      } else if (ua.includes('Android ')) {
-        return ua.match(/Android ([^;]+)/)[1]
-      } else if (ua.includes('Windows ')) {
-        return ua.match(/Windows .*?([\d|.]+);?/)[1]
-      } else {
-        return ''
-      }
+      let m = ua.match(/Mac OS X ([^)]+)/);
+      if (m) return m[1]
+      m = ua.match(/Android ([^;]+)/)
+      if (m) return m[1]
+      m = ua.match(/Windows .*?([\d|.]+);?/)
+      if (m) return m[1]
+      return ''
     }
 
     // Get architecture, this seems to be empty on mobile and x86 on desktop
     const _getPlatformArch = () => (_getMobile() ? '' : 'x86')
 
     // Return the Android model, empty on desktop
-    const _getPlatformModel = () =>
-      _getMobile() ? ua.match(/Android.*?;\s([^)]+)/)[1] : ''
+    const _getPlatformModel = () => {
+      const m = ua.match(/Android.*?;\s([^)]+)/);
+      if (m) return m[1]
+      return '';
+    }
 
     const _getMobile = () => ua.includes('Android')
 
@@ -183,7 +183,7 @@ export interface PluginOptions {
       opts: this.opts
     })
 
-    page._client.send('Network.setUserAgentOverride', override)
+    page._client!.send('Network.setUserAgentOverride', override)
   }
 
   async beforeLaunch(options: PuppeteerLaunchOption = {}): Promise<void | PuppeteerLaunchOption> {

@@ -38,7 +38,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
       // whereas in headless it's "prompt"
       if (!isSecure) {
         const handler = {
-          apply(target, ctx, args) {
+          apply(target: any, ctx: any, args: {name: string}[]) {
             const param = (args || [])[0]
 
             const isNotifications =

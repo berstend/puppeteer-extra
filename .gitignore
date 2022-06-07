@@ -49,7 +49,6 @@ packages/puppeteer-extra-plugin-stealth/evasions/chrome.runtime/index.js
 packages/puppeteer-extra-plugin-stealth/evasions/chrome.loadTimes/index.js
 packages/puppeteer-extra-plugin-stealth/evasions/chrome.csi/index.js
 packages/puppeteer-extra-plugin-stealth/evasions/_template/index.js
-packages/puppeteer-extra-plugin-stealth/evasions/*/index.d.ts
 packages/puppeteer-extra-plugin-stealth/evasions/defaultArgs/index.js
 packages/puppeteer-extra-plugin-stealth/evasions/iframe.contentWindow/index.js
 packages/puppeteer-extra-plugin-stealth/evasions/media.codecs/index.js
@@ -64,3 +63,5 @@ packages/puppeteer-extra-plugin-stealth/evasions/window.outerdimensions/index.js
 packages/puppeteer-extra-plugin-stealth/evasions/sourceurl/index.js
 packages/puppeteer-extra-plugin-stealth/evasions/_utils/withUtils.d.ts
 packages/puppeteer-extra-plugin-stealth/evasions/_utils/withUtils.js
+packages/puppeteer-extra-plugin-stealth/evasions/[a-z]*/index.d.ts
+packages/puppeteer-extra-plugin-stealth/evasions/_template/index.d.ts

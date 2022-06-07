@@ -37,7 +37,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
       }
 
       const makeError = {
-        ErrorInInvocation: fn => {
+        ErrorInInvocation: (fn: string) => {
           const err = new TypeError(`Error in invocation of app.${fn}()`)
           return utils.stripErrorWithAnchor(
             err,
