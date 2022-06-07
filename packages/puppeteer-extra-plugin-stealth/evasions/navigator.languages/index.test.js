@@ -5,8 +5,7 @@ const {
   getStealthFingerPrint
 } = require('../../test/util')
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
-
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
 // TODO: Vanilla seems fine, evasion obsolete?
 // Note: We keep it around for now, as we will need this method in a fingerprinting plugin later anyway

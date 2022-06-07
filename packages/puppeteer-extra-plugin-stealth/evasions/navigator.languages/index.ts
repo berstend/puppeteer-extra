@@ -1,7 +1,11 @@
 'use strict'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
-const { withUtils } = require('../_utils/withUtils')
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { withUtils } from '../_utils/withUtils'
+
+export interface PluginOptions {
+  languages: string[];
+}
 
 /**
  * Pass the Languages Test. Allows setting custom languages.
@@ -9,12 +13,12 @@ const { withUtils } = require('../_utils/withUtils')
  * @param {Object} [opts] - Options
  * @param {Array<string>} [opts.languages] - The languages to use (default: `['en-US', 'en']`)
  */
-class Plugin extends PuppeteerExtraPlugin {
+class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   constructor(opts = {}) {
     super(opts)
   }
 
-  get name() {
+  get name(): 'stealth/evasions/navigator.languages' {
     return 'stealth/evasions/navigator.languages'
   }
 
@@ -43,6 +47,4 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
-  return new Plugin(pluginConfig)
-}
+export default (pluginConfig?: Partial<PluginOptions>) => new Plugin(pluginConfig)

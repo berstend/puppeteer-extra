@@ -37,3 +37,9 @@ testing/
 packages/puppeteer-extra-plugin-stealth/index.d.ts
 packages/puppeteer-extra-plugin-stealth/index.js
 packages/puppeteer-extra-plugin-stealth/**/*.map
+packages/puppeteer-extra-plugin-stealth/evasions/navigator.languages/index.d.ts
+packages/puppeteer-extra-plugin-stealth/evasions/navigator.languages/index.js
+packages/puppeteer-extra-plugin-stealth/evasions/navigator.languages/index.js
+packages/puppeteer-extra-plugin-stealth/evasions/navigator.languages/index.js
+packages/puppeteer-extra-plugin-stealth/evasions/navigator.permissions/index.js
+packages/puppeteer-extra-plugin-stealth/evasions/navigator.permissions/index.d.ts

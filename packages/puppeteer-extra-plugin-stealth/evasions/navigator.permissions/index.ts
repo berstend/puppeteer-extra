@@ -1,8 +1,8 @@
-'use strict'
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { withUtils } from '../_utils/withUtils'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
-
-const { withUtils } = require('../_utils/withUtils')
+export interface PluginOptions {
+}
 
 /**
  * Fix `Notification.permission` behaving weirdly in headless mode
@@ -10,8 +10,8 @@ const { withUtils } = require('../_utils/withUtils')
  * @see https://bugs.chromium.org/p/chromium/issues/detail?id=1052332
  */
 
-class Plugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }
 
@@ -65,6 +65,4 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
-  return new Plugin(pluginConfig)
-}
+export default (pluginConfig?: Partial<PluginOptions>) => new Plugin(pluginConfig)

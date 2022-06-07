@@ -19,7 +19,7 @@
     "build:rollup": "rollup -c rollup.config.ts",
     "lint": "eslint --ext .js .",
     "lint:ts": "node -e 0",
-    "test:js": "ava",
+    "test:js": "ava --fast-fail",
     "test": "run-p test:js lint:ts",
     "test-ci": "run-s test:js",
     "types": "npx --package typescript@3.7 tsc --emitDeclarationOnly --declaration --allowJs index.js"

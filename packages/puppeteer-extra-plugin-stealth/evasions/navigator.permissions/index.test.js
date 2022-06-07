@@ -7,7 +7,7 @@ const {
 } = require('../../test/util')
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
 
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
 test('vanilla: is prompt', async t => {
   const { permissions } = await getVanillaFingerPrint()
