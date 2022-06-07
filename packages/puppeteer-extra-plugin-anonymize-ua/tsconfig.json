@@ -20,6 +20,6 @@
     "types": []
   },
   "include": [
-    "./index.ts",
+    "index.ts",
   ]
 }
