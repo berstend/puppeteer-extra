@@ -105,7 +105,7 @@ puppeteer
 const vanillaPuppeteer = require('puppeteer')
 
 const { addExtra } = require('puppeteer-extra')
-const AnonymizeUA = require('puppeteer-extra-plugin-anonymize-ua')
+const AnonymizeUA = require('puppeteer-extra-plugin-anonymize-ua').default
 
 async function main() {
   const pptr1 = addExtra(vanillaPuppeteer)
