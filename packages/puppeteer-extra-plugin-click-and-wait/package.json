@@ -9,6 +9,7 @@
   "scripts": {
     "docs": "node -e 0",
     "lint": "eslint --ext .js .",
+    "build": "echo no build for puppeteer-extra-plugin-click-and-wait",
     "test": "run-p lint",
     "test-ci": "run-s test"
   },

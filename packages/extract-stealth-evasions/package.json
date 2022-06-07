@@ -13,6 +13,9 @@
   "engines": {
     "node": ">=8"
   },
+  "scripts": {
+    "build": "echo no build for extract-stealth-evasions"
+  },
   "keywords": [
     "puppeteer",
     "puppeteer-extra",
