@@ -1,5 +1,4 @@
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
-
 import { withUtils } from '../_utils/withUtils'
 
 declare var window: any;

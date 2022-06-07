@@ -15,7 +15,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
     super(opts)
   }
 
-  get name() {
+  get name(): 'stealth/evasions/navigator.permissions' {
     return 'stealth/evasions/navigator.permissions'
   }
 

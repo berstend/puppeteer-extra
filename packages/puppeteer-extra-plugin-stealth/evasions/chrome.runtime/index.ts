@@ -1,16 +1,18 @@
-'use strict'
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { withUtils } from '../_utils/withUtils'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+declare var window: any;
 
-const { withUtils } = require('../_utils/withUtils')
+export interface PluginOptions {
+}
 
 const STATIC_DATA = require('./staticData.json')
 
 /**
  * Mock the `chrome.runtime` object if not available (e.g. when running headless) and on a secure site.
  */
-class Plugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }
 
@@ -18,7 +20,7 @@ class Plugin extends PuppeteerExtraPlugin {
     return 'stealth/evasions/chrome.runtime'
   }
 
-  get defaults() {
+  get defaults(): PluginOptions {
     return { runOnInsecureOrigins: false } // Override for testing
   }
 
@@ -249,6 +251,4 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
-  return new Plugin(pluginConfig)
-}
+export default (pluginConfig?: Partial<PluginOptions>) => new Plugin(pluginConfig)

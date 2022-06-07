@@ -1,8 +1,10 @@
-'use strict'
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { withUtils } from '../_utils/withUtils'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+declare var window: any;
 
-const { withUtils } = require('../_utils/withUtils')
+export interface PluginOptions {
+}
 
 /**
  * Mock the `chrome.loadTimes` function if not available (e.g. when running headless).
@@ -19,12 +21,12 @@ const { withUtils } = require('../_utils/withUtils')
  * @see `chrome.csi` evasion
  *
  */
-class Plugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }
 
-  get name() {
+  get name(): 'stealth/evasions/chrome.loadTimes' {
     return 'stealth/evasions/chrome.loadTimes'
   }
 
@@ -162,6 +164,4 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
-  return new Plugin(pluginConfig)
-}
+export default (pluginConfig?: Partial<PluginOptions>) => new Plugin(pluginConfig)

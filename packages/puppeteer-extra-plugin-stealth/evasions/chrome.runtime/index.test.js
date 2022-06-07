@@ -7,7 +7,7 @@ const {
 
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
 
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
 const STATIC_DATA = require('./staticData.json')
 
