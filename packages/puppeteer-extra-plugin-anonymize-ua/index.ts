@@ -1,6 +1,10 @@
-'use strict'
+import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin';
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+export interface PluginOptions {
+  stripHeadless: boolean,
+  makeWindows: boolean,
+  customFn: null | ((us: string) => string),
+}
 
 /**
  * Anonymize the User-Agent on all pages.
@@ -21,16 +25,16 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * )
  * const browser = await puppeteer.launch()
  */
-class Plugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }
 
-  get name() {
+  get name(): 'anonymize-ua' {
     return 'anonymize-ua'
   }
 
-  get defaults() {
+  get defaults(): PluginOptions {
     return {
       stripHeadless: true,
       makeWindows: true,
@@ -38,7 +42,7 @@ class Plugin extends PuppeteerExtraPlugin {
     }
   }
 
-  async onPageCreated(page) {
+  async onPageCreated(page: PuppeteerPage): Promise<void> {
     let ua = await page.browser().userAgent()
     if (this.opts.stripHeadless) {
       ua = ua.replace('HeadlessChrome/', 'Chrome/')
@@ -54,8 +58,4 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = {
-  default: function(pluginConfig) {
-    return new Plugin(pluginConfig)
-  }
-}
+export default (pluginConfig?: Partial<PluginOptions>) => new Plugin(pluginConfig)

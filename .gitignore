@@ -73,3 +73,6 @@ packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/functionMocks
 packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/functionMocks.d.ts
 packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/magicArray.d.ts
 packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/magicArray.js
+packages/puppeteer-extra-plugin-anonymize-ua/index.d.ts
+packages/puppeteer-extra-plugin-anonymize-ua/index.js
+packages/puppeteer-extra-plugin-anonymize-ua/index.js.map
