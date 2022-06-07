@@ -1,4 +1,5 @@
 /* global Plugin PluginArray */
+import Utils from '../_utils'
 
 /**
  * Generate a convincing and functional PluginArray (with plugins) from scratch.
@@ -8,7 +9,7 @@
  * @see https://developer.mozilla.org/en-US/docs/Web/API/NavigatorPlugins/plugins
  * @see https://developer.mozilla.org/en-US/docs/Web/API/PluginArray
  */
-module.exports.generatePluginArray = (utils, fns) => pluginsData => {
+export const generatePluginArray = (utils: typeof Utils, fns: any) => (pluginsData : any) => {
   return fns.generateMagicArray(utils, fns)(
     pluginsData,
     PluginArray.prototype,

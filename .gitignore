@@ -65,3 +65,7 @@ packages/puppeteer-extra-plugin-stealth/evasions/_utils/withUtils.d.ts
 packages/puppeteer-extra-plugin-stealth/evasions/_utils/withUtils.js
 packages/puppeteer-extra-plugin-stealth/evasions/[a-z]*/index.d.ts
 packages/puppeteer-extra-plugin-stealth/evasions/_template/index.d.ts
+packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/mimeTypes.d.ts
+packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/plugins.d.ts
+packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/plugins.js
+packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/mimeTypes.js
