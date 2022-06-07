@@ -19,7 +19,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   }
 
   async onPageCreated(page: PuppeteerPage): Promise<void> {
-    await withUtils(page).evaluateOnNewDocument(utils => {
+    await withUtils(page).evaluateOnNewDocument((utils: any) => {
       if (!window.chrome) {
         // Use the exact property descriptor found in headful Chrome
         // fetch it via `Object.getOwnPropertyDescriptor(window, 'chrome')`

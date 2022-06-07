@@ -5,5 +5,7 @@
         "packages/puppeteer-extra-plugin-stealth/evasions/[a-z]*/index.d.ts": true,
         "packages/puppeteer-extra-plugin-stealth/evasions/_utils/withUtils.d.ts": true,
         "packages/puppeteer-extra-plugin-stealth/evasions/_utils/withUtils.js": true,
+        "packages/puppeteer-extra-plugin-stealth/evasions/_template/index.js": true,
+        "packages/puppeteer-extra-plugin-stealth/evasions/_template/index.d.ts": true,
     }
 }

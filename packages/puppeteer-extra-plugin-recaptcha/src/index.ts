@@ -350,7 +350,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
   }
 
   /** Add additions to already existing pages and frames */
-  async onBrowser(browser: Browser) {
+  async onBrowser(browser: Browser): Promise<void> {
     const pages = await browser.pages()
     for (const page of pages) {
       this._addCustomMethods(page)

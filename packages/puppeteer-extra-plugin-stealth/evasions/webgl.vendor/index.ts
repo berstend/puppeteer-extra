@@ -45,7 +45,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
       // There's more than one WebGL rendering context
       // https://developer.mozilla.org/en-US/docs/Web/API/WebGL2RenderingContext#Browser_compatibility
       // To find out the original values here: Object.getOwnPropertyDescriptors(WebGLRenderingContext.prototype.getParameter)
-      const addProxy = (obj, propName) => {
+      const addProxy = (obj, propName: string) => {
         utils.replaceWithProxy(obj, propName, getParameterProxyHandler)
       }
       // For whatever weird reason loops don't play nice with Object.defineProperty, here's the next best thing:

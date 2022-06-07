@@ -1,4 +1,4 @@
-import { PluginRequirements, PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { PluginRequirements, PuppeteerExtraPlugin, PuppeteerLaunchOption } from 'puppeteer-extra-plugin'
 
 export interface PluginOptions {
 }
@@ -14,7 +14,7 @@ export const argsToIgnore = [
  * adversarial to mimicking a regular browser and need to be stripped when launching the browser.
  */
 class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
-  constructor(opts = {}) {
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }
 
@@ -26,17 +26,17 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
     return new Set(['runLast']) // So other plugins can modify launch options before
   }
 
-  async beforeLaunch(options: any = {}) { // PuppeteerLaunchOption
+  async beforeLaunch(options: PuppeteerLaunchOption = {}): Promise<void | PuppeteerLaunchOption> {
     options.ignoreDefaultArgs = options.ignoreDefaultArgs || []
     if (options.ignoreDefaultArgs === true) {
       // that means the user explicitly wants to disable all default arguments
       return
     }
     argsToIgnore.forEach(arg => {
-      if (options.ignoreDefaultArgs.includes(arg)) {
+      if ((options.ignoreDefaultArgs as string[]).includes(arg)) {
         return
       }
-      options.ignoreDefaultArgs.push(arg)
+      (options.ignoreDefaultArgs as string[]).push(arg)
     })
   }
 }

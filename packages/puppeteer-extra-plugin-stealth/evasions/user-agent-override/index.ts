@@ -1,4 +1,4 @@
-import { PluginData, PluginDependencies, PuppeteerPage, PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { PluginData, PluginDependencies, PuppeteerPage, PuppeteerExtraPlugin, PuppeteerLaunchOption } from 'puppeteer-extra-plugin'
 
 export interface PluginOptions {
   userAgent: string | null,
@@ -186,7 +186,7 @@ export interface PluginOptions {
     page._client.send('Network.setUserAgentOverride', override)
   }
 
-  async beforeLaunch(options): Promise<void> {
+  async beforeLaunch(options: PuppeteerLaunchOption = {}): Promise<void | PuppeteerLaunchOption> {
     // Check if launched headless
     this._headless = options.headless
   }

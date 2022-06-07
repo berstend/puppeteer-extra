@@ -1,4 +1,5 @@
 import test, { beforeEach } from 'ava'
+import { PuppeteerLaunchOption } from '../../puppeteer-extra-plugin/src';
 declare const require: any;
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
@@ -30,8 +31,9 @@ test('will modify puppeteer launch options through plugins', async t => {
     get data() {
       return pluginData
     }
-    beforeLaunch(options: any) {
-      options.args.push('--foobar=true')
+    async beforeLaunch(options: PuppeteerLaunchOption = {}): Promise<void | PuppeteerLaunchOption> {
+      if (options.args)
+        options.args.push('--foobar=true')
       options.timeout = 60 * 1000
       options.headless = true
     }

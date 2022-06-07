@@ -85,14 +85,14 @@ test('should merge opts with defaults automatically', async t => {
   const pluginDefaults = { foo: 'bar', foo2: 'bar2', extra1: 123 }
   const userOpts = { foo2: 'bob', extra2: 666 }
 
-  class Plugin extends PuppeteerExtraPlugin {
+  class Plugin extends PuppeteerExtraPlugin<any> {
     constructor(opts = {}) {
       super(opts)
     }
-    get name() {
+    get name(): string {
       return pluginName
     }
-    get defaults() {
+    get defaults(): any {
       return pluginDefaults
     }
   }

@@ -110,7 +110,7 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
   /**
    * Hook into this blocking event to make sure the cache is initialized before navigation.
    */
-  async beforeLaunch() {
+   async beforeLaunch(): Promise<void> {
     this.debug('beforeLaunch')
     await this.getBlocker()
   }

@@ -20,7 +20,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
     return 'stealth/evasions/navigator.languages'
   }
 
-  get defaults() {
+  get defaults(): PluginOptions {
     return {
       languages: [] // Empty default, otherwise this would be merged with user defined array override
     }

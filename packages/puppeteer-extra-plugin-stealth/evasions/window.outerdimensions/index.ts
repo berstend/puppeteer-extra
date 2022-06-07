@@ -1,4 +1,4 @@
-import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
+import { PuppeteerExtraPlugin, PuppeteerLaunchOption, PuppeteerPage } from 'puppeteer-extra-plugin'
 
 export interface PluginOptions {
 }
@@ -30,7 +30,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
     })
   }
 
-  async beforeLaunch(options) {
+  async beforeLaunch(options: PuppeteerLaunchOption = {}): Promise<void | PuppeteerLaunchOption> {
     // Have viewport match window size, unless specified by user
     // https://github.com/GoogleChrome/puppeteer/issues/3688
     if (!('defaultViewport' in options)) {

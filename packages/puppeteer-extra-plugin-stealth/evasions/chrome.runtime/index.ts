@@ -26,7 +26,7 @@ const STATIC_DATA = require('./staticData.json')
 
   async onPageCreated(page: PuppeteerPage): Promise<void> {
     await withUtils(page).evaluateOnNewDocument(
-      (utils, { opts, STATIC_DATA }) => {
+      (utils: any, { opts, STATIC_DATA }) => {
         if (!window.chrome) {
           // Use the exact property descriptor found in headful Chrome
           // fetch it via `Object.getOwnPropertyDescriptor(window, 'chrome')`
