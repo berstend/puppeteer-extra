@@ -2,7 +2,7 @@
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
-const withUtils = require('../_utils/withUtils')
+const { withUtils } = require('../_utils/withUtils')
 
 /**
  * Mock the `chrome.csi` function if not available (e.g. when running headless).

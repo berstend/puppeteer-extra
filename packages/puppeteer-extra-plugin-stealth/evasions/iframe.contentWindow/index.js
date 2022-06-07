@@ -2,7 +2,7 @@
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
-const withUtils = require('../_utils/withUtils')
+const { withUtils } = require('../_utils/withUtils')
 
 /**
  * Fix for the HEADCHR_IFRAME detection (iframe.contentWindow.chrome), hopefully this time without breaking iframes.

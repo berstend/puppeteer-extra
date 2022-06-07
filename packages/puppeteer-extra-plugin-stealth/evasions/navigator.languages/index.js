@@ -1,7 +1,7 @@
 'use strict'
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
-const withUtils = require('../_utils/withUtils')
+const { withUtils } = require('../_utils/withUtils')
 
 /**
  * Pass the Languages Test. Allows setting custom languages.

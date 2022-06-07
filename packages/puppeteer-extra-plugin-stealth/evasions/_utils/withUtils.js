@@ -5,7 +5,7 @@ const utils = require('./index')
  *
  * @param {Puppeteer.Page} page
  */
-module.exports = page => ({
+const withUtils = page => ({
   /**
    * Simple `page.evaluate` replacement to preload utils
    */
@@ -47,3 +47,5 @@ module.exports = page => ({
     )
   }
 })
+
+module.exports = { withUtils }
