@@ -24,12 +24,13 @@ test('vanilla: User-Agent header contains HeadlessChrome', async t => {
   t.true(content.includes(`HeadlessChrome`))
 })
 
-test('vanilla: navigator.languages is always en-US', async t => {
-  const browser = await vanillaPuppeteer.launch({ headless: true })
-  const page = await browser.newPage()
-  const lang = await page.evaluate(() => navigator.languages)
-  t.true(lang.length === 1 && lang[0] === 'en-US')
-})
+// chrome vanilla: navigator.languages is os dependant.
+// test('vanilla: navigator.languages is always en-US', async t => {
+//   const browser = await vanillaPuppeteer.launch({ headless: true })
+//   const page = await browser.newPage()
+//   const lang = await page.evaluate(() => navigator.languages)
+//   t.true(lang.length === 1 && lang[0] === 'en-US')
+// })
 
 test('vanilla: navigator.platform set to host platform', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })

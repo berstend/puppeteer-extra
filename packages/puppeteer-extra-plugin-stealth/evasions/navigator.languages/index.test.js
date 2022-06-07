@@ -1,7 +1,7 @@
 const test = require('ava')
 
 const {
-  getVanillaFingerPrint,
+  // getVanillaFingerPrint,
   getStealthFingerPrint
 } = require('../../test/util')
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
@@ -10,11 +10,12 @@ const Plugin = require('.')
 
 // TODO: Vanilla seems fine, evasion obsolete?
 // Note: We keep it around for now, as we will need this method in a fingerprinting plugin later anyway
-test('vanilla: is array with en-US', async t => {
-  const { languages } = await getVanillaFingerPrint()
-  t.is(Array.isArray(languages), true)
-  t.is(languages[0], 'en-US')
-})
+// chrome vanilla: navigator.languages is os dependant.
+// test('vanilla: is array with en-US', async t => {
+//   const { languages } = await getVanillaFingerPrint()
+//   t.is(Array.isArray(languages), true)
+//   t.is(languages[0], 'en-US')
+// })
 
 test('vanilla: will not have modifications', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
