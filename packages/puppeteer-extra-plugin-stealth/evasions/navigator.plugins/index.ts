@@ -1,12 +1,28 @@
 import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 import { withUtils } from '../_utils/withUtils'
 import { utils } from '../_utils'
+import Utils from '../_utils'
 import { generateMimeTypeArray } from './mimeTypes'
 import { generatePluginArray } from './plugins'
 import { generateMagicArray } from './magicArray'
 import { generateFunctionMocks } from './functionMocks'
 
-const data = require('./data.json')
+export interface NavigatorData {
+  mimeTypes: Array<{
+    type: string,
+    suffixes: string,
+    description: string,
+    __pluginName: string,
+  }>,
+  plugins: Array<{
+    name: string,
+    filename: string,
+    description: string,
+    __mimeTypes: string[]
+  }>,
+}
+
+const data: NavigatorData = require('./data.json')
 
 export interface PluginOptions {
 }
@@ -34,7 +50,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
 
   async onPageCreated(page: PuppeteerPage): Promise<void> {
     await withUtils(page).evaluateOnNewDocument(
-      (utils, { fns, data }) => {
+      (utils: typeof Utils, fns: any, data: NavigatorData ) => {
         fns = utils.materializeFns(fns)
 
         // That means we're running headful
@@ -82,16 +98,14 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
 
         // All done
       },
-      {
-        // We pass some functions to evaluate to structure the code more nicely
-        fns: utils.stringifyFns({
-          generateMimeTypeArray,
-          generatePluginArray,
-          generateMagicArray,
-          generateFunctionMocks
-        }),
-        data
-      }
+      // We pass some functions to evaluate to structure the code more nicely
+      utils.stringifyFns({
+        generateMimeTypeArray,
+        generatePluginArray,
+        generateMagicArray,
+        generateFunctionMocks
+      }),
+      data
     )
   }
 }

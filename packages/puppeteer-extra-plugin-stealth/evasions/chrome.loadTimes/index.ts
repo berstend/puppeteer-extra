@@ -33,7 +33,7 @@ export interface PluginOptions {
 
   async onPageCreated(page: PuppeteerPage): Promise<void> {
     await withUtils(page).evaluateOnNewDocument(
-      (utils: typeof Utils, { opts }) => {
+      (utils: typeof Utils, opts: PluginOptions) => {
         if (!window.chrome) {
           // Use the exact property descriptor found in headful Chrome
           // fetch it via `Object.getOwnPropertyDescriptor(window, 'chrome')`
@@ -158,9 +158,7 @@ export interface PluginOptions {
         }
         utils.patchToString(window.chrome.loadTimes)
       },
-      {
-        opts: this.opts
-      }
+      this.opts
     )
   }
 }

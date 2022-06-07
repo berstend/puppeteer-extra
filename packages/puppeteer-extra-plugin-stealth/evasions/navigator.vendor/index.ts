@@ -50,16 +50,14 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
     })
 
     await withUtils(page).evaluateOnNewDocument(
-      (utils: typeof Utils, { opts }) => {
+      (utils: typeof Utils, opts: PluginOptions) => {
         utils.replaceGetterWithProxy(
           Object.getPrototypeOf(navigator),
           'vendor',
           utils.makeHandler().getterValue(opts.vendor)
         )
       },
-      {
-        opts: this.opts
-      }
+      this.opts
     )
   } // onPageCreated
 }

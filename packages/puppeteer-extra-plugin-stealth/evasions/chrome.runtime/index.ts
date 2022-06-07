@@ -5,9 +5,19 @@ import Utils from '../_utils/'
 declare var window: any;
 
 export interface PluginOptions {
+  runOnInsecureOrigins: boolean
 }
 
-const STATIC_DATA = require('./staticData.json')
+export interface staticDataModel {
+  "OnInstalledReason": { [key: string]: string },
+  "OnRestartRequiredReason": { [key: string]: string },
+  "PlatformArch": { [key: string]: string },
+  "PlatformNaclArch": { [key: string]: string },
+  "PlatformOs": { [key: string]: string },
+  "RequestUpdateCheckStatus": { [key: string]: string }
+}
+
+const STATIC_DATA: staticDataModel = require('./staticData.json')
 
 /**
  * Mock the `chrome.runtime` object if not available (e.g. when running headless) and on a secure site.
@@ -27,7 +37,7 @@ const STATIC_DATA = require('./staticData.json')
 
   async onPageCreated(page: PuppeteerPage): Promise<void> {
     await withUtils(page).evaluateOnNewDocument(
-      (utils: typeof Utils, { opts, STATIC_DATA }) => {
+      (utils: typeof Utils, opts: PluginOptions, STATIC_DATA: staticDataModel) => {
         if (!window.chrome) {
           // Use the exact property descriptor found in headful Chrome
           // fetch it via `Object.getOwnPropertyDescriptor(window, 'chrome')`
@@ -244,10 +254,8 @@ const STATIC_DATA = require('./staticData.json')
           return response
         }
       },
-      {
-        opts: this.opts,
-        STATIC_DATA
-      }
+      this.opts,
+      STATIC_DATA
     )
   }
 }

@@ -32,16 +32,14 @@ export interface PluginOptions {
 
   async onPageCreated(page: PuppeteerPage): Promise<void> {
     await withUtils(page).evaluateOnNewDocument(
-      (utils: typeof Utils, { opts }) => {
+      (utils: typeof Utils, opts: PluginOptions) => {
         utils.replaceGetterWithProxy(
           Object.getPrototypeOf(navigator),
           'hardwareConcurrency',
           utils.makeHandler().getterValue(opts.hardwareConcurrency)
         )
       },
-      {
-        opts: this.opts
-      }
+      this.opts
     )
   }
 }
