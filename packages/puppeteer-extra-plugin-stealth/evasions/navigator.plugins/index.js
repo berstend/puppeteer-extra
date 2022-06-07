@@ -2,7 +2,7 @@
 
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
-const utils = require('../_utils')
+const { utils } = require('../_utils')
 const { withUtils } = require('../_utils/withUtils')
 
 const { generateMimeTypeArray } = require('./mimeTypes')

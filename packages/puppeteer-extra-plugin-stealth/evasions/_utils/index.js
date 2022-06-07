@@ -514,4 +514,4 @@ utils.makeHandler = () => ({
 // --
 // Stuff starting below this line is NodeJS specific.
 // --
-module.exports = utils
+module.exports = { utils }

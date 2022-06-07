@@ -1,4 +1,4 @@
-const utils = require('./index')
+const { utils } = require('./index')
 
 /**
  * Wrap a page with utilities.
