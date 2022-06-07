@@ -1,4 +1,4 @@
-/// <reference path="../../puppeteer-legacy.d.ts" />
+/// <reference path="./puppeteer-legacy.d.ts" />
 import debug, { Debugger } from 'debug'
 import * as Puppeteer from './puppeteer'
 import { PuppeteerNode } from './puppeteer'

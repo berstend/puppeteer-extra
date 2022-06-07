@@ -1,4 +1,4 @@
-/// <reference path="../../puppeteer-legacy.d.ts" />
+/// <reference path="./puppeteer-legacy.d.ts" />
 import { Browser } from 'puppeteer'
 import { VanillaPuppeteer, PuppeteerLaunchOption, BrowserEventOptions, PuppeteerExtraPlugin, BrowserInternals } from './deps';
 export { VanillaPuppeteer, PuppeteerLaunchOption, BrowserEventOptions, PuppeteerExtraPlugin } from './deps';
