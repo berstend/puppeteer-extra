@@ -69,3 +69,5 @@ packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/mimeTypes.d.t
 packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/plugins.d.ts
 packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/plugins.js
 packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/mimeTypes.js
+packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/functionMocks.js
+packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/functionMocks.d.ts
