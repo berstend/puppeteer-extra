@@ -1,18 +1,21 @@
-'use strict'
+import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+import { withUtils } from '../_utils/withUtils'
 
-const { withUtils } = require('../_utils/withUtils')
+declare var window: any;
+
+export interface PluginOptions {
+}
 
 /**
  * Mock the `chrome.app` object if not available (e.g. when running headless).
  */
-class Plugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }
 
-  get name() {
+  get name(): 'stealth/evasions/chrome.app' {
     return 'stealth/evasions/chrome.app'
   }
 
@@ -95,6 +98,4 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
-  return new Plugin(pluginConfig)
-}
+export default (pluginConfig?: Partial<PluginOptions>) => new Plugin(pluginConfig)

@@ -43,3 +43,5 @@ packages/puppeteer-extra-plugin-stealth/evasions/navigator.languages/index.js
 packages/puppeteer-extra-plugin-stealth/evasions/navigator.languages/index.js
 packages/puppeteer-extra-plugin-stealth/evasions/navigator.permissions/index.js
 packages/puppeteer-extra-plugin-stealth/evasions/navigator.permissions/index.d.ts
+packages/puppeteer-extra-plugin-stealth/evasions/chrome.app/index.d.ts
+packages/puppeteer-extra-plugin-stealth/evasions/chrome.app/index.js
