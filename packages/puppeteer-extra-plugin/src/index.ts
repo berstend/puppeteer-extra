@@ -62,7 +62,9 @@ export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
  *   }
  * }
  *
- * module.exports = function (pluginConfig) { return new Plugin(pluginConfig) }
+ * module.exports = {
+ *  default: function (pluginConfig) { return new Plugin(pluginConfig) }
+ * }
  *
  *
  * // foo.js

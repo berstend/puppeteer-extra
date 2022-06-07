@@ -236,6 +236,8 @@ class Tunnel extends RemoteDevTools.DevToolsTunnel {
   }
 }
 
-module.exports = function(pluginConfig) {
-  return new Plugin(pluginConfig)
+module.exports = {
+  default: function(pluginConfig) {
+    return new Plugin(pluginConfig)
+  }
 }

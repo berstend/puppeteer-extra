@@ -7,7 +7,7 @@ const {
   vanillaPuppeteer,
   addExtra
 } = require('../../test/util')
-// const Plugin = require('.')
+
 // NOTE: We're using the full plugin for testing here as `iframe.contentWindow` uses data set by `chrome.runtime`
 const { default: Plugin } = require('puppeteer-extra-plugin-stealth')
 

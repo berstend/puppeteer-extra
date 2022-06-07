@@ -12,7 +12,7 @@ test.beforeEach(t => {
 
 test('will not modify the user-agent when disabled', async t => {
   const puppeteer = require('puppeteer-extra')
-  const AnonymizeUA = require('puppeteer-extra-plugin-anonymize-ua')({
+  const AnonymizeUA = require('puppeteer-extra-plugin-anonymize-ua').default({
     stripHeadless: false,
     makeWindows: false,
     customFn: null

@@ -21,7 +21,7 @@ import merge from 'deepmerge'
  *
  * @example
  * const puppeteer = require('puppeteer-extra')
- * puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
+ * puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua').default())
  * puppeteer.use(require('puppeteer-extra-plugin-font-size')({defaultFontSize: 18}))
  *
  * ;(async () => {

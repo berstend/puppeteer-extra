@@ -14,9 +14,9 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  *
  * @example
  * const puppeteer = require('puppeteer-extra')
- * puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
+ * puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua').default())
  * // or
- * puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')({
+ * puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua').default({
  *   customFn: (ua) => 'MyCoolAgent/' + ua.replace('Chrome', 'Beer')})
  * )
  * const browser = await puppeteer.launch()
@@ -54,6 +54,8 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function(pluginConfig) {
-  return new Plugin(pluginConfig)
+module.exports = {
+  default: function(pluginConfig) {
+    return new Plugin(pluginConfig)
+  }
 }

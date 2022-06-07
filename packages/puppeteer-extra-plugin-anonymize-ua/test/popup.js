@@ -16,7 +16,7 @@ test.beforeEach(t => {
 
 test('known issue: will not remove headless from implicitly created popup pages', async t => {
   const puppeteer = require('puppeteer-extra')
-  puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
+  puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua').default())
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
 
   const pages = await Promise.all([...Array(10)].map(slot => browser.newPage()))

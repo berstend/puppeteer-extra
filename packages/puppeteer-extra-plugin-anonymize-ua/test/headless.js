@@ -12,7 +12,7 @@ test.beforeEach(t => {
 
 test('will remove headless from the user-agent', async t => {
   const puppeteer = require('puppeteer-extra')
-  const AnonymizeUA = require('puppeteer-extra-plugin-anonymize-ua')()
+  const AnonymizeUA = require('puppeteer-extra-plugin-anonymize-ua').default()
   puppeteer.use(AnonymizeUA)
 
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
@@ -31,7 +31,7 @@ test('will remove headless from the user-agent', async t => {
 
 test('will remove headless from the user-agent in incognito page', async t => {
   const puppeteer = require('puppeteer-extra')
-  puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
+  puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua').default())
 
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
 
@@ -55,7 +55,7 @@ test('will remove headless from the user-agent in incognito page', async t => {
 test('will use a custom fn to modify the user-agent', async t => {
   const puppeteer = require('puppeteer-extra')
   puppeteer.use(
-    require('puppeteer-extra-plugin-anonymize-ua')({
+    require('puppeteer-extra-plugin-anonymize-ua').default({
       customFn: ua => 'MyCoolAgent/' + ua.replace('Chrome', 'Beer')
     })
   )

@@ -4,7 +4,7 @@ const PLUGIN_NAME = 'anonymize-ua'
 
 const test = require('ava')
 
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
 test('is a function', async t => {
   t.is(typeof Plugin, 'function')
