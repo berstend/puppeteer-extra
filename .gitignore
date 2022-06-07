@@ -62,3 +62,5 @@ packages/puppeteer-extra-plugin-stealth/evasions/user-agent-override/index.js
 packages/puppeteer-extra-plugin-stealth/evasions/webgl.vendor/index.js
 packages/puppeteer-extra-plugin-stealth/evasions/window.outerdimensions/index.js
 packages/puppeteer-extra-plugin-stealth/evasions/sourceurl/index.js
+packages/puppeteer-extra-plugin-stealth/evasions/_utils/withUtils.d.ts
+packages/puppeteer-extra-plugin-stealth/evasions/_utils/withUtils.js

@@ -1,11 +1,11 @@
-const { utils } = require('./index')
+import { utils } from './index'
 
 /**
  * Wrap a page with utilities.
  *
  * @param {Puppeteer.Page} page
  */
-const withUtils = page => ({
+export const withUtils = page => ({
   /**
    * Simple `page.evaluate` replacement to preload utils
    */
@@ -14,7 +14,7 @@ const withUtils = page => ({
       ({ _utilsFns, _mainFunction, _args }) => {
         // Add this point we cannot use our utililty functions as they're just strings, we need to materialize them first
         const utils = Object.fromEntries(
-          Object.entries(_utilsFns).map(([key, value]) => [key, eval(value)]) // eslint-disable-line no-eval
+          Object.entries(_utilsFns).map(([key, value]) => [key, eval(value as string)]) // eslint-disable-line no-eval
         )
         utils.init()
         return eval(_mainFunction)(utils, ..._args) // eslint-disable-line no-eval
@@ -34,7 +34,7 @@ const withUtils = page => ({
       ({ _utilsFns, _mainFunction, _args }) => {
         // Add this point we cannot use our utililty functions as they're just strings, we need to materialize them first
         const utils = Object.fromEntries(
-          Object.entries(_utilsFns).map(([key, value]) => [key, eval(value)]) // eslint-disable-line no-eval
+          Object.entries(_utilsFns).map(([key, value]) => [key, eval(value as string)]) // eslint-disable-line no-eval
         )
         utils.init()
         return eval(_mainFunction)(utils, ..._args) // eslint-disable-line no-eval
@@ -48,4 +48,4 @@ const withUtils = page => ({
   }
 })
 
-module.exports = { withUtils }
+export default withUtils;

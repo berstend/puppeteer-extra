@@ -1,0 +1,9 @@
+{
+    "files.exclude": {
+        "packages/puppeteer-extra-plugin-stealth/evasions/*/*.map": true,
+        "packages/puppeteer-extra-plugin-stealth/evasions/[a-z]*/index.js": true,
+        "packages/puppeteer-extra-plugin-stealth/evasions/[a-z]*/index.d.ts": true,
+        "packages/puppeteer-extra-plugin-stealth/evasions/_utils/withUtils.d.ts": true,
+        "packages/puppeteer-extra-plugin-stealth/evasions/_utils/withUtils.js": true,
+    }
+}

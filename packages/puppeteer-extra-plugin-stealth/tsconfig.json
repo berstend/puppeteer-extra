@@ -21,6 +21,7 @@
   },
   "include": [
     "./index.ts",
+    "./evasions/_utils/withUtils.ts",
     "./evasions/*/index.ts",
   ]
 }

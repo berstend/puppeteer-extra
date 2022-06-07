@@ -1,13 +1,10 @@
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 import { withUtils } from '../_utils/withUtils'
-
-const { utils } = require('../_utils')
-const { withUtils } = require('../_utils/withUtils')
-
-const { generateMimeTypeArray } = require('./mimeTypes')
-const { generatePluginArray } = require('./plugins')
-const { generateMagicArray } = require('./magicArray')
-const { generateFunctionMocks } = require('./functionMocks')
+import { utils } from '../_utils'
+import { generateMimeTypeArray } from './mimeTypes'
+import { generatePluginArray } from './plugins'
+import { generateMagicArray } from './magicArray'
+import { generateFunctionMocks } from './functionMocks'
 
 const data = require('./data.json')
 
