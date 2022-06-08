@@ -2,7 +2,7 @@ const test = require('ava')
 
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
 
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
 test('stealth: will have convincing plugins', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())

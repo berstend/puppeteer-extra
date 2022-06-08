@@ -13,6 +13,9 @@
   "engines": {
     "node": ">=8"
   },
+  "scripts": {
+    "build": "echo no build for extract-stealth-evasions"
+  },
   "keywords": [
     "puppeteer",
     "puppeteer-extra",
@@ -27,5 +30,11 @@
     "puppeteer-extra-plugin-stealth": "^2.9.0",
     "terser": "^5.1.0",
     "yargs": "^15.4.1"
+  },
+  "devDependencies": {
+    "puppeteer": "14.2.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
   }
 }

@@ -2,7 +2,7 @@ const test = require('ava')
 
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
 
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
 /* global chrome */
 

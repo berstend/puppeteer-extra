@@ -35,16 +35,17 @@ const getStealthFingerPrint = async (Plugin, pageFn, pluginOptions = null) =>
 // - The UA string
 // - The shorter version string from Puppeteers browser.version()
 // - The shortest four-integer string
-const parseLooseVersionString = looseVersionString => looseVersionString
-  .match(/(\d+\.){3}\d+/)[0]
-  .split('.')
-  .map(x => parseInt(x))
+const parseLooseVersionString = looseVersionString =>
+  looseVersionString
+    .match(/(\d+\.){3}\d+/)[0]
+    .split('.')
+    .map(x => parseInt(x))
 
 const compareLooseVersionStrings = (version0, version1) => {
   const parsed0 = parseLooseVersionString(version0)
   const parsed1 = parseLooseVersionString(version1)
-  assert(parsed0.length == 4)
-  assert(parsed1.length == 4)
+  assert(parsed0.length === 4)
+  assert(parsed1.length === 4)
   for (let i = 0; i < parsed0.length; i++) {
     if (parsed0[i] < parsed1[i]) {
       return -1

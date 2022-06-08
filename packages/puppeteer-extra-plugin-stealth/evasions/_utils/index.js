@@ -24,7 +24,7 @@ utils.init = () => {
  */
 utils.stripProxyFromErrors = (handler = {}) => {
   const newHandler = {
-    setPrototypeOf: function (target, proto) {
+    setPrototypeOf: function(target, proto) {
       if (proto === null)
         throw new TypeError('Cannot convert object to primitive value')
       if (Object.getPrototypeOf(target) === Object.getPrototypeOf(proto)) {
@@ -36,7 +36,7 @@ utils.stripProxyFromErrors = (handler = {}) => {
   // We wrap each trap in the handler in a try/catch and modify the error stack if they throw
   const traps = Object.getOwnPropertyNames(handler)
   traps.forEach(trap => {
-    newHandler[trap] = function () {
+    newHandler[trap] = function() {
       try {
         // Forward the call to the defined proxy handler
         return handler[trap].apply(this, arguments || [])
@@ -209,7 +209,7 @@ utils.makeNativeString = (name = '') => {
  */
 utils.patchToString = (obj, str = '') => {
   const handler = {
-    apply: function (target, ctx) {
+    apply: function(target, ctx) {
       // This fixes e.g. `HTMLMediaElement.prototype.canPlayType.toString + ""`
       if (ctx === Function.prototype.toString) {
         return utils.makeNativeString('toString')
@@ -258,7 +258,7 @@ utils.patchToStringNested = (obj = {}) => {
  */
 utils.redirectToString = (proxyObj, originalObj) => {
   const handler = {
-    apply: function (target, ctx) {
+    apply: function(target, ctx) {
       // This fixes e.g. `HTMLMediaElement.prototype.canPlayType.toString + ""`
       if (ctx === Function.prototype.toString) {
         return utils.makeNativeString('toString')
@@ -398,7 +398,10 @@ utils.createProxy = (pseudoTarget, handler) => {
  */
 utils.splitObjPath = objPath => ({
   // Remove last dot entry (property) ==> `HTMLMediaElement.prototype`
-  objName: objPath.split('.').slice(0, -1).join('.'),
+  objName: objPath
+    .split('.')
+    .slice(0, -1)
+    .join('.'),
   // Extract last dot entry ==> `canPlayType`
   propName: objPath.split('.').slice(-1)[0]
 })
@@ -511,4 +514,4 @@ utils.makeHandler = () => ({
 // --
 // Stuff starting below this line is NodeJS specific.
 // --
-module.exports = utils
+module.exports = { utils }

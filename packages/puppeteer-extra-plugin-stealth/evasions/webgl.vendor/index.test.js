@@ -6,7 +6,7 @@ const {
 } = require('../../test/util')
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
 
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
 test('vanilla: videoCard is Google Inc', async t => {
   const pageFn = async page => await page.evaluate(() => window.chrome) // eslint-disable-line

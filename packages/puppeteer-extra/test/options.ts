@@ -1,4 +1,6 @@
 import test, { beforeEach } from 'ava'
+import { PuppeteerLaunchOption } from '../../puppeteer-extra-plugin/src'
+
 declare const require: any;
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
@@ -20,17 +22,18 @@ test('will modify puppeteer launch options through plugins', async t => {
   const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
   const pluginData = [{ name: 'foo', value: 'bar' }]
-  class Plugin extends PuppeteerExtraPlugin {
+  class Plugin extends PuppeteerExtraPlugin<{}> {
     constructor(opts = {}) {
       super(opts)
     }
-    get name() {
+    get name(): string {
       return pluginName
     }
     get data() {
       return pluginData
     }
-    beforeLaunch(options: any) {
+    async beforeLaunch(options: PuppeteerLaunchOption = {}): Promise<void | PuppeteerLaunchOption> {
+      options.args = options.args || [];
       options.args.push('--foobar=true')
       options.timeout = 60 * 1000
       options.headless = true
@@ -42,14 +45,14 @@ test('will modify puppeteer launch options through plugins', async t => {
   const instance = new Plugin()
   puppeteer.use(instance)
   const browser = await puppeteer.launch({
-    args: PUPPETEER_ARGS,
+    args: [ ...PUPPETEER_ARGS ],
     headless: false
   })
 
   t.deepEqual(FINAL_OPTIONS, {
     headless: true,
     timeout: 60000,
-    args: ([] as string[]).concat(...PUPPETEER_ARGS, '--foobar=true')
+    args: [ ...PUPPETEER_ARGS, '--foobar=true' ]
   })
 
   await browser.close()
@@ -62,7 +65,7 @@ test('will modify puppeteer connect options through plugins', async t => {
   // Launch vanilla puppeteer browser with no plugins
   const puppeteerVanilla = require('puppeteer')
   const browserVanilla = await puppeteerVanilla.launch({
-    args: PUPPETEER_ARGS
+    args: [ ...PUPPETEER_ARGS ]
   })
   const browserWSEndpoint = browserVanilla.wsEndpoint()
 
@@ -70,11 +73,11 @@ test('will modify puppeteer connect options through plugins', async t => {
   const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
   const pluginData = [{ name: 'foo', value: 'bar' }]
-  class Plugin extends PuppeteerExtraPlugin {
+  class Plugin extends PuppeteerExtraPlugin<{}> {
     constructor(opts = {}) {
       super(opts)
     }
-    get name() {
+    get name(): string {
       return pluginName
     }
     get data() {

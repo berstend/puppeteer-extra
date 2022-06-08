@@ -14,9 +14,13 @@
     "postdocs-for-plugin": "npx prettier --write readme.md",
     "docs-for-evasions": "cd ./evasions && loop \"documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API index.js\"",
     "postdocs-for-evasions": "cd ./evasions && loop \"npx prettier --write readme.md\"",
+    "build": "run-s build:tsc",
+    "build:tsc": "tsc --module commonjs",
+    "build:rollup": "rollup -c rollup.config.ts",
     "lint": "eslint --ext .js .",
-    "test:js": "ava --concurrency 2 -v",
-    "test": "run-p test:js lint",
+    "lint:ts": "node -e 0",
+    "test:js": "ava --fast-fail",
+    "test": "run-p test:js lint:ts",
     "test-ci": "run-s test:js",
     "types": "npx --package typescript@3.7 tsc --emitDeclarationOnly --declaration --allowJs index.js"
   },
@@ -36,19 +40,33 @@
     "pupeteer"
   ],
   "ava": {
+    "timeout": "40s",
+    "failFast": true,
+    "concurrency": 1,
+    "verbose": true,
+    "nodeArguments": [
+      "--trace-warnings"
+    ],
     "files": [
-      "!test/util.js",
-      "!test/fixtures/sw.js"
+      "*.test.js",
+      "test/*.test.js",
+      "evasions/**/*.test.js"
     ]
   },
   "devDependencies": {
+    "@types/chrome": "^0.0.188",
+    "@types/node": "^17.0.40",
+    "@types/offscreencanvas": "^2019.7.0",
     "ava": "2.4.0",
     "documentation-markdown-themes": "^12.1.5",
     "fpcollect": "^1.0.4",
     "fpscanner": "^0.1.5",
     "loop": "^3.0.6",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "9"
+    "puppeteer": "14.2.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
   },
   "dependencies": {
     "debug": "^4.1.1",

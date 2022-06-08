@@ -29,7 +29,7 @@ yarn add puppeteer-extra-plugin-repl
 
 ```es6
 const puppeteer = require('puppeteer-extra')
-puppeteer.use(require('puppeteer-extra-plugin-repl')())
+puppeteer.use(require('puppeteer-extra-plugin-repl').default())
 
 puppeteer.launch({ headless: true }).then(async browser => {
   const page = await browser.newPage()
@@ -98,7 +98,7 @@ Example:
 // In this example we don't extend the native puppeteer classes
 
 const puppeteer = require('puppeteer-extra')
-const repl = require('puppeteer-extra-plugin-repl')({ addToPuppeteerClass: false })
+const repl = require('puppeteer-extra-plugin-repl').default({ addToPuppeteerClass: false })
 puppeteer.use(repl)
 
 puppeteer.launch({ headless: true }).then(async browser => {
@@ -135,7 +135,7 @@ Type: `function (obj): Promise`
 Example:
 
 ```javascript
-const repl = require('puppeteer-extra-plugin-repl')()
+const repl = require('puppeteer-extra-plugin-repl').default()
 await repl.repl(<object or class instance to inspect>)
 ```
 

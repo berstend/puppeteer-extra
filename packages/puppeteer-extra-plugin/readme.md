@@ -30,27 +30,32 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
 #### Table of Contents
 
-- [class: PuppeteerExtraPlugin](#class-puppeteerextraplugin)
-  - [.name](#name)
-  - [.defaults](#defaults)
-  - [.requirements](#requirements)
-  - [.dependencies](#dependencies)
-  - [.data](#data)
-  - [.opts](#opts)
-  - [.debug](#debug)
-  - [.beforeLaunch(options)](#beforelaunchoptions)
-  - [.afterLaunch(browser, opts)](#afterlaunchbrowser-opts)
-  - [.beforeConnect(options)](#beforeconnectoptions)
-  - [.afterConnect(browser, opts)](#afterconnectbrowser-opts)
-  - [.onBrowser(browser, opts)](#onbrowserbrowser-opts)
-  - [.onTargetCreated(target)](#ontargetcreatedtarget)
-  - [.onPageCreated(page, target)](#onpagecreatedpage-target)
-  - [.onTargetChanged(target)](#ontargetchangedtarget)
-  - [.onTargetDestroyed(target)](#ontargetdestroyedtarget)
-  - [.onDisconnected()](#ondisconnected)
-  - [.onClose()](#onclose)
-  - [.onPluginRegistered()](#onpluginregistered)
-  - [.getDataFromPlugins(name?)](#getdatafrompluginsname)
+- [puppeteer-extra-plugin ![GitHub Workflow Status](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](http://scraping-chat.cf) [![npm](https://img.shields.io/npm/v/puppeteer-extra-plugin.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin)](#puppeteer-extra-plugin---)
+  - [Installation](#installation)
+  - [Changelog](#changelog)
+  - [API](#api)
+      - [Table of Contents](#table-of-contents)
+    - [class: PuppeteerExtraPlugin](#class-puppeteerextraplugin)
+      - [.name](#name)
+      - [.defaults](#defaults)
+      - [.requirements](#requirements)
+      - [.dependencies](#dependencies)
+      - [.data](#data)
+      - [.opts](#opts)
+      - [.debug](#debug)
+      - [.beforeLaunch(options)](#beforelaunchoptions)
+      - [.afterLaunch(browser, opts)](#afterlaunchbrowser-opts)
+      - [.beforeConnect(options)](#beforeconnectoptions)
+      - [.afterConnect(browser, opts)](#afterconnectbrowser-opts)
+      - [.onBrowser(browser, opts)](#onbrowserbrowser-opts)
+      - [.onTargetCreated(target)](#ontargetcreatedtarget)
+      - [.onPageCreated(page, target)](#onpagecreatedpage-target)
+      - [.onTargetChanged(target)](#ontargetchangedtarget)
+      - [.onTargetDestroyed(target)](#ontargetdestroyedtarget)
+      - [.onDisconnected()](#ondisconnected)
+      - [.onClose()](#onclose)
+      - [.onPluginRegistered()](#onpluginregistered)
+      - [.getDataFromPlugins(name?)](#getdatafrompluginsname)
 
 ### class: [PuppeteerExtraPlugin](https://github.com/berstend/puppeteer-extra/blob/dc8b90260a927c0c66c4585c5a56092ea9c35049/packages/puppeteer-extra-plugin/src/index.ts#L65-L572)
 
@@ -87,8 +92,10 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) {
-  return new Plugin(pluginConfig)
+module.exports = {
+  default: function (pluginConfig) {
+    return new Plugin(pluginConfig)
+  }
 }
 
 // foo.js

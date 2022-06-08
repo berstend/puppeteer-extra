@@ -14,11 +14,11 @@ test('will throw without a name', async t => {
 
 test('should have the basic class members', async t => {
   const pluginName = 'hello-world'
-  class Plugin extends PuppeteerExtraPlugin {
+  class Plugin extends PuppeteerExtraPlugin<{}> {
     constructor(opts = {}) {
       super(opts)
     }
-    get name() {
+    get name(): string {
       return pluginName
     }
   }
@@ -37,11 +37,11 @@ test('should have the basic class members', async t => {
 
 test('should have the public class members', async t => {
   const pluginName = 'hello-world'
-  class Plugin extends PuppeteerExtraPlugin {
+  class Plugin extends PuppeteerExtraPlugin<{}> {
     constructor(opts = {}) {
       super(opts)
     }
-    get name() {
+    get name(): string {
       return pluginName
     }
   }
@@ -62,11 +62,11 @@ test('should have the public class members', async t => {
 
 test('should have the internal class members', async t => {
   const pluginName = 'hello-world'
-  class Plugin extends PuppeteerExtraPlugin {
+  class Plugin extends PuppeteerExtraPlugin<{}> {
     constructor(opts = {}) {
       super(opts)
     }
-    get name() {
+    get name(): string {
       return pluginName
     }
   }
@@ -83,41 +83,41 @@ test('should have the internal class members', async t => {
 test('should merge opts with defaults automatically', async t => {
   const pluginName = 'hello-world'
   const pluginDefaults = { foo: 'bar', foo2: 'bar2', extra1: 123 }
-  const userOpts = { foo2: 'bob', extra2: 666 }
+  const pluginConfig = { foo2: 'bob', extra2: 666 }
 
-  class Plugin extends PuppeteerExtraPlugin {
+  class Plugin extends PuppeteerExtraPlugin<any> {
     constructor(opts = {}) {
       super(opts)
     }
-    get name() {
+    get name(): string {
       return pluginName
     }
-    get defaults() {
+    get defaults(): any {
       return pluginDefaults
     }
   }
-  const instance = new Plugin(userOpts)
+  const instance = new Plugin(pluginConfig)
 
   t.deepEqual(instance.defaults, pluginDefaults)
   t.is(instance.opts.foo, pluginDefaults.foo)
-  t.is(instance.opts.foo2, userOpts.foo2)
+  t.is(instance.opts.foo2, pluginConfig.foo2)
   t.is(instance.opts.extra1, pluginDefaults.extra1)
-  t.is(instance.opts.extra2, userOpts.extra2)
+  t.is(instance.opts.extra2, pluginConfig.extra2)
 })
 
 test('should have opts when defaults is not defined', async t => {
   const pluginName = 'hello-world'
-  const userOpts = { foo2: 'bob', extra2: 666 }
+  const pluginConfig = { foo2: 'bob', extra2: 666 }
 
-  class Plugin extends PuppeteerExtraPlugin {
+  class Plugin extends PuppeteerExtraPlugin<{}> {
     constructor(opts = {}) {
       super(opts)
     }
-    get name() {
+    get name(): string {
       return pluginName
     }
   }
-  const instance = new Plugin(userOpts)
+  const instance = new Plugin(pluginConfig)
 
-  t.deepEqual(instance.opts, userOpts)
+  t.deepEqual(instance.opts, pluginConfig)
 })

@@ -3,14 +3,18 @@
   "version": "2.3.3",
   "description": "Anonymize User-Agent in puppeteer.",
   "main": "index.js",
+  "typings": "index.d.ts",
   "repository": "berstend/puppeteer-extra",
   "author": "berstend",
   "license": "MIT",
   "scripts": {
+    "clean": "rimraf index.{js,d.ts,js.map}",
+    "prebuild": "run-s clean",
     "docs": "node -e 0",
-    "lint": "eslint --ext .js .",
-    "test:js": "ava -v --serial --concurrency 1",
-    "test": "run-p test:js lint",
+    "lint": "echo no lint",
+    "build": "tsc --module commonjs",
+    "test:js": "ava --serial",
+    "test": "run-p test:js",
     "test-ci": "run-s test"
   },
   "engines": {
@@ -26,12 +30,34 @@
     "headless",
     "pupeteer"
   ],
+  "ava": {
+    "concurrency": 1,
+    "verbose": true,
+    "environmentVariables": {
+      "TS_NODE_COMPILER_OPTIONS": "{\"module\":\"commonjs\"}",
+      "TS_NODE_FILES": "true",
+      "TS_NODE_PROJECT": "./tsconfig.json"
+    },
+    "files": [
+      "test/*.test.js"
+    ],
+    "extensions": [
+      "js", "ts", "mts", "cts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "failFast": true
+  },
   "devDependencies": {
-    "ava": "2.4.0",
+    "ava": "^4.3.0",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "^2.0.0",
+    "puppeteer": "14.2.1",
     "puppeteer-extra": "^3.2.3",
-    "puppeteer-extra-plugin-devtools": "^2.3.3"
+    "puppeteer-extra-plugin-devtools": "^2.3.3",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
   },
   "dependencies": {
     "debug": "^4.1.1",

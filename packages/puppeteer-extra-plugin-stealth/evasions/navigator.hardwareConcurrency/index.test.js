@@ -7,7 +7,7 @@ const {
   getVanillaFingerPrint,
   getStealthFingerPrint
 } = require('../../test/util')
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
 const fingerprintFn = page => page.evaluate('navigator.hardwareConcurrency')
 

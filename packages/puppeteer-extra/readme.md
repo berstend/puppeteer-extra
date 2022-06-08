@@ -105,7 +105,7 @@ puppeteer
 const vanillaPuppeteer = require('puppeteer')
 
 const { addExtra } = require('puppeteer-extra')
-const AnonymizeUA = require('puppeteer-extra-plugin-anonymize-ua')
+const AnonymizeUA = require('puppeteer-extra-plugin-anonymize-ua').default
 
 async function main() {
   const pptr1 = addExtra(vanillaPuppeteer)
@@ -175,7 +175,7 @@ const { Cluster } = require('puppeteer-cluster')
 const vanillaPuppeteer = require('puppeteer')
 
 const { addExtra } = require('puppeteer-extra')
-const Stealth = require('puppeteer-extra-plugin-stealth')
+const {default: Stealth} = require('puppeteer-extra-plugin-stealth')
 const Recaptcha = require('puppeteer-extra-plugin-recaptcha')
 
 async function main() {
@@ -441,7 +441,7 @@ Example:
 
 ```javascript
 const puppeteer = require('puppeteer-extra')
-puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
+puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua').default())
 puppeteer.use(
   require('puppeteer-extra-plugin-font-size')({ defaultFontSize: 18 })
 )

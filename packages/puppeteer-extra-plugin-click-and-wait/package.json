@@ -9,6 +9,7 @@
   "scripts": {
     "docs": "node -e 0",
     "lint": "eslint --ext .js .",
+    "build": "echo no build for puppeteer-extra-plugin-click-and-wait",
     "test": "run-p lint",
     "test-ci": "run-s test"
   },
@@ -27,7 +28,10 @@
   "devDependencies": {
     "ava": "2.4.0",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "^2.0.0"
+    "puppeteer": "14.2.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
   },
   "dependencies": {
     "debug": "^4.1.1",

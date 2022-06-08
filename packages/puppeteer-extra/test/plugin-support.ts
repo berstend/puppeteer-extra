@@ -31,11 +31,11 @@ test('will launch puppeteer with plugin support', async t => {
   const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
   const pluginData = [{ name: 'foo', value: 'bar' }]
-  class Plugin extends PuppeteerExtraPlugin {
+  class Plugin extends PuppeteerExtraPlugin<{}> {
     constructor(opts = {}) {
       super(opts)
     }
-    get name() {
+    get name(): string {
       return pluginName
     }
     get data() {

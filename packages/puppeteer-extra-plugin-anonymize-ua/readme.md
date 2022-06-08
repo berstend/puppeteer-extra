@@ -35,9 +35,9 @@ Example:
 
 ```javascript
 const puppeteer = require('puppeteer-extra')
-puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
+puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua').default())
 // or
-puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')({
+puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua').default({
   customFn: (ua) => 'MyCoolAgent/' + ua.replace('Chrome', 'Beer')})
 )
 const browser = await puppeteer.launch()

@@ -1,7 +1,11 @@
 const test = require('ava')
 
-const { vanillaPuppeteer, addExtra, compareLooseVersionStrings } = require('../../test/util')
-const Plugin = require('.')
+const {
+  vanillaPuppeteer,
+  addExtra,
+  compareLooseVersionStrings
+} = require('../../test/util')
+const { default: Plugin } = require('.')
 
 function getExpectedValue(looseVersionString) {
   if (compareLooseVersionStrings(looseVersionString, '89.0.4339.0') >= 0) {

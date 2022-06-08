@@ -1,7 +1,7 @@
 const test = require('ava')
 
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
 // Fixed since 2.1.1?
 // test('vanilla: Accept-Language header is missing', async t => {
@@ -24,12 +24,13 @@ test('vanilla: User-Agent header contains HeadlessChrome', async t => {
   t.true(content.includes(`HeadlessChrome`))
 })
 
-test('vanilla: navigator.languages is always en-US', async t => {
-  const browser = await vanillaPuppeteer.launch({ headless: true })
-  const page = await browser.newPage()
-  const lang = await page.evaluate(() => navigator.languages)
-  t.true(lang.length === 1 && lang[0] === 'en-US')
-})
+// chrome vanilla: navigator.languages is os dependant.
+// test('vanilla: navigator.languages is always en-US', async t => {
+//   const browser = await vanillaPuppeteer.launch({ headless: true })
+//   const page = await browser.newPage()
+//   const lang = await page.evaluate(() => navigator.languages)
+//   t.true(lang.length === 1 && lang[0] === 'en-US')
+// })
 
 test('vanilla: navigator.platform set to host platform', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
@@ -159,9 +160,7 @@ const _testUAHint = async (userAgent, locale) => {
     args: ['--enable-features=UserAgentClientHint']
   })
 
-  const majorVersion = parseInt(
-    (await browser.version()).match(/\/([^\.]+)/)[1]
-  )
+  const majorVersion = parseInt((await browser.version()).match(/\/([^.]+)/)[1])
   if (majorVersion < 88) {
     return null // Skip test on browsers that don't support UA hints
   }
@@ -303,9 +302,7 @@ test('stealth: test if UA hints are correctly set - Windows 10 Generic', async t
     headless: true
   })
 
-  const majorVersion = parseInt(
-    (await browser.version()).match(/\/([^\.]+)/)[1]
-  )
+  const majorVersion = parseInt((await browser.version()).match(/\/([^.]+)/)[1])
   if (majorVersion < 90) {
     t.truthy('foo')
     console.log('Skipping test, browser version too old', majorVersion)

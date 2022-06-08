@@ -22,48 +22,48 @@ test('will bind launched browser events to plugins', async t => {
   const puppeteer = addExtra(puppeteerVanilla)
   const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
-  class Plugin extends PuppeteerExtraPlugin {
+  class Plugin extends PuppeteerExtraPlugin<{}> {
     constructor(opts = {}) {
       super(opts)
     }
-    get name() {
+    get name(): string {
       return pluginName
     }
 
-    onPluginRegistered() {
+    onPluginRegistered(): void {
       PLUGIN_EVENTS.push('onPluginRegistered')
     }
-    beforeLaunch() {
+    beforeLaunch(): void {
       PLUGIN_EVENTS.push('beforeLaunch')
     }
-    afterLaunch() {
+    afterLaunch(): void {
       PLUGIN_EVENTS.push('afterLaunch')
     }
-    beforeConnect() {
+    beforeConnect(): void {
       PLUGIN_EVENTS.push('beforeConnect')
     }
-    afterConnect() {
+    afterConnect(): void {
       PLUGIN_EVENTS.push('afterConnect')
     }
-    onBrowser() {
+    onBrowser(): void {
       PLUGIN_EVENTS.push('onBrowser')
     }
-    onTargetCreated() {
+    onTargetCreated(): void {
       PLUGIN_EVENTS.push('onTargetCreated')
     }
-    onPageCreated() {
+    onPageCreated(): void {
       PLUGIN_EVENTS.push('onPageCreated')
     }
-    onTargetChanged() {
+    onTargetChanged(): void {
       PLUGIN_EVENTS.push('onTargetChanged')
     }
-    onTargetDestroyed() {
+    onTargetDestroyed(): void {
       PLUGIN_EVENTS.push('onTargetDestroyed')
     }
-    onDisconnected() {
+    onDisconnected(): void {
       PLUGIN_EVENTS.push('onDisconnected')
     }
-    onClose() {
+    onClose(): void {
       PLUGIN_EVENTS.push('onClose')
     }
   }
@@ -104,11 +104,11 @@ test('will bind connected browser events to plugins', async t => {
   const puppeteer = addExtra(puppeteerVanilla)
   const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
-  class Plugin extends PuppeteerExtraPlugin {
+  class Plugin extends PuppeteerExtraPlugin<{}> {
     constructor(opts = {}) {
       super(opts)
     }
-    get name() {
+    get name(): string {
       return pluginName
     }
 

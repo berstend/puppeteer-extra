@@ -16,7 +16,7 @@
     "clean": "rimraf dist/*",
     "tscheck": "tsc --pretty --noEmit",
     "prebuild": "run-s clean",
-    "build": "run-s build:tsc build:rollup; node build_version_check.js",
+    "build": "run-s build:tsc build:rollup || node build_version_check.js",
     "build-version-check": "node build_version_check.js",
     "build:tsc": "tsc --module commonjs",
     "build:rollup": "rollup -c rollup.config.ts",
@@ -49,18 +49,18 @@
     "@types/puppeteer": "*",
     "ava": "^2.4.0",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "^8.0.0",
-    "rimraf": "^3.0.0",
+    "puppeteer": "^14.2.1",
+    "rimraf": "^3.0.2",
     "rollup": "^1.27.5",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-sourcemaps": "^0.4.2",
     "rollup-plugin-typescript2": "^0.25.2",
-    "ts-node": "^8.5.4",
+    "ts-node": "^10.8.1",
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^9.0.0",
-    "typescript": "4.4.4"
+    "typescript": "^4.7.3"
   },
   "dependencies": {
     "@cliqz/adblocker-puppeteer": "1.22.6",
@@ -76,11 +76,19 @@
     "verbose": true,
     "compileEnhancements": false,
     "environmentVariables": {
-      "TS_NODE_COMPILER_OPTIONS": "{\"module\":\"commonjs\"}"
+      "TS_NODE_COMPILER_OPTIONS": "{\"module\":\"commonjs\"}",
+      "TS_NODE_FILES": "true",
+      "TS_NODE_PROJECT": "./tsconfig.json"
     },
-    "files": ["test/*.test.ts"],
-    "extensions": ["ts"],
-    "require": ["ts-node/register"]
+    "files": [
+      "test/*.test.ts"
+    ],
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
   },
   "gitHead": "72fe830c158f1e971c8499fdd5232338dd53c220"
 }
