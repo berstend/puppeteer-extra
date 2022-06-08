@@ -1,6 +1,8 @@
-'use strict'
+import { PluginData, PluginDependencies, PluginRequirements, PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+export interface PluginOptions {
+  defaultFontSize: number;
+}
 
 /**
  * Modify/increase the default font size in puppeteer.
@@ -15,28 +17,28 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * puppeteer.use(require('puppeteer-extra-plugin-font-size')({defaultFontSize: 18}))
  * const browser = await puppeteer.launch()
  */
-class Plugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }
 
-  get name() {
+  get name(): 'font-size' {
     return 'font-size'
   }
 
-  get defaults() {
+  get defaults(): PluginOptions {
     return { defaultFontSize: 20 }
   }
 
-  get requirements() {
+  get requirements(): PluginRequirements {
     return new Set(['launch', 'headful'])
   }
 
-  get dependencies() {
+  get dependencies(): PluginDependencies {
     return new Set(['user-preferences'])
   }
 
-  get data() {
+  get data(): PluginData[] {
     const userPreferences = {
       webkit: {
         webprefs: {
@@ -53,8 +55,4 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = {
-  default: function(pluginConfig) {
-    return new Plugin(pluginConfig)
-  }
-}
+export default (pluginConfig?: Partial<PluginOptions>) => new Plugin(pluginConfig)

@@ -21,5 +21,8 @@
         "packages/puppeteer-extra-plugin-user-preferences/index.d.ts": true,
         "packages/puppeteer-extra-plugin-user-preferences/index.js": true,
         "packages/puppeteer-extra-plugin-user-preferences/index.js.map": true,
+        "packages/puppeteer-extra-plugin-font-size/index.d.ts": true,
+        "packages/puppeteer-extra-plugin-font-size/index.js": true,
+        "packages/puppeteer-extra-plugin-font-size/index.js.map": true,
     }
 }

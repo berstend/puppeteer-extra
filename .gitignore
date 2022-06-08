@@ -85,3 +85,6 @@ packages/puppeteer-extra-plugin-user-data-dir/index.js.map
 packages/puppeteer-extra-plugin-user-preferences/index.d.ts
 packages/puppeteer-extra-plugin-user-preferences/index.js
 packages/puppeteer-extra-plugin-user-preferences/index.js.map
+packages/puppeteer-extra-plugin-font-size/index.d.ts
+packages/puppeteer-extra-plugin-font-size/index.js
+packages/puppeteer-extra-plugin-font-size/index.js.map
