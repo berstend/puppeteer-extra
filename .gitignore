@@ -76,3 +76,6 @@ packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/magicArray.js
 packages/puppeteer-extra-plugin-anonymize-ua/index.d.ts
 packages/puppeteer-extra-plugin-anonymize-ua/index.js
 packages/puppeteer-extra-plugin-anonymize-ua/index.js.map
+packages/puppeteer-extra-plugin-block-resources/index.d.ts
+packages/puppeteer-extra-plugin-block-resources/index.js
+packages/puppeteer-extra-plugin-block-resources/index.js.map

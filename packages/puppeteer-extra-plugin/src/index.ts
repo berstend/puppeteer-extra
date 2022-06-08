@@ -40,6 +40,8 @@ export type PuppeteerPage = Puppeteer.Page & { _client?: { send: (message: Funct
 export type PuppeteerTarget = Puppeteer.Target;
 export type PuppeteerBrowser = Puppeteer.Browser;
 export type PuppeteerConnectOptions = Puppeteer.ConnectOptions;
+export type PuppeteerRequest = Puppeteer.Request;
+
 /**
  * Base class for `puppeteer-extra` plugins.
  *

@@ -1,6 +1,9 @@
-'use strict'
+import { PuppeteerExtraPlugin, PuppeteerPage, PuppeteerRequest } from 'puppeteer-extra-plugin';
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+export interface PluginOptions {
+  availableTypes: Set<string>,
+  blockedTypes: Set<string>,
+}
 
 /**
  * Block resources (images, media, css, etc.) in puppeteer.
@@ -38,16 +41,16 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * blockResourcesPlugin.blockedTypes.add('script')
  * await page.goto('http://www.youtube.com', {waitUntil: 'domcontentloaded'})
  */
-class Plugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }
 
-  get name() {
+  get name(): 'block-resources' {
     return 'block-resources'
   }
 
-  get defaults() {
+  get defaults(): PluginOptions {
     return {
       availableTypes: new Set([
         'document',
@@ -76,7 +79,7 @@ class Plugin extends PuppeteerExtraPlugin {
    *
    * @type {Set<string>} - A Set of all available resource types.
    */
-  get availableTypes() {
+  get availableTypes(): Set<string> {
     return this.defaults.availableTypes
   }
 
@@ -87,14 +90,14 @@ class Plugin extends PuppeteerExtraPlugin {
    *
    * @type {Set<string>} - A Set of all blocked resource types.
    */
-  get blockedTypes() {
+  get blockedTypes(): Set<string> {
     return this.opts.blockedTypes
   }
 
   /**
    * @private
    */
-  onRequest(request) {
+  onRequest(request: PuppeteerRequest): Promise<void> {
     const type = request.resourceType()
     const shouldBlock = this.blockedTypes.has(type)
     this.debug('onRequest', { type, shouldBlock })
@@ -104,15 +107,11 @@ class Plugin extends PuppeteerExtraPlugin {
   /**
    * @private
    */
-  async onPageCreated(page) {
+  async onPageCreated(page: PuppeteerPage): Promise<void> {
     this.debug('onPageCreated', { blockedTypes: this.blockedTypes })
     await page.setRequestInterception(true)
     page.on('request', this.onRequest.bind(this))
   }
 }
 
-module.exports = {
-  default: function(pluginConfig) {
-    return new Plugin(pluginConfig)
-  }
-}
+export default (pluginConfig?: Partial<PluginOptions>) => new Plugin(pluginConfig)
