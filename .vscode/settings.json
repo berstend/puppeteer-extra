@@ -15,5 +15,8 @@
         "packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/functionMocks.d.ts": true,
         "packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/magicArray.js": true,
         "packages/puppeteer-extra-plugin-stealth/evasions/navigator.plugins/magicArray.d.ts": true,
+        "packages/puppeteer-extra-plugin-user-data-dir/index.d.ts": true,
+        "packages/puppeteer-extra-plugin-user-data-dir/index.js": true,
+        "packages/puppeteer-extra-plugin-user-data-dir/index.js.map": true,
     }
 }

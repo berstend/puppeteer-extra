@@ -1,68 +1,78 @@
 'use strict'
 
-const util = require('util')
-const fs = require('fs')
-const fse = require('fs-extra')
-const os = require('os')
-const path = require('path')
-const debug = require('debug')('puppeteer-extra-plugin:user-data-dir')
+import util from 'util'
+import fs from 'fs'
+import fse from 'fs-extra'
+import os from 'os'
+import path from 'path'
+import Debug from 'debug'
+
+const debug = Debug('puppeteer-extra-plugin:user-data-dir')
 const mkdtempAsync = util.promisify(fs.mkdtemp)
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+import { PuppeteerExtraPlugin, PluginRequirements, PuppeteerLaunchOption } from 'puppeteer-extra-plugin'
+
+export interface PluginOptions {
+  deleteTemporary: boolean;
+  deleteExisting: boolean;
+  folderPath: string;
+  folderPrefix: string;
+  files: Array<{target: string}>;
+}
 
 /**
  *
  * Further reading:
  * https://chromium.googlesource.com/chromium/src/+/master/docs/user_data_dir.md
  */
-class Plugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+  private _userDataDir = '';
+  private _isTemporary = false;
+
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
-
-    this._userDataDir = null
-    this._isTemporary = false
-
-    const defaults = {
-      deleteTemporary: true,
-      deleteExisting: false,
-      files: []
-    }
-    // Follow Puppeteers temporary user data dir naming convention by default
-    defaults.folderPath = os.tmpdir()
-    defaults.folderPrefix = 'puppeteer_dev_profile-'
-
-    this._opts = Object.assign(defaults, opts)
-    debug('initialized', this._opts)
+    debug('initialized', this.opts)
   }
 
-  get name() {
+  get defaults(): PluginOptions {
+    // Follow Puppeteers temporary user data dir naming convention by default
+    return {
+      deleteTemporary: true,
+      deleteExisting: false,
+      folderPath: os.tmpdir(),
+      folderPrefix: 'puppeteer_dev_profile-',
+      files: []
+    }
+  }
+
+  get name(): 'user-data-dir' {
     return 'user-data-dir'
   }
 
-  get requirements() {
+  get requirements(): PluginRequirements {
     return new Set(['runLast', 'dataFromPlugins'])
   }
 
-  get shouldDeleteDirectory() {
-    if (this._isTemporary && this._opts.deleteTemporary) {
+  get shouldDeleteDirectory(): boolean {
+    if (this._isTemporary && this.opts.deleteTemporary) {
       return true
     }
-    return this._opts.deleteExisting
+    return this.opts.deleteExisting
   }
 
-  get temporaryDirectoryPath() {
-    return path.join(this._opts.folderPath, this._opts.folderPrefix)
+  get temporaryDirectoryPath(): string {
+    return path.join(this.opts.folderPath, this.opts.folderPrefix)
   }
 
-  get defaultProfilePath() {
+  get defaultProfilePath(): string {
     return path.join(this._userDataDir, 'Default')
   }
 
-  async makeTemporaryDirectory() {
+  async makeTemporaryDirectory(): Promise<void> {
     this._userDataDir = await mkdtempAsync(this.temporaryDirectoryPath)
     this._isTemporary = true
   }
 
-  deleteUserDataDir() {
+  deleteUserDataDir(): void {
     debug('removeUserDataDir', this._userDataDir)
     try {
       // We're doing it sync to improve chances to cleanup
@@ -86,11 +96,11 @@ class Plugin extends PuppeteerExtraPlugin {
     }
   }
 
-  async writeFilesToProfile() {
-    const filesFromPlugins = this.getDataFromPlugins('userDataDirFile').map(
+  async writeFilesToProfile(): Promise<void> {
+    const filesFromPlugins: any[] = this.getDataFromPlugins('userDataDirFile').map(
       d => d.value
     )
-    const files = [].concat(filesFromPlugins, this._opts.files)
+    const files: Array<{target: string, file: string, contents: any}> = [].concat(filesFromPlugins as any, this.opts.files as any)
     if (!files.length) {
       return
     }
@@ -109,8 +119,8 @@ class Plugin extends PuppeteerExtraPlugin {
     }
   }
 
-  async beforeLaunch(options) {
-    this._userDataDir = options.userDataDir
+  async beforeLaunch(options: PuppeteerLaunchOption = {}): Promise<void | PuppeteerLaunchOption> {
+    this._userDataDir = options.userDataDir || ''
     if (!this._userDataDir) {
       await this.makeTemporaryDirectory()
       options.userDataDir = this._userDataDir
@@ -119,7 +129,7 @@ class Plugin extends PuppeteerExtraPlugin {
     await this.writeFilesToProfile()
   }
 
-  async onDisconnected() {
+  async onDisconnected(): Promise<void> {
     debug('onDisconnected')
     if (this.shouldDeleteDirectory) {
       this.deleteUserDataDir()
@@ -127,8 +137,4 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = {
-  default: function(pluginConfig) {
-    return new Plugin(pluginConfig)
-  }
-}
+export default (pluginConfig?: Partial<PluginOptions>) =>new Plugin(pluginConfig)
