@@ -13,7 +13,7 @@
     "prebuild": "run-s clean",
     "docs": "node -e 0",
     "lint": "eslint --ext .js .",
-    "build": "echo no build for puppeteer-extra-plugin-devtools",
+    "build": "tsc --module commonjs",
     "test-ava": "ava -v",
     "test": "run-p dummy test-ava",
     "test-ci": "run-s test"
