@@ -14,11 +14,11 @@ test('will throw without a name', async t => {
 
 test('should have the basic class members', async t => {
   const pluginName = 'hello-world'
-  class Plugin extends PuppeteerExtraPlugin {
+  class Plugin extends PuppeteerExtraPlugin<{}> {
     constructor(opts = {}) {
       super(opts)
     }
-    get name() {
+    get name(): string {
       return pluginName
     }
   }
@@ -37,11 +37,11 @@ test('should have the basic class members', async t => {
 
 test('should have the public class members', async t => {
   const pluginName = 'hello-world'
-  class Plugin extends PuppeteerExtraPlugin {
+  class Plugin extends PuppeteerExtraPlugin<{}> {
     constructor(opts = {}) {
       super(opts)
     }
-    get name() {
+    get name(): string {
       return pluginName
     }
   }
@@ -62,11 +62,11 @@ test('should have the public class members', async t => {
 
 test('should have the internal class members', async t => {
   const pluginName = 'hello-world'
-  class Plugin extends PuppeteerExtraPlugin {
+  class Plugin extends PuppeteerExtraPlugin<{}> {
     constructor(opts = {}) {
       super(opts)
     }
-    get name() {
+    get name(): string {
       return pluginName
     }
   }
@@ -109,11 +109,11 @@ test('should have opts when defaults is not defined', async t => {
   const pluginName = 'hello-world'
   const pluginConfig = { foo2: 'bob', extra2: 666 }
 
-  class Plugin extends PuppeteerExtraPlugin {
+  class Plugin extends PuppeteerExtraPlugin<{}> {
     constructor(opts = {}) {
       super(opts)
     }
-    get name() {
+    get name(): string {
       return pluginName
     }
   }

@@ -34,7 +34,7 @@ declare interface DefaultOptions {
     addToPuppeteerClass?: boolean;
 }
 
-declare class Plugin extends PuppeteerExtraPlugin {
+declare class Plugin extends PuppeteerExtraPlugin<{}> {
     get name(): 'repl';
     get defaults(): DefaultOptions;
     repl(obj: any): Promise<void>;

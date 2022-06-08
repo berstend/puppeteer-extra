@@ -56,7 +56,7 @@ export type PuppeteerRequest = Puppeteer.Request;
  * // hello-world-plugin.js
  * const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  *
- * class Plugin extends PuppeteerExtraPlugin {
+ * class Plugin extends PuppeteerExtraPlugin<{}> {
  *   constructor (opts = { }) { super(opts) }
  *
  *   get name () { return 'hello-world' }

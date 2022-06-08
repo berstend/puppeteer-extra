@@ -46,7 +46,7 @@
     "puppeteer": "14.2.1",
     "puppeteer-extra-plugin": "^3.2.0",
     "puppeteer-extra-plugin-anonymize-ua": "^2.3.3",
-    "rimraf": "^3.0.0",
+    "rimraf": "^3.0.2",
     "rollup": "^1.27.5",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
