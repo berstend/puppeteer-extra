@@ -1,7 +1,7 @@
 'use strict'
 
-import { PluginRequirements, PuppeteerBrowser, PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
-import RemoteDevTools, { DevToolsTunnelOptions } from './lib/RemoteDevTools'
+import { PuppeteerBrowser, PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
+import { DevToolsTunnel, DevToolsLocal, DevToolsTunnelOptions } from './lib/RemoteDevTools'
 import ow from 'ow'
 import crypto from 'crypto';
 
@@ -168,7 +168,7 @@ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
     ow(browser, ow.object.hasKeys('wsEndpoint'))
 
     const wsEndpoint = browser.wsEndpoint()
-    return new RemoteDevTools.DevToolsLocal(wsEndpoint).url
+    return new DevToolsLocal(wsEndpoint).url
   }
 
   /**
@@ -203,7 +203,7 @@ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
  * The devtools tunnel for a browser instance.
  *
  */
-export class Tunnel extends RemoteDevTools.DevToolsTunnel {
+export class Tunnel extends DevToolsTunnel {
   constructor(wsEndpoint: string, opts?: Partial<DevToolsTunnelOptions>) {
     super(wsEndpoint, opts)
   }
@@ -236,7 +236,7 @@ export class Tunnel extends RemoteDevTools.DevToolsTunnel {
    */
   getUrlForPage(page: PuppeteerPage): string {
     ow(page, ow.object.hasKeys('_target._targetInfo.targetId'))
-    const pageId = page._target._targetInfo.targetId
+    const pageId = page._target!._targetInfo.targetId
     return super.getUrlForPageId(pageId)
   }
 
