@@ -2,8 +2,7 @@
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 import { EventEmitter } from 'events';
 
-//export 
-const allAvailableEvasions = [
+export const allAvailableEvasions = [
   'chrome.app',
   'chrome.csi',
   'chrome.loadTimes',
@@ -22,14 +21,12 @@ const allAvailableEvasions = [
   'window.outerdimensions'
 ] as const;
 
-//export 
-type KnownEvasions = typeof allAvailableEvasions[number];
+export type KnownEvasions = typeof allAvailableEvasions[number];
 
 /**
  * Specify which evasions to use (by default all)
  */
-// export 
-interface PluginOptions {
+export interface PluginOptions {
   availableEvasions: Set<KnownEvasions>;
   enabledEvasions: Set<KnownEvasions>;
 }
@@ -181,10 +178,7 @@ class StealthPlugin extends PuppeteerExtraPlugin<PluginOptions> {
  * @param {Object} [opts] - Options
  * @param {Set<string>} [opts.enabledEvasions] - Specify which evasions to use (by default all)
  */
-const defaultExport = (pluginConfig?: Partial<PluginOptions>) => new StealthPlugin(pluginConfig)
-module.exports = {
-  default: defaultExport
-}
+export default (pluginConfig?: Partial<PluginOptions>) => new StealthPlugin(pluginConfig)
 
 // const moduleExport = defaultExport
 // moduleExport.StealthPlugin = StealthPlugin

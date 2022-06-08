@@ -30,7 +30,7 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin<PluginOp
     this.debug('Initialized', this.opts)
   }
 
-  get name() {
+  get name(): 'adblocker' {
     return 'adblocker'
   }
 

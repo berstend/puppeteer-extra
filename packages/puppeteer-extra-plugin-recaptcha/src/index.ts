@@ -29,7 +29,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
     this.contentScriptDebug = this.debug.extend('cs')
   }
 
-  get name() {
+  get name(): 'recaptcha' {
     return 'recaptcha'
   }
 
@@ -64,7 +64,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
     vendor: types.CaptchaVendor,
     fn: 'findRecaptchas' | 'enterRecaptchaSolutions',
     data?: any
-  ) {
+  ): string {
     this.debug('_generateContentScript', vendor, fn, data)
     let scriptSource = RecaptchaContentScript.toString()
     let scriptName = 'RecaptchaContentScript'
@@ -83,7 +83,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
   }
 
   /** Based on the user defined options we may want to filter out certain captchas (inactive, etc) */
-  private _filterRecaptchas(recaptchas: types.CaptchaInfo[] = []) {
+  private _filterRecaptchas(recaptchas: types.CaptchaInfo[] = []): {captchas: types.CaptchaInfo[], filtered: types.FilteredCaptcha[]} {
     const results = recaptchas.map((c: types.FilteredCaptcha) => {
       if (
         c._type === 'invisible' &&
@@ -120,7 +120,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
     }
   }
 
-  async findRecaptchas(page: Page | Frame) {
+  async findRecaptchas(page: Page | Frame): Promise<types.FindRecaptchasResult> {
     this.debug('findRecaptchas')
     // As this might be called very early while recaptcha is still loading
     // we add some extra waiting logic for developer convenience.
@@ -196,7 +196,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
   async getRecaptchaSolutions(
     captchas: types.CaptchaInfo[],
     provider?: types.SolutionProvider
-  ) {
+  ): Promise<any> {
     this.debug('getRecaptchaSolutions', { captchaNum: captchas.length })
     provider = provider || this.opts.provider
     if (
@@ -243,7 +243,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
   async enterRecaptchaSolutions(
     page: Page | Frame,
     solutions: types.CaptchaSolution[]
-  ) {
+  ): Promise<types.EnterRecaptchaSolutionsResult> {
     this.debug('enterRecaptchaSolutions', { solutions })
 
     const hasRecaptcha = !!solutions.find(s => s._vendor === 'recaptcha')
@@ -322,7 +322,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
     return response
   }
 
-  private _addCustomMethods(prop: Page | Frame) {
+  private _addCustomMethods(prop: Page | Frame): void {
     prop.findRecaptchas = async () => this.findRecaptchas(prop)
     prop.getRecaptchaSolutions = async (
       captchas: types.CaptchaInfo[],
