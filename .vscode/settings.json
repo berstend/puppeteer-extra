@@ -30,6 +30,19 @@
         "packages/puppeteer-extra-plugin-flash/index.js.map": true,
         "packages/puppeteer-extra-plugin-flash/index.js": true,
         "packages/puppeteer-extra-plugin-flash/index.d.ts": true,
-        
+        "packages/puppeteer-extra-plugin-repl/index.js": true,
+        "packages/puppeteer-extra-plugin-repl/index.js.map": true,
+        "packages/puppeteer-extra-plugin-repl/lib/REPLSession.d.ts": true,
+        "packages/puppeteer-extra-plugin-repl/lib/REPLSession.js": true,
+        "packages/puppeteer-extra-plugin-repl/lib/REPLSession.js.map": true,
+        "packages/puppeteer-extra-plugin-repl/lib/super-readline.d.ts": true,
+        "packages/puppeteer-extra-plugin-repl/lib/super-readline.js": true,
+        "packages/puppeteer-extra-plugin-repl/lib/super-readline.js.map": true,
+        "packages/puppeteer-extra-plugin-devtools/index.js": true,
+        "packages/puppeteer-extra-plugin-devtools/index.js.map": true,
+        "packages/puppeteer-extra-plugin-devtools/index.d.ts": true,
+        "packages/puppeteer-extra-plugin-devtools/lib/RemoteDevTools.js": true,
+        "packages/puppeteer-extra-plugin-devtools/lib/RemoteDevTools.js.map": true,
+        "packages/puppeteer-extra-plugin-devtools/lib/RemoteDevTools.d.ts": true,
     }
 }

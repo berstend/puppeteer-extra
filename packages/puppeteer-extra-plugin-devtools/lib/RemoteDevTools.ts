@@ -1,30 +1,47 @@
 'use strict'
 
-const debug = require('debug')('remote-devtools')
-const ow = require('ow')
+import Debug from 'debug'
+import ow from 'ow'
 
-const got = require('got')
-const http = require('http')
-const httpProxy = require('http-proxy')
-const localtunnel = require('localtunnel')
+import got from 'got'
+import http from 'http'
+import httpProxy from 'http-proxy'
+import localtunnel from 'localtunnel'
 
-const httpAuth = require('http-auth')
+import httpAuth, { basic } from 'http-auth'
+import getPort from 'get-port'
+import randomstring from 'randomstring'
+import urlParse from 'url-parse'
+
 const modifyResponse = require('http-proxy-response-rewrite')
-const getPort = require('get-port')
-const randomstring = require('randomstring')
-const urlParse = require('url-parse')
+
+const debug = Debug('remote-devtools')
+type Basic = ReturnType<typeof basic>
+
+
+export interface DevToolsTunnelOptions {
+  prefix: string;
+  subdomain: string | null;
+  auth: { user: string | null, pass: string | null };
+  localtunnel: any;
+}
 
 /**
  * Base class handling common stuff
  *
  * @ignore
  */
-class DevToolsCommon {
-  constructor(webSocketDebuggerUrl, opts = {}) {
+export class DevToolsCommon {
+  public opts: DevToolsTunnelOptions
+  public wsUrl: string
+  public wsHost: string
+  public wsPort: string
+
+  constructor(webSocketDebuggerUrl: string, opts: Partial<DevToolsTunnelOptions> = {}) {
     ow(webSocketDebuggerUrl, ow.string)
     ow(webSocketDebuggerUrl, ow.string.includes('ws://'))
     ow(opts, ow.object.plain)
-    this.opts = opts
+    this.opts = opts as DevToolsTunnelOptions
 
     this.wsUrl = webSocketDebuggerUrl
     const wsUrlParts = urlParse(this.wsUrl)
@@ -33,7 +50,7 @@ class DevToolsCommon {
     this.wsPort = wsUrlParts.port
   }
 
-  async fetchVersion() {
+  async fetchVersion(): Promise<any> {
     const { body } = await got(
       `http://${this.wsHost}:${this.wsPort}/json/version`,
       {
@@ -43,7 +60,7 @@ class DevToolsCommon {
     return body
   }
 
-  async fetchList() {
+  async fetchList(): Promise<any> {
     const { body } = await got(
       `http://${this.wsHost}:${this.wsPort}/json/list`,
       { json: true }
@@ -57,18 +74,25 @@ class DevToolsCommon {
  *
  * @ignore
  */
-class DevToolsLocal extends DevToolsCommon {
-  constructor(webSocketDebuggerUrl, opts = {}) {
+export class DevToolsLocal extends DevToolsCommon {
+  constructor(webSocketDebuggerUrl: string, opts = {}) {
     super(webSocketDebuggerUrl, opts)
   }
 
-  get url() {
+  get url(): string {
     return `http://${this.wsHost}:${this.wsPort}`
   }
 
-  getUrlForPageId(pageId) {
+  getUrlForPageId(pageId: string) {
     return `${this.url}/devtools/inspector.html?ws=${this.wsHost}:${this.wsPort}/devtools/page/${pageId}`
   }
+}
+
+export interface DevToolsTunnelOptions {
+  prefix: string;
+  subdomain: string | null;
+  auth: { user: string | null, pass: string | null };
+  localtunnel: any;
 }
 
 /**
@@ -85,8 +109,13 @@ class DevToolsLocal extends DevToolsCommon {
  *
  * @ignore
  */
-class DevToolsTunnel extends DevToolsCommon {
-  constructor(webSocketDebuggerUrl, opts = {}) {
+export class DevToolsTunnel extends DevToolsCommon {
+  server: any;
+  tunnel: any;
+  tunnelHost: any;
+  proxyServer: any;
+
+  constructor(webSocketDebuggerUrl: string, opts = {} as Partial<DevToolsTunnelOptions>) {
     super(webSocketDebuggerUrl, opts)
 
     this.server = null
@@ -96,7 +125,7 @@ class DevToolsTunnel extends DevToolsCommon {
     this.opts = Object.assign(this.defaults, opts)
   }
 
-  get defaults() {
+  get defaults(): DevToolsTunnelOptions {
     return {
       prefix: 'devtools-tunnel',
       subdomain: null,
@@ -105,19 +134,19 @@ class DevToolsTunnel extends DevToolsCommon {
     }
   }
 
-  get url() {
+  get url(): string {
     return this.tunnel.url
   }
 
-  getUrlForPageId(pageId) {
+  getUrlForPageId(pageId: string) {
     return `https://${this.tunnelHost}/devtools/inspector.html?wss=${this.tunnelHost}/devtools/page/${pageId}`
   }
 
-  async create() {
+  async create(): Promise<this> {
     const subdomain =
       this.opts.subdomain || this._generateSubdomain(this.opts.prefix)
     const basicAuth = this.opts.auth.user
-      ? this._createBasicAuth(this.opts.auth.user, this.opts.auth.pass)
+      ? this._createBasicAuth(this.opts.auth.user, this.opts.auth.pass || '')
       : null
     const serverPort = await getPort() // only preference, will return an available one
 
@@ -143,7 +172,7 @@ class DevToolsTunnel extends DevToolsCommon {
     return this
   }
 
-  close() {
+  close(): this {
     this.tunnel.close()
     this.server.close()
     this.proxyServer.close()
@@ -151,7 +180,7 @@ class DevToolsTunnel extends DevToolsCommon {
     return this
   }
 
-  _generateSubdomain(prefix) {
+  _generateSubdomain(prefix: string): string {
     const rand = randomstring.generate({
       length: 10,
       readable: true,
@@ -160,16 +189,16 @@ class DevToolsTunnel extends DevToolsCommon {
     return `${prefix}-${rand}`
   }
 
-  _createBasicAuth(user, pass) {
+  _createBasicAuth(user: string, pass: string): Basic {
     const basicAuth = httpAuth.basic({}, (username, password, callback) => {
       const isValid = username === user && password === pass
       return callback(isValid)
     })
-    basicAuth.on('fail', (result, req) => {
+    basicAuth.on('fail', (result) => {
       debug(`User authentication failed: ${result.user}`)
     })
-    basicAuth.on('error', (error, req) => {
-      debug(`Authentication error: ${error.code + ' - ' + error.message}`)
+    basicAuth.on('error', (error) => {
+      debug(`Authentication error: ${(error as any).code + ' - ' + error.message}`)
     })
     return basicAuth
   }
@@ -183,7 +212,7 @@ class DevToolsTunnel extends DevToolsCommon {
    *
    * @ignore
    */
-  _modifyFetchToIncludeCredentials(body) {
+  _modifyFetchToIncludeCredentials(body: string) {
     if (!body) {
       return
     }
@@ -200,7 +229,7 @@ class DevToolsTunnel extends DevToolsCommon {
     return body
   }
 
-  _modifyJSONResponse(body) {
+  _modifyJSONResponse(body: string) {
     if (!body) {
       return
     }
@@ -211,9 +240,10 @@ class DevToolsTunnel extends DevToolsCommon {
     debug('list body:after', body)
     return body
   }
-  _createProxyServer(targetHost = 'localhost', targetPort) {
+
+  _createProxyServer(targetHost = 'localhost', targetPort: string) {
     // eslint-disable-next-line
-    const proxyServer = new httpProxy.createProxyServer({
+    const proxyServer = httpProxy.createProxyServer({
       // eslint-disable-line
       target: { host: targetHost, port: parseInt(targetPort) }
     })
@@ -222,7 +252,7 @@ class DevToolsTunnel extends DevToolsCommon {
       // https://github.com/GoogleChrome/puppeteer/issues/2242
       proxyReq.setHeader('Host', 'localhost')
     })
-    proxyServer.on('proxyRes', (proxyRes, req, res, options) => {
+    proxyServer.on('proxyRes', (proxyRes, req, res) => {
       debug('proxyRes', req.url)
       if (req.url === '/') {
         delete proxyRes.headers['content-length']
@@ -232,7 +262,7 @@ class DevToolsTunnel extends DevToolsCommon {
           this._modifyFetchToIncludeCredentials.bind(this)
         )
       }
-      if (['/json/list', '/json/version'].includes(req.url)) {
+      if (['/json/list', '/json/version'].includes(req.url as string)) {
         delete proxyRes.headers['content-length']
         modifyResponse(
           res,
@@ -244,7 +274,7 @@ class DevToolsTunnel extends DevToolsCommon {
     return proxyServer
   }
 
-  async _createServer(port, auth = null) {
+  async _createServer(port: string | number, auth: any = null) {
     const server = http.createServer(auth, (req, res) => {
       this.proxyServer.web(req, res)
     })
@@ -256,7 +286,7 @@ class DevToolsTunnel extends DevToolsCommon {
     return server
   }
 
-  async _createTunnel(options) {
+  async _createTunnel(options: number | localtunnel.TunnelConfig & { port: number }) {
     const tunnel = await localtunnel(options)
 
     tunnel.on('close', () => {
@@ -272,5 +302,3 @@ class DevToolsTunnel extends DevToolsCommon {
     return tunnel
   }
 }
-
-module.exports = { DevToolsCommon, DevToolsLocal, DevToolsTunnel }
