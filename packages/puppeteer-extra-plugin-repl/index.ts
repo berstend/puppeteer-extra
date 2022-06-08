@@ -1,7 +1,22 @@
 'use strict'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
-const REPLSession = require('./lib/REPLSession')
+import { PluginRequirements, PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
+import REPLSession from './lib/REPLSession'
+
+export interface PluginOptions { addToPuppeteerClass: boolean }
+// import { EventEmitter } from 'events';
+
+import 'puppeteer';
+
+declare module 'puppeteer' {
+  export interface Page extends EventEmitter/*, FrameBase */ {
+      repl(): Promise<void>;
+  }
+
+  export interface Browser extends EventEmitter/*, TargetAwaiter */ {
+      repl(): Promise<void>;
+  }
+}
 
 /**
  * Interrupt your puppeteer code with an interactive REPL.
@@ -35,16 +50,16 @@ const REPLSession = require('./lib/REPLSession')
  *   await browser.close()
  * })
  */
-class Plugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }
 
-  get name() {
+  get name(): 'repl' {
     return 'repl'
   }
 
-  get defaults() {
+  get defaults(): PluginOptions {
     return { addToPuppeteerClass: true }
   }
 
@@ -53,7 +68,7 @@ class Plugin extends PuppeteerExtraPlugin {
    *
    * @ignore
    */
-  get requirements() {
+  get requirements(): PluginRequirements {
     return new Set(['runLast'])
   }
 
@@ -75,7 +90,7 @@ class Plugin extends PuppeteerExtraPlugin {
    * const repl = require('puppeteer-extra-plugin-repl')()
    * await repl.repl(<object or class instance to inspect>)
    */
-  async repl(obj) {
+  async repl(obj: any) {
     return new REPLSession({ obj }).start()
   }
 
@@ -84,18 +99,14 @@ class Plugin extends PuppeteerExtraPlugin {
    *
    * @ignore
    */
-  async onPageCreated(page) {
+   async onPageCreated(page: PuppeteerPage): Promise<void> {
     if (!this.opts.addToPuppeteerClass) {
       return
     }
-    page.repl = () => this.repl(page)
+    (page as any).repl = () => this.repl(page)
     const browser = page.browser()
-    browser.repl = () => this.repl(browser)
+    ;(browser as any).repl = () => this.repl(browser)
   }
 }
 
-module.exports = {
-  default: function(pluginConfig) {
-    return new Plugin(pluginConfig)
-  }
-}
+export default (pluginConfig?: Partial<PluginOptions>) =>new Plugin(pluginConfig)

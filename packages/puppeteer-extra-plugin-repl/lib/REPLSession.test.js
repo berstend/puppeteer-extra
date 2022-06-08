@@ -2,7 +2,7 @@
 
 const test = require('ava')
 
-const REPLSession = require('./REPLSession')
+const { default: REPLSession } = require('./REPLSession')
 
 test('is a function', async t => {
   t.is(typeof REPLSession, 'function')

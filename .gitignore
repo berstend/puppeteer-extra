@@ -91,3 +91,11 @@ packages/puppeteer-extra-plugin-font-size/index.js.map
 packages/puppeteer-extra-plugin-flash/index.js.map
 packages/puppeteer-extra-plugin-flash/index.js
 packages/puppeteer-extra-plugin-flash/index.d.ts
+packages/puppeteer-extra-plugin-repl/index.js
+packages/puppeteer-extra-plugin-repl/index.js.map
+packages/puppeteer-extra-plugin-repl/lib/REPLSession.d.ts
+packages/puppeteer-extra-plugin-repl/lib/REPLSession.js
+packages/puppeteer-extra-plugin-repl/lib/REPLSession.js.map
+packages/puppeteer-extra-plugin-repl/lib/super-readline.d.ts
+packages/puppeteer-extra-plugin-repl/lib/super-readline.js
+packages/puppeteer-extra-plugin-repl/lib/super-readline.js.map

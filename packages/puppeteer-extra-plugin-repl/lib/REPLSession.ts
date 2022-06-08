@@ -1,8 +1,19 @@
-const ow = require('ow')
-const readline = require('./super-readline')
+import ow from 'ow'
+import * as readline from './super-readline'
+import chalk from 'chalk'
 
-class REPLSession {
-  constructor(opts) {
+export default class REPLSession {
+  private _obj: any;
+  private _meta: {
+    type: string;
+    name: string;
+    members: string[];
+  }
+  private _rl!: readline.SuperInterface;
+  private _completions: string[];
+  private _closePromise?: Promise<void>;
+
+  constructor(opts: any) {
     ow(opts, ow.object.hasKeys('obj'))
     ow(opts.obj, ow.object.hasKeys('constructor'))
 
@@ -13,29 +24,29 @@ class REPLSession {
       members:
         Object.getOwnPropertyNames(Object.getPrototypeOf(this._obj)) || []
     }
-    this._completions = [].concat(this.extraMethods, this._meta.members)
+    this._completions = [...this.extraMethods, ...this._meta.members]
   }
 
-  get extraMethods() {
+  get extraMethods(): string[] {
     return ['inspect', 'exit']
   }
 
-  async start() {
+  async start(): Promise<void> {
     this._createInterface()
     this._showIntro()
     this._rl.prompt()
     return this._closePromise
   }
 
-  _createInterface() {
+  _createInterface(): void {
     this._rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
       prompt: this._meta.name ? `> ${this._meta.name.toLowerCase()}.` : `> `,
       completer: readline.defaultCompleter(this._completions),
       colors: {
-        prompt: readline.chalk.cyan,
-        completer: readline.chalk.yellow
+        prompt: chalk.cyan,
+        completer: chalk.yellow
       }
     })
     this._rl.on('line', this._onLineInput.bind(this))
@@ -44,7 +55,7 @@ class REPLSession {
     )
   }
 
-  _showIntro() {
+  _showIntro(): void {
     console.log(`
       Started puppeteer-extra repl for ${this._meta.type} '${this._meta.name}' with ${this._meta.members.length} properties.
 
@@ -56,7 +67,7 @@ class REPLSession {
     this._rl.showTabCompletions()
   }
 
-  async _onLineInput(line) {
+  async _onLineInput(line: string): Promise<void> {
     if (!line) {
       return this._rl.prompt()
     }
@@ -69,7 +80,7 @@ class REPLSession {
     this._rl.prompt()
   }
 
-  async _evalAsync(cmd) {
+  async _evalAsync(cmd: string): Promise<void> {
     try {
       // eslint-disable-next-line no-eval
       const out = await eval(cmd)
@@ -79,5 +90,3 @@ class REPLSession {
     }
   }
 }
-
-module.exports = REPLSession
