@@ -1,8 +1,11 @@
 'use strict'
 
-const merge = require('deepmerge')
+import merge from 'deepmerge'
+import { PluginData, PluginDependencies, PluginRequirements, PuppeteerExtraPlugin, PuppeteerLaunchOption } from 'puppeteer-extra-plugin'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+export interface PluginOptions {
+  userPrefs: any;
+}
 
 /**
  * Launch puppeteer with arbitrary user preferences.
@@ -27,31 +30,32 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * }}))
  * const browser = await puppeteer.launch()
  */
-class Plugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+  private _userPrefsFromPlugins: any = {};
+
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
-    this._userPrefsFromPlugins = {}
-
-    const defaults = {
-      userPrefs: {}
-    }
-
-    this._opts = Object.assign(defaults, opts)
   }
 
-  get name() {
+  get defaults(): PluginOptions {
+    return {
+      userPrefs: {}
+    };
+  }
+
+  get name(): 'user-preferences' {
     return 'user-preferences'
   }
 
-  get requirements() {
+  get requirements(): PluginRequirements {
     return new Set(['runLast', 'dataFromPlugins'])
   }
 
-  get dependencies() {
+  get dependencies(): PluginDependencies {
     return new Set(['user-data-dir'])
   }
 
-  get data() {
+  get data(): PluginData[] {
     return [
       {
         name: 'userDataDirFile',
@@ -64,11 +68,11 @@ class Plugin extends PuppeteerExtraPlugin {
     ]
   }
 
-  get combinedPrefs() {
-    return merge(this._opts.userPrefs, this._userPrefsFromPlugins)
+  get combinedPrefs(): any {
+    return merge(this.opts.userPrefs, this._userPrefsFromPlugins)
   }
 
-  async beforeLaunch(options) {
+  async beforeLaunch(options: PuppeteerLaunchOption = {}): Promise<void | PuppeteerLaunchOption> {
     this._userPrefsFromPlugins = merge.all(
       this.getDataFromPlugins('userPreferences').map(d => d.value)
     )
@@ -76,8 +80,4 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = {
-  default: function(pluginConfig) {
-    return new Plugin(pluginConfig)
-  }
-}
+export default (pluginConfig?: Partial<PluginOptions>) => new Plugin(pluginConfig)

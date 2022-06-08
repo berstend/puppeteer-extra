@@ -82,3 +82,6 @@ packages/puppeteer-extra-plugin-block-resources/index.js.map
 packages/puppeteer-extra-plugin-user-data-dir/index.d.ts
 packages/puppeteer-extra-plugin-user-data-dir/index.js
 packages/puppeteer-extra-plugin-user-data-dir/index.js.map
+packages/puppeteer-extra-plugin-user-preferences/index.d.ts
+packages/puppeteer-extra-plugin-user-preferences/index.js
+packages/puppeteer-extra-plugin-user-preferences/index.js.map
