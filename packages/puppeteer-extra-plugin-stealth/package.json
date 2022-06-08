@@ -57,7 +57,7 @@
     "@types/chrome": "^0.0.188",
     "@types/node": "^17.0.40",
     "@types/offscreencanvas": "^2019.7.0",
-    "ava": "^4.3.0",
+    "ava": "2.4.0",
     "documentation-markdown-themes": "^12.1.5",
     "fpcollect": "^1.0.4",
     "fpscanner": "^0.1.5",
