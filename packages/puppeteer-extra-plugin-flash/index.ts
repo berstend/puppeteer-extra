@@ -61,7 +61,7 @@ export interface PluginOptions {
     if (this.opts.allowFlash === false) {
       return
     }
-
+    options.args = options.args || [];
     if (this.opts.pluginPath) {
       options.args.push(`--ppapi-flash-path=${this.opts.pluginPath}`)
     }
