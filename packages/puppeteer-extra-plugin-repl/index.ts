@@ -7,17 +7,17 @@ export interface PluginOptions { addToPuppeteerClass: boolean }
 // @ts-ignore
 import { type EventEmitter } from 'events';
 
-import 'puppeteer';
+// import 'puppeteer';
 
-declare module 'puppeteer' {
-  export interface Page extends EventEmitter/*, FrameBase */ {
-      repl(): Promise<void>;
-  }
-
-  export interface Browser extends EventEmitter/*, TargetAwaiter */ {
-      repl(): Promise<void>;
-  }
-}
+// declare module 'puppeteer' {
+//   export interface Page extends EventEmitter/*, FrameBase */ {
+//       repl(): Promise<void>;
+//   }
+// 
+//   export interface Browser extends EventEmitter/*, TargetAwaiter */ {
+//       repl(): Promise<void>;
+//   }
+// }
 
 /**
  * Interrupt your puppeteer code with an interactive REPL.
