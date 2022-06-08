@@ -22,6 +22,15 @@
     "test:js": "ava --fast-fail",
     "test": "run-p test:js lint:ts",
     "test-ci": "run-s test:js",
+    "stealthtests:headful-chrome-stealth": "ts-node ./stealthtests/headful-chrome-stealth.ts",
+    "stealthtests:headful-chrome-vanilla": "ts-node ./stealthtests/headful-chrome-vanilla.ts",
+    "stealthtests:headful-chromium-stealth": "ts-node ./stealthtests/headful-chromium-stealth.ts",
+    "stealthtests:headful-chromium-vanilla": "ts-node ./stealthtests/headful-chromium-vanilla.ts",
+    "stealthtests:headless-chrome-stealth": "ts-node ./stealthtests/headless-chrome-stealth.ts",
+    "stealthtests:headless-chrome-vanilla": "ts-node ./stealthtests/headless-chrome-vanilla.ts",
+    "stealthtests:headless-chromium-stealth": "ts-node ./stealthtests/headless-chromium-stealth.ts",
+    "stealthtests:headless-chromium-vanilla": "ts-node ./stealthtests/headless-chromium-vanilla.ts",
+    "stealthtests": " run-s \"stealthtests:*\"",
     "types": "npx --package typescript@3.7 tsc --emitDeclarationOnly --declaration --allowJs index.js"
   },
   "engines": {
