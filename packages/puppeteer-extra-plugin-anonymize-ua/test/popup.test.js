@@ -1,6 +1,8 @@
-'use strict'
-
 const test = require('ava')
+
+// import test from 'ava';
+// import { type Plugin, type PluginOptions } from '..';
+// import type Puppeteer from 'puppeteer-extra';
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 

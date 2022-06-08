@@ -1,6 +1,8 @@
-'use strict'
-
 const test = require('ava')
+
+// import test from 'ava';
+// import { Plugin, PluginOptions } from '..';
+// import Puppeteer from 'puppeteer-extra';
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
@@ -11,14 +13,16 @@ test.beforeEach(t => {
 })
 
 test('will not modify the user-agent when disabled', async t => {
+  // : typeof Puppeteer
   const puppeteer = require('puppeteer-extra')
-  const AnonymizeUA = require('puppeteer-extra-plugin-anonymize-ua').default({
+  // : PluginOptions
+  const opts = {
     stripHeadless: false,
     makeWindows: false,
     customFn: null
-  })
-  puppeteer.use(AnonymizeUA)
-
+  }
+  // : Plugin
+  require('puppeteer-extra-plugin-anonymize-ua').default(opts)
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
   const page = await browser.newPage()
   await page.goto('https://httpbin.org/headers', {

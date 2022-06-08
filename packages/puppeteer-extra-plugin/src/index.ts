@@ -67,7 +67,7 @@ export type PuppeteerConnectOptions = Puppeteer.ConnectOptions;
  * }
  *
  * module.exports = {
- *  default: function (pluginConfig) { return new Plugin(pluginConfig) }
+ *  default: (pluginConfig) => return new Plugin(pluginConfig)
  * }
  *
  *

@@ -1,18 +1,22 @@
-'use strict'
+const test = require('ava')
+// import test from 'ava';
+// import { Plugin, default as getPlugin } from '..'
+const { Plugin, default: getPlugin } = require('..')
 
 const PLUGIN_NAME = 'anonymize-ua'
-
-const test = require('ava')
-
-const { default: Plugin } = require('.')
 
 test('is a function', async t => {
   t.is(typeof Plugin, 'function')
 })
 
+test('default export should be a getInstance() function', async t => {
+  const instance = getPlugin()
+  t.is(instance.name, PLUGIN_NAME)
+  t.true(instance._isPuppeteerExtraPlugin)
+})
+
 test('should have the basic class members', async t => {
   const instance = new Plugin()
-
   t.is(instance.name, PLUGIN_NAME)
   t.true(instance._isPuppeteerExtraPlugin)
 })
