@@ -88,3 +88,6 @@ packages/puppeteer-extra-plugin-user-preferences/index.js.map
 packages/puppeteer-extra-plugin-font-size/index.d.ts
 packages/puppeteer-extra-plugin-font-size/index.js
 packages/puppeteer-extra-plugin-font-size/index.js.map
+packages/puppeteer-extra-plugin-flash/index.js.map
+packages/puppeteer-extra-plugin-flash/index.js
+packages/puppeteer-extra-plugin-flash/index.d.ts

@@ -1,5 +1,3 @@
-'use strict'
-
 import util from 'util'
 import fs from 'fs'
 import fse from 'fs-extra'

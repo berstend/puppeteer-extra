@@ -27,5 +27,9 @@
         "packages/puppeteer-extra-plugin-stealth/index.d.ts": true,
         "packages/puppeteer-extra-plugin-stealth/index.js": true,
         "packages/puppeteer-extra-plugin-stealth/index.js.map": true,
+        "packages/puppeteer-extra-plugin-flash/index.js.map": true,
+        "packages/puppeteer-extra-plugin-flash/index.js": true,
+        "packages/puppeteer-extra-plugin-flash/index.d.ts": true,
+        
     }
 }

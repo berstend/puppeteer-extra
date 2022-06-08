@@ -1,6 +1,10 @@
-'use strict'
+import { PuppeteerExtraPlugin, PluginRequirements, PuppeteerLaunchOption, PluginDependencies, PluginData } from 'puppeteer-extra-plugin'
 
-const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
+export interface PluginOptions {
+  allowFlash: boolean;
+  pluginPath: string | null;
+  pluginVersion: number;
+}
 
 /**
  * Allow flash on all sites without user interaction.
@@ -28,16 +32,16 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  *   await page.goto('http://ultrasounds.com', {waitUntil: 'domcontentloaded'})
  * })()
  */
-class Plugin extends PuppeteerExtraPlugin {
-  constructor(opts = {}) {
+ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+  constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }
 
-  get name() {
+  get name(): 'flash' {
     return 'flash'
   }
 
-  get defaults() {
+  get defaults(): PluginOptions {
     return {
       allowFlash: true,
       pluginPath: null,
@@ -45,15 +49,15 @@ class Plugin extends PuppeteerExtraPlugin {
     }
   }
 
-  get requirements() {
+  get requirements(): PluginRequirements {
     return new Set(['launch', 'headful'])
   }
 
-  get dependencies() {
+  get dependencies(): PluginDependencies {
     return new Set(['user-preferences'])
   }
 
-  async beforeLaunch(options) {
+  async beforeLaunch(options: PuppeteerLaunchOption = {}): Promise<void | PuppeteerLaunchOption> {
     if (this.opts.allowFlash === false) {
       return
     }
@@ -66,9 +70,9 @@ class Plugin extends PuppeteerExtraPlugin {
     }
   }
 
-  get data() {
+  get data(): PluginData[] {
     if (this.opts.allowFlash === false) {
-      return
+      return []
     }
     const allowFlashPreferences = {
       profile: {
@@ -87,8 +91,4 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = {
-  default: function(pluginConfig) {
-    return new Plugin(pluginConfig)
-  }
-}
+export default (pluginConfig?: Partial<PluginOptions>) =>new Plugin(pluginConfig)
