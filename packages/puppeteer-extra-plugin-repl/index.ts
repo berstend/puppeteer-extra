@@ -4,7 +4,8 @@ import { PluginRequirements, PuppeteerExtraPlugin, PuppeteerPage } from 'puppete
 import REPLSession from './lib/REPLSession'
 
 export interface PluginOptions { addToPuppeteerClass: boolean }
-// import { EventEmitter } from 'events';
+// @ts-ignore
+import { type EventEmitter } from 'events';
 
 import 'puppeteer';
 
