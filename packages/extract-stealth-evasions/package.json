@@ -14,7 +14,9 @@
     "node": ">=8"
   },
   "scripts": {
-    "build": "echo no build for extract-stealth-evasions"
+    "clean": "rimraf index.{js,d.ts,js.map}",
+    "prebuild": "run-s clean",
+    "build": "tsc --module commonjs"
   },
   "keywords": [
     "puppeteer",
@@ -32,6 +34,8 @@
     "yargs": "^15.4.1"
   },
   "devDependencies": {
+    "@types/node": "^17.0.41",
+    "@types/yargs": "^17.0.10",
     "puppeteer": "^14.3.0",
     "rimraf": "^3.0.2",
     "ts-node": "^10.8.1",

@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 
-const puppeteer = require('puppeteer-extra').default
-const stealth = require('puppeteer-extra-plugin-stealth').default()
-const { minify } = require('terser')
+import puppeteer from 'puppeteer-extra'
+import Stealth, { KnownEvasions } from 'puppeteer-extra-plugin-stealth'
+import { minify } from 'terser'
+import fs from 'fs'
+
 const argv = require('yargs')
   .usage('Usage: $0 [options]')
   .alias('e', 'exclude')
@@ -17,25 +19,24 @@ const argv = require('yargs')
   .default('m', true)
   .help('h')
   .alias('h', 'help').argv
-const fs = require('fs')
 
 const file = 'stealth' + (argv.minify === true ? '.min' : '') + '.js'
-
+const stealth = Stealth();
 if (argv.exclude) {
   if (typeof argv.exclude === 'string') {
     stealth.enabledEvasions.delete(argv.exclude)
   } else {
-    argv.exclude.forEach(e => {
-      stealth.enabledEvasions.delete(e)
+    argv.exclude.forEach((e: string) => {
+      stealth.enabledEvasions.delete(e as KnownEvasions)
     })
   }
 } else if (argv.include) {
   if (typeof argv.include === 'string') {
-    stealth.enabledEvasions = [argv.include]
+    stealth.enabledEvasions = new Set<KnownEvasions>([argv.include] as KnownEvasions[])
   } else {
-    stealth.enabledEvasions = []
-    argv.include.forEach(e => {
-      stealth.enabledEvasions.push(e)
+    stealth.enabledEvasions = new Set<KnownEvasions>([])
+    argv.include.forEach((e: string) => {
+      stealth.enabledEvasions.add(e as KnownEvasions)
     })
   }
 } else if (argv.list) {
@@ -53,8 +54,8 @@ puppeteer
   .then(async browser => {
     // Patch evaluateOnNewDocument()
     const page = (await browser.pages()).find(Boolean)
-    page.__proto__.evaluateOnNewDocument = patchEval // eslint-disable-line no-proto
-    page.__proto__.evaluate = patchEval // eslint-disable-line no-proto
+    ;(page as any).__proto__.evaluateOnNewDocument = patchEval // eslint-disable-line no-proto
+    ;(page as any).__proto__.evaluate = patchEval // eslint-disable-line no-proto
 
     await (await browser.newPage()).goto('about:blank')
     await browser.close()
@@ -71,7 +72,7 @@ puppeteer
         (argv.minify === true
           ? (await minify(scripts, { toplevel: true })).code
           : scripts),
-      err => {
+      (err: Error | null) => {
         if (err) throw err
         console.log(`File ${file} written!`)
         console.log(
@@ -82,7 +83,7 @@ puppeteer
     )
   })
 
-function patchEval(f, args) {
+function patchEval(f: Function, args: any[]) {
   // Check if there are options supplied
   if (typeof args !== 'undefined') {
     scripts += '(' + f.toString() + ')(' + JSON.stringify(args) + ');\n'
