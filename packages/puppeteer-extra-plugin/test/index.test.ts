@@ -26,7 +26,7 @@ test('should have the basic class members', async t => {
 
   t.is(instance.name, pluginName)
   t.true(instance.requirements instanceof Set)
-  t.true(instance.dependencies instanceof Set)
+  t.true(instance.dependencies instanceof Array)
   t.true(instance.data instanceof Array)
   t.true(instance.defaults instanceof Object)
   t.is(instance.data.length, 0)

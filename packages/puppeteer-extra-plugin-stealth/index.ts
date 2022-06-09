@@ -23,19 +23,19 @@ export const allAvailableEvasions = [
 
 export type KnownEvasions = typeof allAvailableEvasions[number];
 
-import { type PluginOptions as chromeAppOpt } from './evasions/chrome.app/'
-import { type PluginOptions as chromeCsiOpt } from './evasions/chrome.csi/'
-import { type PluginOptions as chromeLoadTimesOpt } from './evasions/chrome.loadTimes/'
+// import { type PluginOptions as chromeAppOpt } from './evasions/chrome.app/'
+// import { type PluginOptions as chromeCsiOpt } from './evasions/chrome.csi/'
+// import { type PluginOptions as chromeLoadTimesOpt } from './evasions/chrome.loadTimes/'
 import { type PluginOptions as chromeRuntimepOpt } from './evasions/chrome.runtime/'
-import { type PluginOptions as defaultArgsOpt } from './evasions/defaultArgs/'
-import { type PluginOptions as iframeContentWindowOpt } from './evasions/iframe.contentWindow/'
-import { type PluginOptions as mediaCodecsOpt } from './evasions/media.codecs/'
+// import { type PluginOptions as defaultArgsOpt } from './evasions/defaultArgs/'
+// import { type PluginOptions as iframeContentWindowOpt } from './evasions/iframe.contentWindow/'
+// import { type PluginOptions as mediaCodecsOpt } from './evasions/media.codecs/'
 import { type PluginOptions as navigatorHardwareConcurrencyOpt } from './evasions/navigator.hardwareConcurrency/'
 import { type PluginOptions as navigatorLanguagesOpt } from './evasions/navigator.languages/'
-import { type PluginOptions as navigatorPermissionsOpt } from './evasions/navigator.permissions/'
+// import { type PluginOptions as navigatorPermissionsOpt } from './evasions/navigator.permissions/'
 import { type PluginOptions as navigatorPluginsOpt } from './evasions/navigator.plugins/'
-import { type PluginOptions as navigatorWebdriverOpt } from './evasions/navigator.webdriver/'
-import { type PluginOptions as sourceurlOpt } from './evasions/sourceurl/'
+// import { type PluginOptions as navigatorWebdriverOpt } from './evasions/navigator.webdriver/'
+// import { type PluginOptions as sourceurlOpt } from './evasions/sourceurl/'
 import { type PluginOptions as userAgentOverrideOpt } from './evasions/user-agent-override/'
 import { type PluginOptions as webglVendorOpt } from './evasions/webgl.vendor/'
 import { type PluginOptions as windowOuterdimensionsOpt } from './evasions/window.outerdimensions/'
@@ -47,19 +47,19 @@ export interface PluginOptions {
   availableEvasions: Set<KnownEvasions>;
   enabledEvasions: Set<KnownEvasions>;
   evasionsOptions: {
-    'chrome.app'?: chromeAppOpt;
-    'chrome.csi'?: chromeCsiOpt;
-    'chrome.loadTimes'?: chromeLoadTimesOpt;
+    // 'chrome.app'?: chromeAppOpt; // empty
+    // 'chrome.csi'?: chromeCsiOpt; // empty
+    // 'chrome.loadTimes'?: chromeLoadTimesOpt; // emty
     'chrome.runtime'?: chromeRuntimepOpt;
-    'defaultArgs'?: defaultArgsOpt;
-    'iframe.contentWindow'?: iframeContentWindowOpt;
-    'media.codecs'?: mediaCodecsOpt;
+    // 'defaultArgs'?: defaultArgsOpt; // empty
+    // 'iframe.contentWindow'?: iframeContentWindowOpt; // empty
+    // 'media.codecs'?: mediaCodecsOpt; // empty
     'navigator.hardwareConcurrency'?: navigatorHardwareConcurrencyOpt;
     'navigator.languages'?: navigatorLanguagesOpt;
-    'navigator.permissions'?: navigatorPermissionsOpt;
-    'navigator.plugins'?: navigatorPluginsOpt;
-    'navigator.webdriver'?: navigatorWebdriverOpt;
-    'sourceurl'?: sourceurlOpt;
+    // 'navigator.permissions'?: navigatorPermissionsOpt; // empty
+    'navigator.plugins'?: navigatorPluginsOpt; // to extands
+    // 'navigator.webdriver'?: navigatorWebdriverOpt; // empty
+    // 'sourceurl'?: sourceurlOpt; // empty
     'user-agent-override'?: userAgentOverrideOpt;
     'webgl.vendor'?: webglVendorOpt;
     'window.outerdimensions'?: windowOuterdimensionsOpt;
