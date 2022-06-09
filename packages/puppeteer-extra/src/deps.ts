@@ -24,7 +24,7 @@ export interface BrowserEventOptions {
 }
 
 export type PluginRequirements = Set<'launch' | 'headful' | 'dataFromPlugins' | 'runLast'>
-export type PluginDependencies = Set<string>
+export type PluginDependencies = string[]
 export interface PluginData {
     name: string,
     value: {
@@ -43,7 +43,9 @@ export interface PuppeteerExtraPlugin {
     get dependencies(): PluginDependencies;
     get data(): PluginData[];
     get opts(): any;
-    _getMissingDependencies(plugins: PuppeteerExtraPlugin[]): Set<string>;
+    get dependenciesOptions(): {[key: string]: any};
+    // drop overcomplicated function
+    // _getMissingDependencies(plugins: PuppeteerExtraPlugin[]): Set<string>;
     getDataFromPlugins(name?: string): PluginData[];
     _isPuppeteerExtraPlugin: boolean;
     [propName: string]: any;

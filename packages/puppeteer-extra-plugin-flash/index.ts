@@ -54,7 +54,7 @@ export interface PluginOptions {
   }
 
   get dependencies(): PluginDependencies {
-    return new Set(['user-preferences'])
+    return ['user-preferences']
   }
 
   async beforeLaunch(options: PuppeteerLaunchOption = {}): Promise<void | PuppeteerLaunchOption> {

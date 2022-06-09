@@ -23,13 +23,49 @@ export const allAvailableEvasions = [
 
 export type KnownEvasions = typeof allAvailableEvasions[number];
 
+import { type PluginOptions as chromeAppOpt } from './evasions/chrome.app/'
+import { type PluginOptions as chromeCsiOpt } from './evasions/chrome.csi/'
+import { type PluginOptions as chromeLoadTimesOpt } from './evasions/chrome.loadTimes/'
+import { type PluginOptions as chromeRuntimepOpt } from './evasions/chrome.runtime/'
+import { type PluginOptions as defaultArgsOpt } from './evasions/defaultArgs/'
+import { type PluginOptions as iframeContentWindowOpt } from './evasions/iframe.contentWindow/'
+import { type PluginOptions as mediaCodecsOpt } from './evasions/media.codecs/'
+import { type PluginOptions as navigatorHardwareConcurrencyOpt } from './evasions/navigator.hardwareConcurrency/'
+import { type PluginOptions as navigatorLanguagesOpt } from './evasions/navigator.languages/'
+import { type PluginOptions as navigatorPermissionsOpt } from './evasions/navigator.permissions/'
+import { type PluginOptions as navigatorPluginsOpt } from './evasions/navigator.plugins/'
+import { type PluginOptions as navigatorWebdriverOpt } from './evasions/navigator.webdriver/'
+import { type PluginOptions as sourceurlOpt } from './evasions/sourceurl/'
+import { type PluginOptions as userAgentOverrideOpt } from './evasions/user-agent-override/'
+import { type PluginOptions as webglVendorOpt } from './evasions/webgl.vendor/'
+import { type PluginOptions as windowOuterdimensionsOpt } from './evasions/window.outerdimensions/'
+
 /**
  * Specify which evasions to use (by default all)
  */
 export interface PluginOptions {
   availableEvasions: Set<KnownEvasions>;
   enabledEvasions: Set<KnownEvasions>;
+  evasionsOptions: {
+    'chrome.app'?: chromeAppOpt;
+    'chrome.csi'?: chromeCsiOpt;
+    'chrome.loadTimes'?: chromeLoadTimesOpt;
+    'chrome.runtime'?: chromeRuntimepOpt;
+    'defaultArgs'?: defaultArgsOpt;
+    'iframe.contentWindow'?: iframeContentWindowOpt;
+    'media.codecs'?: mediaCodecsOpt;
+    'navigator.hardwareConcurrency'?: navigatorHardwareConcurrencyOpt;
+    'navigator.languages'?: navigatorLanguagesOpt;
+    'navigator.permissions'?: navigatorPermissionsOpt;
+    'navigator.plugins'?: navigatorPluginsOpt;
+    'navigator.webdriver'?: navigatorWebdriverOpt;
+    'sourceurl'?: sourceurlOpt;
+    'user-agent-override'?: userAgentOverrideOpt;
+    'webgl.vendor'?: webglVendorOpt;
+    'window.outerdimensions'?: windowOuterdimensionsOpt;
+  };
 }
+
 /**
  * Stealth mode: Applies various techniques to make detection of headless puppeteer harder. 💯
  *
@@ -106,12 +142,20 @@ class StealthPlugin extends PuppeteerExtraPlugin<PluginOptions> {
     return 'stealth'
   }
 
+  get dependenciesOptions(): { [key: string]: any } {
+    if (!this.opts.evasionsOptions)
+      return {};
+    const entrys = Object.entries(this.opts.evasionsOptions).map(([key, value]) => [`${this.name}/evasions/${key}`, value]);
+    return Object.fromEntries(entrys)
+  }
+
   get defaults(): PluginOptions {
     const availableEvasions = new Set<KnownEvasions>(allAvailableEvasions)
     return {
       availableEvasions,
       // Enable all available evasions by default
-      enabledEvasions: new Set(availableEvasions)
+      enabledEvasions: new Set(availableEvasions),
+      evasionsOptions: {}
     }
   }
   /**
@@ -119,10 +163,8 @@ class StealthPlugin extends PuppeteerExtraPlugin<PluginOptions> {
    *
    * @private
    */
-  get dependencies(): Set<`stealth/evasions/${KnownEvasions}`> {
-    return new Set<`stealth/evasions/${KnownEvasions}`>(
-      [...this.opts.enabledEvasions].map((e: KnownEvasions) => `${this.name}/evasions/${e}`) as `stealth/evasions/${KnownEvasions}`[]
-    )
+  get dependencies(): `stealth/evasions/${KnownEvasions}`[] {
+    return [...this.opts.enabledEvasions].map((e: KnownEvasions) => `${this.name}/evasions/${e}` as `stealth/evasions/${KnownEvasions}`)
   }
   /**
    * Get all available evasions.

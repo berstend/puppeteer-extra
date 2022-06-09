@@ -57,7 +57,7 @@ export interface PluginOptions {
   }
 
   get dependencies(): PluginDependencies {
-    return new Set(['user-preferences'])
+    return ['user-preferences']
   }
 
   get defaults(): PluginOptions {

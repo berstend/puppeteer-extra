@@ -72,7 +72,6 @@ test('should have the internal class members', async t => {
   }
   const instance = new Plugin()
 
-  t.true(instance._getMissingDependencies instanceof Function)
   t.true(instance._bindBrowserEvents instanceof Function)
   t.true(instance._onTargetCreated instanceof Function)
   t.true(instance._register instanceof Function)

@@ -35,7 +35,7 @@ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   }
 
   get dependencies(): PluginDependencies {
-    return new Set(['user-preferences'])
+    return ['user-preferences']
   }
 
   get data(): PluginData[] {

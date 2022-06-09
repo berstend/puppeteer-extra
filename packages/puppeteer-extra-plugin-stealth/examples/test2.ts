@@ -2,7 +2,11 @@ import puppeteer from 'puppeteer-extra'
 import plugin from 'puppeteer-extra-plugin-stealth';
 
 // Enable stealth plugin
-puppeteer.use(plugin())
+puppeteer.use(plugin({
+  evasionsOptions: {
+    "navigator.languages": { languages : ["es-ES", "es"]},
+    "navigator.hardwareConcurrency": { hardwareConcurrency: 12 },
+ }}));
 
 ;(async () => {
   // Launch the browser in headless mode and set up a page.
@@ -13,9 +17,7 @@ puppeteer.use(plugin())
   const page = await browser.newPage()
 
   // Navigate to the page that will perform the tests.
-  const testUrl =
-    'https://intoli.com/blog/' +
-    'not-possible-to-block-chrome-headless/chrome-headless-test.html'
+  const testUrl = 'https://intoli.com/blog/not-possible-to-block-chrome-headless/chrome-headless-test.html'
   await page.goto(testUrl)
 
   // Save a screenshot of the results.

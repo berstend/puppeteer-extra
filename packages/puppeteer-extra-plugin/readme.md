@@ -204,7 +204,7 @@ Example:
 
 ```javascript
 get dependencies () {
-  return new Set(['user-preferences'])
+  return ['user-preferences']
 }
 // Will ensure the 'puppeteer-extra-plugin-user-preferences' plugin is loaded.
 ```

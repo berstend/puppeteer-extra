@@ -52,7 +52,7 @@ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   }
 
   get dependencies(): PluginDependencies {
-    return new Set(['user-data-dir'])
+    return ['user-data-dir']
   }
 
   get data(): PluginData[] {

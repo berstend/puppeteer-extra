@@ -3,7 +3,9 @@ import plugin from 'puppeteer-extra-plugin-stealth';
 import detectHeadless from './detect-headless'
 
 if (!process.argv.includes('off'))
-  puppeteer.use(plugin())
+  puppeteer.use(plugin({evasionsOptions: {
+    "navigator.languages": { languages: ["fr-FR", "fr", "en"] },
+  }}))
 
 ;(async () => {
   const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
