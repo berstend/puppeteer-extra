@@ -4,7 +4,7 @@
 // This type definition file is only relevant when puppeteer < v6 is being used,
 // if we don't instruct TS to skip checking this file it would cause errors when pptr >= v6 is used (e.g. ChromeArgOptions is missing)
 import {} from 'puppeteer'
-import { Browser, ConnectOptions, ChromeArgOptions, LaunchOptions, FetcherOptions, BrowserFetcher} from "puppeteer"
+import { Browser, ConnectOptions, ChromeArgOptions, LaunchOptions, FetcherOptions, BrowserFetcher } from "puppeteer"
 
 // Make puppeteer-extra typings backwards compatible with puppeteer < v6
 // In pptr >= v6 they switched to built-in types and the `@types/puppeteer` package is not needed anymore.

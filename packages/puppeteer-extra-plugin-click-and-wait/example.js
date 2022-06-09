@@ -1,7 +1,9 @@
 'use strict'
 
 const puppeteer = require('puppeteer-extra')
-puppeteer.use(require('puppeteer-extra-plugin-click-and-wait')())
+const plugin = require('puppeteer-extra-plugin-click-and-wait').default
+
+puppeteer.use(plugin())
 ;(async () => {
   const browser = await puppeteer.launch({ headless: false })
   const page = await browser.newPage()

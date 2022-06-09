@@ -34,6 +34,10 @@ export type PluginRequirements = Set<'launch' | 'headful' | 'dataFromPlugins' | 
 
 export type ChildClassMembers = keyof PuppeteerExtraPlugin | 'constructor';
 
+/**
+ * reExport Puppeteer interface to avoid typing inconcistancy
+ */
+
 export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
 // types aliases
 export type PuppeteerPage = Puppeteer.Page & { 
@@ -44,6 +48,8 @@ export type PuppeteerTarget = Puppeteer.Target;
 export type PuppeteerBrowser = Puppeteer.Browser;
 export type PuppeteerConnectOptions = Puppeteer.ConnectOptions;
 export type PuppeteerRequest = Puppeteer.Request;
+export type PuppeteerClickOptions = Puppeteer.ClickOptions;
+export type PuppeteerNavigationOptions = Puppeteer.NavigationOptions;
 
 /**
  * Base class for `puppeteer-extra` plugins.
