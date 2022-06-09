@@ -36,5 +36,8 @@
         "packages/puppeteer-extra-plugin-devtools/lib/RemoteDevTools.d.ts": true,
         "packages/puppeteer-extra-plugin-block-resources/index.js": true,
         "packages/puppeteer-extra-plugin-block-resources/index.d.ts": true,
+        "packages/puppeteer-extra-plugin-repl/index.d.ts": true,
+        "packages/puppeteer-extra-plugin-click-and-wait/index.d.ts": true,
+        "packages/puppeteer-extra-plugin-click-and-wait/index.js": true,
     }
 }

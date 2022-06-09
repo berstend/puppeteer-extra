@@ -49,7 +49,7 @@
     "ava": "2.4.0",
     "documentation-markdown-themes": "^12.1.5",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "14.2.1",
+    "puppeteer": "^14.3.0",
     "rimraf": "^3.0.2",
     "rollup": "^1.27.5",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -74,6 +74,7 @@
     "concurrency": 1,
     "verbose": true,
     "compileEnhancements": false,
+    "timeout": "15s",
     "environmentVariables": {
       "TS_NODE_COMPILER_OPTIONS": "{\"module\":\"commonjs\"}",
       "TS_NODE_FILES": "true",
