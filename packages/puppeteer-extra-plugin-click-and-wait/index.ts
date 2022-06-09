@@ -1,9 +1,9 @@
-import { PuppeteerNavigationOptions, PuppeteerClickOptions, PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
+import { PuppeteerNavigationOptions, PuppeteerClickOptions, PuppeteerExtraPlugin, PuppeteerPage, PuppeteerResponse } from 'puppeteer-extra-plugin'
 
 export interface PluginOptions {
 }
 
-export type ExtandPage<Page = PuppeteerPage> = Page & { clickAndWaitForNavigation: (selector: string, clickOptions: PuppeteerClickOptions, waitOptions: PuppeteerNavigationOptions) => Promise<void> };
+export type ExtandPage<Page = PuppeteerPage> = Page & { clickAndWaitForNavigation: (selector: string, clickOptions?: PuppeteerClickOptions, waitOptions?: PuppeteerNavigationOptions) => Promise<PuppeteerResponse> };
 
 /**
  * Convenience function to wait for navigation to complete after clicking on an element.
@@ -33,7 +33,7 @@ export type ExtandPage<Page = PuppeteerPage> = Page & { clickAndWaitForNavigatio
     return 'click-and-wait'
   }
 
-  async clickAndWaitForNavigation(this: PuppeteerPage, selector: string, clickOptions: PuppeteerClickOptions, waitOptions: PuppeteerNavigationOptions) {
+  async clickAndWaitForNavigation(this: PuppeteerPage, selector: string, clickOptions?: PuppeteerClickOptions, waitOptions?: PuppeteerNavigationOptions): Promise<PuppeteerResponse> {
     return Promise.all([
       this.waitForNavigation(waitOptions),
       this.click(selector, clickOptions)
@@ -43,7 +43,7 @@ export type ExtandPage<Page = PuppeteerPage> = Page & { clickAndWaitForNavigatio
   }
 
   async onPageCreated(page: PuppeteerPage): Promise<void> {
-    page.clickAndWaitForNavigation = this.clickAndWaitForNavigation.bind(page)
+    (page as ExtandPage).clickAndWaitForNavigation = this.clickAndWaitForNavigation.bind(page)
   }
 }
 

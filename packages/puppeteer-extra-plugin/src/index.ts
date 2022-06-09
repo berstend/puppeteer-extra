@@ -50,7 +50,7 @@ export type PuppeteerConnectOptions = Puppeteer.ConnectOptions;
 export type PuppeteerRequest = Puppeteer.Request;
 export type PuppeteerClickOptions = Puppeteer.ClickOptions;
 export type PuppeteerNavigationOptions = Puppeteer.NavigationOptions;
-
+export type PuppeteerResponse = Puppeteer.Response;
 /**
  * Base class for `puppeteer-extra` plugins.
  *
