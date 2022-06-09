@@ -1,0 +1,60 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Chrome Headless Detection (Round II)</title>
+    <!-- imported from https://intoli.com/blog/not-possible-to-block-chrome-headless/chrome-headless-test.html -->
+    <!-- imported date 2022-06-09 -->
+    <style>
+      td:last-child {
+        background-color: #c8d86d;
+        max-width:300px;
+        word-wrap:break-word;
+      }
+      td.failed {
+        background-color: #f45159;
+      }
+      table, th, td {
+        border: 1px solid black;
+      }
+      span.age {
+        float: right;
+        margin-left: 40px;
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <th>Test Name</th>
+        <th>Result</th>
+      </tr>
+      <tr>
+        <td>User Agent <span class="age">(Old)</span></td>
+        <td class="failed result" id="user-agent-result"></td>
+      </tr>
+      <tr>
+        <td>WebDriver <span class="age">(New)</span></td>
+        <td class="failed result" id="webdriver-result">present (failed)</td>
+      </tr>
+      <tr>
+        <td>Chrome <span class="age">(New)</span></td>
+        <td class="failed result" id="chrome-result">missing (failed)</td>
+      </tr>
+      <tr>
+        <td>Permissions <span class="age">(New)</span></td>
+        <td class="failed result" id="permissions-result"></td>
+      </tr>
+      <tr>
+        <td>Plugins Length <span class="age">(Old)</span></td>
+        <td class="failed result" id="plugins-length-result"></td>
+      </tr>
+      <tr>
+        <td>Languages <span class="age">(Old)</span></td>
+        <td class="failed result" id="languages-result"></td>
+      </tr>
+    </table>
+    <script src="./chrome-headless-test.js"></script>
+  </body>
+</html>
