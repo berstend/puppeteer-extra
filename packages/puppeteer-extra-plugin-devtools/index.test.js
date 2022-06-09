@@ -4,7 +4,7 @@ const PLUGIN_NAME = 'devtools'
 
 const test = require('ava')
 
-const { default: Plugin } = require('.')
+const { Plugin } = require('.')
 
 test('is a function', async t => {
   t.is(typeof Plugin, 'function')

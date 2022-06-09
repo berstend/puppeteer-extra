@@ -1,8 +1,9 @@
-'use strict'
+import puppeteer from 'puppeteer-extra'
+import plugin from 'puppeteer-extra-plugin-stealth';
 
-const puppeteer = require('puppeteer-extra')
 // Enable stealth plugin
-puppeteer.use(require('puppeteer-extra-plugin-stealth')())
+puppeteer.use(plugin())
+
 ;(async () => {
   // Launch the browser in headless mode and set up a page.
   const browser = await puppeteer.launch({

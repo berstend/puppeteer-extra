@@ -3,19 +3,32 @@
   "version": "2.3.3",
   "description": "Make puppeteer browser debugging possible from anywhere (devtools with screencasting on the internet).",
   "main": "index.js",
+  "types": "index.d.ts",
   "repository": "berstend/puppeteer-extra",
   "author": "berstend",
   "license": "MIT",
   "scripts": {
+    "dummy": "node -e 0",
+    "clean": "rimraf index.{js,d.ts,js.map} lib/RemoteDevTools.{js,d.ts,js.map}",
+    "prebuild": "run-s clean",
     "docs": "node -e 0",
     "lint": "eslint --ext .js .",
-    "build": "echo no build for puppeteer-extra-plugin-devtools",
+    "build": "tsc --module commonjs",
     "test-ava": "ava -v",
-    "test": "run-p lint test-ava",
+    "test": "run-p dummy test-ava",
     "test-ci": "run-s test"
   },
   "engines": {
     "node": ">=8"
+  },
+  "ava": {
+    "files": [
+      "*.test.js",
+      "lib/*.test.js"
+    ],
+    "concurrency": 1,
+    "verbose": true,
+    "failFast": true
   },
   "keywords": [
     "puppeteer",
@@ -30,6 +43,14 @@
     "pupeteer"
   ],
   "devDependencies": {
+    "@types/debug": "^4.1.7",
+    "@types/got": "^9.6.12",
+    "@types/http-auth": "^4.1.1",
+    "@types/http-proxy": "^1.17.9",
+    "@types/localtunnel": "^2.0.1",
+    "@types/node": "^17.0.41",
+    "@types/randomstring": "^1.1.8",
+    "@types/url-parse": "^1.4.8",
     "ava": "2.4.0",
     "npm-run-all": "^4.1.5",
     "puppeteer": "14.2.1",

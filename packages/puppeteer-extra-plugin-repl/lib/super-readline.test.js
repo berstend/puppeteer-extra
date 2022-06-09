@@ -12,7 +12,7 @@ test('should have the expected number of exports', async t => {
   const exportedKeys = Object.keys(readline)
 
   t.true(exportedKeys.includes('chalk'))
-  t.true(exportedKeys.includes('Interface'))
+  t.true(exportedKeys.includes('SuperInterface')) // renamed from Interface reserved keyword
   t.true(exportedKeys.includes('createInterface'))
   t.true(exportedKeys.includes('defaultCompleter'))
   t.true(exportedKeys.includes('clearLine'))
