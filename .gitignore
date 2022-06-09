@@ -94,3 +94,6 @@ packages/puppeteer-extra-plugin-devtools/index.d.ts
 packages/puppeteer-extra-plugin-devtools/index.js
 packages/puppeteer-extra-plugin-devtools/lib/RemoteDevTools.d.ts
 packages/puppeteer-extra-plugin-devtools/lib/RemoteDevTools.js
+packages/puppeteer-extra-plugin-repl/index.d.ts
+packages/puppeteer-extra-plugin-click-and-wait/index.d.ts
+packages/puppeteer-extra-plugin-click-and-wait/index.js

@@ -573,7 +573,7 @@ export type PuppeteerResponse = Puppeteer.Response;
         }
         const validPage = 'isClosed' in page && !page.isClosed()
         if (this.onPageCreated && validPage) {
-          await this.onPageCreated(page)
+          await this.onPageCreated(page) //  as PuppeteerPage
         }
       } catch (err) {
         console.error(err)
