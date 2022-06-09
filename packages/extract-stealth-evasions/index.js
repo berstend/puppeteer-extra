@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const puppeteer = require('puppeteer-extra')
-const stealth = require('puppeteer-extra-plugin-stealth')()
+const puppeteer = require('puppeteer-extra').default
+const stealth = require('puppeteer-extra-plugin-stealth').default()
 const { minify } = require('terser')
 const argv = require('yargs')
   .usage('Usage: $0 [options]')
