@@ -22,7 +22,7 @@ jobs:
       - name: Extract stealth.min.js
         run: |
           cd packages/extract-stealth-evasions
-          npm install
+          yarn install
           node index.js
           cp stealth.min.js ../../
 
