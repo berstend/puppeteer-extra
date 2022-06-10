@@ -49,7 +49,7 @@
     "@types/puppeteer": "*",
     "ava": "^2.4.0",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "^14.2.1",
+    "puppeteer": "^14.3.0",
     "rimraf": "^3.0.2",
     "rollup": "^1.27.5",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -66,7 +66,6 @@
     "@cliqz/adblocker-puppeteer": "1.22.6",
     "debug": "^4.1.1",
     "node-fetch": "^2.6.0",
-    "puppeteer": "^14.2.1",
     "puppeteer-extra-plugin": "^3.2.0"
   },
   "peerDependencies": {
