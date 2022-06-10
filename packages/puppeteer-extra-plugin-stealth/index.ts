@@ -65,7 +65,6 @@ export interface PluginOptions {
     'window.outerdimensions'?: windowOuterdimensionsOpt;
   };
 }
-
 /**
  * Stealth mode: Applies various techniques to make detection of headless puppeteer harder. 💯
  *
@@ -148,7 +147,7 @@ class StealthPlugin extends PuppeteerExtraPlugin<PluginOptions> {
     const entrys = Object.entries(this.opts.evasionsOptions).map(([key, value]) => [`${this.name}/evasions/${key}`, value]);
     return Object.fromEntries(entrys)
   }
-
+  
   get defaults(): PluginOptions {
     const availableEvasions = new Set<KnownEvasions>(allAvailableEvasions)
     return {
@@ -163,8 +162,8 @@ class StealthPlugin extends PuppeteerExtraPlugin<PluginOptions> {
    *
    * @private
    */
-  get dependencies(): `stealth/evasions/${KnownEvasions}`[] {
-    return [...this.opts.enabledEvasions].map((e: KnownEvasions) => `${this.name}/evasions/${e}` as `stealth/evasions/${KnownEvasions}`)
+  get dependencies(): Array<`stealth/evasions/${KnownEvasions}`> {
+    return [...this.opts.enabledEvasions].map((e) => `stealth/evasions/${e}` as `stealth/evasions/${KnownEvasions}`)
   }
   /**
    * Get all available evasions.

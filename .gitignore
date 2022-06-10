@@ -98,3 +98,4 @@ packages/puppeteer-extra-plugin-repl/index.d.ts
 packages/puppeteer-extra-plugin-click-and-wait/index.d.ts
 packages/puppeteer-extra-plugin-click-and-wait/index.js
 packages/extract-stealth-evasions/index.d.ts
+packages/extract-stealth-evasions/index.js

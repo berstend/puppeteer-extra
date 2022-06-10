@@ -26,6 +26,7 @@
         "packages/puppeteer-extra-plugin-flash/index.js": true,
         "packages/puppeteer-extra-plugin-flash/index.d.ts": true,
         "packages/puppeteer-extra-plugin-repl/index.js": true,
+        "packages/puppeteer-extra-plugin-repl/index.d.ts": true,
         "packages/puppeteer-extra-plugin-repl/lib/REPLSession.d.ts": true,
         "packages/puppeteer-extra-plugin-repl/lib/REPLSession.js": true,
         "packages/puppeteer-extra-plugin-repl/lib/super-readline.d.ts": true,
@@ -36,8 +37,9 @@
         "packages/puppeteer-extra-plugin-devtools/lib/RemoteDevTools.d.ts": true,
         "packages/puppeteer-extra-plugin-block-resources/index.js": true,
         "packages/puppeteer-extra-plugin-block-resources/index.d.ts": true,
-        "packages/puppeteer-extra-plugin-repl/index.d.ts": true,
         "packages/puppeteer-extra-plugin-click-and-wait/index.d.ts": true,
         "packages/puppeteer-extra-plugin-click-and-wait/index.js": true,
+        "packages/extract-stealth-evasions/index.js": true,
+        "packages/extract-stealth-evasions/index.d.ts": true,
     }
 }

@@ -15,6 +15,7 @@
     "test": "lerna run test --concurrency 1 --stream",
     "test-ci": "lerna run test-ci --concurrency 1 --stream",
     "prepare": "lerna run prepare",
+    "clean": "rimraf packages/*/dist packages/*/*.map  packages/*/index.{js,d.ts}",
     "release": "lerna publish --npm-client npm"
   },
   "workspaces": {
@@ -41,7 +42,8 @@
     "lerna": "^3.19.0",
     "lerna-update-wizard": "^0.17.5",
     "prettier": "^1.19.1",
-    "prettier-config-standard": "^1.0.1"
+    "prettier-config-standard": "^1.0.1",
+    "rimraf": "^3.0.2"
   },
   "optionalDependencies": {
     "fsevents": "^2.1.2"

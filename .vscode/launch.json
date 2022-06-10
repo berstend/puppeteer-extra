@@ -4,20 +4,33 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Debug AVA test file",
-            "program": "${workspaceFolder}/packages/puppeteer-extra-plugin-anonymize-ua/node_modules/ava/entrypoints/cli.mjs",
-            "args": [
-              "${file}"
-            ],
-            "outputCapture": "std",
-            "console": "integratedTerminal", // optional
-            "cwd": "${workspaceFolder}/packages/puppeteer-extra-plugin-anonymize-ua/",
-            "skipFiles": [
-              "<node_internals>/**/*.js"
-            ]
-          }
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "test1",
+        "env": {
+          "NODE_OPTIONS": "-r ts-node/register --no-warnings"
+        },
+        "cwd": "${workspaceFolder}/packages/puppeteer-extra-plugin-stealth",
+        "skipFiles": [
+          "<node_internals>/**"
+        ],
+        "program": "${workspaceFolder}/packages/puppeteer-extra-plugin-stealth/examples/test1.ts"
+      },
+      {
+          "type": "node",
+          "request": "launch",
+          "name": "Debug AVA test file",
+          "program": "${workspaceFolder}/packages/puppeteer-extra-plugin-anonymize-ua/node_modules/ava/entrypoints/cli.mjs",
+          "args": [
+            "${file}"
+          ],
+          "outputCapture": "std",
+          "console": "integratedTerminal", // optional
+          "cwd": "${workspaceFolder}/packages/puppeteer-extra-plugin-anonymize-ua/",
+          "skipFiles": [
+            "<node_internals>/**/*.js"
+          ]
+        }
     ]
 }
