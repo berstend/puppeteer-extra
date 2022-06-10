@@ -183,7 +183,7 @@ export type PuppeteerResponse = Puppeteer.Response;
    * 
    * @returns options maps to inject to dependent plugins
    */
-  getdependenciesOptions(): {[key: string]: any} {
+  get dependenciesOptions(): {[key: string]: any} {
     return {};
   }
 
