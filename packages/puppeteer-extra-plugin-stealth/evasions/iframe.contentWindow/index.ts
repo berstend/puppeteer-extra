@@ -26,8 +26,7 @@ export interface PluginOptions {
   }
 
   async onPageCreated(page: PuppeteerPage): Promise<void> {
-    // TODO REMOVE opts: {}
-    await withUtils(page).evaluateOnNewDocument((utils: typeof Utils, opts: {}) => {
+    await withUtils(page).evaluateOnNewDocument((utils: typeof Utils) => {
       try {
         // Adds a contentWindow proxy to the provided iframe element
         const addContentWindowProxy = (iframe: any) => {
