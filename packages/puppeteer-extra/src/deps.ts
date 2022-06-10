@@ -44,8 +44,6 @@ export interface PuppeteerExtraPlugin {
     get data(): PluginData[];
     get opts(): any;
     get dependenciesOptions(): {[key: string]: any};
-    // drop overcomplicated function
-    // _getMissingDependencies(plugins: PuppeteerExtraPlugin[]): Set<string>;
     getDataFromPlugins(name?: string): PluginData[];
     _isPuppeteerExtraPlugin: boolean;
     [propName: string]: any;

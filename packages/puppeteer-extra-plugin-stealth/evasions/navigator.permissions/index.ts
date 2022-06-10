@@ -24,7 +24,7 @@ class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   async onPageCreated(page: PuppeteerPage): Promise<void> {
     await withUtils(page).evaluateOnNewDocument((utils: typeof Utils) => {
       const isSecure = document.location.protocol.startsWith('https')
-      
+
       // In headful on secure origins the permission should be "default", not "denied"
       if (isSecure) {
         utils.replaceGetterWithProxy(Notification, 'permission', {

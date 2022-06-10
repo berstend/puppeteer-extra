@@ -5,7 +5,6 @@ const debug = Debug('puppeteer-extra')
 
 import merge from 'deepmerge'
 
-
 export const allAvailableEvasions = [
   'chrome.app',
   'chrome.csi',
@@ -103,7 +102,6 @@ export class PuppeteerExtra implements VanillaPuppeteer {
     if (plugin.requirements.has('dataFromPlugins')) {
       plugin.getDataFromPlugins = this.getPluginData.bind(this)
     }
-
     const extraOptions = plugin.dependenciesOptions
     if (extraOptions) {
       for (const [name, options] of Object.entries(extraOptions)) {
