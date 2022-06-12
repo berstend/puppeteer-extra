@@ -26,7 +26,7 @@ jobs:
     strategy:
       matrix:
         node:
-          - 18
+          # - 18
           - 16
           # - 14
         puppeteer_version:
@@ -46,8 +46,8 @@ jobs:
 
         os:
           - ubuntu-latest
-    #           - macOS-latest
-    # - windows-latest
+          - macOS-latest
+          - windows-latest
 
     steps:
       - name: Checkout
