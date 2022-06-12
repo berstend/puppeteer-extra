@@ -26,11 +26,12 @@ jobs:
     strategy:
       matrix:
         node:
+          - 18
           - 16
           # - 14
         puppeteer_version:
-          - 14.2.1
-          # - 13.7.0 # 
+          # - 14.2.1 # evasion failed
+          - 13.7.0 # 
           # - 12.0.1 # 
           # - 10.4.0 # Chromium 93.0.4577.0
           # - 7.0.0 # Chromium 90.0.4403.0, Feb 3, 2021
