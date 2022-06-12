@@ -18,7 +18,7 @@ test('will launch the browser normally', async t => {
   const puppeteer = require('puppeteer-extra')
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
   const page = await browser.newPage()
-  await page.goto('http://example.com', {
+  await page.goto('https://google.com', {
     waitUntil: 'domcontentloaded',
     timeout: PAGE_TIMEOUT
   })
@@ -56,7 +56,7 @@ test('will launch puppeteer with plugin support', async t => {
   t.deepEqual(puppeteer.getPluginData('foo')[0], pluginData[0])
   t.is(puppeteer.getPluginData('not-existing').length, 0)
 
-  await page.goto('http://example.com', {
+  await page.goto('https://google.com', {
     waitUntil: 'domcontentloaded',
     timeout: PAGE_TIMEOUT
   })
