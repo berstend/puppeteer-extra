@@ -38,7 +38,7 @@ export interface PluginOptions {
  * @see https://developer.mozilla.org/en-US/docs/Web/API/NavigatorPlugins/plugins
  * @see https://developer.mozilla.org/en-US/docs/Web/API/PluginArray
  */
-class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }

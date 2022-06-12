@@ -10,7 +10,7 @@ export interface PluginOptions {
 /**
  * Mock the `chrome.app` object if not available (e.g. when running headless).
  */
-class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }

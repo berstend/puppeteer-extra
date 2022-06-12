@@ -29,7 +29,7 @@ export interface PluginOptions {
  * @param {string} [opts.vendor] - The vendor to use in `navigator.vendor` (default: `Google Inc.`)
  *
  */
-class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }

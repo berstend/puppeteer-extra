@@ -7,7 +7,7 @@ export interface PluginOptions {
  * Strip sourceURL from scripts injected by puppeteer.
  * It can be used to identify the presence of pptr via stacktraces.
  */
- class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }

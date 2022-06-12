@@ -11,7 +11,7 @@ export interface PluginOptions {
  *
  * https://github.com/puppeteer/puppeteer/issues/1106
  */
- class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+export  class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }

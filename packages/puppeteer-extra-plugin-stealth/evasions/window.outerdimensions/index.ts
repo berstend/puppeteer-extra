@@ -7,7 +7,7 @@ export interface PluginOptions {
  * Fix missing window.outerWidth/window.outerHeight in headless mode
  * Will also set the viewport to match window size, unless specified by user
  */
-class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }

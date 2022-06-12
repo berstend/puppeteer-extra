@@ -10,8 +10,7 @@ export interface PluginOptions {
  *
  * @see https://bugs.chromium.org/p/chromium/issues/detail?id=1052332
  */
-
-class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }

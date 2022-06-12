@@ -13,7 +13,7 @@ export const argsToIgnore = [
  * A CDP driver like puppeteer can make use of various browser launch arguments that are
  * adversarial to mimicking a regular browser and need to be stripped when launching the browser.
  */
-class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }

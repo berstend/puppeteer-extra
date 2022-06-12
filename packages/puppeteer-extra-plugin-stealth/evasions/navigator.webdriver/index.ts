@@ -7,7 +7,7 @@ export interface PluginOptions {
  * Pass the Webdriver Test.
  * Will delete `navigator.webdriver` property.
  */
-class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }

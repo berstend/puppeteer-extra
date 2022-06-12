@@ -15,7 +15,7 @@ export interface PluginOptions {
  * @param {number} [opts.hardwareConcurrency] - The value to use in `navigator.hardwareConcurrency` (default: `4`)
  */
 
- class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }

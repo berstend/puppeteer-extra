@@ -43,7 +43,7 @@ export interface PluginOptions {
  * @param {boolean} [opts.maskLinux] - Wether to hide Linux as platform in the user agent or not - true by default
  *
  */
- class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   private _headless?: boolean | 'chrome' = false;
 
   constructor(opts?: Partial<PluginOptions>) {

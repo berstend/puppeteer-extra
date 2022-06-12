@@ -15,7 +15,7 @@ export interface PluginOptions {
  * @param {Object} [opts] - Options
  * @param {Array<string>} [opts.languages] - The languages to use (default: `['en-US', 'en']`)
  */
-class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }

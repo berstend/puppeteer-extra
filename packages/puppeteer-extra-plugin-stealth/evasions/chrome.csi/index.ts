@@ -24,7 +24,7 @@ export interface PluginOptions {
  * @see `chrome.loadTimes` evasion
  *
  */
- class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }

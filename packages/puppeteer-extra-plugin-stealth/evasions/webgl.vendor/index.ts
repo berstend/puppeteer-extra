@@ -15,7 +15,7 @@ export interface PluginOptions {
  * @param {string} [opts.vendor] - The vendor string to use (default: `Intel Inc.`)
  * @param {string} [opts.renderer] - The renderer string (default: `Intel Iris OpenGL Engine`)
  */
-class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }

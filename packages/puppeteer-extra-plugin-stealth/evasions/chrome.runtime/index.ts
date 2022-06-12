@@ -22,7 +22,7 @@ const STATIC_DATA: staticDataModel = require('./staticData.json')
 /**
  * Mock the `chrome.runtime` object if not available (e.g. when running headless) and on a secure site.
  */
- class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   constructor(opts?: Partial<PluginOptions>) {
     super(opts)
   }
