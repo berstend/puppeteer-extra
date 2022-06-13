@@ -1,5 +1,5 @@
 const test = require('ava')
-
+require('events').EventEmitter.defaultMaxListeners = 15;
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
 const { default: Plugin } = require('.')
 
