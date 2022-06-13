@@ -24,7 +24,7 @@ jobs:
         run: |
           yarn install
           yarn bootstrap
-          lerna run build --scope puppeteer-extra --scope puppeteer-extra-plugin --scope puppeteer-extra-plugin-user-preferences --scope extract-stealth-evasions 
+          lerna run build --scope puppeteer-extra --scope puppeteer-extra-plugin --scope puppeteer-extra-plugin-user-preferences --scope extract-stealth-evasions --scope puppeteer-extra-plugin-stealth
           cd packages/extract-stealth-evasions
           node index.js
           cp stealth.min.js ../../
