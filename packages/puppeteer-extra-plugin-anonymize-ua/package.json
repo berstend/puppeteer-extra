@@ -11,7 +11,6 @@
     "clean": "rimraf index.{js,d.ts,js.map}",
     "prebuild": "run-s clean",
     "docs": "node -e 0",
-    "lint": "echo no lint",
     "build": "tsc --module commonjs",
     "test:js": "ava",
     "test": "run-p test:js",

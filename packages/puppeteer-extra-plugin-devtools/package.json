@@ -12,7 +12,6 @@
     "clean": "rimraf index.{js,d.ts,js.map} lib/RemoteDevTools.{js,d.ts,js.map}",
     "prebuild": "run-s clean",
     "docs": "node -e 0",
-    "lint": "eslint --ext .js .",
     "build": "tsc --module commonjs",
     "test-ava": "ava -v",
     "test": "run-p dummy test-ava",
