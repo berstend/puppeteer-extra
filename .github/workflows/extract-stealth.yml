@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - test/fix2
     paths:
       - "packages/puppeteer-extra-plugin-stealth/**"
       - "packages/extract-stealth-evasions/**"
