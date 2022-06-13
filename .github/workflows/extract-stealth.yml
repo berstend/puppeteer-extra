@@ -30,9 +30,7 @@ jobs:
       - name: Extract stealth.min.js
         run: |
           cd packages/extract-stealth-evasions
-          ls
-          echo call gen
-          yarn run gen
+          node index.js
           cp stealth.min.js ../../
 
       - name: Commit stealth.min.js

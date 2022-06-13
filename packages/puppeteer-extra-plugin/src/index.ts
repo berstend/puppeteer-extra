@@ -96,7 +96,7 @@ export type PuppeteerResponse = Puppeteer.Response;
  * })()
  *
  */
- export abstract class PuppeteerExtraPlugin<OPTION = Record<string, never>> {
+ export abstract class PuppeteerExtraPlugin<OPTION = {}> {
   /** @private */
   private _debugBase: Debugger
   /** @private */

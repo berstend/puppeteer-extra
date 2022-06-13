@@ -45,7 +45,7 @@ export declare const utils: {
      * @param {string} propName - The property name to replace
      * @param {object} descriptorOverrides - e.g. { value: "alice" }
      */
-    replaceProperty: (obj: any, propName: string, descriptorOverrides?: Record<string, unknown>) => any;
+    replaceProperty: (obj: any, propName: string, descriptorOverrides?: {}) => any;
     cache: {
         Reflect: {
             get: Function;
