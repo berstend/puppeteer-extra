@@ -16,7 +16,8 @@
   "scripts": {
     "clean": "rimraf index.{js,d.ts,js.map}",
     "prebuild": "run-s clean",
-    "build": "tsc --module commonjs"
+    "build": "tsc --module commonjs",
+    "gen": "node ./index.js"
   },
   "keywords": [
     "puppeteer",
