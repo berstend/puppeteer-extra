@@ -40,10 +40,12 @@
     "node": ">=8"
   },
   "devDependencies": {
-    "ava": "^2.4.0",
+    "@types/debug": "^4.1.0",
+    "@types/puppeteer": "*",
+    "ava": "3.15.0",
     "documentation-markdown-themes": "^12.1.5",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "^14.3.0",
+    "puppeteer": "13.7.0",
     "puppeteer-extra-plugin": "^3.2.0",
     "puppeteer-extra-plugin-anonymize-ua": "^2.3.3",
     "rimraf": "^3.0.2",
@@ -56,9 +58,7 @@
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-config-standard": "^9.0.0",
-    "typescript": "^4.7.3",
-    "@types/debug": "^4.1.0",
-    "@types/puppeteer": "*"
+    "typescript": "^4.7.3"
   },
   "peerDependencies": {
     "puppeteer": "*"
@@ -70,7 +70,6 @@
   "ava": {
     "concurrency": 1,
     "verbose": true,
-    "compileEnhancements": false,
     "environmentVariables": {
       "TS_NODE_COMPILER_OPTIONS": "{\"module\":\"commonjs\"}",
       "TS_NODE_FILES": "true",

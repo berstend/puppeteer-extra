@@ -51,10 +51,10 @@
     "@types/debug": "^4.1.5",
     "@types/node": "14.17.6",
     "@types/puppeteer": "*",
-    "ava": "2.4.0",
+    "ava": "3.15.0",
     "copyfiles": "^2.1.1",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "^14.3.0",
+    "puppeteer": "13.7.0",
     "puppeteer-extra": "^3.2.0",
     "rimraf": "^3.0.2",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -78,7 +78,6 @@
   "ava": {
     "concurrency": 1,
     "verbose": true,
-    "compileEnhancements": false,
     "environmentVariables": {
       "TS_NODE_COMPILER_OPTIONS": "{\"module\":\"commonjs\"}",
       "TS_NODE_FILES": "true",
