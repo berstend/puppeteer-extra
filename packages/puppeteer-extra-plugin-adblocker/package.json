@@ -74,7 +74,6 @@
   "ava": {
     "concurrency": 1,
     "verbose": true,
-    "compileEnhancements": false,
     "environmentVariables": {
       "TS_NODE_COMPILER_OPTIONS": "{\"module\":\"commonjs\"}",
       "TS_NODE_FILES": "true",
