@@ -26,9 +26,9 @@ jobs:
           yarn bootstrap
           lerna run build --scope puppeteer-extra --scope puppeteer-extra-plugin --scope puppeteer-extra-plugin-user-preferences --scope extract-stealth-evasions 
           cd packages/extract-stealth-evasions
-          pwd
           ls
-          node index.js
+          echo call gen
+          yarn run gen
           cp stealth.min.js ../../
 
       - name: Commit stealth.min.js
