@@ -23,6 +23,7 @@ jobs:
         run: |
           cd packages/extract-stealth-evasions
           yarn install
+          yarn build
           node index.js
           cp stealth.min.js ../../
 
