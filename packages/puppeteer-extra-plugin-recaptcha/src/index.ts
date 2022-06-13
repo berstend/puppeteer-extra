@@ -15,11 +15,19 @@ export const BuiltinSolutionProviders: types.SolutionProvider[] = [
   }
 ]
 
+export interface PluginOptions {
+  visualFeedback: boolean,
+  throwOnError: boolean,
+  solveInViewportOnly: boolean,
+  solveScoreBased: boolean,
+  solveInactiveChallenges: boolean
+}
+
 /**
  * A puppeteer-extra plugin to automatically detect and solve reCAPTCHAs.
  * @noInheritDoc
  */
-export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
+export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin<PluginOptions> {
   private contentScriptDebug: debug.Debugger
 
   constructor(opts: Partial<types.PluginOptions>) {
