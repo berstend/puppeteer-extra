@@ -11,24 +11,24 @@ const { default: Plugin } = require('.')
 
 const fingerprintFn = page => page.evaluate('navigator.hardwareConcurrency')
 
-test('vanilla: matches real core count', async t => {
+test.serial('vanilla: matches real core count', async t => {
   const { pageFnResult } = await getVanillaFingerPrint(fingerprintFn)
   t.is(pageFnResult, os.cpus().length)
 })
 
-test('stealth: default is set to 4', async t => {
+test.serial('stealth: default is set to 4', async t => {
   const { pageFnResult } = await getStealthFingerPrint(Plugin, fingerprintFn)
   t.is(pageFnResult, 4)
 })
 
-test('stealth: will override value correctly', async t => {
+test.serial('stealth: will override value correctly', async t => {
   const { pageFnResult } = await getStealthFingerPrint(Plugin, fingerprintFn, {
     hardwareConcurrency: 8
   })
   t.is(pageFnResult, 8)
 })
 
-test('stealth: does patch getters properly', async t => {
+test.serial('stealth: does patch getters properly', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()

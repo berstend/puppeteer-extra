@@ -7,7 +7,7 @@ const { withUtils } = require('./withUtils')
 
 /* global HTMLMediaElement WebGLRenderingContext */
 
-test('splitObjPath: will do what it says', async t => {
+test.serial('splitObjPath: will do what it says', async t => {
   const { objName, propName } = utils.splitObjPath(
     'HTMLMediaElement.prototype.canPlayType'
   )
@@ -15,7 +15,7 @@ test('splitObjPath: will do what it says', async t => {
   t.is(propName, 'canPlayType')
 })
 
-test('makeNativeString: will do what it says', async t => {
+test.serial('makeNativeString: will do what it says', async t => {
   utils.init()
   t.is(utils.makeNativeString('bob'), 'function bob() { [native code] }')
   t.is(
@@ -25,7 +25,7 @@ test('makeNativeString: will do what it says', async t => {
   t.is(utils.makeNativeString(), 'function () { [native code] }')
 })
 
-test('replaceWithProxy: will work correctly', async t => {
+test.serial('replaceWithProxy: will work correctly', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -57,7 +57,7 @@ test('replaceWithProxy: will work correctly', async t => {
   })
 })
 
-test('replaceObjPathWithProxy: will work correctly', async t => {
+test.serial('replaceObjPathWithProxy: will work correctly', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -88,7 +88,7 @@ test('replaceObjPathWithProxy: will work correctly', async t => {
   })
 })
 
-test('redirectToString: is battle hardened', async t => {
+test.serial('redirectToString: is battle hardened', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -171,7 +171,7 @@ test('redirectToString: is battle hardened', async t => {
   })
 })
 
-test('redirectToString: has proper errors', async t => {
+test.serial('redirectToString: has proper errors', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -215,7 +215,7 @@ test('redirectToString: has proper errors', async t => {
   })
 })
 
-test('patchToString: will work correctly', async t => {
+test.serial('patchToString: will work correctly', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -276,7 +276,7 @@ function toStringTest(obj) {
 `.trim()
 }
 
-test('patchToString: passes all toString tests', async t => {
+test.serial('patchToString: passes all toString tests', async t => {
   const toStringVanilla = await (async function() {
     const browser = await vanillaPuppeteer.launch({ headless: true })
     const page = await browser.newPage()
@@ -313,7 +313,7 @@ test('patchToString: passes all toString tests', async t => {
   t.is(toStringVanilla, toStringStealth)
 })
 
-test('patchToString: passes stack trace tests', async t => {
+test.serial('patchToString: passes stack trace tests', async t => {
   const toStringStackTrace = () => {
     try {
       Object.create(
@@ -353,7 +353,7 @@ test('patchToString: passes stack trace tests', async t => {
   t.is(toStringVanilla, toStringStealth)
 })
 
-test('patchToString: vanilla has iframe issues', async t => {
+test.serial('patchToString: vanilla has iframe issues', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -386,7 +386,7 @@ test('patchToString: vanilla has iframe issues', async t => {
   })
 })
 
-test('patchToString: stealth has no iframe issues', async t => {
+test.serial('patchToString: stealth has no iframe issues', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -422,7 +422,7 @@ test('patchToString: stealth has no iframe issues', async t => {
   })
 })
 
-test('stripProxyFromErrors: will work correctly', async t => {
+test.serial('stripProxyFromErrors: will work correctly', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -474,7 +474,7 @@ test('stripProxyFromErrors: will work correctly', async t => {
   t.false(results.stealthProxy.includes(`at Object.get`))
 })
 
-test('replaceProperty: will work without traces', async t => {
+test.serial('replaceProperty: will work without traces', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -489,7 +489,7 @@ test('replaceProperty: will work without traces', async t => {
   t.false(results.propNames.includes('languages'))
 })
 
-test('cache: will prevent leaks through overriding methods', async t => {
+test.serial('cache: will prevent leaks through overriding methods', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -532,7 +532,7 @@ test('cache: will prevent leaks through overriding methods', async t => {
   })
 })
 
-test('replaceWithProxy: will throw prototype errors', async t => {
+test.serial('replaceWithProxy: will throw prototype errors', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
   await page.goto('about:blank')

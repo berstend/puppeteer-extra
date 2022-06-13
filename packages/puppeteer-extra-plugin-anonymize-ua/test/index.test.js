@@ -5,23 +5,23 @@ const { Plugin, default: getPlugin } = require('..')
 
 const PLUGIN_NAME = 'anonymize-ua'
 
-test('is a function', async t => {
+test.serial('is a function', async t => {
   t.is(typeof Plugin, 'function')
 })
 
-test('default export should be a getInstance() function', async t => {
+test.serial('default export should be a getInstance() function', async t => {
   const instance = getPlugin()
   t.is(instance.name, PLUGIN_NAME)
   t.true(instance._isPuppeteerExtraPlugin)
 })
 
-test('should have the basic class members', async t => {
+test.serial('should have the basic class members', async t => {
   const instance = new Plugin()
   t.is(instance.name, PLUGIN_NAME)
   t.true(instance._isPuppeteerExtraPlugin)
 })
 
-test('should have the public child class members', async t => {
+test.serial('should have the public child class members', async t => {
   const instance = new Plugin()
   const prototype = Object.getPrototypeOf(instance)
   const childClassMembers = Object.getOwnPropertyNames(prototype)
@@ -33,7 +33,7 @@ test('should have the public child class members', async t => {
   t.true(childClassMembers.length === 4)
 })
 
-test('should have opts with default values', async t => {
+test.serial('should have opts with default values', async t => {
   const instance = new Plugin()
   const opts = instance.opts
 

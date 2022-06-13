@@ -6,7 +6,7 @@ import { addExtra } from 'puppeteer-extra'
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
-test('will detect reCAPTCHAs', async (t) => {
+test.serial('will detect reCAPTCHAs', async (t) => {
   const puppeteer = addExtra(require('puppeteer'))
   const recaptchaPlugin = RecaptchaPlugin()
   puppeteer.use(recaptchaPlugin)
@@ -34,7 +34,7 @@ test('will detect reCAPTCHAs', async (t) => {
   await browser.close()
 })
 
-test('will detect hCAPTCHAs', async (t) => {
+test.serial('will detect hCAPTCHAs', async (t) => {
   const puppeteer = addExtra(require('puppeteer'))
   const recaptchaPlugin = RecaptchaPlugin()
   puppeteer.use(recaptchaPlugin)
@@ -60,7 +60,7 @@ test('will detect hCAPTCHAs', async (t) => {
   await browser.close()
 })
 
-test('will not throw when no captchas are found', async (t) => {
+test.serial('will not throw when no captchas are found', async (t) => {
   const puppeteer = addExtra(require('puppeteer'))
   const recaptchaPlugin = RecaptchaPlugin()
   puppeteer.use(recaptchaPlugin)

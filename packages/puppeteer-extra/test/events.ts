@@ -16,7 +16,7 @@ test.beforeEach(t => {
   }
 })
 
-test('will bind launched browser events to plugins', async t => {
+test.serial('will bind launched browser events to plugins', async t => {
   const PLUGIN_EVENTS: string[] = [];
 
   const puppeteer = addExtra(puppeteerVanilla)
@@ -89,7 +89,7 @@ test('will bind launched browser events to plugins', async t => {
   t.true(PLUGIN_EVENTS.includes('onClose'))
 })
 
-test('will bind connected browser events to plugins', async t => {
+test.serial('will bind connected browser events to plugins', async t => {
   const PLUGIN_EVENTS: string[] = []
 
   // Launch vanilla puppeteer browser with no plugins

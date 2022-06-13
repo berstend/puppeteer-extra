@@ -13,7 +13,7 @@ const STATIC_DATA = require('./staticData.json')
 
 /* global chrome */
 
-test('vanilla: is chrome false', async t => {
+test.serial('vanilla: is chrome false', async t => {
   const pageFn = async page => await page.evaluate(() => window.chrome) // eslint-disable-line
   const { pageFnResult: chrome, hasChrome } = await getVanillaFingerPrint(
     pageFn
@@ -23,7 +23,7 @@ test('vanilla: is chrome false', async t => {
   t.is(chrome, undefined)
 })
 
-test('stealth: is chrome true', async t => {
+test.serial('stealth: is chrome true', async t => {
   const pageFn = async page => await page.evaluate(() => window.chrome) // eslint-disable-line
   const { pageFnResult: chrome, hasChrome } = await getStealthFingerPrint(
     Plugin,
@@ -33,7 +33,7 @@ test('stealth: is chrome true', async t => {
   t.true(chrome instanceof Object)
 })
 
-test('stealth: will add convincing chrome.runtime object', async t => {
+test.serial('stealth: will add convincing chrome.runtime object', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
     Plugin({
       runOnInsecureOrigins: true // for testing
@@ -124,7 +124,7 @@ test('stealth: will add convincing chrome.runtime object', async t => {
   })
 })
 
-test('stealth: will add convincing chrome.runtime.connect', async t => {
+test.serial('stealth: will add convincing chrome.runtime.connect', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
     Plugin({
       runOnInsecureOrigins: true // for testing
@@ -209,7 +209,7 @@ test('stealth: will add convincing chrome.runtime.connect', async t => {
   })
 })
 
-test('stealth: will add convincing chrome.runtime.connect response', async t => {
+test.serial('stealth: will add convincing chrome.runtime.connect response', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
     Plugin({
       runOnInsecureOrigins: true // for testing
@@ -251,7 +251,7 @@ test('stealth: will add convincing chrome.runtime.connect response', async t => 
   })
 })
 
-test('stealth: error stack is fine', async t => {
+test.serial('stealth: error stack is fine', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
     Plugin({
       runOnInsecureOrigins: true // for testing

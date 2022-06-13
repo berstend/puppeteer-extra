@@ -5,7 +5,7 @@ const { Plugin } = require('.')
 
 const TEST_HTML_FILE = require('path').join(__dirname, './_fixtures/test.html')
 
-test('vanilla: sourceurl is leaking', async t => {
+test.serial('vanilla: sourceurl is leaking', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
   await page.goto('file://' + TEST_HTML_FILE, { waitUntil: 'load' })
@@ -35,7 +35,7 @@ test('vanilla: sourceurl is leaking', async t => {
   t.true(result2.includes('__puppeteer_evaluation_script'))
 })
 
-test('stealth: sourceurl is not leaking', async t => {
+test.serial('stealth: sourceurl is not leaking', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(new Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()

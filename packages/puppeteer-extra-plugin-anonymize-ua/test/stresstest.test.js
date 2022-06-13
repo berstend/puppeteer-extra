@@ -12,7 +12,7 @@ test.beforeEach(t => {
   delete require.cache[require.resolve('puppeteer-extra-plugin-anonymize-ua')]
 })
 
-test('will remove headless from the user-agent on multiple browsers', async t => {
+test.serial('will remove headless from the user-agent on multiple browsers', async t => {
   const puppeteer = require('puppeteer-extra')
   puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua').default())
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
@@ -31,7 +31,7 @@ test('will remove headless from the user-agent on multiple browsers', async t =>
   t.true(true)
 })
 
-test('will remove headless from the user-agent on many pages', async t => {
+test.serial('will remove headless from the user-agent on many pages', async t => {
   const puppeteer = require('puppeteer-extra')
   puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua').default())
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
@@ -47,7 +47,7 @@ test('will remove headless from the user-agent on many pages', async t => {
   t.true(true)
 })
 
-test('will remove headless from the user-agent on many incognito pages', async t => {
+test.serial('will remove headless from the user-agent on many incognito pages', async t => {
   const puppeteer = require('puppeteer-extra')
   puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua').default())
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
@@ -69,7 +69,7 @@ test('will remove headless from the user-agent on many incognito pages', async t
   t.true(true)
 })
 
-test('will remove headless from the user-agent on many pages in parallel', async t => {
+test.serial('will remove headless from the user-agent on many pages in parallel', async t => {
   const puppeteer = require('puppeteer-extra')
   puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua').default())
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })

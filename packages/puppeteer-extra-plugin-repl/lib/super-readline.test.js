@@ -4,11 +4,11 @@ const test = require('ava')
 
 const readline = require('./super-readline')
 
-test('is an object', async t => {
+test.serial('is an object', async t => {
   t.is(typeof readline, 'object')
 })
 
-test('should have the expected number of exports', async t => {
+test.serial('should have the expected number of exports', async t => {
   const exportedKeys = Object.keys(readline)
 
   t.true(exportedKeys.includes('chalk'))
@@ -23,7 +23,7 @@ test('should have the expected number of exports', async t => {
   t.is(exportedKeys.length, 9)
 })
 
-test('can create an interface', async t => {
+test.serial('can create an interface', async t => {
   const instance = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -38,7 +38,7 @@ test('can create an interface', async t => {
   t.is(typeof instance, 'object')
 })
 
-test('should have the extended class members', async t => {
+test.serial('should have the extended class members', async t => {
   const instance = readline.createInterface({
     input: process.stdin,
     output: process.stdout,

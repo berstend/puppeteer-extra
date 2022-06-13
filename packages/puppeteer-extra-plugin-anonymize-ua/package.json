@@ -13,7 +13,7 @@
     "docs": "node -e 0",
     "lint": "echo no lint",
     "build": "tsc --module commonjs",
-    "test:js": "ava --serial",
+    "test:js": "ava",
     "test": "run-p test:js",
     "test-ci": "run-s test"
   },

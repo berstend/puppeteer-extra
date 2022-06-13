@@ -16,7 +16,7 @@ const isOldPuppeteerVersion = () => {
 
 /* global HTMLIFrameElement */
 /* global Notification */
-test('stealth: will pass Paul Irish', async t => {
+test.serial('stealth: will pass Paul Irish', async t => {
   const browser = await addExtra(vanillaPuppeteer)
     .use(Plugin())
     .launch({ headless: true })

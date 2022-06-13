@@ -14,7 +14,7 @@ const { default: Plugin } = require('.')
 //   t.false(content.includes(`"Accept-Language"`))
 // })
 
-test('vanilla: User-Agent header contains HeadlessChrome', async t => {
+test.serial('vanilla: User-Agent header contains HeadlessChrome', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
   await page.goto('http://httpbin.org/headers')
@@ -25,14 +25,14 @@ test('vanilla: User-Agent header contains HeadlessChrome', async t => {
 })
 
 // chrome vanilla: navigator.languages is os dependant.
-// test('vanilla: navigator.languages is always en-US', async t => {
+// test.serial('vanilla: navigator.languages is always en-US', async t => {
 //   const browser = await vanillaPuppeteer.launch({ headless: true })
 //   const page = await browser.newPage()
 //   const lang = await page.evaluate(() => navigator.languages)
 //   t.true(lang.length === 1 && lang[0] === 'en-US')
 // })
 
-test('vanilla: navigator.platform set to host platform', async t => {
+test.serial('vanilla: navigator.platform set to host platform', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -52,7 +52,7 @@ test('vanilla: navigator.platform set to host platform', async t => {
   }
 })
 
-test('stealth: Accept-Language header with default locale', async t => {
+test.serial('stealth: Accept-Language header with default locale', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
@@ -63,7 +63,7 @@ test('stealth: Accept-Language header with default locale', async t => {
   t.true(content.includes(`"Accept-Language": "en-US,en;q=0.9"`))
 })
 
-test('stealth: Accept-Language header with optional locale', async t => {
+test.serial('stealth: Accept-Language header with optional locale', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
     Plugin({ locale: 'de-DE,de' })
   )
@@ -76,7 +76,7 @@ test('stealth: Accept-Language header with optional locale', async t => {
   t.true(content.includes(`"Accept-Language": "de-DE,de;q=0.9"`))
 })
 
-test('stealth: User-Agent header does not contain HeadlessChrome', async t => {
+test.serial('stealth: User-Agent header does not contain HeadlessChrome', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
@@ -87,7 +87,7 @@ test('stealth: User-Agent header does not contain HeadlessChrome', async t => {
   t.false(content.includes(`HeadlessChrome`))
 })
 
-test('stealth: User-Agent header with custom userAgent', async t => {
+test.serial('stealth: User-Agent header with custom userAgent', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
     Plugin({ userAgent: 'MyFunkyUA/1.0' })
   )
@@ -99,7 +99,7 @@ test('stealth: User-Agent header with custom userAgent', async t => {
   t.true(content.includes(`"User-Agent": "MyFunkyUA/1.0"`))
 })
 
-test('stealth: navigator.languages with default locale', async t => {
+test.serial('stealth: navigator.languages with default locale', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
@@ -108,7 +108,7 @@ test('stealth: navigator.languages with default locale', async t => {
   t.true(lang.length === 2 && lang[0] === 'en-US' && lang[1] === 'en')
 })
 
-test('stealth: navigator.languages with custom locale', async t => {
+test.serial('stealth: navigator.languages with custom locale', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
     Plugin({ locale: 'de-DE,de' })
   )
@@ -121,7 +121,7 @@ test('stealth: navigator.languages with custom locale', async t => {
   t.deepEqual(lang, 'de-DE')
 })
 
-test('stealth: navigator.platform with maskLinux true (default)', async t => {
+test.serial('stealth: navigator.platform with maskLinux true (default)', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
     Plugin({
       userAgent:
@@ -135,7 +135,7 @@ test('stealth: navigator.platform with maskLinux true (default)', async t => {
   t.true(platform === 'Win32')
 })
 
-test('stealth: navigator.platform with maskLinux false', async t => {
+test.serial('stealth: navigator.platform with maskLinux false', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
     Plugin({
       userAgent:
@@ -172,7 +172,7 @@ const _testUAHint = async (userAgent, locale) => {
   return page
 }
 
-test('stealth: test if UA hints are correctly set - Windows 10', async t => {
+test.serial('stealth: test if UA hints are correctly set - Windows 10', async t => {
   const page = await _testUAHint(
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36',
     'en-AU'
@@ -201,7 +201,7 @@ test('stealth: test if UA hints are correctly set - Windows 10', async t => {
   }
 })
 
-test('stealth: test if UA hints are correctly set - macOS 11', async t => {
+test.serial('stealth: test if UA hints are correctly set - macOS 11', async t => {
   const page = await _testUAHint(
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36',
     'de-DE'
@@ -230,7 +230,7 @@ test('stealth: test if UA hints are correctly set - macOS 11', async t => {
   }
 })
 
-test('stealth: test if UA hints are correctly set - Android 10', async t => {
+test.serial('stealth: test if UA hints are correctly set - Android 10', async t => {
   const page = await _testUAHint(
     'Mozilla/5.0 (Linux; Android 10; SM-P205) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36',
     'nl-NL'
@@ -287,7 +287,7 @@ async function userAgentData() {
   return result
 }
 
-test('stealth: test if UA hints are correctly set - Windows 10 Generic', async t => {
+test.serial('stealth: test if UA hints are correctly set - Windows 10 Generic', async t => {
   const userAgent =
     'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36'
   const locale = 'en-AU'

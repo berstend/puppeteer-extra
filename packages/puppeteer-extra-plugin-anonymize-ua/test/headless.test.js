@@ -12,7 +12,7 @@ test.beforeEach(t => {
   delete require.cache[require.resolve('puppeteer-extra-plugin-anonymize-ua')]
 })
 
-test('will remove headless from the user-agent', async t => {
+test.serial('will remove headless from the user-agent', async t => {
   const puppeteer = require('puppeteer-extra')
   const AnonymizeUA = require('puppeteer-extra-plugin-anonymize-ua').default()
   puppeteer.use(AnonymizeUA)
@@ -31,7 +31,7 @@ test('will remove headless from the user-agent', async t => {
   t.true(true)
 })
 
-test('will remove headless from the user-agent in incognito page', async t => {
+test.serial('will remove headless from the user-agent in incognito page', async t => {
   const puppeteer = require('puppeteer-extra')
   puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua').default())
 
@@ -54,7 +54,7 @@ test('will remove headless from the user-agent in incognito page', async t => {
   t.true(true)
 })
 
-test('will use a custom fn to modify the user-agent', async t => {
+test.serial('will use a custom fn to modify the user-agent', async t => {
   const puppeteer = require('puppeteer-extra')
   puppeteer.use(
     require('puppeteer-extra-plugin-anonymize-ua').default({

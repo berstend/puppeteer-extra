@@ -18,17 +18,17 @@ const isOldPuppeteerVersion = () => {
   return isOld
 }
 
-test('vanilla: will be undefined', async t => {
+test.serial('vanilla: will be undefined', async t => {
   const { iframeChrome } = await getVanillaFingerPrint()
   t.is(iframeChrome, 'undefined')
 })
 
-test('stealth: will be object', async t => {
+test.serial('stealth: will be object', async t => {
   const { iframeChrome } = await getStealthFingerPrint(Plugin)
   t.is(iframeChrome, 'object')
 })
 
-test('stealth: will not break iframes', async t => {
+test.serial('stealth: will not break iframes', async t => {
   const browser = await addExtra(vanillaPuppeteer)
     .use(Plugin())
     .launch({ headless: true })
@@ -51,7 +51,7 @@ test('stealth: will not break iframes', async t => {
   t.is(realReturn, 'TESTSTRING')
 })
 
-test('vanilla: will not have contentWindow[0]', async t => {
+test.serial('vanilla: will not have contentWindow[0]', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -68,7 +68,7 @@ test('vanilla: will not have contentWindow[0]', async t => {
   t.is(zero, 'undefined')
 })
 
-test('stealth: will not have contentWindow[0]', async t => {
+test.serial('stealth: will not have contentWindow[0]', async t => {
   const browser = await addExtra(vanillaPuppeteer)
     .use(Plugin())
     .launch({ headless: true })
@@ -87,7 +87,7 @@ test('stealth: will not have contentWindow[0]', async t => {
   t.is(zero, 'undefined')
 })
 
-test('vanilla: will not have chrome runtine in any frame', async t => {
+test.serial('vanilla: will not have chrome runtine in any frame', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -133,7 +133,7 @@ test('vanilla: will not have chrome runtine in any frame', async t => {
   t.is(typeof srcdociframe, 'undefined')
 })
 
-test('vanilla: will return empty srcdoc by default', async t => {
+test.serial('vanilla: will return empty srcdoc by default', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -147,7 +147,7 @@ test('vanilla: will return empty srcdoc by default', async t => {
   t.is(srcdoc, '')
 })
 
-test('stealth: will return empty srcdoc by default', async t => {
+test.serial('stealth: will return empty srcdoc by default', async t => {
   const browser = await addExtra(vanillaPuppeteer)
     .use(Plugin())
     .launch({ headless: true })
@@ -163,7 +163,7 @@ test('stealth: will return empty srcdoc by default', async t => {
   t.is(srcdoc, '')
 })
 
-test('stealth: it will cover all frames including srcdoc', async t => {
+test.serial('stealth: it will cover all frames including srcdoc', async t => {
   // const browser = await vanillaPuppeteer.launch({ headless: false })
   const browser = await addExtra(vanillaPuppeteer)
     .use(Plugin())
@@ -217,7 +217,7 @@ test('stealth: it will cover all frames including srcdoc', async t => {
 })
 
 /* global HTMLIFrameElement */
-test('stealth: it will emulate advanved contentWindow features correctly', async t => {
+test.serial('stealth: it will emulate advanved contentWindow features correctly', async t => {
   // const browser = await vanillaPuppeteer.launch({ headless: false })
   const browser = await addExtra(vanillaPuppeteer)
     .use(Plugin())

@@ -16,7 +16,7 @@ test.beforeEach(t => {
   delete require.cache[require.resolve('puppeteer-extra-plugin-anonymize-ua')]
 })
 
-test('known issue: will not remove headless from implicitly created popup pages', async t => {
+test.serial('known issue: will not remove headless from implicitly created popup pages', async t => {
   const puppeteer = require('puppeteer-extra')
   puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua').default())
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })

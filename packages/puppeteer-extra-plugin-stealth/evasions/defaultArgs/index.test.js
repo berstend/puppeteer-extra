@@ -3,7 +3,7 @@ const test = require('ava')
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
 const { default: Plugin, argsToIgnore } = require('.')
 
-test('vanilla: uses args to ignore', async t => {
+test.serial('vanilla: uses args to ignore', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
   const { arguments: launchArgs } = await page._client.send(
@@ -16,7 +16,7 @@ test('vanilla: uses args to ignore', async t => {
   t.is(ok, true)
 })
 
-test('stealth: does not use args to ignore', async t => {
+test.serial('stealth: does not use args to ignore', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()

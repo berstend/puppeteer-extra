@@ -2,17 +2,17 @@ import test from 'ava'
 
 import { PuppeteerExtraPlugin } from '../src'
 
-test('is a function', async t => {
+test.serial('is a function', async t => {
   t.is(typeof PuppeteerExtraPlugin, 'function')
 })
 
-test('will throw without a name', async t => {
+test.serial('will throw without a name', async t => {
   class Derived extends PuppeteerExtraPlugin {}
   const error = await t.throws(() => new Derived())
   t.is(error.message, `Plugin must override "name"`)
 })
 
-test('should have the basic class members', async t => {
+test.serial('should have the basic class members', async t => {
   const pluginName = 'hello-world'
   class Plugin extends PuppeteerExtraPlugin<{}> {
     constructor(opts = {}) {
@@ -36,7 +36,7 @@ test('should have the basic class members', async t => {
   t.true(instance._isPuppeteerExtraPlugin)
 })
 
-test('should have the public class members', async t => {
+test.serial('should have the public class members', async t => {
   const pluginName = 'hello-world'
   class Plugin extends PuppeteerExtraPlugin<{}> {
     constructor(opts = {}) {
@@ -61,7 +61,7 @@ test('should have the public class members', async t => {
   t.true(instance.getDataFromPlugins instanceof Function)
 })
 
-test('should have the internal class members', async t => {
+test.serial('should have the internal class members', async t => {
   const pluginName = 'hello-world'
   class Plugin extends PuppeteerExtraPlugin<{}> {
     constructor(opts = {}) {
@@ -80,7 +80,7 @@ test('should have the internal class members', async t => {
   t.true(instance._hasChildClassMember instanceof Function)
 })
 
-test('should merge opts with defaults automatically', async t => {
+test.serial('should merge opts with defaults automatically', async t => {
   const pluginName = 'hello-world'
   const pluginDefaults = { foo: 'bar', foo2: 'bar2', extra1: 123 }
   const pluginConfig = { foo2: 'bob', extra2: 666 }
@@ -105,7 +105,7 @@ test('should merge opts with defaults automatically', async t => {
   t.is(instance.opts.extra2, pluginConfig.extra2)
 })
 
-test('should have opts when defaults is not defined', async t => {
+test.serial('should have opts when defaults is not defined', async t => {
   const pluginName = 'hello-world'
   const pluginConfig = { foo2: 'bob', extra2: 666 }
 

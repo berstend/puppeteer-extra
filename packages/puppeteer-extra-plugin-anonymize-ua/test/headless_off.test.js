@@ -12,7 +12,7 @@ test.beforeEach(t => {
   delete require.cache[require.resolve('puppeteer-extra-plugin-anonymize-ua')]
 })
 
-test('will not modify the user-agent when disabled', async t => {
+test.serial('will not modify the user-agent when disabled', async t => {
   // : typeof Puppeteer
   const puppeteer = require('puppeteer-extra')
   // : PluginOptions

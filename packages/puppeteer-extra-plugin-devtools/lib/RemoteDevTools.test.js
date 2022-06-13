@@ -11,13 +11,13 @@ const {
 const webSocketDebuggerUrl =
   'ws://127.0.0.1:9222/devtools/browser/ec78d039-2f19-4c6f-a08e-bcaf88e34b69'
 
-test('is a function', async t => {
+test.serial('is a function', async t => {
   t.is(typeof DevToolsCommon, 'function')
   t.is(typeof DevToolsLocal, 'function')
   t.is(typeof DevToolsTunnel, 'function')
 })
 
-test('will throw when missing webSocketDebuggerUrl', async t => {
+test.serial('will throw when missing webSocketDebuggerUrl', async t => {
   const error = await t.throws(() => new DevToolsCommon())
   t.is(
     error.message,
@@ -25,7 +25,7 @@ test('will throw when missing webSocketDebuggerUrl', async t => {
   ) // eslint-disable-line
 })
 
-test('DevToolsLocal: has basic functionality', async t => {
+test.serial('DevToolsLocal: has basic functionality', async t => {
   const instance = new DevToolsLocal(webSocketDebuggerUrl)
   t.is(instance.url, 'http://localhost:9222')
   t.is(
@@ -34,7 +34,7 @@ test('DevToolsLocal: has basic functionality', async t => {
   )
 })
 
-test('DevToolsTunnel: has basic functionality', async t => {
+test.serial('DevToolsTunnel: has basic functionality', async t => {
   const instance = new DevToolsTunnel(webSocketDebuggerUrl)
   instance.tunnel = { url: 'https://faketunnel.com' }
   instance.tunnelHost = 'faketunnel.com'
@@ -45,7 +45,7 @@ test('DevToolsTunnel: has basic functionality', async t => {
   )
 })
 
-test('DevToolsTunnel: has defaults', async t => {
+test.serial('DevToolsTunnel: has defaults', async t => {
   const instance = new DevToolsTunnel(webSocketDebuggerUrl)
 
   t.is(instance.opts.prefix, 'devtools-tunnel')
@@ -53,7 +53,7 @@ test('DevToolsTunnel: has defaults', async t => {
   t.deepEqual(instance.opts.auth, { user: null, pass: null })
 })
 
-test('DevToolsTunnel: has public members', async t => {
+test.serial('DevToolsTunnel: has public members', async t => {
   const instance = new DevToolsTunnel(webSocketDebuggerUrl)
 
   t.true(instance.create instanceof Function)

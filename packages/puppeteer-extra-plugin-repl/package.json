@@ -14,7 +14,7 @@
     "docs": "node -e 0",
     "lint": "eslint --ext .js .",
     "build": "tsc --module commonjs",
-    "test": "ava --serial",
+    "test": "ava",
     "test-ci": "run-s test"
   },
   "engines": {

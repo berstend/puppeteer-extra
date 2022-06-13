@@ -4,15 +4,15 @@ const test = require('ava')
 
 const { default: REPLSession } = require('./REPLSession')
 
-test('is a function', async t => {
+test.serial('is a function', async t => {
   t.is(typeof REPLSession, 'function')
 })
 
-test('is a class', async t => {
+test.serial('is a class', async t => {
   t.is(REPLSession.constructor.name, 'Function')
 })
 
-test('will throw without opts', async t => {
+test.serial('will throw without opts', async t => {
   const error = await t.throws(() => new REPLSession())
   t.is(
     error.message,
@@ -20,7 +20,7 @@ test('will throw without opts', async t => {
   )
 })
 
-test('will throw when opts.obj is not a class derivative', async t => {
+test.serial('will throw when opts.obj is not a class derivative', async t => {
   const error = await t.throws(() => new REPLSession({ obj: 'foobar' }))
   t.is(
     error.message,
@@ -28,7 +28,7 @@ test('will throw when opts.obj is not a class derivative', async t => {
   )
 })
 
-test('should have the expected class members', async t => {
+test.serial('should have the expected class members', async t => {
   const FakeClass = class Foo {}
   const opts = { obj: new FakeClass() }
   const instance = new REPLSession(opts)

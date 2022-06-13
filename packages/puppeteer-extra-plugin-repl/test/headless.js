@@ -10,7 +10,7 @@ test.beforeEach(t => {
   // delete require.cache[require.resolve('puppeteer-extra-plugin-repl')]
 })
 
-test('will create a repl', async t => {
+test.serial('will create a repl', async t => {
   t.pass()
   // @TODO: This test is a little brittle and fails in CI sometimes.
 

@@ -20,7 +20,7 @@ const getBrowser = async (url = '', opts = {}) => {
   return { browser, page }
 }
 
-test('will correctly detect v2-checkbox-auto.html', async t => {
+test.serial('will correctly detect v2-checkbox-auto.html', async t => {
   const url =
     'https://berstend.github.io/static/recaptcha/v2-checkbox-auto.html'
   const { browser, page } = await getBrowser(url)
@@ -46,7 +46,7 @@ test('will correctly detect v2-checkbox-auto.html', async t => {
   await browser.close()
 })
 
-test('will correctly detect v2-checkbox-auto-nowww.html', async t => {
+test.serial('will correctly detect v2-checkbox-auto-nowww.html', async t => {
   const url =
     'https://berstend.github.io/static/recaptcha/v2-checkbox-auto-nowww.html'
   const { browser, page } = await getBrowser(url)
@@ -66,7 +66,7 @@ test('will correctly detect v2-checkbox-auto-nowww.html', async t => {
   await browser.close()
 })
 
-test('will correctly detect v2-checkbox-auto-recaptchadotnet.html', async t => {
+test.serial('will correctly detect v2-checkbox-auto-recaptchadotnet.html', async t => {
   const url =
     'https://berstend.github.io/static/recaptcha/v2-checkbox-auto-recaptchadotnet.html'
   const { browser, page } = await getBrowser(url)
@@ -86,7 +86,7 @@ test('will correctly detect v2-checkbox-auto-recaptchadotnet.html', async t => {
   await browser.close()
 })
 
-test('will correctly detect enterprise-checkbox-auto.html', async t => {
+test.serial('will correctly detect enterprise-checkbox-auto.html', async t => {
   const url =
     'https://berstend.github.io/static/recaptcha/enterprise-checkbox-auto.html'
   const { browser, page } = await getBrowser(url)
@@ -107,7 +107,7 @@ test('will correctly detect enterprise-checkbox-auto.html', async t => {
   await browser.close()
 })
 
-test('will correctly detect enterprise-checkbox-auto-recaptchadotnet.html', async t => {
+test.serial('will correctly detect enterprise-checkbox-auto-recaptchadotnet.html', async t => {
   const url =
     'https://berstend.github.io/static/recaptcha/enterprise-checkbox-auto-recaptchadotnet.html'
   const { browser, page } = await getBrowser(url)
@@ -128,7 +128,7 @@ test('will correctly detect enterprise-checkbox-auto-recaptchadotnet.html', asyn
   await browser.close()
 })
 
-test('will correctly detect enterprise-checkbox-explicit.html', async t => {
+test.serial('will correctly detect enterprise-checkbox-explicit.html', async t => {
   const url =
     'https://berstend.github.io/static/recaptcha/enterprise-checkbox-explicit.html'
   const { browser, page } = await getBrowser(url)
@@ -150,7 +150,7 @@ test('will correctly detect enterprise-checkbox-explicit.html', async t => {
   await browser.close()
 })
 
-test('will correctly detect v2-invisible-explicit-isolated.html', async t => {
+test.serial('will correctly detect v2-invisible-explicit-isolated.html', async t => {
   const url =
     'https://berstend.github.io/static/recaptcha/v2-invisible-explicit-isolated.html'
   const { browser, page } = await getBrowser(url, {
@@ -188,7 +188,7 @@ test('will correctly detect v2-invisible-explicit-isolated.html', async t => {
   await browser.close()
 })
 
-test('will correctly detect v2-invisible-auto.html - active challenge', async t => {
+test.serial('will correctly detect v2-invisible-auto.html - active challenge', async t => {
   const url =
     'https://berstend.github.io/static/recaptcha/v2-invisible-explicit.html'
   const { browser, page } = await getBrowser('about:blank')
@@ -246,7 +246,7 @@ test('will correctly detect v2-invisible-auto.html - active challenge', async t 
   await browser.close()
 })
 
-test('will correctly detect v3-programmatic.html with solveScoreBased:false and filter captcha', async t => {
+test.serial('will correctly detect v3-programmatic.html with solveScoreBased:false and filter captcha', async t => {
   const url = 'https://berstend.github.io/static/recaptcha/v3-programmatic.html'
   const { browser, page } = await getBrowser(url, {
     solveScoreBased: false
@@ -285,7 +285,7 @@ test('will correctly detect v3-programmatic.html with solveScoreBased:false and 
   await browser.close()
 })
 
-test('will correctly detect v3-programmatic.html with solveScoreBased:true', async t => {
+test.serial('will correctly detect v3-programmatic.html with solveScoreBased:true', async t => {
   const url = 'https://berstend.github.io/static/recaptcha/v3-programmatic.html'
   const { browser, page } = await getBrowser(url, {
     solveScoreBased: true

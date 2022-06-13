@@ -6,17 +6,17 @@ const test = require('ava')
 
 const { default: getPlugin, Plugin } = require('..')
 
-test('is a function', async t => {
+test.serial('is a function', async t => {
   t.is(typeof Plugin, 'function')
 })
 
-test('should have the basic class members', async t => {
+test.serial('should have the basic class members', async t => {
   const instance = getPlugin()
   t.is(instance.name, PLUGIN_NAME)
   t.true(instance._isPuppeteerExtraPlugin)
 })
 
-test('should have the public child class members', async t => {
+test.serial('should have the public child class members', async t => {
   const instance = getPlugin()
   const prototype = Object.getPrototypeOf(instance)
   const childClassMembers = Object.getOwnPropertyNames(prototype)
@@ -32,7 +32,7 @@ test('should have the public child class members', async t => {
   t.true(childClassMembers.length === 7)
 })
 
-test('should have opts with default values', async t => {
+test.serial('should have opts with default values', async t => {
   const instance = getPlugin()
   t.deepEqual(instance.opts.blockedTypes, new Set([]))
   t.is(instance.opts.availableTypes.size, 13)

@@ -13,7 +13,7 @@ test.beforeEach(t => {
   }
 })
 
-test('will remove headless from remote browser', async t => {
+test.serial('will remove headless from remote browser', async t => {
   // Mitigate CI quirks
   try {
     // Launch vanilla puppeteer browser with no plugins

@@ -10,7 +10,7 @@ test.beforeEach(t => {
   delete require.cache[require.resolve('puppeteer-extra-plugin-devtools')]
 })
 
-test('will create a tunnel', async t => {
+test.serial('will create a tunnel', async t => {
   const puppeteer = require('puppeteer-extra')
   const devtools = require('puppeteer-extra-plugin-devtools').default()
   puppeteer.use(devtools)

@@ -6,7 +6,7 @@ import { addExtra } from 'puppeteer-extra'
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
-test('will solve reCAPTCHAs', async t => {
+test.serial('will solve reCAPTCHAs', async t => {
   if (!process.env.TWOCAPTCHA_TOKEN) {
     t.truthy('foo')
     console.log('TWOCAPTCHA_TOKEN not set, skipping test.')
@@ -45,7 +45,7 @@ test('will solve reCAPTCHAs', async t => {
   await browser.close()
 })
 
-test('will solve hCAPTCHAs', async t => {
+test.serial('will solve hCAPTCHAs', async t => {
   if (!process.env.TWOCAPTCHA_TOKEN) {
     t.truthy('foo')
     console.log('TWOCAPTCHA_TOKEN not set, skipping test.')
@@ -83,7 +83,7 @@ test('will solve hCAPTCHAs', async t => {
   await browser.close()
 })
 
-test('will solve reCAPTCHA enterprise', async t => {
+test.serial('will solve reCAPTCHA enterprise', async t => {
   if (!process.env.TWOCAPTCHA_TOKEN) {
     t.truthy('foo')
     console.log('TWOCAPTCHA_TOKEN not set, skipping test.')
@@ -126,7 +126,7 @@ test('will solve reCAPTCHA enterprise', async t => {
   await browser.close()
 })
 
-test('will solve multiple reCAPTCHAs', async t => {
+test.serial('will solve multiple reCAPTCHAs', async t => {
   if (!process.env.TWOCAPTCHA_TOKEN) {
     t.truthy('foo')
     console.log('TWOCAPTCHA_TOKEN not set, skipping test.')
@@ -173,7 +173,7 @@ test('will solve multiple reCAPTCHAs', async t => {
   await browser.close()
 })
 
-test('will not solve inactive invisible reCAPTCHAs by default', async t => {
+test.serial('will not solve inactive invisible reCAPTCHAs by default', async t => {
   if (!process.env.TWOCAPTCHA_TOKEN) {
     t.truthy('foo')
     console.log('TWOCAPTCHA_TOKEN not set, skipping test.')
@@ -211,7 +211,7 @@ test('will not solve inactive invisible reCAPTCHAs by default', async t => {
   await browser.close()
 })
 
-test('will not solve score based reCAPTCHAs by default', async t => {
+test.serial('will not solve score based reCAPTCHAs by default', async t => {
   if (!process.env.TWOCAPTCHA_TOKEN) {
     t.truthy('foo')
     console.log('TWOCAPTCHA_TOKEN not set, skipping test.')

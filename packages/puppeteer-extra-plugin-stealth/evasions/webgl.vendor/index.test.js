@@ -8,7 +8,7 @@ const { vanillaPuppeteer, addExtra } = require('../../test/util')
 
 const { default: Plugin } = require('.')
 
-test('vanilla: videoCard is Google Inc', async t => {
+test.serial('vanilla: videoCard is Google Inc', async t => {
   const pageFn = async page => await page.evaluate(() => window.chrome) // eslint-disable-line
   const { videoCard } = await getVanillaFingerPrint(pageFn)
   t.truthy(videoCard.length === 2, 'videoCard should be an array of 2 elements')
@@ -26,13 +26,13 @@ test('vanilla: videoCard is Google Inc', async t => {
   }
 })
 
-test('stealth: videoCard is Intel Inc', async t => {
+test.serial('stealth: videoCard is Intel Inc', async t => {
   const pageFn = async page => await page.evaluate(() => window.chrome) // eslint-disable-line
   const { videoCard } = await getStealthFingerPrint(Plugin, pageFn)
   t.deepEqual(videoCard, ['Intel Inc.', 'Intel Iris OpenGL Engine'])
 })
 
-test('stealth: customized values', async t => {
+test.serial('stealth: customized values', async t => {
   const pageFn = async page => await page.evaluate(() => window.chrome) // eslint-disable-line
   const { videoCard } = await getStealthFingerPrint(Plugin, pageFn, {
     vendor: 'foo',
@@ -93,7 +93,7 @@ async function extendedTests() {
   return results
 }
 
-test('vanilla: webgl is native', async t => {
+test.serial('vanilla: webgl is native', async t => {
   const pageFn = async page => {
     // page.on('console', msg => {
     //   console.log('Page console: ', msg.text())
@@ -109,7 +109,7 @@ test('vanilla: webgl is native', async t => {
   t.false(wasHeadlessDetected)
 })
 
-test('stealth: webgl is native', async t => {
+test.serial('stealth: webgl is native', async t => {
   const pageFn = async page => await page.evaluate(extendedTests) // eslint-disable-line
   const { pageFnResult: result } = await getStealthFingerPrint(Plugin, pageFn)
 
@@ -148,7 +148,7 @@ function getVideoCardInfo(context = 'webgl') {
   }
 }
 
-test('stealth: handles WebGLRenderingContext', async t => {
+test.serial('stealth: handles WebGLRenderingContext', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
@@ -159,7 +159,7 @@ test('stealth: handles WebGLRenderingContext', async t => {
   t.is(videoCardInfo.renderer, 'Intel Iris OpenGL Engine')
 })
 
-test('stealth: handles WebGL2RenderingContext', async t => {
+test.serial('stealth: handles WebGL2RenderingContext', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
@@ -170,7 +170,7 @@ test('stealth: handles WebGL2RenderingContext', async t => {
   t.is(videoCardInfo.renderer, 'Intel Iris OpenGL Engine')
 })
 
-test('vanilla: normal toString stuff', async t => {
+test.serial('vanilla: normal toString stuff', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -185,7 +185,7 @@ test('vanilla: normal toString stuff', async t => {
   t.is(test2, 'function getParameter() { [native code] }')
 })
 
-test('stealth: will not leak toString stuff', async t => {
+test.serial('stealth: will not leak toString stuff', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
@@ -201,7 +201,7 @@ test('stealth: will not leak toString stuff', async t => {
   t.is(test2, 'function getParameter() { [native code] }')
 })
 
-test('stealth: sets user opts correctly', async t => {
+test.serial('stealth: sets user opts correctly', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
     Plugin({ vendor: 'alice', renderer: 'bob' })
   )
@@ -214,7 +214,7 @@ test('stealth: sets user opts correctly', async t => {
   t.is(videoCardInfo.renderer, 'bob')
 })
 
-test('stealth: does not affect protoype', async t => {
+test.serial('stealth: does not affect protoype', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
     Plugin({ vendor: 'alice', renderer: 'bob' })
   )

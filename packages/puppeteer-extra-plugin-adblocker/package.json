@@ -23,7 +23,7 @@
     "docs": "node -e 0",
     "test": "ava",
     "pretest-ci": "run-s build",
-    "test-ci-back": "ava --serial",
+    "test-ci-back": "ava",
     "test-ci": "exit 0"
   },
   "engines": {

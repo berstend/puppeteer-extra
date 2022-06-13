@@ -1,11 +1,11 @@
-import test, { beforeEach } from 'ava'
+import test from 'ava'
 import { PuppeteerLaunchOption } from '../../puppeteer-extra-plugin/src'
 
 declare const require: any;
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
-beforeEach(t => {
+test.beforeEach(t => {
   // Make sure we work with pristine modules
   try {
     delete require.cache[require.resolve('puppeteer-extra')]
@@ -15,7 +15,7 @@ beforeEach(t => {
   }
 })
 
-test('will modify puppeteer launch options through plugins', async t => {
+test.serial('will modify puppeteer launch options through plugins', async t => {
   let FINAL_OPTIONS = null
 
   const puppeteer = require('puppeteer-extra')
@@ -59,7 +59,7 @@ test('will modify puppeteer launch options through plugins', async t => {
   t.true(true)
 })
 
-test('will modify puppeteer connect options through plugins', async t => {
+test.serial('will modify puppeteer connect options through plugins', async t => {
   let FINAL_OPTIONS = null
 
   // Launch vanilla puppeteer browser with no plugins

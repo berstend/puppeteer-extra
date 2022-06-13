@@ -14,7 +14,7 @@ test.beforeEach(t => {
   }
 })
 
-test('will launch the browser normally', async t => {
+test.serial('will launch the browser normally', async t => {
   const puppeteer = require('puppeteer-extra')
   const browser = await puppeteer.launch({ args: PUPPETEER_ARGS })
   const page = await browser.newPage()
@@ -26,7 +26,7 @@ test('will launch the browser normally', async t => {
   t.true(true)
 })
 
-test('will launch puppeteer with plugin support', async t => {
+test.serial('will launch puppeteer with plugin support', async t => {
   const puppeteer = require('puppeteer-extra')
   const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
