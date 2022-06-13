@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - "packages/puppeteer-extra-plugin-stealth/**"
+      - ".github/workflows/extract-stealth.yml"
 
 jobs:
   build:
@@ -21,9 +22,10 @@ jobs:
 
       - name: Extract stealth.min.js
         run: |
-          cd packages/extract-stealth-evasions
           yarn install
-          yarn build
+          yarn bootstrap
+          lerna run build --scope puppeteer-extra --scope puppeteer-extra-plugin --scope puppeteer-extra-plugin-user-preferences --scope extract-stealth-evasions 
+          cd packages/extract-stealth-evasions
           node index.js
           cp stealth.min.js ../../
 
