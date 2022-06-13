@@ -22,7 +22,7 @@ test.serial('will modify puppeteer launch options through plugins', async t => {
   const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
   const pluginData = [{ name: 'foo', value: 'bar' }]
-  class Plugin extends PuppeteerExtraPlugin<{}> {
+  class Plugin extends PuppeteerExtraPlugin {
     constructor(opts = {}) {
       super(opts)
     }
@@ -73,7 +73,7 @@ test.serial('will modify puppeteer connect options through plugins', async t => 
   const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
   const pluginData = [{ name: 'foo', value: 'bar' }]
-  class Plugin extends PuppeteerExtraPlugin<{}> {
+  class Plugin extends PuppeteerExtraPlugin {
     constructor(opts = {}) {
       super(opts)
     }

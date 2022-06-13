@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - test/fix2
     paths:
       - "packages/puppeteer-extra-plugin-stealth/**"
       - "packages/extract-stealth-evasions/**"
@@ -22,7 +21,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Build sources
+      - name: Transpile sources
         run: |
           yarn install
           yarn bootstrap

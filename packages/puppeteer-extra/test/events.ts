@@ -22,7 +22,7 @@ test.serial('will bind launched browser events to plugins', async t => {
   const puppeteer = addExtra(puppeteerVanilla)
   const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
-  class Plugin extends PuppeteerExtraPlugin<{}> {
+  class Plugin extends PuppeteerExtraPlugin {
     constructor(opts = {}) {
       super(opts)
     }
@@ -104,7 +104,7 @@ test.serial('will bind connected browser events to plugins', async t => {
   const puppeteer = addExtra(puppeteerVanilla)
   const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   const pluginName = 'hello-world'
-  class Plugin extends PuppeteerExtraPlugin<{}> {
+  class Plugin extends PuppeteerExtraPlugin {
     constructor(opts = {}) {
       super(opts)
     }
