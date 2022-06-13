@@ -67,7 +67,7 @@ export type PuppeteerResponse = Puppeteer.Response;
  * // hello-world-plugin.js
  * const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  *
- * export class Plugin extends PuppeteerExtraPlugin<{}> {
+ * export class Plugin extends PuppeteerExtraPlugin {
  *   constructor (opts = { }) { super(opts) }
  *
  *   get name () { return 'hello-world' }
@@ -96,7 +96,7 @@ export type PuppeteerResponse = Puppeteer.Response;
  * })()
  *
  */
- export abstract class PuppeteerExtraPlugin<OPTION = {}> {
+ export abstract class PuppeteerExtraPlugin<OPTION = Record<string, never>> {
   /** @private */
   private _debugBase: Debugger
   /** @private */

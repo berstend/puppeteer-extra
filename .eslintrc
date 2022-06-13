@@ -1,7 +1,0 @@
-{
-  "extends": ["prettier-standard"],
-  "rules": {
-    "lines-between-class-members": "off",
-    "max-len": [2, {"code": 120, "commentLength": 160, "tabWidth": 2, "ignoreUrls": true}]
-  }
-}
