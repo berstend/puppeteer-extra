@@ -70,7 +70,7 @@
   "ava": {
     "concurrency": 1,
     "verbose": true,
-    "timeout": "15s",
+    "timeout": "35s",
     "environmentVariables": {
       "TS_NODE_COMPILER_OPTIONS": "{\"module\":\"commonjs\"}",
       "TS_NODE_FILES": "true",
