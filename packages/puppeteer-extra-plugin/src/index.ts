@@ -28,8 +28,10 @@ export interface BrowserEventOptions {
   options: PuppeteerLaunchOption;
   defaultArgs?: (options?: Parameters<VanillaPuppeteer['defaultArgs']>[0]) => ReturnType<VanillaPuppeteer['defaultArgs']>;
 }
-
-export type PluginDependencies = string[]
+/**
+ * Set<string> is deprectated use Array<string>
+ */
+export type PluginDependencies = Array<string> | Set<string>
 export type PluginRequirements = Set<'launch' | 'headful' | 'dataFromPlugins' | 'runLast'>
 
 export type ChildClassMembers = keyof PuppeteerExtraPlugin | 'constructor';

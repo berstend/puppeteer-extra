@@ -349,7 +349,8 @@ export class PuppeteerExtra implements VanillaPuppeteer {
     const missingPlugins = new Set<string>()
 
     const requierDep = (plugin: PuppeteerExtraPlugin): void => {
-      plugin.dependencies.filter(p => !loadedPlugins.has(p)).forEach(dep => missingPlugins.add(dep))
+      // convert Set<string> to Array<string>
+      [...plugin.dependencies].filter(p => !loadedPlugins.has(p)).forEach(dep => missingPlugins.add(dep))
     }
 
     for (const plugin of this._plugins) {

@@ -24,7 +24,10 @@ export interface BrowserEventOptions {
 }
 
 export type PluginRequirements = Set<'launch' | 'headful' | 'dataFromPlugins' | 'runLast'>
-export type PluginDependencies = string[]
+/**
+ * Set<string> is deprectated use Array<string>
+ */
+export type PluginDependencies = Array<string> | Set<string>
 export interface PluginData {
     name: string,
     value: {
