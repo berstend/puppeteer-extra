@@ -30,11 +30,15 @@
     ]
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.28.0",
+    "@typescript-eslint/parser": "^5.28.0",
+    "eslint": "^8.17.0",
     "lerna": "^3.19.0",
     "lerna-update-wizard": "^0.17.5",
     "prettier": "^1.19.1",
     "prettier-config-standard": "^1.0.1",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "typescript": "^4.7.3"
   },
   "optionalDependencies": {
     "fsevents": "^2.1.2"

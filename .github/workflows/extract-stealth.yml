@@ -22,11 +22,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Extract stealth.min.js
+      - name: Build sources
         run: |
           yarn install
           yarn bootstrap
-          lerna run build --scope puppeteer-extra --scope puppeteer-extra-plugin --scope puppeteer-extra-plugin-user-preferences --scope extract-stealth-evasions --scope puppeteer-extra-plugin-stealth
+          lerna run build --scope puppeteer-extra --scope puppeteer-extra-plugin --scope puppeteer-extra-plugin-user-preferences --scope extract-stealth-evasions --scope puppeteer-extra-plugin-stealth --scope puppeteer-extra-plugin-user-data-dir
+
+      - name: Extract stealth.min.js
+        run: |
           cd packages/extract-stealth-evasions
           node index.js
           cp stealth.min.js ../../
