@@ -572,3 +572,138 @@ test('replaceWithProxy: will throw prototype errors', async t => {
     none: 'TypeError: Object prototype may only be an Object or null: undefined'
   })
 })
+
+test('replaceGetterSetter', async t => {
+  const browser = await vanillaPuppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+  await page.goto('about:blank')
+
+  const results = await withUtils(page).evaluate(utils => {
+    const getDetails = a => ({
+      href: a.href,
+      typeof: typeof a.href,
+      in: 'href' in a,
+      keys: Object.keys(a),
+      // eslint-disable-next-line no-undef
+      prototypeKeys: Object.keys(HTMLAnchorElement.prototype),
+      getOwnPropertyNames: Object.getOwnPropertyNames(a),
+      prototypeGetOwnPropertyNames: Object.getOwnPropertyNames(
+        // eslint-disable-next-line no-undef
+        HTMLAnchorElement.prototype
+      ),
+      ownPropertyDescriptor:
+        undefined === Object.getOwnPropertyDescriptor(a, 'href'),
+      prototypeOwnPropertyDescriptor: Object.getOwnPropertyDescriptor(
+        // eslint-disable-next-line no-undef
+        HTMLAnchorElement.prototype,
+        'href'
+      ),
+      ownPropertyDescriptors: Object.getOwnPropertyDescriptors(a, 'href'),
+      prototypeOwnPropertyDescriptors: Object.getOwnPropertyDescriptors(
+        // eslint-disable-next-line no-undef
+        HTMLAnchorElement.prototype,
+        'href'
+      ),
+      getToString: Object.getOwnPropertyDescriptor(
+        // eslint-disable-next-line no-undef
+        HTMLAnchorElement.prototype,
+        'href'
+      ).get.toString(),
+      setToString: Object.getOwnPropertyDescriptor(
+        // eslint-disable-next-line no-undef
+        HTMLAnchorElement.prototype,
+        'href'
+      ).set.toString()
+    })
+
+    // Use native a.href.
+    const a1 = document.createElement('a')
+    a1.href = 'http://foo.com/'
+    const details1 = getDetails(a1)
+
+    // Override a.href.
+    let href = ''
+    // eslint-disable-next-line no-undef
+    utils.replaceGetterSetter(HTMLAnchorElement.prototype, 'href', {
+      get: function() {
+        return href
+      },
+      set: function(newValue) {
+        href = newValue
+      }
+    })
+
+    // Use overrided a.href.
+    const a2 = document.createElement('a')
+    a2.href = 'http://foo.com/'
+    const details2 = getDetails(a2)
+
+    return [details1, details2]
+  })
+
+  t.deepEqual(results[1], results[0])
+})
+
+test('arrayEquals', async t => {
+  const browser = await vanillaPuppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+  await page.goto('about:blank')
+
+  const results = await withUtils(page).evaluate(utils => {
+    const obj = { foo: 'bar' }
+    return {
+      a: utils.arrayEquals(['a', 'Alpha'], ['a', 'Alpha']),
+      b: !utils.arrayEquals(['b', 'Beta'], ['b', 'Blue']),
+      c: !utils.arrayEquals(['c', { foo: 'bar' }], ['c', { foo: 'bar' }]),
+      d: utils.arrayEquals(['d', obj], ['d', obj]),
+      e: utils.arrayEquals([null], [null]),
+      f: utils.arrayEquals([undefined], [undefined]),
+      g: utils.arrayEquals([false], [false])
+    }
+  })
+
+  t.deepEqual(results, {
+    a: true,
+    b: true,
+    c: true,
+    d: true,
+    e: true,
+    f: true,
+    g: true
+  })
+})
+
+test('memoize', async t => {
+  const browser = await vanillaPuppeteer.launch({ headless: true })
+  const page = await browser.newPage()
+  await page.goto('about:blank')
+
+  const results = await withUtils(page).evaluate(utils => {
+    const objectify = utils.memoize((valueAdded, valueIgnored) => {
+      return { valueAdded }
+    })
+
+    const obj = { foo: 'bar' }
+    /* eslint-disable no-self-compare */
+    return {
+      a: objectify('a', 'Alpha') === objectify('a', 'Alpha'),
+      b: objectify('b', 'Beta') !== objectify('b', 'Blue'),
+      c: objectify('c', { foo: 'bar' }) !== objectify('c', { foo: 'bar' }),
+      d: objectify('d', obj) === objectify('d', obj),
+      e: objectify(null) === objectify(null),
+      f: objectify(undefined) === objectify(undefined),
+      g: objectify(false) === objectify(false)
+    }
+    /* eslint-enable no-self-compare */
+  })
+
+  t.deepEqual(results, {
+    a: true,
+    b: true,
+    c: true,
+    d: true,
+    e: true,
+    f: true,
+    g: true
+  })
+})

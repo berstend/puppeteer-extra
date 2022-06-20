@@ -346,6 +346,42 @@ utils.replaceGetterWithProxy = (obj, propName, handler) => {
 }
 
 /**
+ * All-in-one method to replace a getter and/or setter. Functions get and set
+ * of handler have one more argument that contains the native function.
+ *
+ * @example
+ * replaceGetterSetter(HTMLIFrameElement.prototype, 'contentWindow', handler)
+ *
+ * @param {object} obj - The object which has the property to replace
+ * @param {string} propName - The name of the property to replace
+ * @param {object} handlerGetterSetter - The handler with get and/or set
+ *                                     functions
+ * @see https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty#description
+ */
+utils.replaceGetterSetter = (obj, propName, handlerGetterSetter) => {
+  const ownPropertyDescriptor = Object.getOwnPropertyDescriptor(obj, propName)
+  const handler = { ...ownPropertyDescriptor }
+
+  if (handlerGetterSetter.get !== undefined) {
+    const nativeFn = ownPropertyDescriptor.get
+    handler.get = function() {
+      return handlerGetterSetter.get.call(this, nativeFn.bind(this))
+    }
+    utils.redirectToString(handler.get, nativeFn)
+  }
+
+  if (handlerGetterSetter.set !== undefined) {
+    const nativeFn = ownPropertyDescriptor.set
+    handler.set = function(newValue) {
+      handlerGetterSetter.set.call(this, newValue, nativeFn.bind(this))
+    }
+    utils.redirectToString(handler.set, nativeFn)
+  }
+
+  Object.defineProperty(obj, propName, handler)
+}
+
+/**
  * All-in-one method to mock a non-existing property with a JS Proxy using the provided Proxy handler with traps.
  *
  * Will stealthify these aspects (strip error stack traces, redirect toString, etc).
@@ -507,6 +543,39 @@ utils.makeHandler = () => ({
     }
   })
 })
+
+/**
+ * Compare two arrays.
+ *
+ * @param {array} array1 - First array
+ * @param {array} array2 - Second array
+ */
+utils.arrayEquals = (array1, array2) => {
+  if (array1.length !== array2.length) {
+    return false
+  }
+  for (let i = 0; i < array1.length; ++i) {
+    if (array1[i] !== array2[i]) {
+      return false
+    }
+  }
+  return true
+}
+
+/**
+ * Cache the method return according to its arguments.
+ *
+ * @param {Function} fn - A function that will be cached
+ */
+utils.memoize = fn => {
+  const cache = []
+  return function(...args) {
+    if (!cache.some(c => utils.arrayEquals(c.key, args))) {
+      cache.push({ key: args, value: fn.apply(this, args) })
+    }
+    return cache.find(c => utils.arrayEquals(c.key, args)).value
+  }
+}
 
 // --
 // Stuff starting below this line is NodeJS specific.
