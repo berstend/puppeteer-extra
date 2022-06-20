@@ -65,7 +65,7 @@ export class HcaptchaContentScript {
   /** Find active challenges from invisible hcaptchas */
   private _findActiveChallenges() {
     const nodeList = document.querySelectorAll<HTMLIFrameElement>(
-      `div[style*='visible'] iframe[src*='${this.baseUrl}'][src*='hcaptcha-challenge.html'][src*='invisible']`
+      `div[style*='visible'] iframe[src*='${this.baseUrl}'][src*='hcaptcha.html'][src*='invisible']`
     )
     return Array.from(nodeList)
   }
