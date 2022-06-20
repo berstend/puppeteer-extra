@@ -73,6 +73,13 @@ yarn lernaupdate
 yarn lerna exec "rm -f yarn.lock; rm -rf node_modules; echo 0"
 rm -f yarn.lock &&  rm -rf node_modules && yarn cache clean
 
+# Run tests of specific package
+cd packages/puppeteer-extra-plugin-stealth
+yarn test
+
+# Run tests of specific stealth evasion
+cd packages/puppeteer-extra-plugin-stealth
+yarn ava -v ./evasions/user-agent-override/index.test.js
 
 # Test a local monorepo package in an outside folder as it would've been installed from the registry
 # Change PACKAGE_DIR to the path of this monorepo and PACKAGE to the package you wish to install
