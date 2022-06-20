@@ -16,7 +16,7 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   async onPageCreated(page) {
-    if (!page || !page._client || !page._client.send) {
+    if (!page || !page._client || (typeof page._client === 'function' && !page._client().send) || !page._client.send) {
       this.debug('Warning, missing properties to intercept CDP.', { page })
       return
     }
@@ -24,7 +24,7 @@ class Plugin extends PuppeteerExtraPlugin {
     // Intercept CDP commands and strip identifying and unnecessary sourceURL
     // https://github.com/puppeteer/puppeteer/blob/9b3005c105995cd267fdc7fb95b78aceab82cf0e/new-docs/puppeteer.cdpsession.md
     const debug = this.debug
-    page._client.send = (function(originalMethod, context) {
+    (typeof page._client === 'function' && page._client() || page._client).send = (function(originalMethod, context) {
       return async function() {
         const [method, paramArgs] = arguments || []
         const next = async () => {
@@ -64,7 +64,7 @@ class Plugin extends PuppeteerExtraPlugin {
 
         return next()
       }
-    })(page._client.send, page._client)
+    })((typeof page._client === 'function' && page._client() || page._client).send, (typeof page._client === 'function' && page._client() || page._client))
   }
 }
 
