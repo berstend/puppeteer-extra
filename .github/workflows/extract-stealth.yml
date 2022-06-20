@@ -33,7 +33,7 @@ jobs:
       - name: Extract stealth.min.js
         run: |
           cd packages/extract-stealth-evasions
-          npm install
+          node index.js
           cp stealth.min.js ../../
 
       - name: Commit stealth.min.js
