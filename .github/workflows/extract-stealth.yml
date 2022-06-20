@@ -13,10 +13,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Sleep for 60 seconds
+      - name: Sleep for 190 seconds
         uses: jakejarvis/wait-action@master
         with:
-          time: '180s'
+          time: '190s'
 
       - name: Checkout
         uses: actions/checkout@v2
