@@ -3,6 +3,7 @@
   "version": "2.3.0",
   "description": "Block resources (images, media, etc.) in puppeteer.",
   "main": "index.js",
+  "types": "index.d.ts",
   "repository": "berstend/puppeteer-extra",
   "author": "berstend",
   "license": "MIT",

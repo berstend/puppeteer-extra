@@ -11,8 +11,11 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
  * @param {Set<string>} [opts.blockedTypes] - Specify which resourceTypes to block (by default none)
  *
  * @example
+ * const { DEFAULT_INTERCEPT_RESOLUTION_PRIORITY } = require('puppeteer')
  * puppeteer.use(require('puppeteer-extra-plugin-block-resources')({
- *   blockedTypes: new Set(['image', 'stylesheet'])
+ *   blockedTypes: new Set(['image', 'stylesheet']),
+ *   // Optionally enable Cooperative Mode for several request interceptors
+ *   interceptResolutionPriority: DEFAULT_INTERCEPT_RESOLUTION_PRIORITY
  * }))
  *
  * //
@@ -65,7 +68,8 @@ class Plugin extends PuppeteerExtraPlugin {
         'other'
       ]),
       // Block nothing by default
-      blockedTypes: new Set([])
+      blockedTypes: new Set([]),
+      interceptResolutionPriority: undefined
     }
   }
 
@@ -92,13 +96,49 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   /**
+   * Get the request interception resolution priority.
+   *
+   * Priority for Cooperative Intercept Mode can be configured either through `opts` or by modifying this property.
+   *
+   * @type {number} - A number for the request interception resolution priority.
+   */
+  get interceptResolutionPriority() {
+    return this.opts.interceptResolutionPriority
+  }
+
+  /**
    * @private
    */
   onRequest(request) {
     const type = request.resourceType()
     const shouldBlock = this.blockedTypes.has(type)
-    this.debug('onRequest', { type, shouldBlock })
-    return shouldBlock ? request.abort() : request.continue()
+
+    // Requests are immediately handled if not using Cooperative Intercept Mode
+    const alreadyHandled = request.isInterceptResolutionHandled
+      ? request.isInterceptResolutionHandled()
+      : true
+
+    this.debug('onRequest', {
+      type,
+      shouldBlock,
+      alreadyHandled
+    })
+
+    if (alreadyHandled) return
+
+    if (shouldBlock) {
+      const abortArgs = request.abortErrorReason
+        ? ['blockedbyclient', this.interceptResolutionPriority]
+        : []
+
+      return request.abort(...abortArgs)
+    }
+
+    const continueArgs = request.continueRequestOverrides
+      ? [request.continueRequestOverrides(), this.interceptResolutionPriority]
+      : []
+
+    return request.continue(...continueArgs)
   }
 
   /**

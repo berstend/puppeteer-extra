@@ -26,14 +26,15 @@ test('should have the public child class members', async t => {
   t.true(childClassMembers.includes('defaults'))
   t.true(childClassMembers.includes('availableTypes'))
   t.true(childClassMembers.includes('blockedTypes'))
-  t.true(childClassMembers.includes('blockedTypes'))
+  t.true(childClassMembers.includes('interceptResolutionPriority'))
   t.true(childClassMembers.includes('onRequest'))
   t.true(childClassMembers.includes('onPageCreated'))
-  t.true(childClassMembers.length === 7)
+  t.true(childClassMembers.length === 8)
 })
 
 test('should have opts with default values', async t => {
   const instance = new Plugin()
   t.deepEqual(instance.opts.blockedTypes, new Set([]))
   t.is(instance.opts.availableTypes.size, 13)
+  t.is(instance.opts.interceptResolutionPriority, undefined)
 })
