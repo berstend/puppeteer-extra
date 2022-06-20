@@ -9,14 +9,14 @@ import { addExtra } from 'puppeteer-extra'
 
 const PUPPETEER_ARGS = ['--no-sandbox', '--disable-setuid-sandbox']
 
-test('will detect reCAPTCHAs', async (t) => {
+test('will detect reCAPTCHAs', async t => {
   const puppeteer = addExtra(require('puppeteer'))
   const recaptchaPlugin = RecaptchaPlugin()
   puppeteer.use(recaptchaPlugin)
 
   const browser = await puppeteer.launch({
     args: PUPPETEER_ARGS,
-    headless: true,
+    headless: true
   })
   const page = await browser.newPage()
 
@@ -37,18 +37,18 @@ test('will detect reCAPTCHAs', async (t) => {
   await browser.close()
 })
 
-test('will detect hCAPTCHAs', async (t) => {
+test('will detect hCAPTCHAs', async t => {
   const puppeteer = addExtra(require('puppeteer'))
   const recaptchaPlugin = RecaptchaPlugin()
   puppeteer.use(recaptchaPlugin)
 
   const browser = await puppeteer.launch({
     args: PUPPETEER_ARGS,
-    headless: true,
+    headless: true
   })
   const page = await browser.newPage()
 
-  const url = 'http://democaptcha.com/demo-form-eng/hcaptcha.html'
+  const url = 'https://democaptcha.com/demo-form-eng/hcaptcha.html'
   await page.goto(url, { waitUntil: 'networkidle0' })
 
   const { captchas, error } = await (page as any).findRecaptchas()
@@ -63,14 +63,14 @@ test('will detect hCAPTCHAs', async (t) => {
   await browser.close()
 })
 
-test('will not throw when no captchas are found', async (t) => {
+test('will not throw when no captchas are found', async t => {
   const puppeteer = addExtra(require('puppeteer'))
   const recaptchaPlugin = RecaptchaPlugin()
   puppeteer.use(recaptchaPlugin)
 
   const browser = await puppeteer.launch({
     args: PUPPETEER_ARGS,
-    headless: true,
+    headless: true
   })
   const page = await browser.newPage()
 
