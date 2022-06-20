@@ -16,7 +16,9 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 
   async onPageCreated(page) {
-    if (!page || !page._client || (typeof page._client === 'function' && !page._client().send) || !page._client.send) {
+    const client =
+      page && typeof page._client === 'function' ? page._client() : page._client
+    if (!client) {
       this.debug('Warning, missing properties to intercept CDP.', { page })
       return
     }
@@ -24,16 +26,24 @@ class Plugin extends PuppeteerExtraPlugin {
     // Intercept CDP commands and strip identifying and unnecessary sourceURL
     // https://github.com/puppeteer/puppeteer/blob/9b3005c105995cd267fdc7fb95b78aceab82cf0e/new-docs/puppeteer.cdpsession.md
     const debug = this.debug
-    (typeof page._client === 'function' && page._client() || page._client).send = (function(originalMethod, context) {
+    client.send = (function(originalMethod, context) {
       return async function() {
         const [method, paramArgs] = arguments || []
         const next = async () => {
           try {
             return await originalMethod.apply(context, [method, paramArgs])
-          } catch(error) {
+          } catch (error) {
             // This seems to happen sometimes when redirects cause other outstanding requests to be cut short
-            if (error instanceof Error && error.message.includes(`Protocol error (Network.getResponseBody): No resource with given identifier found`)) {
-              debug(`Caught and ignored an error about a missing network resource.`, { error })
+            if (
+              error instanceof Error &&
+              error.message.includes(
+                `Protocol error (Network.getResponseBody): No resource with given identifier found`
+              )
+            ) {
+              debug(
+                `Caught and ignored an error about a missing network resource.`,
+                { error }
+              )
             } else {
               throw error
             }
@@ -64,7 +74,7 @@ class Plugin extends PuppeteerExtraPlugin {
 
         return next()
       }
-    })((typeof page._client === 'function' && page._client() || page._client).send, (typeof page._client === 'function' && page._client() || page._client))
+    })(client.send, client)
   }
 }
 
