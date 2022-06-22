@@ -82,7 +82,8 @@ export class PuppeteerExtra implements VanillaPuppeteer {
 
   /**
    * The **main interface** to register `puppeteer-extra` plugins.
-   *
+   * call this use multiple time to enable multiple plugins
+   * 
    * @example
    * puppeteer.use(plugin1).use(plugin2)
    *
@@ -349,6 +350,18 @@ export class PuppeteerExtra implements VanillaPuppeteer {
     const missingPlugins = new Set<string>()
 
     const requierDep = (plugin: PuppeteerExtraPlugin): void => {
+      let dependencies = plugin.dependencies;
+
+      if (!dependencies) { // patch retrocompatibility with old plugins
+        const getMissingDependencies = (plugin as any)._getMissingDependencies;
+        if (getMissingDependencies) {
+          console.error(`${plugin.name} is an old plugin that do not provide dependencies, Recovering old dependencies`);
+          dependencies = getMissingDependencies([]);
+        } else {
+          console.error(`${plugin.name} plugin does not provide dependencies list`);
+          dependencies = [];
+        }
+      }
       // convert Set<string> to Array<string>
       [...plugin.dependencies].filter(p => !loadedPlugins.has(p)).forEach(dep => missingPlugins.add(dep))
     }
