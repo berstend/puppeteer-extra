@@ -13,6 +13,9 @@ on:
       - master
       - 'test/*'
 
+  workflow_dispatch:
+    branches:
+      - '*'
 env:
   CI: 'true'
   FORCE_COLOR: 'true'
