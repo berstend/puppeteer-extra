@@ -6,7 +6,9 @@ const { default: Plugin, argsToIgnore } = require('.')
 test.serial('vanilla: uses args to ignore', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
-  const { arguments: launchArgs } = await page._client.send(
+  const client =
+    typeof page._client === 'function' ? page._client() : page._client
+  const { arguments: launchArgs } = await client.send(
     'Browser.getBrowserCommandLine'
   )
   const ok = argsToIgnore.every(arg => launchArgs.includes(arg))
@@ -20,7 +22,9 @@ test.serial('stealth: does not use args to ignore', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
-  const { arguments: launchArgs } = await page._client.send(
+  const client =
+    typeof page._client === 'function' ? page._client() : page._client
+  const { arguments: launchArgs } = await client.send(
     'Browser.getBrowserCommandLine'
   )
   const ok = argsToIgnore.every(arg => !launchArgs.includes(arg))

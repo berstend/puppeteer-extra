@@ -1,9 +1,9 @@
 {
   "name": "puppeteer-extra-plugin-anonymize-ua",
-  "version": "2.3.3",
+  "version": "2.4.0",
   "description": "Anonymize User-Agent in puppeteer.",
   "main": "index.js",
-  "typings": "index.d.ts",
+  "types": "index.d.ts",
   "repository": "berstend/puppeteer-extra",
   "author": "berstend",
   "license": "MIT",
@@ -55,9 +55,9 @@
   "devDependencies": {
     "ava": "3.15.0",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "13.7.0",
-    "puppeteer-extra": "^3.2.3",
-    "puppeteer-extra-plugin-devtools": "^2.3.3",
+    "puppeteer": "^2.0.0",
+    "puppeteer-extra": "^3.3.0",
+    "puppeteer-extra-plugin-devtools": "^2.4.0",
     "rimraf": "^3.0.2",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.3"

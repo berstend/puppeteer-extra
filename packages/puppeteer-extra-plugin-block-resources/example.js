@@ -16,8 +16,13 @@
 //   console.log('all done')
 // })()
 
+const { DEFAULT_INTERCEPT_RESOLUTION_PRIORITY } = require('puppeteer')
 const puppeteer = require('puppeteer-extra')
-const blockResourcesPlugin = require('puppeteer-extra-plugin-block-resources')()
+const blockResourcesPlugin = require('puppeteer-extra-plugin-block-resources')({
+  // Optionally enable Cooperative Mode for several request interceptors
+  interceptResolutionPriority: DEFAULT_INTERCEPT_RESOLUTION_PRIORITY
+})
+
 puppeteer.use(blockResourcesPlugin)
 ;(async () => {
   const browser = await puppeteer.launch({ headless: false })

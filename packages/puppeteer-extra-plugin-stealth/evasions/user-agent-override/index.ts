@@ -183,7 +183,9 @@ export interface PluginOptions {
       opts: this.opts
     })
 
-    page._client!.send('Network.setUserAgentOverride', override)
+    const client =
+      typeof page._client === 'function' ? page._client() : page._client
+    client.send('Network.setUserAgentOverride', override)
   }
 
   async beforeLaunch(options: PuppeteerLaunchOption = {}): Promise<void | PuppeteerLaunchOption> {

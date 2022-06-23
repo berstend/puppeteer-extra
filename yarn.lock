@@ -1068,39 +1068,39 @@
     "@babel/helper-validator-identifier" "^7.14.9"
     to-fast-properties "^2.0.0"
 
-"@cliqz/adblocker-content@^1.22.6":
-  version "1.22.6"
-  resolved "https://registry.yarnpkg.com/@cliqz/adblocker-content/-/adblocker-content-1.22.6.tgz#8a5910fd6b255eeeb697037a676fdc48b6bd7ce3"
-  integrity sha512-N9+ckQI+zJKlkdy6qPJsoyNU3yuxp7J2nwZq05WzfRxon9E3anODGKlZyn+MtfF9Vmmk7g+hObPFTganBx0q9Q==
+"@cliqz/adblocker-content@^1.23.8":
+  version "1.23.8"
+  resolved "https://registry.yarnpkg.com/@cliqz/adblocker-content/-/adblocker-content-1.23.8.tgz#c2fdf46cc746e092ad4fce594b8e5f0be6366db9"
+  integrity sha512-5Wm/OSA6H8AUVFi8SDff6xJ4zT/1VCrNoUnevFEi3e0MCmdQUvn+cJc03Saky7Ch5oLSJKTXNNMyPaODZLz24A==
   dependencies:
-    "@cliqz/adblocker-extended-selectors" "^1.22.6"
+    "@cliqz/adblocker-extended-selectors" "^1.23.8"
 
-"@cliqz/adblocker-extended-selectors@^1.22.6":
-  version "1.22.6"
-  resolved "https://registry.yarnpkg.com/@cliqz/adblocker-extended-selectors/-/adblocker-extended-selectors-1.22.6.tgz#35042785eb3dc8e653070bb7013267f3953e7788"
-  integrity sha512-wB0lP2qoeU8s0NttcXGhYchYsAQwtTvjEOs5at5/CSbwfvFedFx29vnSpsPXaOKDEINqywVpCtUYoN8+wVgI1w==
+"@cliqz/adblocker-extended-selectors@^1.23.8":
+  version "1.23.8"
+  resolved "https://registry.yarnpkg.com/@cliqz/adblocker-extended-selectors/-/adblocker-extended-selectors-1.23.8.tgz#2d69c95aee385c5b51a047cbaf0219db98f50729"
+  integrity sha512-5xx47oT2Q9E3vkfEm/EzSs7cAPi8WNWtu7kJcGa/urVkDchJwdkdelvQ2Dof+k5icI5AqZorZSsk9Q7w2bLxrA==
 
-"@cliqz/adblocker-puppeteer@1.22.6":
-  version "1.22.6"
-  resolved "https://registry.yarnpkg.com/@cliqz/adblocker-puppeteer/-/adblocker-puppeteer-1.22.6.tgz#6b311c74ab8f144ab71f2c259b9e49fa76243e9b"
-  integrity sha512-Yg+64gsBfG8NKIJTKRg+sgK8G32W/z4qNEoMGdGJc7mdKVCn+y93WklDMO3pCy64u9jqUVS/Rd7z/Z96dX3K8Q==
+"@cliqz/adblocker-puppeteer@1.23.8":
+  version "1.23.8"
+  resolved "https://registry.yarnpkg.com/@cliqz/adblocker-puppeteer/-/adblocker-puppeteer-1.23.8.tgz#e74636cd200459d1734929e41504a76939504311"
+  integrity sha512-Ca1/DBqQXsOpKTFVAHX6OpLTSEupXmUkUWHj6iXhLLleC7RPISN5B0b801VDmaGRqoC5zKRxn0vYbIfpgCWVug==
   dependencies:
-    "@cliqz/adblocker" "^1.22.6"
-    "@cliqz/adblocker-content" "^1.22.6"
+    "@cliqz/adblocker" "^1.23.8"
+    "@cliqz/adblocker-content" "^1.23.8"
     tldts-experimental "^5.6.21"
 
-"@cliqz/adblocker@^1.22.6":
-  version "1.22.6"
-  resolved "https://registry.yarnpkg.com/@cliqz/adblocker/-/adblocker-1.22.6.tgz#400b8c41da9a9a3b45da8774d2cd4333960e8988"
-  integrity sha512-f3GNYRiGyplZ79OJA1NLEWrnjWgKKLudupt07pKroesATKxC75hoLushY8F94ensKOLTs/7MTQyYRieVXgOEKg==
+"@cliqz/adblocker@^1.23.8":
+  version "1.23.8"
+  resolved "https://registry.yarnpkg.com/@cliqz/adblocker/-/adblocker-1.23.8.tgz#5945bdb077a18864ed7a3fefdc30d8887eac615c"
+  integrity sha512-xM1JYTv5dA+pPP4x4IVZdjkM9aAsakTnShFLuHLzMxMHd20eUB91NXm4kK6acw9nHwG6rCyat6+u7TvAqSmR6g==
   dependencies:
-    "@cliqz/adblocker-content" "^1.22.6"
-    "@cliqz/adblocker-extended-selectors" "^1.22.6"
+    "@cliqz/adblocker-content" "^1.23.8"
+    "@cliqz/adblocker-extended-selectors" "^1.23.8"
     "@remusao/guess-url-type" "^1.1.2"
     "@remusao/small" "^1.1.2"
     "@remusao/smaz" "^1.7.1"
-    "@types/chrome" "^0.0.157"
-    "@types/firefox-webext-browser" "^82.0.0"
+    "@types/chrome" "^0.0.183"
+    "@types/firefox-webext-browser" "^94.0.0"
     tldts-experimental "^5.6.21"
 
 "@concordance/react@^2.0.0":
@@ -2121,6 +2121,7 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
+<<<<<<< HEAD
 "@tsconfig/node10@^1.0.7":
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/@tsconfig/node10/-/node10-1.0.8.tgz#c1e4e80d6f964fbecb3359c43bd48b40f7cadad9"
@@ -2145,6 +2146,12 @@
   version "0.0.157"
   resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.157.tgz#5a50bd378f4f632383c6ebbc34c88fb87d501f58"
   integrity sha512-q5SSmA9nKaDzFi8QkJW9kW8MYwWg9O7PKPUdBxsz+3rPcIF1Kxw0Bexpd70Uq1mU6PN4DBp4qKMXQDybUeiI9w==
+=======
+"@types/chrome@^0.0.183":
+  version "0.0.183"
+  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.183.tgz#c12649c00ae5ae8fca511248256c0b11f91c95e2"
+  integrity sha512-sYI1qGY2oB6U5GFyuoSsVJsi2ytuEe92QrQTXQRwkISN8yn1gPY5qRq1XSwKN17yjvZTgxxeHw2ZoSHMti6qYg==
+>>>>>>> 7d7825bca14738d7e05c7cadea2d3c8907cc7499
   dependencies:
     "@types/filesystem" "*"
     "@types/har-format" "*"
@@ -2188,10 +2195,10 @@
   resolved "https://registry.yarnpkg.com/@types/filewriter/-/filewriter-0.0.29.tgz#a48795ecadf957f6c0d10e0c34af86c098fa5bee"
   integrity sha512-BsPXH/irW0ht0Ji6iw/jJaK8Lj3FJemon2gvEqHKpCdDCeemHa+rI3WBGq5z7cDMZgoLjY40oninGxqk+8NzNQ==
 
-"@types/firefox-webext-browser@^82.0.0":
-  version "82.0.1"
-  resolved "https://registry.yarnpkg.com/@types/firefox-webext-browser/-/firefox-webext-browser-82.0.1.tgz#197dec1d175b099eb8dac92e9c9c9a5482a5dd8a"
-  integrity sha512-odcPKiJ34N8k53clIWen3hLvl09ja7SQ9NqtUbgmqeJ/a/ZRQiF665iXSFPcnl6cBn2XQgEg2lsUUApYNiyj+g==
+"@types/firefox-webext-browser@^94.0.0":
+  version "94.0.0"
+  resolved "https://registry.yarnpkg.com/@types/firefox-webext-browser/-/firefox-webext-browser-94.0.0.tgz#8a470475ab111e47d34e2599034e227feece09f9"
+  integrity sha512-DU6rySaklQlzc3tnVAFNgK2OGkOKCDze8ZlhQFtx+Ag4w2rzgNFoqlwQHrUqUogRJph7Gxf1M8e9n4mlYlragw==
 
 "@types/fs-extra@^9.0.13":
   version "9.0.13"
@@ -4124,6 +4131,7 @@ detective@^4.0.0:
     acorn "^5.2.1"
     defined "^1.0.0"
 
+<<<<<<< HEAD
 devtools-protocol@0.0.1001819:
   version "0.0.1001819"
   resolved "https://registry.yarnpkg.com/devtools-protocol/-/devtools-protocol-0.0.1001819.tgz#0a98f44cefdb02cc684f3d5e6bd898a1690231d9"
@@ -4133,6 +4141,17 @@ devtools-protocol@0.0.981744:
   version "0.0.981744"
   resolved "https://registry.yarnpkg.com/devtools-protocol/-/devtools-protocol-0.0.981744.tgz#9960da0370284577d46c28979a0b32651022bacf"
   integrity sha512-0cuGS8+jhR67Fy7qG3i3Pc7Aw494sb9yG9QgpG97SFVWwolgYjlhJg7n+UaHxOQT30d1TYu/EYe9k01ivLErIg==
+=======
+devtools-protocol@0.0.869402:
+  version "0.0.869402"
+  resolved "https://registry.yarnpkg.com/devtools-protocol/-/devtools-protocol-0.0.869402.tgz#03ade701761742e43ae4de5dc188bcd80f156d8d"
+  integrity sha512-VvlVYY+VDJe639yHs5PHISzdWTLL3Aw8rO4cvUtwvoxFd6FHbE4OpHHcde52M6096uYYazAmd4l0o5VuFRO2WA==
+
+devtools-protocol@0.0.901419:
+  version "0.0.901419"
+  resolved "https://registry.yarnpkg.com/devtools-protocol/-/devtools-protocol-0.0.901419.tgz#79b5459c48fe7e1c5563c02bd72f8fec3e0cebcd"
+  integrity sha512-4INMPwNm9XRpBukhNbF7OB6fNTTCaI8pzy/fXg0xQzAy5h3zL1P8xT3QazgKqBrb/hAYwIBizqDBZ7GtJE74QQ==
+>>>>>>> 7d7825bca14738d7e05c7cadea2d3c8907cc7499
 
 dezalgo@^1.0.0:
   version "1.0.3"
@@ -8321,6 +8340,7 @@ puppeteer@13.7.0:
   resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-13.7.0.tgz#18e16f83e397cf02f7a0804c67c1603d381cfb0b"
   integrity sha512-U1uufzBjz3+PkpCxFrWzh4OrMIdIb2ztzCu0YEPfRHjHswcSwHZswnK+WdsOQJsRV8WeTg3jLhJR4D867+fjsA==
   dependencies:
+<<<<<<< HEAD
     cross-fetch "3.1.5"
     debug "4.3.4"
     devtools-protocol "0.0.981744"
@@ -8333,6 +8353,54 @@ puppeteer@13.7.0:
     tar-fs "2.1.1"
     unbzip2-stream "1.4.3"
     ws "8.5.0"
+=======
+    debug "^4.1.0"
+    devtools-protocol "0.0.869402"
+    extract-zip "^2.0.0"
+    https-proxy-agent "^5.0.0"
+    node-fetch "^2.6.1"
+    pkg-dir "^4.2.0"
+    progress "^2.0.1"
+    proxy-from-env "^1.1.0"
+    rimraf "^3.0.2"
+    tar-fs "^2.0.0"
+    unbzip2-stream "^1.3.3"
+    ws "^7.2.3"
+
+puppeteer@^10.2.0:
+  version "10.4.0"
+  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-10.4.0.tgz#a6465ff97fda0576c4ac29601406f67e6fea3dc7"
+  integrity sha512-2cP8mBoqnu5gzAVpbZ0fRaobBWZM8GEUF4I1F6WbgHrKV/rz7SX8PG2wMymZgD0wo0UBlg2FBPNxlF/xlqW6+w==
+  dependencies:
+    debug "4.3.1"
+    devtools-protocol "0.0.901419"
+    extract-zip "2.0.1"
+    https-proxy-agent "5.0.0"
+    node-fetch "2.6.1"
+    pkg-dir "4.2.0"
+    progress "2.0.1"
+    proxy-from-env "1.1.0"
+    rimraf "3.0.2"
+    tar-fs "2.0.0"
+    unbzip2-stream "1.3.3"
+    ws "7.4.6"
+
+puppeteer@^2.0.0:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-2.1.1.tgz#ccde47c2a688f131883b50f2d697bd25189da27e"
+  integrity sha512-LWzaDVQkk1EPiuYeTOj+CZRIjda4k2s5w4MK4xoH2+kgWV/SDlkYHmxatDdtYrciHUKSXTsGgPgPP8ILVdBsxg==
+  dependencies:
+    "@types/mime-types" "^2.1.0"
+    debug "^4.1.0"
+    extract-zip "^1.6.6"
+    https-proxy-agent "^4.0.0"
+    mime "^2.0.3"
+    mime-types "^2.1.25"
+    progress "^2.0.1"
+    proxy-from-env "^1.0.0"
+    rimraf "^2.6.1"
+    ws "^6.1.0"
+>>>>>>> 7d7825bca14738d7e05c7cadea2d3c8907cc7499
 
 q@^1.5.1:
   version "1.5.1"

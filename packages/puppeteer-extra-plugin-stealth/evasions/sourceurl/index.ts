@@ -12,21 +12,23 @@ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
     super(opts)
   }
 
-
   get name(): 'stealth/evasions/sourceurl' {
     return 'stealth/evasions/sourceurl'
   }
 
   async onPageCreated(page: PuppeteerPage): Promise<void> {
-    if (!page || !page._client || !page._client.send) {
-      this.debug('Warning, missing properties to intercept CDP.', { page })
+    const client =
+      page && typeof page._client === 'function' ? page._client() : page._client
+    const debug = this.debug
+
+    if (!client) {
+      debug('Warning, missing properties to intercept CDP.', { page })
       return
     }
 
     // Intercept CDP commands and strip identifying and unnecessary sourceURL
     // https://github.com/puppeteer/puppeteer/blob/9b3005c105995cd267fdc7fb95b78aceab82cf0e/new-docs/puppeteer.cdpsession.md
-    const debug = this.debug
-    page._client.send = (function(originalMethod, context) {
+    client.send = (function(originalMethod, context) {
       return async function() {
         const [method, paramArgs] = arguments || []
         const next = async () => {
@@ -74,7 +76,7 @@ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
 
         return next()
       }
-    })(page._client.send, page._client)
+    })(client.send, client)
   }
 }
 
