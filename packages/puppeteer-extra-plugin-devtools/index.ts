@@ -236,7 +236,13 @@ export class Tunnel extends DevToolsTunnel {
    */
   getUrlForPage(page: PuppeteerPage): string {
     ow(page, ow.object.hasKeys('_target._targetInfo.targetId'))
-    const pageId = page._target!._targetInfo.targetId
+    let pageId: string;
+    if (page._target!._targetInfo)
+      pageId = page._target!._targetInfo.targetId
+    else if (page._target!._targetId)
+      pageId = page._target!._targetId
+    else
+      throw Error('Failed to get targetId with the current pptr version')
     return super.getUrlForPageId(pageId)
   }
 

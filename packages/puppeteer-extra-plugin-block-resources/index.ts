@@ -1,8 +1,13 @@
 import { PuppeteerExtraPlugin, PuppeteerPage, PuppeteerRequest } from 'puppeteer-extra-plugin';
 
+const availableTypes = [ 'document', 'stylesheet', 'image', 'media', 'font', 'script', 'texttrack', 'xhr', 'fetch', 'eventsource', 'websocket', 'manifest', 'other' ] as const
+
+export type ResourceType = typeof availableTypes[number];
+
 export interface PluginOptions {
-  availableTypes: Set<string>,
-  blockedTypes: Set<string>,
+  availableTypes: Set<ResourceType>,
+  blockedTypes: Set<ResourceType>,
+  interceptResolutionPriority?: number,
 }
 
 /**
@@ -14,8 +19,11 @@ export interface PluginOptions {
  * @param {Set<string>} [opts.blockedTypes] - Specify which resourceTypes to block (by default none)
  *
  * @example
+ * const { DEFAULT_INTERCEPT_RESOLUTION_PRIORITY } = require('puppeteer')
  * puppeteer.use(require('puppeteer-extra-plugin-block-resources')({
- *   blockedTypes: new Set(['image', 'stylesheet'])
+ *   blockedTypes: new Set(['image', 'stylesheet']),
+ *   // Optionally enable Cooperative Mode for several request interceptors
+ *   interceptResolutionPriority: DEFAULT_INTERCEPT_RESOLUTION_PRIORITY
  * }))
  *
  * //
@@ -52,23 +60,10 @@ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
 
   get defaults(): PluginOptions {
     return {
-      availableTypes: new Set([
-        'document',
-        'stylesheet',
-        'image',
-        'media',
-        'font',
-        'script',
-        'texttrack',
-        'xhr',
-        'fetch',
-        'eventsource',
-        'websocket',
-        'manifest',
-        'other'
-      ]),
+      availableTypes: new Set(availableTypes),
       // Block nothing by default
-      blockedTypes: new Set([])
+      blockedTypes: new Set([]),
+      interceptResolutionPriority: undefined
     }
   }
 
@@ -90,18 +85,54 @@ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
    *
    * @type {Set<string>} - A Set of all blocked resource types.
    */
-  get blockedTypes(): Set<string> {
+  get blockedTypes(): Set<ResourceType> {
     return this.opts.blockedTypes
+  }
+
+  /**
+   * Get the request interception resolution priority.
+   *
+   * Priority for Cooperative Intercept Mode can be configured either through `opts` or by modifying this property.
+   *
+   * @type {number} - A number for the request interception resolution priority.
+   */
+  get interceptResolutionPriority() {
+    return this.opts.interceptResolutionPriority
   }
 
   /**
    * @private
    */
-  onRequest(request: PuppeteerRequest): Promise<void> {
+  async onRequest(request: PuppeteerRequest): Promise<void> {
     const type = request.resourceType()
     const shouldBlock = this.blockedTypes.has(type)
-    this.debug('onRequest', { type, shouldBlock })
-    return shouldBlock ? request.abort() : request.continue()
+
+    // Requests are immediately handled if not using Cooperative Intercept Mode
+    const alreadyHandled: boolean = (request as any).isInterceptResolutionHandled
+      ? (request as any).isInterceptResolutionHandled()
+      : true
+
+    this.debug('onRequest', {
+      type,
+      shouldBlock,
+      alreadyHandled
+    })
+
+    if (alreadyHandled) return
+
+    if (shouldBlock) {
+      const abortArgs: Array<any> = (request as any).abortErrorReason
+        ? ['blockedbyclient', this.interceptResolutionPriority]
+        : []
+
+      return request.abort(...abortArgs)
+    }
+
+    const continueArgs: Array<any> = (request as any).continueRequestOverrides
+      ? [(request as any).continueRequestOverrides(), this.interceptResolutionPriority]
+      : []
+
+    return request.continue(...continueArgs)
   }
 
   /**

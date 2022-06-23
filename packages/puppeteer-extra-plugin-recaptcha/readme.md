@@ -140,6 +140,9 @@ If you'd like to see debug output just run your script like so:
 DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node myscript.js
 ```
 
+### Proxies
+If you want to attach a proxy while running a bypass, set the enviroment variables ``2CAPTCHA_PROXY_TYPE`` and ``2CAPTCHA_PROXY_ADDRESS``
+
 _**Tip:** The recaptcha plugin works really well together with the [stealth plugin](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth)._
 
 ## Motivation 🏴

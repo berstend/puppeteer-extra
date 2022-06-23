@@ -34,8 +34,11 @@ Type: `function (opts)`
 Example:
 
 ```javascript
+const { DEFAULT_INTERCEPT_RESOLUTION_PRIORITY } = require('puppeteer')
 puppeteer.use(require('puppeteer-extra-plugin-block-resources')({
-  blockedTypes: new Set(['image', 'stylesheet'])
+  blockedTypes: new Set(['image', 'stylesheet']),
+  // Optionally enable Cooperative Mode for several request interceptors
+  interceptResolutionPriority: DEFAULT_INTERCEPT_RESOLUTION_PRIORITY
 }))
 
 //

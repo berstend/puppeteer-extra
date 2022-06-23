@@ -14,8 +14,8 @@ on:
       - 'test/*'
 
 env:
-  CI: "true"
-  FORCE_COLOR: "true"
+  CI: 'true'
+  FORCE_COLOR: 'true'
 
 jobs:
   test:
@@ -26,14 +26,16 @@ jobs:
     strategy:
       matrix:
         node:
-          # - 18
+          - 18
           - 16
           # - 14
         puppeteer_version:
-          # - 14.2.1 # evasion failed
-          - 13.7.0 # 
+          - 14.2.1 # evasion failed Jun 6 2022
+          # - 14.2.0 # Chromium 103.0.5059.0 # requires >=14.1.0
+          # - 13.7.0 # 
           # - 12.0.1 # 
           # - 10.4.0 # Chromium 93.0.4577.0
+          # - 10.2.0 # Chromium 93.0.4577.0
           # - 7.0.0 # Chromium 90.0.4403.0, Feb 3, 2021
           # - 5.5.0 # Chromium 88.0.4298.0
           # - 5.0.0 # Chromium 83.0.4103.0, Jul 2, 2020
@@ -85,6 +87,6 @@ jobs:
       - name: test
         uses: GabrielBB/xvfb-action@v1
         env:
-          DISPLAY: ":99.0"
+          DISPLAY: ':99.0'
         with:
           run: yarn test-ci

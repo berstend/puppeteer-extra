@@ -151,7 +151,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin<PluginOp
       this.debug('waitForRecaptchaClient - end', new Date()) // used as timer
     }
     const hasHcaptchaScriptTag = await page.$(
-      `script[src*="//hcaptcha.com/1/api.js"]`
+      `script[src*="hcaptcha.com/1/api.js"]`
     )
     this.debug('hasHcaptchaScriptTag', !!hasHcaptchaScriptTag)
     if (hasHcaptchaScriptTag) {
