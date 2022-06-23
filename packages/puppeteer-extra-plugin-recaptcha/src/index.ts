@@ -1,6 +1,15 @@
-import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
+import { PuppeteerBrowser, PuppeteerFrame, PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 
-import { Browser, Frame, Page } from 'puppeteer'
+interface RecaptchaExtra {
+  findRecaptchas(page: Page | Frame): Promise<types.FindRecaptchasResult>
+  getRecaptchaSolutions(captchas: types.CaptchaInfo[], provider?: types.SolutionProvider): Promise<any>
+  // enterRecaptchaSolutions(page: Page | Frame, solutions: types.CaptchaSolution[]): Promise<types.EnterRecaptchaSolutionsResult>
+  enterRecaptchaSolutions(solutions: types.CaptchaSolution[]): Promise<types.EnterRecaptchaSolutionsResult>
+  solveRecaptchas(page: Page | Frame): Promise<types.SolveRecaptchasResult>
+}
+type Page = PuppeteerPage & RecaptchaExtra;
+type Frame = PuppeteerFrame & RecaptchaExtra;
+// import { Frame, Page } from 'puppeteer'
 
 import * as types from './types'
 
@@ -91,7 +100,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin<PluginOp
   }
 
   /** Based on the user defined options we may want to filter out certain captchas (inactive, etc) */
-  private _filterRecaptchas(recaptchas: types.CaptchaInfo[] = []): {captchas: types.CaptchaInfo[], filtered: types.FilteredCaptcha[]} {
+  private _filterRecaptchas(recaptchas: types.CaptchaInfo[] = []): { captchas: types.CaptchaInfo[], filtered: types.FilteredCaptcha[] } {
     const results = recaptchas.map((c: types.FilteredCaptcha) => {
       if (
         c._type === 'invisible' &&
@@ -257,18 +266,18 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin<PluginOp
     const hasRecaptcha = !!solutions.find(s => s._vendor === 'recaptcha')
     const solvedRecaptcha: types.EnterRecaptchaSolutionsResult = hasRecaptcha
       ? ((await page.evaluate(
-          this._generateContentScript('recaptcha', 'enterRecaptchaSolutions', {
-            solutions
-          })
-        )) as any)
+        this._generateContentScript('recaptcha', 'enterRecaptchaSolutions', {
+          solutions
+        })
+      )) as any)
       : { solved: [] }
     const hasHcaptcha = !!solutions.find(s => s._vendor === 'hcaptcha')
     const solvedHcaptcha: types.EnterRecaptchaSolutionsResult = hasHcaptcha
       ? ((await page.evaluate(
-          this._generateContentScript('hcaptcha', 'enterRecaptchaSolutions', {
-            solutions
-          })
-        )) as any)
+        this._generateContentScript('hcaptcha', 'enterRecaptchaSolutions', {
+          solutions
+        })
+      )) as any)
       : { solved: [] }
 
     const response: types.EnterRecaptchaSolutionsResult = {
@@ -331,39 +340,35 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin<PluginOp
   }
 
   private _addCustomMethods(prop: Page | Frame): void {
-    prop.findRecaptchas = async () => this.findRecaptchas(prop)
-    prop.getRecaptchaSolutions = async (
-      captchas: types.CaptchaInfo[],
-      provider?: types.SolutionProvider
-    ) => this.getRecaptchaSolutions(captchas, provider)
-    prop.enterRecaptchaSolutions = async (solutions: types.CaptchaSolution[]) =>
-      this.enterRecaptchaSolutions(prop, solutions)
+    prop.findRecaptchas = () => this.findRecaptchas(prop)
+    prop.getRecaptchaSolutions = (captchas: types.CaptchaInfo[], provider?: types.SolutionProvider) => this.getRecaptchaSolutions(captchas, provider)
+    prop.enterRecaptchaSolutions = (solutions: types.CaptchaSolution[]) => this.enterRecaptchaSolutions(prop, solutions);
     // Add convenience methods that wraps all others
     prop.solveRecaptchas = async () => this.solveRecaptchas(prop)
   }
 
-  async onPageCreated(page: Page): Promise<void> {
+  async onPageCreated(page: PuppeteerPage): Promise<void> {
     this.debug('onPageCreated', page.url())
     // Make sure we can run our content script
     await page.setBypassCSP(true)
 
     // Add custom page methods
-    this._addCustomMethods(page)
+    this._addCustomMethods(page as Page)
 
     // Add custom methods to potential frames as well
     page.on('frameattached', frame => {
       if (!frame) return
-      this._addCustomMethods(frame)
+      this._addCustomMethods(frame as Frame)
     })
   }
 
   /** Add additions to already existing pages and frames */
-  async onBrowser(browser: Browser): Promise<void> {
+  async onBrowser(browser: PuppeteerBrowser): Promise<void> {
     const pages = await browser.pages()
     for (const page of pages) {
-      this._addCustomMethods(page)
+      this._addCustomMethods(page as Page)
       for (const frame of page.mainFrame().childFrames()) {
-        this._addCustomMethods(frame)
+        this._addCustomMethods(frame as Frame)
       }
     }
   }
