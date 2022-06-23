@@ -1,8 +1,13 @@
 import { PuppeteerExtraPlugin, PuppeteerPage, PuppeteerRequest } from 'puppeteer-extra-plugin';
 
+const availableTypes = [ 'document', 'stylesheet', 'image', 'media', 'font', 'script', 'texttrack', 'xhr', 'fetch', 'eventsource', 'websocket', 'manifest', 'other' ] as const
+
+export type ResourceType = typeof availableTypes[number];
+
 export interface PluginOptions {
-  availableTypes: Set<string>,
-  blockedTypes: Set<string>,
+  availableTypes: Set<ResourceType>,
+  blockedTypes: Set<ResourceType>,
+  interceptResolutionPriority?: number,
 }
 
 /**
@@ -55,21 +60,7 @@ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
 
   get defaults(): PluginOptions {
     return {
-      availableTypes: new Set([
-        'document',
-        'stylesheet',
-        'image',
-        'media',
-        'font',
-        'script',
-        'texttrack',
-        'xhr',
-        'fetch',
-        'eventsource',
-        'websocket',
-        'manifest',
-        'other'
-      ]),
+      availableTypes: new Set(availableTypes),
       // Block nothing by default
       blockedTypes: new Set([]),
       interceptResolutionPriority: undefined
@@ -94,7 +85,7 @@ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
    *
    * @type {Set<string>} - A Set of all blocked resource types.
    */
-  get blockedTypes(): Set<string> {
+  get blockedTypes(): Set<ResourceType> {
     return this.opts.blockedTypes
   }
 
@@ -112,13 +103,13 @@ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   /**
    * @private
    */
-  onRequest(request: PuppeteerRequest): Promise<void> {
+  async onRequest(request: PuppeteerRequest): Promise<void> {
     const type = request.resourceType()
     const shouldBlock = this.blockedTypes.has(type)
 
     // Requests are immediately handled if not using Cooperative Intercept Mode
-    const alreadyHandled = request.isInterceptResolutionHandled
-      ? request.isInterceptResolutionHandled()
+    const alreadyHandled: boolean = (request as any).isInterceptResolutionHandled
+      ? (request as any).isInterceptResolutionHandled()
       : true
 
     this.debug('onRequest', {
@@ -130,15 +121,15 @@ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
     if (alreadyHandled) return
 
     if (shouldBlock) {
-      const abortArgs = request.abortErrorReason
+      const abortArgs: Array<any> = (request as any).abortErrorReason
         ? ['blockedbyclient', this.interceptResolutionPriority]
         : []
 
       return request.abort(...abortArgs)
     }
 
-    const continueArgs = request.continueRequestOverrides
-      ? [request.continueRequestOverrides(), this.interceptResolutionPriority]
+    const continueArgs: Array<any> = (request as any).continueRequestOverrides
+      ? [(request as any).continueRequestOverrides(), this.interceptResolutionPriority]
       : []
 
     return request.continue(...continueArgs)

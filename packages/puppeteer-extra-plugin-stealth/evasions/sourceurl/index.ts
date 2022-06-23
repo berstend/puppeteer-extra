@@ -1,4 +1,4 @@
-import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
+import { PuppeteerExtraPlugin, PuppeteerCDPSession, PuppeteerPage } from 'puppeteer-extra-plugin'
 
 export interface PluginOptions {
 }
@@ -17,10 +17,13 @@ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   }
 
   async onPageCreated(page: PuppeteerPage): Promise<void> {
-    const client =
-      page && typeof page._client === 'function' ? page._client() : page._client
     const debug = this.debug
-
+    if (!page) {
+      debug('onPageCreated called with a missing Page')
+      return
+    }
+    const client: PuppeteerCDPSession | undefined =
+      typeof page._client === 'function' ? page._client() : page._client
     if (!client) {
       debug('Warning, missing properties to intercept CDP.', { page })
       return

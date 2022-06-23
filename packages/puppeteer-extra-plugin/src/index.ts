@@ -1,5 +1,6 @@
 /// <reference path="./puppeteer-legacy.d.ts" />
 import debug, { Debugger } from 'debug'
+import EventEmitter from 'events';
 import * as Puppeteer from './puppeteer'
 import { PuppeteerNode } from './puppeteer'
 
@@ -41,12 +42,37 @@ export type ChildClassMembers = keyof PuppeteerExtraPlugin | 'constructor';
  */
 
 export type PuppeteerLaunchOption =  Parameters<VanillaPuppeteer['launch']>[0];
+
+
+export type PuppeteerConnection = EventEmitter & {
+  url(): string;
+  dispose(): void;
+  createSession(targetInfo: string): Promise<PuppeteerCDPSession> 
+}
+
+// export type PuppeteerTarget = { _targetInfo: { targetId: any } }
+
+// export type PuppeteerCDPSession = { send: (message: (method: string, ...paramArgs : any[]) => any | string, payload: any) => void };
+export type PuppeteerCDPSession = EventEmitter & {
+  send: (method: string, ...paramArgs : any[]) => Promise<any>;
+  detach(): Promise<void>;
+  id(): string;
+  connection(): PuppeteerConnection | undefined;
+};
+
+type PuppeteerClienterPPTR13 = PuppeteerCDPSession;
+type PuppeteerClienterPPTR14 = () => PuppeteerCDPSession;
+
 // types aliases
 export type PuppeteerPage = Puppeteer.Page & { 
-  _client?: { send: (message: Function | string, payload: any) => void }
-  _target?: { _targetInfo: { targetId: any } }
+  _client?: PuppeteerClienterPPTR13 | PuppeteerClienterPPTR14,
+  _target?: PuppeteerTarget
  };
-export type PuppeteerTarget = Puppeteer.Target;
+ // 
+export type PuppeteerTarget = Puppeteer.Target & {
+  _targetInfo?: { targetId: string } // pptr 8
+  _targetId?: string; // pptr 14
+};
 export type PuppeteerBrowser = Puppeteer.Browser;
 export type PuppeteerConnectOptions = Puppeteer.ConnectOptions;
 export type PuppeteerRequest = Puppeteer.Request;

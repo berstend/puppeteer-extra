@@ -1,4 +1,4 @@
-import { PluginData, PluginDependencies, PuppeteerPage, PuppeteerExtraPlugin, PuppeteerLaunchOption } from 'puppeteer-extra-plugin'
+import { PluginData, PluginDependencies, PuppeteerPage, PuppeteerCDPSession, PuppeteerExtraPlugin, PuppeteerLaunchOption } from 'puppeteer-extra-plugin'
 
 export interface PluginOptions {
   userAgent: string | null,
@@ -43,7 +43,7 @@ export interface PluginOptions {
  * @param {boolean} [opts.maskLinux] - Wether to hide Linux as platform in the user agent or not - true by default
  *
  */
- export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
+export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   private _headless?: boolean | 'chrome' = false;
 
   constructor(opts?: Partial<PluginOptions>) {
@@ -115,7 +115,7 @@ export interface PluginOptions {
 
       const greaseyBrand = `${escapedChars[order[0]]}Not${
         escapedChars[order[1]]
-      }A${escapedChars[order[2]]}Brand`
+        }A${escapedChars[order[2]]}Brand`
 
       const greasedBrandVersionList = []
       greasedBrandVersionList[order[0]] = {
@@ -183,8 +183,13 @@ export interface PluginOptions {
       opts: this.opts
     })
 
-    const client =
+    const client: PuppeteerCDPSession | undefined =
       typeof page._client === 'function' ? page._client() : page._client
+
+    if (!client) {
+      throw Error ('Failed to acess CDPSession, with the current pptr version.')
+    }
+
     client.send('Network.setUserAgentOverride', override)
   }
 
