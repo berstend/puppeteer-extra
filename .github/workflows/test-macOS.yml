@@ -1,4 +1,4 @@
-name: Test
+name: Test MacOS
 
 on:
   pull_request:
@@ -68,7 +68,7 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: 'inastall fsevents@2.3.2'
-        run: yarn add fsevents@2.3.2
+        run: yarn add fsevents@2.3.2 --ignore-workspace-root-check
 
       - name: yarn install
         uses: bahmutov/npm-install@v1

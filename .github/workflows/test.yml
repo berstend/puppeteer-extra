@@ -1,4 +1,4 @@
-name: Test
+name: Test Linux / Windows
 
 on:
   pull_request:
