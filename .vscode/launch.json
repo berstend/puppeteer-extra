@@ -20,8 +20,8 @@
       {
           "type": "node",
           "request": "launch",
-          "name": "Debug current AVA test file",
-          "program": "${workspaceFolder}/node_modules/ava/entrypoints/cli.mjs",
+          "name": "Debug current AVA test file in puppeteer-extra-plugin-anonymize-ua",
+          "program": "${workspaceFolder}/node_modules/ava/cli.js",
           "args": [
             "${file}"
           ],
@@ -32,6 +32,23 @@
             "<node_internals>/**/*",
             "node_modules/**/*"
           ]
+        },
+        {
+          "type": "node",
+          "request": "launch",
+          "name": "Debug current AVA test file in puppeteer-extra-plugin-devtools",
+          "program": "${workspaceFolder}/node_modules/ava/cli.js",
+          "args": [
+            "${file}"
+          ],
+          "outputCapture": "std",
+          "console": "integratedTerminal", // optional
+          "cwd": "${workspaceFolder}/packages/puppeteer-extra-plugin-devtools/",
+          "skipFiles": [
+            "<node_internals>/**/*",
+            "node_modules/**/*"
+          ]
         }
+
     ]
 }
