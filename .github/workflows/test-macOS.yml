@@ -67,13 +67,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-          cache: 'yarn'
 
       - name: inastall fsevents@2.3.2
         run: yarn add fsevents@2.3.2 --ignore-workspace-root-check
 
-      # - name: yarn install
-      #   uses: bahmutov/npm-install@v1
+      - name: yarn install
+        uses: bahmutov/npm-install@v1
 
       - name: yarn bootstrap
         run: yarn bootstrap
