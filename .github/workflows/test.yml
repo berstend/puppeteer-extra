@@ -73,8 +73,8 @@ jobs:
         run: npx json -I -f package.json -e 'this.resolutions={}'
 
       - name: yarn install
-      #   uses: bahmutov/npm-install@v1
-        run: yarn install --frozen-lockfile
+        uses: bahmutov/npm-install@v1
+        # run: yarn install --frozen-lockfile
 
       - name: yarn bootstrap
         run: yarn bootstrap
