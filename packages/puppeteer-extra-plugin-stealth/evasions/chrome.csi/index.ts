@@ -2,8 +2,6 @@ import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 import { withUtils } from '../_utils/withUtils'
 import Utils from '../_utils/'
 
-declare var window: any;
-
 export interface PluginOptions {
 }
 
@@ -56,9 +54,9 @@ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
         return
       }
 
-      const { timing } = window.performance
+      const { timing } = window.performance;
 
-      window.chrome.csi = function() {
+      (window.chrome as any).csi = function() {
         return {
           onloadT: timing.domContentLoadedEventEnd,
           startE: timing.navigationStart,
@@ -66,7 +64,7 @@ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
           tran: 15 // Transition type or something
         }
       }
-      utils.patchToString(window.chrome.csi)
+      utils.patchToString((window.chrome as any).csi)
     })
   }
 }

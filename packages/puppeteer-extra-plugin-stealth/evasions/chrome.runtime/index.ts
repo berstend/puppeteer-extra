@@ -1,8 +1,7 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 import { withUtils } from '../_utils/withUtils'
 import Utils from '../_utils/'
-
-declare var window: any;
 
 export interface PluginOptions {
   runOnInsecureOrigins: boolean
@@ -57,7 +56,7 @@ const STATIC_DATA: staticDataModel = require('./staticData.json')
           return // Nothing to do here
         }
 
-        window.chrome.runtime = {
+        (window.chrome as any).runtime = {
           // There's a bunch of static data in that property which doesn't seem to change,
           // we should periodically check for updates: `JSON.stringify(window.chrome.runtime, null, 2)`
           ...STATIC_DATA,
@@ -181,7 +180,7 @@ const STATIC_DATA: staticDataModel = require('./staticData.json')
             }
 
             // There's another edge-case here: extensionId is optional so we might find a connectInfo object as first param, which we need to validate
-            const validateConnectInfo = (ci: Object) => {
+            const validateConnectInfo = (ci: Record<string, unknown>) => {
               // More than a first param connectInfo as been provided
               if (args.length > 1) {
                 throw Errors.NoMatchingSignature

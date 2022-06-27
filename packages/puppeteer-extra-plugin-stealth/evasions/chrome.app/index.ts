@@ -2,8 +2,6 @@ import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 import { withUtils } from '../_utils/withUtils'
 import Utils from '../_utils/'
 
-declare var window: any;
-
 export interface PluginOptions {
 }
 
@@ -65,9 +63,9 @@ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   }
 }
         `.trim()
-      )
+      );
 
-      window.chrome.app = {
+      (window.chrome as any).app = {
         ...STATIC_DATA,
 
         get isInstalled() {
@@ -93,7 +91,7 @@ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
           return 'cannot_run'
         }
       }
-      utils.patchToStringNested(window.chrome.app)
+      utils.patchToStringNested((window.chrome as any).app)
     })
   }
 }

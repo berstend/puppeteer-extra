@@ -4,7 +4,6 @@
 // import { JSHandle } from "puppeteer";
 
 //   http://antoinevastel.github.io/bot%20detection/2018/01/17/detect-chrome-headless-v2.html
-declare var window: any;
 
 /**
  * will be evaluated in the browser context
@@ -33,7 +32,7 @@ export default async function() {
   })
 
   await test('window.chrome missing', () => {
-    return /Chrome/.test(window.navigator.userAgent) && !window.chrome
+    return /Chrome/.test(window.navigator.userAgent) && !(window as any).chrome
   })
 
   await test('permissions API', async () => {

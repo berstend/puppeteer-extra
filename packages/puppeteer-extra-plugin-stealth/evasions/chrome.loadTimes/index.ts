@@ -2,8 +2,6 @@ import { PuppeteerExtraPlugin, PuppeteerPage } from 'puppeteer-extra-plugin'
 import { withUtils } from '../_utils/withUtils'
 import Utils from '../_utils/'
 
-declare var window: any;
-
 export interface PluginOptions {
 }
 
@@ -71,21 +69,21 @@ export interface PluginOptions {
         // The API exposes some funky info regarding the connection
         const protocolInfo = {
           get connectionInfo() {
-            const ntEntry =
+            const ntEntry: any =
               performance.getEntriesByType('navigation')[0] || ntEntryFallback
             return ntEntry.nextHopProtocol
           },
           get npnNegotiatedProtocol() {
             // NPN is deprecated in favor of ALPN, but this implementation returns the
             // HTTP/2 or HTTP2+QUIC/39 requests negotiated via ALPN.
-            const ntEntry =
+            const ntEntry: any =
               performance.getEntriesByType('navigation')[0] || ntEntryFallback
             return ['h2', 'hq'].includes(ntEntry.nextHopProtocol)
               ? ntEntry.nextHopProtocol
               : 'unknown'
           },
           get navigationType() {
-            const ntEntry =
+            const ntEntry: any =
               performance.getEntriesByType('navigation')[0] || ntEntryFallback
             return ntEntry.type
           },
@@ -98,14 +96,14 @@ export interface PluginOptions {
           get wasFetchedViaSpdy() {
             // SPDY is deprecated in favor of HTTP/2, but this implementation returns
             // true for HTTP/2 or HTTP2+QUIC/39 as well.
-            const ntEntry =
+            const ntEntry: any =
               performance.getEntriesByType('navigation')[0] || ntEntryFallback
             return ['h2', 'hq'].includes(ntEntry.nextHopProtocol)
           },
           get wasNpnNegotiated() {
             // NPN is deprecated in favor of ALPN, but this implementation returns true
             // for HTTP/2 or HTTP2+QUIC/39 requests negotiated via ALPN.
-            const ntEntry =
+            const ntEntry: any =
               performance.getEntriesByType('navigation')[0] || ntEntryFallback
             return ['h2', 'hq'].includes(ntEntry.nextHopProtocol)
           }
@@ -115,7 +113,7 @@ export interface PluginOptions {
 
         // Truncate number to specific number of decimals, most of the `loadTimes` stuff has 3
         function toFixed(num: number, fixed: number) {
-          var re = new RegExp('^-?\\d+(?:.\\d{0,' + (fixed || -1) + '})?')
+          const re = new RegExp('^-?\\d+(?:.\\d{0,' + (fixed || -1) + '})?')
           return num.toString().match(re)![0]
         }
 
@@ -148,15 +146,15 @@ export interface PluginOptions {
               3
             )
           }
-        }
+        };
 
-        window.chrome.loadTimes = function() {
+        (window.chrome as any).loadTimes = function() {
           return {
             ...protocolInfo,
             ...timingInfo
           }
         }
-        utils.patchToString(window.chrome.loadTimes)
+        utils.patchToString((window.chrome as any).loadTimes)
       },
       this.opts
     )
