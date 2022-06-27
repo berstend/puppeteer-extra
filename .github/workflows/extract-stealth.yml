@@ -5,9 +5,10 @@ on:
     branches:
       - master
     paths:
-      - 'packages/puppeteer-extra-plugin-stealth/**'
-      - 'packages/extract-stealth-evasions/**'
-      - '.github/workflows/extract-stealth.yml'
+      - packages/puppeteer-extra-plugin-stealth/**
+      - packages/extract-stealth-evasions/**
+      - .github/workflows/extract-stealth.yml
+      - yarn.lock
 
 jobs:
   build:
@@ -16,7 +17,7 @@ jobs:
       - name: Sleep for 190 seconds
         uses: jakejarvis/wait-action@master
         with:
-          time: '190s'
+          time: 190s
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -41,7 +42,7 @@ jobs:
         with:
           add: 'stealth.min.js'
           force: true
-          ref: 'stealth-js'
-          message: 'Auto-updated stealth.min.js with newest evasions'
+          ref: stealth-js
+          message: Auto-updated stealth.min.js with newest evasions
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

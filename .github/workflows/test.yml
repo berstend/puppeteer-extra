@@ -9,17 +9,18 @@ on:
       - synchronize
       - reopened
     paths:
-      - 'packages/**'
-      - '.github/workflows/test.yml'
-      - 'package.json'
+      - packages/**
+      - .github/workflows/test.yml
+      - package.json
   push:
     branches:
       - master
-      - 'test/*'
+      - test/*
     paths:
-      - 'packages/**'
-      - '.github/workflows/test.yml'
-      - 'package.json'
+      - packages/**
+      - .github/workflows/test.yml
+      - package.json
+      - yarn.lock
 
 env:
   CI: 'true'

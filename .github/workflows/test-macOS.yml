@@ -9,18 +9,19 @@ on:
       - synchronize
       - reopened
     paths:
-      - 'packages/**'
-      - '.github/workflows/test-macOS.yml'
-      - 'package.json'
-
+      - packages/**
+      - .github/workflows/test-macOS.yml
+      - package.json
+      - yarn.lock
   push:
     branches:
       - master
-      - 'test/*'
+      - test/*
     paths:
-      - 'packages/**'
-      - '.github/workflows/test-macOS.yml'
-      - 'package.json'
+      - packages/**
+      - .github/workflows/test-macOS.yml
+      - package.json
+      - yarn.lock
 
 env:
   CI: 'true'
@@ -67,7 +68,7 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: 'inastall fsevents@2.3.2'
+      - name: inastall fsevents@2.3.2
         run: yarn add fsevents@2.3.2 --ignore-workspace-root-check
 
       - name: yarn install
@@ -94,6 +95,6 @@ jobs:
       - name: test
         uses: GabrielBB/xvfb-action@v1
         env:
-          DISPLAY: ':99.0'
+          DISPLAY: :99.0
         with:
           run: yarn test-ci
