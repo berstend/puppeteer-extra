@@ -67,7 +67,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-          cache: yarn
 
 #      - name: 'Fix for: error fsevents@2.3.2: The platform "linux" is incompatible with this module.'
 #        run: npx json -I -f package.json -e 'this.resolutions={}'
