@@ -61,7 +61,7 @@
     ]
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.188",
+    "@types/chrome": "^0.0.191",
     "@types/node": "^17.0.41",
     "@types/offscreencanvas": "^2019.7.0",
     "ava": "3.15.0",
