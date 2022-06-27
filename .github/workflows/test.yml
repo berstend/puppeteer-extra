@@ -69,37 +69,37 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: yarn
 
-      - name: 'Fix for: error fsevents@2.3.2: The platform "linux" is incompatible with this module.'
-        run: npx json -I -f package.json -e 'this.resolutions={}'
-
-      - name: yarn install
-        uses: bahmutov/npm-install@v1
-        # run: yarn install --frozen-lockfile
-
-      - name: yarn bootstrap
-        run: yarn bootstrap
-
-      - name: install puppeteer@${{ matrix.puppeteer_version }}
-        run: yarn lerna add --dev puppeteer@${{ matrix.puppeteer_version }}
-
-      - name: lerna link
-        run: yarn lerna link
-
-      - name: lerna build
-        run: yarn lerna run build --concurrency 1
-
-      - name: debug
-        run: |
-          yarn list --pattern "puppeteer|puppeteer-extra"
-          file node_modules/puppeteer-extra/dist/index.cjs.js
-      - uses: microsoft/playwright-github-action@v1
-
-      - name: test
-        uses: GabrielBB/xvfb-action@v1
-        env:
-          DISPLAY: ':99.0'
-        with:
-          run: yarn test-ci
-    # Workaround to avoid Post Use step failures. See: https://github.com/actions/setup-node/issues/317
+#      - name: 'Fix for: error fsevents@2.3.2: The platform "linux" is incompatible with this module.'
+#        run: npx json -I -f package.json -e 'this.resolutions={}'
+#
+#      - name: yarn install
+#        uses: bahmutov/npm-install@v1
+#        # run: yarn install --frozen-lockfile
+#
+#      - name: yarn bootstrap
+#        run: yarn bootstrap
+#
+#      - name: install puppeteer@${{ matrix.puppeteer_version }}
+#        run: yarn lerna add --dev puppeteer@${{ matrix.puppeteer_version }}
+#
+#      - name: lerna link
+#        run: yarn lerna link
+#
+#      - name: lerna build
+#        run: yarn lerna run build --concurrency 1
+#
+#      - name: debug
+#        run: |
+#          yarn list --pattern "puppeteer|puppeteer-extra"
+#          file node_modules/puppeteer-extra/dist/index.cjs.js
+#      - uses: microsoft/playwright-github-action@v1
+#
+#      - name: test
+#        uses: GabrielBB/xvfb-action@v1
+#        env:
+#          DISPLAY: ':99.0'
+#        with:
+#          run: yarn test-ci
+#    # Workaround to avoid Post Use step failures. See: https://github.com/actions/setup-node/issues/317
       - run: mkdir -p /home/runner/.cache/yarn/v6
         continue-on-error: true
