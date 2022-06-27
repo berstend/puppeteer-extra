@@ -61,18 +61,19 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
+          cache: yarn
 
       - name: 'Fix for: error fsevents@2.3.2: The platform "linux" is incompatible with this module.'
         run: npx json -I -f package.json -e 'this.resolutions={}'
 
-      - name: yarn install
-        uses: bahmutov/npm-install@v1
+      # - name: yarn install
+      #   uses: bahmutov/npm-install@v1
 
       - name: yarn bootstrap
         run: yarn bootstrap
