@@ -64,7 +64,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
 
@@ -98,3 +98,4 @@ jobs:
           DISPLAY: :99.0
         with:
           run: yarn test-ci
+          
