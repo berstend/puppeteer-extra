@@ -14,6 +14,8 @@
     "postdocs-for-plugin": "npx prettier --write readme.md",
     "docs-for-evasions": "cd ./evasions && loop \"documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API index.js\"",
     "postdocs-for-evasions": "cd ./evasions && loop \"npx prettier --write readme.md\"",
+    "clean": "rimraf index.{js,d.ts,js.map} evasions/{c,d,i,m,n,s,u,w}*/index.{js,d.ts,js.map}",
+    "prebuild": "run-s clean",
     "build": "run-s build:tsc",
     "build:tsc": "tsc --module commonjs",
     "build:rollup": "rollup -c rollup.config.ts",

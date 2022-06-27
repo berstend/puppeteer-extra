@@ -49,14 +49,14 @@ const STATIC_DATA: staticDataModel = require('./staticData.json')
         }
 
         // That means we're running headful and don't need to mock anything
-        const existsAlready = 'runtime' in window.chrome
+        const existsAlready = 'runtime' in (window as any).chrome
         // `chrome.runtime` is only exposed on secure origins
         const isNotSecure = !window.location.protocol.startsWith('https')
         if (existsAlready || (isNotSecure && !opts.runOnInsecureOrigins)) {
           return // Nothing to do here
         }
 
-        (window.chrome as any).runtime = {
+        (window as any).chrome.runtime = {
           // There's a bunch of static data in that property which doesn't seem to change,
           // we should periodically check for updates: `JSON.stringify(window.chrome.runtime, null, 2)`
           ...STATIC_DATA,
