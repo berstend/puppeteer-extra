@@ -4,7 +4,7 @@ import merge from 'deepmerge'
 import { PluginData, PluginDependencies, PluginRequirements, PuppeteerExtraPlugin, PuppeteerLaunchOption } from 'puppeteer-extra-plugin'
 
 export interface PluginOptions {
-  userPrefs: any;
+  userPrefs: {[key: string]: any};
 }
 
 /**
@@ -68,7 +68,7 @@ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
     ]
   }
 
-  get combinedPrefs(): any {
+  get combinedPrefs(): {[key: string]: any} {
     return merge(this.opts.userPrefs, this._userPrefsFromPlugins)
   }
 

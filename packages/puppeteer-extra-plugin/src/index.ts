@@ -79,6 +79,8 @@ export type PuppeteerRequest = Puppeteer.Request;
 export type PuppeteerClickOptions = Puppeteer.ClickOptions;
 export type PuppeteerNavigationOptions = Puppeteer.NavigationOptions;
 export type PuppeteerResponse = Puppeteer.Response;
+export type PuppeteerFrame = Puppeteer.Frame;
+
 /**
  * Base class for `puppeteer-extra` plugins.
  *

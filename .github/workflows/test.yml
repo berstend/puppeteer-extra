@@ -34,7 +34,7 @@ jobs:
     strategy:
       matrix:
         node:
-          - 18
+          # - 18
           - 16
           # - 14
         puppeteer_version:
