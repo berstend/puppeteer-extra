@@ -17,7 +17,7 @@
     "noUnusedParameters": false,
     "pretty": true,
     "stripInternal": true,
-    "types": []
+    "types": ["chrome"]
   },
   "include": [
     "index.ts",
