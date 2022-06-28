@@ -11,7 +11,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "buildOld": "yarn lerna exec --concurrency 1 \"yarn build\"",
-    "build": "yarn lerna run build --concurrency 1",
+    "build": "yarn lerna link && yarn lerna run build --concurrency 1",
     "docs": "lerna run docs",
     "test": "lerna run test --concurrency 1 --stream",
     "test-ci": "lerna run test-ci --concurrency 1 --stream",

@@ -28,7 +28,7 @@ export class Plugin extends PuppeteerExtraPlugin<PluginOptions> {
   async onPageCreated(page: PuppeteerPage): Promise<void> {
     await withUtils(page).evaluateOnNewDocument((utils: typeof Utils, opts: PluginOptions) => {
       const getParameterProxyHandler = {
-        apply: function(target: any, ctx: any, args: any[]) {
+        apply: function(target: any, ctx: any, args: [number]) {
           const param = (args || [])[0]
           const result = utils.cache.Reflect.apply(target, ctx, args)
           // UNMASKED_VENDOR_WEBGL
