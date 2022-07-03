@@ -1,6 +1,6 @@
 # puppeteer-extra-plugin-recaptcha [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test/master)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](http://scraping-chat.cf) [![npm](https://img.shields.io/npm/dt/puppeteer-extra-plugin-recaptcha.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin-recaptcha) [![npm](https://img.shields.io/npm/v/puppeteer-extra-plugin-recaptcha.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin-recaptcha)
 
-> A [puppeteer-extra](https://github.com/berstend/puppeteer-extra) plugin to solve reCAPTCHAs and hCaptchas automatically.
+> A [puppeteer-extra](https://github.com/berstend/puppeteer-extra/edit/master/packages/puppeteer-extra) and [playwright-extra](https://github.com/berstend/puppeteer-extra/edit/master/packages/playwright-extra) plugin to solve reCAPTCHAs and hCaptchas automatically.
 
 ![](https://i.imgur.com/SWrIQw0.gif)
 
@@ -140,9 +140,6 @@ If you'd like to see debug output just run your script like so:
 DEBUG=puppeteer-extra,puppeteer-extra-plugin:* node myscript.js
 ```
 
-### Proxies
-If you want to attach a proxy while running a bypass, set the enviroment variables ``2CAPTCHA_PROXY_TYPE`` and ``2CAPTCHA_PROXY_ADDRESS``
-
 _**Tip:** The recaptcha plugin works really well together with the [stealth plugin](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth)._
 
 ## Motivation 🏴
@@ -264,6 +261,12 @@ let { solutions, error } = await page.getRecaptchaSolutions(captchas)
 let { solved, error } = await page.enterRecaptchaSolutions(solutions)
 ```
 
+
+### Proxies
+
+If you wish for 2captcha to use a specific proxy (= IP address) while solving the captcha you can set the enviroment variables `2CAPTCHA_PROXY_TYPE` and `2CAPTCHA_PROXY_ADDRESS`.
+
+
 ## Troubleshooting
 
 ### Solving captchas in iframes
@@ -317,4 +320,4 @@ await page.solveRecaptchas()
 
 ## License
 
-Copyright © 2018 - 2021, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](https://github.com/berstend). Released under the MIT License.
+Copyright © 2018 - 2022, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](https://github.com/berstend). Released under the MIT License.
