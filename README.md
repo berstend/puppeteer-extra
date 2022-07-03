@@ -1,10 +1,10 @@
-# puppeteer-extra
+# puppeteer-extra [![Downloads](https://img.shields.io/endpoint?style=social&url=https://runkit.io/fezvrasta/combined-npm-downloads/1.0.0?packages=puppeteer-extra,puppeteer-extra-plugin,puppeteer-extra-plugin-stealth,puppeteer-extra-plugin-recaptcha,puppeteer-extra-plugin-adblocker)](https://github.com/berstend/puppeteer-extra/)
 
-This is the monorepo for [`puppeteer-extra`](./packages/puppeteer-extra), a modular plugin framework for [`puppeteer`](https://github.com/GoogleChrome/puppeteer). :-)
+This is the monorepo for [`puppeteer-extra`](./packages/puppeteer-extra), a modular plugin framework for [`puppeteer`](https://github.com/puppeteer/puppeteer). :-)
 
 🌟 **For the main documentation, please head over to the [`puppeteer-extra`](./packages/puppeteer-extra) package.**
 
-In case you're interested in the available plugins, check out the [packages folder](./packages/).
+We've also recently introduced support for Playwright, if you're interested in that head over to [`playwright-extra`](./packages/playwright-extra).
 
 ## Monorepo
 
