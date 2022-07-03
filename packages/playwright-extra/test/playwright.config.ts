@@ -5,18 +5,20 @@ const config: PlaywrightTestConfig = {
   workers: 3,
 
   use: {
-    browserName: 'chromium',
-    launchOptions: {
-      chromiumSandbox: process.env.CI ? false : true,
-      args: process.env.CI ? ['--no-sandbox', '--disable-setuid-sandbox'] : []
-    }
+    browserName: 'chromium'
   },
 
   projects: [
     {
       name: 'chromium',
       use: {
-        browserName: 'chromium'
+        browserName: 'chromium',
+        launchOptions: {
+          chromiumSandbox: process.env.CI ? false : true,
+          args: process.env.CI
+            ? ['--no-sandbox', '--disable-setuid-sandbox']
+            : []
+        }
       }
     },
     {
@@ -29,6 +31,7 @@ const config: PlaywrightTestConfig = {
       name: 'webkit',
       use: {
         browserName: 'webkit'
+        // Note: webkit doesn't support --no-sandbox
       }
     }
   ]
