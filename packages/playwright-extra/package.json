@@ -18,7 +18,6 @@
     "build": "run-s build:tsc build:rollup ambient-dts",
     "build:tsc": "tsc --module commonjs",
     "build:rollup": "rollup -c rollup.config.ts",
-    "prepublishOnly": "run-s build",
     "docs": "echo \"No docs\"",
     "test": "yarn playwright test --config test/playwright.config.ts",
     "test-ci": "run-s test",
