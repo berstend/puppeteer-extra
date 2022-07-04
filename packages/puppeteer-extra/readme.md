@@ -99,6 +99,13 @@ puppeteer
 </details>
 
 <details>
+ <summary><strong>Playwright usage</strong></summary><br/>
+
+[`playright-extra`](/packages/playwright-extra) with plugin support is available as well.
+
+</details>
+
+<details>
  <summary><strong>Multiple puppeteers with different plugins</strong></summary><br/>
 
 ```js
@@ -138,29 +145,6 @@ async function checkUserAgent(pptr) {
   console.log(content)
   await browser.close()
 }
-```
-
-</details>
-
-<details>
- <summary><strong>Using with <code>puppeteer-firefox</code></strong></summary><br/>
-
-> [puppeteer-firefox](https://github.com/puppeteer/puppeteer/tree/master/experimental/puppeteer-firefox) is still new and experimental, you can follow it's progress [here](https://aslushnikov.github.io/ispuppeteerfirefoxready/).
-
-```js
-// Any puppeteer API-compatible puppeteer implementation
-// or version can be augmented with `addExtra`.
-const { addExtra } = require('puppeteer-extra')
-const puppeteer = addExtra(require('puppeteer-firefox'))
-
-puppeteer
-  .launch({ headless: false, defaultViewport: null })
-  .then(async browser => {
-    const page = await browser.newPage()
-    await page.goto('https://www.spacejam.com/archive/spacejam/movie/jam.htm')
-    await page.waitForTimeout(10 * 1000)
-    await browser.close()
-  })
 ```
 
 </details>
@@ -297,16 +281,15 @@ browserless
 
 #### 🔥 [`puppeteer-extra-plugin-stealth`](/packages/puppeteer-extra-plugin-stealth)
 
-- Applies various evasion techniques to make detection of headless puppeteer harder.
-
-#### 🆕 [`puppeteer-extra-plugin-adblocker`](/packages/puppeteer-extra-plugin-adblocker)
-
-- Very fast & efficient blocker for ads and trackers. Reduces bandwidth & load times.
-- Thanks to [@remusao](https://github.com/remusao) for contributing this plugin 👏
+- Applies various evasion techniques to make detection of puppeteer harder.
 
 #### 🏴 [`puppeteer-extra-plugin-recaptcha`](/packages/puppeteer-extra-plugin-recaptcha)
 
-- Solves reCAPTCHAs automatically, using a single line of code: `page.solveRecaptchas()`.
+- Solves reCAPTCHAs and hCaptchas automatically, using a single line of code: `page.solveRecaptchas()`.
+
+#### [`puppeteer-extra-plugin-adblocker`](/packages/puppeteer-extra-plugin-adblocker)
+
+- Very fast & efficient blocker for ads and trackers. Reduces bandwidth & load times.
 
 #### [`puppeteer-extra-plugin-devtools`](/packages/puppeteer-extra-plugin-devtools)
 
@@ -617,7 +600,7 @@ puppeteer.use(...)
 
 ## License
 
-Copyright © 2018 - 2021, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](mailto:github@berstend.com?subject=[GitHub]%20PuppeteerExtra). Released under the MIT License.
+Copyright © 2018 - 2022, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](mailto:github@berstend.com?subject=[GitHub]%20PuppeteerExtra). Released under the MIT License.
 
 <!-- Markdown footnotes (for links) -->
 
