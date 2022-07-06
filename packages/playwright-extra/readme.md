@@ -15,6 +15,8 @@ npm install playwright playwright-extra
 
 > Please check the `announcements` channel in our [discord server](https://extra.community) until we've automated readme updates. :)
 
+- **v4.3**
+  - Rerelease due to versioning issues with previous beta packages
 - **v3.3**
   - Initial public release
   </details>
