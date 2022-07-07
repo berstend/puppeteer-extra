@@ -34,9 +34,9 @@ test('will throw without browser when creating a tunnel', async t => {
   t.is(error.name, `ArgumentError`)
 })
 
-test('will accept a browser when creating a tunnel', async t => {
-  const instance = new Plugin({ auth: { user: 'bob', pass: 'yup' } })
-  const fakeBrowser = { wsEndpoint: () => 'ws://foobar:1337' }
-  await instance.createTunnel(fakeBrowser)
-  t.is(true, true)
-})
+// test('will accept a browser when creating a tunnel', async t => {
+//   const instance = new Plugin({ auth: { user: 'bob', pass: 'yup' } })
+//   const fakeBrowser = { wsEndpoint: () => 'ws://foobar:1337' }
+//   await instance.createTunnel(fakeBrowser)
+//   t.is(true, true)
+// })
