@@ -59,5 +59,17 @@
   },
   "dependencies": {
     "debug": "^4.3.4"
+  },
+  "peerDependencies": {
+    "playwright": "*",
+    "playwright-core": "*"
+  },
+  "peerDependenciesMeta": {
+    "playwright": {
+      "optional": true
+    },
+    "playwright-core": {
+      "optional": true
+    }
   }
 }
