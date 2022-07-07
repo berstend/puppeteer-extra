@@ -67,9 +67,17 @@
     "puppeteer-extra-plugin": "^3.2.1"
   },
   "peerDependencies": {
+    "puppeteer": "*",
+    "puppeteer-core": "*",
     "puppeteer-extra": "*"
   },
   "peerDependenciesMeta": {
+    "puppeteer": {
+      "optional": true
+    },
+    "puppeteer-core": {
+      "optional": true
+    },
     "puppeteer-extra": {
       "optional": true
     }
