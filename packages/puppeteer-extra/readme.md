@@ -385,7 +385,7 @@ A few plugins won't work in headless mode (it's noted if that's the case) due to
 Big refactor, the core is now **written in TypeScript** 🎉
 That means out of the box type safety for fellow TS users and nice auto-completion in VSCode for JS users. Also:
 
-- A new [`addExtra`](#addextrapuppeteer) export, to **patch any puppeteer compatible library with plugin functionality** (`puppeteer-firefox`, `chrome-aws-lambda`, etc). This also allows for multiple puppeteer instances with different plugins.
+- A new [`addExtra`](#addextrapuppeteer) export, to **patch any puppeteer compatible library with plugin functionality** (`chrome-aws-lambda`, etc). This also allows for multiple puppeteer instances with different plugins.
 
 The API is backwards compatible, I bumped the major version just in case I missed something. Please report any issues you might find with the new release. :)
 
@@ -586,13 +586,15 @@ Example:
 
 ```javascript
 // js import
+const puppeteerVanilla = require('puppeteer')
 const { addExtra } = require('puppeteer-extra')
 
 // ts/es6 import
+import puppeteerVanilla from 'puppeteer'
 import { addExtra } from 'puppeteer-extra'
 
-// Patch e.g. puppeteer-firefox and add plugins
-const puppeteer = addExtra(require('puppeteer-firefox'))
+// Patch provided puppeteer and add plugins
+const puppeteer = addExtra(puppeteerVanilla)
 puppeteer.use(...)
 ```
 

@@ -125,7 +125,6 @@ export class PuppeteerExtra implements VanillaPuppeteer {
 
     Alternatively:
     - To get puppeteer without the bundled Chromium browser install 'puppeteer-core'
-    - To use puppeteer-firefox install 'puppeteer-firefox' and use the 'addExtra' export
     `)
     throw this._requireError || new Error('No puppeteer instance provided.')
   }
