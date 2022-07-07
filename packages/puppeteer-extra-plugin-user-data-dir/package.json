@@ -36,5 +36,17 @@
     "fs-extra": "^10.0.0",
     "puppeteer-extra-plugin": "^3.2.0"
   },
+  "peerDependencies": {
+    "puppeteer-extra": "*",
+    "playwright-extra": "*"
+  },
+  "peerDependenciesMeta": {
+    "puppeteer-extra": {
+      "optional": true
+    },
+    "playwright-extra": {
+      "optional": true
+    }
+  },
   "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }

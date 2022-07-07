@@ -69,5 +69,10 @@
   "peerDependencies": {
     "puppeteer-extra": "*"
   },
+  "peerDependenciesMeta": {
+    "puppeteer-extra": {
+      "optional": true
+    }
+  },
   "gitHead": "72fe830c158f1e971c8499fdd5232338dd53c220"
 }
