@@ -14,9 +14,9 @@ labels: 'issue: bug report, needs triage'
   - Don't come across as entitled, unfriendly or angry or nobody will help you (general rule in life).
   - Reporting a "bug" without ways to reproduce it is not "contributing to open-source".
 
-  - NOTE: "SiteA.com stopped working" is not a valid stealth-plugin bug report, unless used 
+  - NOTE: "SiteA.com stopped working" is not a valid stealth-plugin bug report, unless used
     as an example to show a technical issue while providing specific example code of the problem.
-    For general purpose usage discussions please use the community discord: http://scraping-chat.cf/
+    For general purpose usage discussions please use the community discord: https://extra.community
 -->
 
 **Describe the bug**
