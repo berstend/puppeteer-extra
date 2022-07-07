@@ -26,8 +26,7 @@ jobs:
     strategy:
       matrix:
         node:
-          - 16
-          # - 14
+          # - 16
           - 14
         puppeteer_version:
           # - 14.2.0 # Chromium 103.0.5059.0 # requires >=14.1.0
