@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-user-preferences",
-  "version": "2.3.3",
+  "version": "2.4.0",
   "description": "Launch puppeteer with arbitrary user preferences.",
   "main": "index.js",
   "repository": "berstend/puppeteer-extra",
@@ -34,7 +34,7 @@
     "debug": "^4.1.1",
     "deepmerge": "^4.2.2",
     "puppeteer-extra-plugin": "^3.2.2",
-    "puppeteer-extra-plugin-user-data-dir": "^2.3.3"
+    "puppeteer-extra-plugin-user-data-dir": "^2.4.0"
   },
   "peerDependencies": {
     "playwright-extra": "*",

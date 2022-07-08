@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-stealth",
-  "version": "2.10.4",
+  "version": "2.11.0",
   "description": "Stealth mode: Applies various techniques to make detection of headless puppeteer harder.",
   "main": "index.js",
   "typings": "index.d.ts",
@@ -53,7 +53,7 @@
   "dependencies": {
     "debug": "^4.1.1",
     "puppeteer-extra-plugin": "^3.2.2",
-    "puppeteer-extra-plugin-user-preferences": "^2.3.3"
+    "puppeteer-extra-plugin-user-preferences": "^2.4.0"
   },
   "peerDependencies": {
     "playwright-extra": "*",
