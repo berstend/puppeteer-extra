@@ -1,4 +1,4 @@
-# puppeteer-extra [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test/master)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](http://scraping-chat.cf) [![npm](https://img.shields.io/npm/v/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra) [![npm](https://img.shields.io/npm/dt/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra) [![npm](https://img.shields.io/npm/l/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra)
+# puppeteer-extra [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test/master)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](https://extra.community) [![npm](https://img.shields.io/npm/v/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra) [![npm](https://img.shields.io/npm/dt/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra) [![npm](https://img.shields.io/npm/l/puppeteer-extra.svg)](https://www.npmjs.com/package/puppeteer-extra)
 
 > A light-weight wrapper around [`puppeteer`](https://github.com/GoogleChrome/puppeteer) and [friends](#more-examples) to enable cool [plugins](#plugins) through a clean interface.
 
@@ -99,6 +99,13 @@ puppeteer
 </details>
 
 <details>
+ <summary><strong>Playwright usage</strong></summary><br/>
+
+[`playright-extra`](/packages/playwright-extra) with plugin support is available as well.
+
+</details>
+
+<details>
  <summary><strong>Multiple puppeteers with different plugins</strong></summary><br/>
 
 ```js
@@ -138,29 +145,6 @@ async function checkUserAgent(pptr) {
   console.log(content)
   await browser.close()
 }
-```
-
-</details>
-
-<details>
- <summary><strong>Using with <code>puppeteer-firefox</code></strong></summary><br/>
-
-> [puppeteer-firefox](https://github.com/puppeteer/puppeteer/tree/master/experimental/puppeteer-firefox) is still new and experimental, you can follow it's progress [here](https://aslushnikov.github.io/ispuppeteerfirefoxready/).
-
-```js
-// Any puppeteer API-compatible puppeteer implementation
-// or version can be augmented with `addExtra`.
-const { addExtra } = require('puppeteer-extra')
-const puppeteer = addExtra(require('puppeteer-firefox'))
-
-puppeteer
-  .launch({ headless: false, defaultViewport: null })
-  .then(async browser => {
-    const page = await browser.newPage()
-    await page.goto('https://www.spacejam.com/archive/spacejam/movie/jam.htm')
-    await page.waitForTimeout(10 * 1000)
-    await browser.close()
-  })
 ```
 
 </details>
@@ -297,16 +281,15 @@ browserless
 
 #### 🔥 [`puppeteer-extra-plugin-stealth`](/packages/puppeteer-extra-plugin-stealth)
 
-- Applies various evasion techniques to make detection of headless puppeteer harder.
-
-#### 🆕 [`puppeteer-extra-plugin-adblocker`](/packages/puppeteer-extra-plugin-adblocker)
-
-- Very fast & efficient blocker for ads and trackers. Reduces bandwidth & load times.
-- Thanks to [@remusao](https://github.com/remusao) for contributing this plugin 👏
+- Applies various evasion techniques to make detection of puppeteer harder.
 
 #### 🏴 [`puppeteer-extra-plugin-recaptcha`](/packages/puppeteer-extra-plugin-recaptcha)
 
-- Solves reCAPTCHAs automatically, using a single line of code: `page.solveRecaptchas()`.
+- Solves reCAPTCHAs and hCaptchas automatically, using a single line of code: `page.solveRecaptchas()`.
+
+#### [`puppeteer-extra-plugin-adblocker`](/packages/puppeteer-extra-plugin-adblocker)
+
+- Very fast & efficient blocker for ads and trackers. Reduces bandwidth & load times.
 
 #### [`puppeteer-extra-plugin-devtools`](/packages/puppeteer-extra-plugin-devtools)
 
@@ -402,7 +385,7 @@ A few plugins won't work in headless mode (it's noted if that's the case) due to
 Big refactor, the core is now **written in TypeScript** 🎉
 That means out of the box type safety for fellow TS users and nice auto-completion in VSCode for JS users. Also:
 
-- A new [`addExtra`](#addextrapuppeteer) export, to **patch any puppeteer compatible library with plugin functionality** (`puppeteer-firefox`, `chrome-aws-lambda`, etc). This also allows for multiple puppeteer instances with different plugins.
+- A new [`addExtra`](#addextrapuppeteer) export, to **patch any puppeteer compatible library with plugin functionality** (`chrome-aws-lambda`, etc). This also allows for multiple puppeteer instances with different plugins.
 
 The API is backwards compatible, I bumped the major version just in case I missed something. Please report any issues you might find with the new release. :)
 
@@ -603,13 +586,15 @@ Example:
 
 ```javascript
 // js import
+const puppeteerVanilla = require('puppeteer')
 const { addExtra } = require('puppeteer-extra')
 
 // ts/es6 import
+import puppeteerVanilla from 'puppeteer'
 import { addExtra } from 'puppeteer-extra'
 
-// Patch e.g. puppeteer-firefox and add plugins
-const puppeteer = addExtra(require('puppeteer-firefox'))
+// Patch provided puppeteer and add plugins
+const puppeteer = addExtra(puppeteerVanilla)
 puppeteer.use(...)
 ```
 
@@ -617,7 +602,7 @@ puppeteer.use(...)
 
 ## License
 
-Copyright © 2018 - 2021, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](mailto:github@berstend.com?subject=[GitHub]%20PuppeteerExtra). Released under the MIT License.
+Copyright © 2018 - 2022, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](mailto:github@berstend.com?subject=[GitHub]%20PuppeteerExtra). Released under the MIT License.
 
 <!-- Markdown footnotes (for links) -->
 

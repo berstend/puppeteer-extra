@@ -22,17 +22,3 @@ test('will throw without puppeteer', async t => {
   const pptr = addExtra(null as any)
   t.throws(() => pptr.pptr, null, 'No puppeteer instance provided.')
 })
-
-test('can work with puppeteer-firefox', async t => {
-  const pptrFF = require('puppeteer-firefox')
-  const puppeteer = addExtra(pptrFF)
-  t.truthy(Array.isArray(puppeteer.plugins))
-  const browser = await puppeteer.launch({ headless: true })
-  t.truthy(await browser.version())
-  const page = await browser.newPage()
-  await page.goto('https://example.com')
-  const title = await page.title()
-  t.true(title && title.toLowerCase().includes('example domain'))
-  await browser.close()
-  t.true(true)
-})
