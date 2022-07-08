@@ -40,13 +40,15 @@ const puppeteer = require('puppeteer-extra')
 // create using puppeteer.
 const { DEFAULT_INTERCEPT_RESOLUTION_PRIORITY } = require('puppeteer')
 const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker')
-puppeteer.use(AdblockerPlugin({
-  // Optionally enable Cooperative Mode for several request interceptors
-  interceptResolutionPriority: DEFAULT_INTERCEPT_RESOLUTION_PRIORITY
-}))
+puppeteer.use(
+  AdblockerPlugin({
+    // Optionally enable Cooperative Mode for several request interceptors
+    interceptResolutionPriority: DEFAULT_INTERCEPT_RESOLUTION_PRIORITY
+  })
+)
 
 // puppeteer usage as normal
-puppeteer.launch({ headless: true }).then(async (browser) => {
+puppeteer.launch({ headless: true }).then(async browser => {
   const page = await browser.newPage()
   // Visit a page, ads are blocked automatically!
   await page.goto('https://www.google.com/search?q=rent%20a%20car')
@@ -70,7 +72,7 @@ puppeteer.use(Adblocker({ blockTrackers: true }))
 
 puppeteer
   .launch({ headless: false, defaultViewport: null })
-  .then(async (browser) => {
+  .then(async browser => {
     const page = await browser.newPage()
     await page.goto('https://www.vanityfair.com')
     await page.waitForTimeout(60 * 1000)
@@ -87,7 +89,7 @@ Usage:
 ```js
 const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker')
 const adblocker = AdblockerPlugin({
-  blockTrackers: true, // default: false
+  blockTrackers: true // default: false
 })
 puppeteer.use(adblocker)
 ```
@@ -98,6 +100,9 @@ Available options:
 interface PluginOptions {
   /** Whether or not to block trackers (in addition to ads). Default: false */
   blockTrackers: boolean
+  /** Whether or not to block trackers and other annoyances, including cookie
+      notices. Default: false */
+  blockTrackersAndAnnoyances: boolean
   /** Persist adblocker engine cache to disk for speedup. Default: true */
   useCache: boolean
   /** Optional custom directory for adblocker cache files. Default: undefined */
