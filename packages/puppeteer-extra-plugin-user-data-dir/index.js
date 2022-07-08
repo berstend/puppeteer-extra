@@ -5,6 +5,7 @@ const fs = require('fs')
 const fse = require('fs-extra')
 const os = require('os')
 const path = require('path')
+const rimraf = require('rimraf')
 const debug = require('debug')('puppeteer-extra-plugin:user-data-dir')
 const mkdtempAsync = util.promisify(fs.mkdtemp)
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
@@ -64,26 +65,18 @@ class Plugin extends PuppeteerExtraPlugin {
 
   deleteUserDataDir() {
     debug('removeUserDataDir', this._userDataDir)
-    try {
-      // We're doing it sync to improve chances to cleanup
-      // correctly in the event of ultimate disaster.
-      if ('rmSync' in fs) {
-        // Only available in node >= v14.14.0
-        fs.rmSync(this._userDataDir, {
-          recursive: true,
-          force: true, // exceptions will be ignored if path does not exist
-          maxRetries: 3
-        })
-      } else {
-        // Deprecated since node >= v14.14.0
-        fs.rmdirSync(this._userDataDir, {
-          recursive: true,
-          maxRetries: 3
-        })
+
+    // We're using rimraf here because it throw errors and don't seem to freeze the process
+    // If ressources busy or locked by chrome try again 4 times, then give up. overall a timout of 400ms
+    rimraf(
+      this._userDataDir,
+      {
+        maxBusyTries: 4
+      },
+      err => {
+        debug(err)
       }
-    } catch (e) {
-      debug(e)
-    }
+    )
   }
 
   async writeFilesToProfile() {
