@@ -48,7 +48,7 @@ utils.stripProxyFromErrors = (handler = {}) => {
         
         // CreepJS Defense Proxy Detection
         try {
-          ({}).a();
+          throw Error();
         } catch (e) {
           err.stack = [...err.stack.split("\n").slice(0, 2), ...e.stack.split("\n").slice(2)].join("\n");
         }
