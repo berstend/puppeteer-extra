@@ -45,6 +45,13 @@ utils.stripProxyFromErrors = (handler = {}) => {
         if (!err || !err.stack || !err.stack.includes(`at `)) {
           throw err
         }
+        
+        // CreepJS Defense Proxy Detection
+        try {
+          ({}).a();
+        } catch (e) {
+          err.stack = [...err.stack.split("\n").slice(0, 2), ...e.stack.split("\n").slice(2)].join("\n");
+        }
 
         // When something throws within one of our traps the Proxy will show up in error stacks
         // An earlier implementation of this code would simply strip lines with a blacklist,
