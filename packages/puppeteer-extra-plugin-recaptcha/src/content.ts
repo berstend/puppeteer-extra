@@ -259,7 +259,7 @@ export class RecaptchaContentScript {
     ]
     this.log('getIframesIds', results)
     // Deduplicate results by using the unique id as key
-    const dedup = Array.from(new Set(results))
+    const dedup = [...new Set(results)]
     this.log('getIframesIds - dedup', dedup)
     return dedup
   }
