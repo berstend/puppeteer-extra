@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra",
-  "version": "3.3.0",
+  "version": "3.3.4",
   "description": "Teach puppeteer new tricks through plugins.",
   "repository": "berstend/puppeteer-extra",
   "author": "berstend",
@@ -40,15 +40,16 @@
     "node": ">=8"
   },
   "devDependencies": {
+    "@types/node": "^18.0.0",
     "@types/debug": "^4.1.0",
     "@types/puppeteer": "*",
     "ava": "3.15.0",
     "documentation-markdown-themes": "^12.1.5",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "14.2.1",
-    "puppeteer-extra-plugin": "^3.2.0",
-    "puppeteer-extra-plugin-anonymize-ua": "^2.4.0",
-    "rimraf": "^3.0.2",
+    "puppeteer": "^10.2.0",
+    "puppeteer-extra-plugin": "^3.2.2",
+    "puppeteer-extra-plugin-anonymize-ua": "^2.4.4",
+    "rimraf": "^3.0.0",
     "rollup": "^1.27.5",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
@@ -57,12 +58,10 @@
     "ts-node": "^10.8.1",
     "typescript": "^4.7.3"
   },
-  "peerDependencies": {
-    "puppeteer": "*"
-  },
   "dependencies": {
     "debug": "^4.1.1",
     "deepmerge": "^4.2.2"
+
   },
   "ava": {
     "concurrency": 1,
@@ -81,6 +80,22 @@
     "require": [
       "ts-node/register"
     ]
+  },
+  "peerDependencies": {
+    "@types/puppeteer": "*",
+    "puppeteer": "*",
+    "puppeteer-core": "*"
+  },
+  "peerDependenciesMeta": {
+    "puppeteer": {
+      "optional": true
+    },
+    "puppeteer-core": {
+      "optional": true
+    },
+    "@types/puppeteer": {
+      "optional": true
+    }
   },
   "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }

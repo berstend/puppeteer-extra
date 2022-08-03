@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin",
-  "version": "3.2.0",
+  "version": "3.2.2",
   "description": "Base class for puppeteer-extra plugins.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -65,6 +65,7 @@
     "merge-deep": "^3.0.1"
   },
   "peerDependencies": {
+    "playwright-extra": "*",
     "puppeteer-extra": "*"
   },
   "ava": {
@@ -85,6 +86,14 @@
     "require": [
       "ts-node/register"
     ]
+  },
+  "peerDependenciesMeta": {
+    "puppeteer-extra": {
+      "optional": true
+    },
+    "playwright-extra": {
+      "optional": true
+    }
   },
   "gitHead": "babb041828cab50c525e0b9aab02d58f73416ef3"
 }

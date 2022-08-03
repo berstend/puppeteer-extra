@@ -22,6 +22,9 @@ on:
       - package.json
       - yarn.lock
 
+  workflow_dispatch:
+    branches:
+      - '*'
 env:
   CI: 'true'
   FORCE_COLOR: 'true'
@@ -35,9 +38,8 @@ jobs:
     strategy:
       matrix:
         node:
-          # - 18
-          - 16
-          # - 14
+          # - 16
+          - 14
         puppeteer_version:
           - 14.2.1 # evasion failed Jun 6 2022
           # - 14.2.0 # Chromium 103.0.5059.0 # requires >=14.1.0
