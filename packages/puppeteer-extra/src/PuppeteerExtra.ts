@@ -56,8 +56,8 @@ export type PluginName =
  */
 export class PuppeteerExtra implements VanillaPuppeteer {
   private _plugins: PuppeteerExtraPlugin[] = []
-  // Option given to the `new Plugin()` constructor
-  private _pluginOptions: { [key: PluginName]: any } = {};
+    // Option given to the `new Plugin()` constructor
+    private _pluginOptions: { [key: PluginName]: any } = {};
 
   constructor(
     private _pptr?: VanillaPuppeteer,
@@ -70,20 +70,20 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    * @param options option
    */
   public setPluginOptions(name: PluginName, options: any): void {
-    this._pluginOptions[name] = options
+      this._pluginOptions[name] = options
   }
-
-  /**
-   * get all plugins options
-   */
+  
+    /**
+     * get all plugins options
+     */
   public get pluginOptions(): { [key: PluginName]: any } {
-    return this._pluginOptions;
+      return this._pluginOptions;
   }
 
   /**
    * The **main interface** to register `puppeteer-extra` plugins.
    * call this use multiple time to enable multiple plugins
-   * 
+   *
    * @example
    * puppeteer.use(plugin1).use(plugin2)
    *
@@ -129,17 +129,16 @@ export class PuppeteerExtra implements VanillaPuppeteer {
 
     // Whoopsie
     console.warn(`
-      Puppeteer is missing. :-)
-  
-      Note: puppeteer is a peer dependency of puppeteer-extra,
-      which means you can install your own preferred version.
-  
-      - To get the latest stable version run: 'yarn add puppeteer' or 'npm i puppeteer'
-  
-      Alternatively:
-      - To get puppeteer without the bundled Chromium browser install 'puppeteer-core'
-      - To use puppeteer-firefox install 'puppeteer-firefox' and use the 'addExtra' export
-      `)
+    Puppeteer is missing. :-)
+
+    Note: puppeteer is a peer dependency of puppeteer-extra,
+    which means you can install your own preferred version.
+
+    - To get the latest stable version run: 'yarn add puppeteer' or 'npm i puppeteer'
+
+    Alternatively:
+    - To get puppeteer without the bundled Chromium browser install 'puppeteer-core'
+    `)
     throw this._requireError || new Error('No puppeteer instance provided.')
   }
 
@@ -303,7 +302,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    * @member {Array<string>}
    * @private
    */
-  get pluginNames(): string[] {
+   get pluginNames(): string[] {
     return this._plugins.map(p => p.name)
   }
 
@@ -345,7 +344,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    *
    * @private
    */
-  private resolvePluginDependencies(): void {
+   private resolvePluginDependencies(): void {
     const loadedPlugins = new Set<string>(this._plugins.map(p => p.name))
     const missingPlugins = new Set<string>()
 
@@ -424,7 +423,7 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    *
    * @private
    */
-  private orderPlugins(): void {
+   private orderPlugins(): void {
     debug('orderPlugins:before', this.pluginNames)
     const runFirst: PuppeteerExtraPlugin[] = []
     const runLast: PuppeteerExtraPlugin[] = []
@@ -447,9 +446,9 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    *
    * @private
    */
-  private checkPluginRequirements(opts: BrowserEventOptions): void;
-  private checkPluginRequirements(opts = {} as { context: 'launch' | 'connect', options: any }): void {
-    for (const plugin of this._plugins) {
+   private checkPluginRequirements(opts: BrowserEventOptions): void;
+   private checkPluginRequirements(opts = {} as { context: 'launch' | 'connect', options: any }): void {
+     for (const plugin of this._plugins) {
       for (const requirement of plugin.requirements) {
         if (
           opts.context === 'launch' &&
@@ -477,9 +476,9 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    * @param values - Any number of values
    * @private
    */
-  private async callPlugins(prop: '_bindBrowserEvents', browser: Browser, opts: BrowserEventOptions): Promise<void>;
-  private async callPlugins(prop: '_bindBrowserEvents', ...values: any[]): Promise<void> {
-    for (const plugin of this.getPluginsByProp(prop)) {
+   private async callPlugins(prop: '_bindBrowserEvents', browser: Browser, opts: BrowserEventOptions): Promise<void>;
+   private async callPlugins(prop: '_bindBrowserEvents', ...values: any[]): Promise<void> {
+       for (const plugin of this.getPluginsByProp(prop)) {
       await plugin[prop].apply(plugin, values)
     }
   }
@@ -496,9 +495,9 @@ export class PuppeteerExtra implements VanillaPuppeteer {
    * @return The new updated value
    * @private
    */
-  private async callPluginsWithValue(prop: 'beforeLaunch', value: PuppeteerLaunchOption): Promise<PuppeteerLaunchOption>;
-  private async callPluginsWithValue(prop: 'beforeConnect', value: Parameters<VanillaPuppeteer['connect']>[0]): Promise<Parameters<VanillaPuppeteer['connect']>[0]>;
-  private async callPluginsWithValue(prop: 'beforeLaunch' | 'beforeConnect', value: PuppeteerLaunchOption | Parameters<VanillaPuppeteer['connect']>[0]) {
+   private async callPluginsWithValue(prop: 'beforeLaunch', value: PuppeteerLaunchOption): Promise<PuppeteerLaunchOption>;
+   private async callPluginsWithValue(prop: 'beforeConnect', value: Parameters<VanillaPuppeteer['connect']>[0]): Promise<Parameters<VanillaPuppeteer['connect']>[0]>;
+   private async callPluginsWithValue(prop: 'beforeLaunch' | 'beforeConnect', value: PuppeteerLaunchOption | Parameters<VanillaPuppeteer['connect']>[0]) {
     for (const plugin of this.getPluginsByProp(prop)) {
       const newValue = await plugin[prop](value)
       if (newValue) {
