@@ -1,5 +1,4 @@
 import { screenshot, startScript } from "./common"
-
 import puppeteer from 'puppeteer-extra'
 import pluginStealth from 'puppeteer-extra-plugin-stealth'
 
