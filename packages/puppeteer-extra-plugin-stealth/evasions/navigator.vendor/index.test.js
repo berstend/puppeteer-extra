@@ -1,9 +1,9 @@
 const test = require('ava')
 
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
-test('vanilla: navigator.vendor is always Google Inc.', async t => {
+test.serial('vanilla: navigator.vendor is always Google Inc.', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -11,7 +11,7 @@ test('vanilla: navigator.vendor is always Google Inc.', async t => {
   t.is(vendor, 'Google Inc.')
 })
 
-test('stealth: navigator.vendor set to custom value', async t => {
+test.serial('stealth: navigator.vendor set to custom value', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
     Plugin({ vendor: 'Apple Computer, Inc.' })
   )
@@ -22,7 +22,7 @@ test('stealth: navigator.vendor set to custom value', async t => {
   t.is(vendor, 'Apple Computer, Inc.')
 })
 
-test('stealth: will not leak modifications', async t => {
+test.serial('stealth: will not leak modifications', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
@@ -38,7 +38,7 @@ test('stealth: will not leak modifications', async t => {
   t.false(test2.includes('vendor'))
 })
 
-test('stealth: does patch getters properly', async t => {
+test.serial('stealth: does patch getters properly', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()

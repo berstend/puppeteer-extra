@@ -1,4 +1,4 @@
-name: Test
+name: Test Linux / Windows
 
 on:
   pull_request:
@@ -8,10 +8,19 @@ on:
       - opened
       - synchronize
       - reopened
+    paths:
+      - packages/**
+      - .github/workflows/test.yml
+      - package.json
   push:
     branches:
       - master
-      - 'test/*'
+      - test/*
+    paths:
+      - packages/**
+      - .github/workflows/test.yml
+      - package.json
+      - yarn.lock
 
   workflow_dispatch:
     branches:
@@ -32,10 +41,14 @@ jobs:
           # - 16
           - 14
         puppeteer_version:
+          - 14.2.1 # evasion failed Jun 6 2022
           # - 14.2.0 # Chromium 103.0.5059.0 # requires >=14.1.0
-          - 10.2.0 # Chromium 93.0.4577.0
+          # - 13.7.0 # 
+          # - 12.0.1 # 
+          # - 10.4.0 # Chromium 93.0.4577.0
+          # - 10.2.0 # Chromium 93.0.4577.0
           # - 7.0.0 # Chromium 90.0.4403.0, Feb 3, 2021
-          - 5.5.0 # Chromium 88.0.4298.0
+          # - 5.5.0 # Chromium 88.0.4298.0
           # - 5.0.0 # Chromium 83.0.4103.0, Jul 2, 2020
           # - 2.1.1 # Chromium 79.0.3942.0, Oct 24 2019
           # - 2.0.0 # Chromium 79.0.3942.0, Oct 24 2019
@@ -46,23 +59,23 @@ jobs:
 
         os:
           - ubuntu-latest
-    #           - macOS-latest
-    # - windows-latest
+          # - windows-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
 
-      - name: 'Fix for: error fsevents@2.1.2: The platform "linux" is incompatible with this module.'
+      - name: 'Fix for: error fsevents@2.3.2: The platform "linux" is incompatible with this module.'
         run: npx json -I -f package.json -e 'this.resolutions={}'
 
       - name: yarn install
         uses: bahmutov/npm-install@v1
+        # run: yarn install --frozen-lockfile
 
       - name: yarn bootstrap
         run: yarn bootstrap

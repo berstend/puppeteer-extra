@@ -76,7 +76,7 @@ Example:
 // hello-world-plugin.js
 const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
 
-class Plugin extends PuppeteerExtraPlugin {
+export class Plugin extends PuppeteerExtraPlugin {
   constructor(opts = {}) {
     super(opts)
   }
@@ -92,8 +92,10 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) {
-  return new Plugin(pluginConfig)
+module.exports = {
+  default: function (pluginConfig) {
+    return new Plugin(pluginConfig)
+  }
 }
 
 // foo.js
@@ -201,8 +203,8 @@ Missing plugins will be required() by puppeteer-extra.
 Example:
 
 ```javascript
-get dependencies () {
-  return new Set(['user-preferences'])
+get dependencies() {
+  return ['user-preferences']
 }
 // Will ensure the 'puppeteer-extra-plugin-user-preferences' plugin is loaded.
 ```

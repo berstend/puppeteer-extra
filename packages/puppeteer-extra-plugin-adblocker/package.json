@@ -16,13 +16,14 @@
     "clean": "rimraf dist/*",
     "tscheck": "tsc --pretty --noEmit",
     "prebuild": "run-s clean",
-    "build": "run-s build:tsc build:rollup; node build_version_check.js",
+    "build": "run-s build:tsc build:rollup || node build_version_check.js",
+    "build-version-check": "node build_version_check.js",
     "build:tsc": "tsc --module commonjs",
     "build:rollup": "rollup -c rollup.config.ts",
     "docs": "node -e 0",
-    "test": "ava -v --config ava.config-ts.js",
+    "test": "ava",
     "pretest-ci": "run-s build",
-    "test-ci-back": "ava --concurrency 1 --serial --fail-fast -v",
+    "test-ci-back": "ava",
     "test-ci": "exit 0"
   },
   "engines": {
@@ -31,7 +32,8 @@
   "prettier": {
     "printWidth": 80,
     "semi": false,
-    "singleQuote": true
+    "singleQuote": true,
+    "endOfLine": "auto"
   },
   "keywords": [
     "puppeteer",
@@ -45,20 +47,17 @@
     "@types/debug": "^4.1.5",
     "@types/node-fetch": "^2.5.4",
     "@types/puppeteer": "*",
-    "ava": "^2.4.0",
+    "ava": "3.15.0",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "^10.2.0",
-    "rimraf": "^3.0.0",
+    "puppeteer": "14.2.1",
+    "rimraf": "^3.0.2",
     "rollup": "^1.27.5",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-sourcemaps": "^0.4.2",
     "rollup-plugin-typescript2": "^0.25.2",
-    "ts-node": "^8.5.4",
-    "tslint": "^5.20.1",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-config-standard": "^9.0.0",
-    "typescript": "4.1.2"
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
   },
   "dependencies": {
     "@cliqz/adblocker-puppeteer": "1.23.8",
@@ -70,6 +69,24 @@
     "puppeteer": "*",
     "puppeteer-core": "*",
     "puppeteer-extra": "*"
+  },
+  "ava": {
+    "concurrency": 1,
+    "verbose": true,
+    "environmentVariables": {
+      "TS_NODE_COMPILER_OPTIONS": "{\"module\":\"commonjs\"}",
+      "TS_NODE_FILES": "true",
+      "TS_NODE_PROJECT": "./tsconfig.json"
+    },
+    "files": [
+      "test/*.test.ts"
+    ],
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
   },
   "peerDependenciesMeta": {
     "puppeteer": {

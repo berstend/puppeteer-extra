@@ -1,22 +1,22 @@
 const test = require('ava')
 
 const {
-  getVanillaFingerPrint,
+  // getVanillaFingerPrint,
   getStealthFingerPrint
 } = require('../../test/util')
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
-
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
 // TODO: Vanilla seems fine, evasion obsolete?
 // Note: We keep it around for now, as we will need this method in a fingerprinting plugin later anyway
-test('vanilla: is array with en-US', async t => {
-  const { languages } = await getVanillaFingerPrint()
-  t.is(Array.isArray(languages), true)
-  t.is(languages[0], 'en-US')
-})
+// chrome vanilla: navigator.languages is os dependant.
+// test('vanilla: is array with en-US', async t => {
+//   const { languages } = await getVanillaFingerPrint()
+//   t.is(Array.isArray(languages), true)
+//   t.is(languages[0], 'en-US')
+// })
 
-test('vanilla: will not have modifications', async t => {
+test.serial('vanilla: will not have modifications', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -31,20 +31,20 @@ test('vanilla: will not have modifications', async t => {
   t.false(test2.includes('languages'))
 })
 
-test('stealth: is array with en-US', async t => {
+test.serial('stealth: is array with en-US', async t => {
   const { languages } = await getStealthFingerPrint(Plugin)
   t.is(Array.isArray(languages), true)
   t.is(languages[0], 'en-US')
 })
 
-test('stealth: customized value', async t => {
+test.serial('stealth: customized value', async t => {
   const { languages } = await getStealthFingerPrint(Plugin, null, {
     languages: ['foo', 'bar']
   })
   t.deepEqual(languages, ['foo', 'bar'])
 })
 
-test('stealth: will not leak modifications', async t => {
+test.serial('stealth: will not leak modifications', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
@@ -60,7 +60,7 @@ test('stealth: will not leak modifications', async t => {
   t.false(test2.includes('languages'))
 })
 
-test('stealth: does patch getters properly', async t => {
+test.serial('stealth: does patch getters properly', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()

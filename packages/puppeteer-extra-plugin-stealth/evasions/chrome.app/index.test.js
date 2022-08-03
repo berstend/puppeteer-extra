@@ -2,11 +2,11 @@ const test = require('ava')
 
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
 
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
 /* global chrome */
 
-test('stealth: will add convincing chrome.app object', async t => {
+test.serial('stealth: will add convincing chrome.app object', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin({}))
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()

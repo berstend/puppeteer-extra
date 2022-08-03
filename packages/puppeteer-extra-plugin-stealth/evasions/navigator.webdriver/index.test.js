@@ -1,7 +1,11 @@
 const test = require('ava')
 
-const { vanillaPuppeteer, addExtra, compareLooseVersionStrings } = require('../../test/util')
-const Plugin = require('.')
+const {
+  vanillaPuppeteer,
+  addExtra,
+  compareLooseVersionStrings
+} = require('../../test/util')
+const { default: Plugin } = require('.')
 
 function getExpectedValue(looseVersionString) {
   if (compareLooseVersionStrings(looseVersionString, '89.0.4339.0') >= 0) {
@@ -11,7 +15,7 @@ function getExpectedValue(looseVersionString) {
   }
 }
 
-test('vanilla: navigator.webdriver is defined', async t => {
+test.serial('vanilla: navigator.webdriver is defined', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -19,7 +23,7 @@ test('vanilla: navigator.webdriver is defined', async t => {
   t.is(data, true)
 })
 
-test('stealth: navigator.webdriver is undefined', async t => {
+test.serial('stealth: navigator.webdriver is undefined', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
@@ -30,7 +34,7 @@ test('stealth: navigator.webdriver is undefined', async t => {
 })
 
 // https://github.com/berstend/puppeteer-extra/pull/130
-test('stealth: regression: wont kill other navigator methods', async t => {
+test.serial('stealth: regression: wont kill other navigator methods', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()

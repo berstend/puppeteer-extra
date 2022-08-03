@@ -15,7 +15,7 @@
           .toString()
           .includes('puppeteer_evaluation_script')
 
-        document.getElementById('result').innerHTML = isPptr ? 'FAIL' : 'PASS'
+        document.getElementById('result').innerHTML = (isPptr ? 'FAIL' : 'PASS') + err.stack.toString()
         console.log({ err, isPptr })
       }
 

@@ -22,12 +22,6 @@
     "types": ["node"]
   },
   "include": [
-    "./src/**/*.tsx",
-    "./src/**/*.ts",
-    "./src/**/*.d.ts",
-    "./src/**/*.test.ts",
-    "./test/**/*.ts",
-    "src/provider/2captcha-api.js"
-  ],
-  "exclude": ["node_modules", "dist", "./test/**/*.spec.ts"]
+    "./src/**/*.ts"
+  ]
 }

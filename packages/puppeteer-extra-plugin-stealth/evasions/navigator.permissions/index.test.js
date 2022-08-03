@@ -7,9 +7,9 @@ const {
 } = require('../../test/util')
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
 
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
-test('vanilla: is prompt', async t => {
+test.serial('vanilla: is prompt', async t => {
   const { permissions } = await getVanillaFingerPrint()
   t.deepEqual(permissions, {
     permission: 'denied',
@@ -17,7 +17,7 @@ test('vanilla: is prompt', async t => {
   })
 })
 
-test('stealth: is denied', async t => {
+test.serial('stealth: is denied', async t => {
   const { permissions } = await getStealthFingerPrint(Plugin)
   t.deepEqual(permissions, {
     permission: 'denied',
@@ -36,7 +36,7 @@ async function getNotificationPermission() {
   }
 }
 
-test('vanilla headful: as expected', async t => {
+test.serial('vanilla headful: as expected', async t => {
   const puppeteer = addExtra(vanillaPuppeteer)
   const browser = await puppeteer.launch({ headless: false })
   const page = await browser.newPage()
@@ -58,7 +58,7 @@ test('vanilla headful: as expected', async t => {
   })
 })
 
-test('vanilla headless: as expected', async t => {
+test.serial('vanilla headless: as expected', async t => {
   const puppeteer = addExtra(vanillaPuppeteer)
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
@@ -81,7 +81,7 @@ test('vanilla headless: as expected', async t => {
   })
 })
 
-test('stealth headless: as vanilla headful', async t => {
+test.serial('stealth headless: as vanilla headful', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()

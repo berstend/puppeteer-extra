@@ -5,10 +5,10 @@ rm -f ./stealthtests/_results/*.png
 rm -f ./stealthtests/_results/_thumbs/*.png
 
 echo "Running scripts.."
-FILES=`find ./stealthtests -type f -name '*.js'`
+FILES=`find ./stealthtests -type f -name '*.ts'`
 for file in $FILES
 do
-  node $file
+  ts-node $file
 done
 
 echo "Making thumbnails.."

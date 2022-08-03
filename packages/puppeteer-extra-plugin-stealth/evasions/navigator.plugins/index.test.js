@@ -6,15 +6,15 @@ const {
 } = require('../../test/util')
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
 
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
-test('vanilla: empty plugins, empty mimetypes', async t => {
+test.serial('vanilla: empty plugins, empty mimetypes', async t => {
   const { plugins, mimeTypes } = await getVanillaFingerPrint()
   t.is(plugins.length, 0)
   t.is(mimeTypes.length, 0)
 })
 
-test('vanilla: will not have modifications', async t => {
+test.serial('vanilla: will not have modifications', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -29,15 +29,16 @@ test('vanilla: will not have modifications', async t => {
     () => Object.getOwnPropertyNames(navigator) // Must be an empty array if native
   )
   t.false(test2.includes('plugins'))
+  t.false(test2.includes('mimeTypes'))
 })
 
-test('stealth: has plugin, has mimetypes', async t => {
+test.serial('stealth: has plugin, has mimetypes', async t => {
   const { plugins, mimeTypes } = await getStealthFingerPrint(Plugin)
   t.is(plugins.length, 3)
   t.is(mimeTypes.length, 4)
 })
 
-test('stealth: will not leak modifications', async t => {
+test.serial('stealth: will not leak modifications', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
@@ -53,4 +54,5 @@ test('stealth: will not leak modifications', async t => {
     () => Object.getOwnPropertyNames(navigator) // Must be an empty array if native
   )
   t.false(test2.includes('plugins'))
+  t.false(test2.includes('mimeTypes'))
 })

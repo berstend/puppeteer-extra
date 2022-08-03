@@ -10,11 +10,13 @@
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "build": "yarn lerna exec --concurrency 1 'yarn build; echo 0'",
+    "buildOld": "yarn lerna exec --concurrency 1 \"yarn build\"",
+    "build": "yarn lerna link && yarn lerna run build --concurrency 1",
     "docs": "lerna run docs",
     "test": "lerna run test --concurrency 1 --stream",
     "test-ci": "lerna run test-ci --concurrency 1 --stream",
     "prepare": "lerna run prepare",
+    "clean": "rimraf packages/*/dist packages/*/*.map  packages/*/index.{js,d.ts}",
     "release": "lerna publish --npm-client npm"
   },
   "workspaces": {
@@ -29,26 +31,20 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^6.7.1",
-    "eslint-config-prettier": "^6.7.0",
-    "eslint-config-prettier-standard": "^3.0.1",
-    "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-node": "^10.0.0",
-    "eslint-plugin-prettier": "^3.1.1",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.28.0",
+    "@typescript-eslint/parser": "^5.28.0",
+    "eslint": "^8.17.0",
     "lerna": "^3.19.0",
     "lerna-update-wizard": "^0.17.5",
     "prettier": "^1.19.1",
-    "prettier-config-standard": "^1.0.1"
+    "prettier-config-standard": "^1.0.1",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.7.3"
   },
   "optionalDependencies": {
-    "fsevents": "^2.1.2"
+    "fsevents": "^2.3.2"
   },
-  "resolutions": {
-    "**/fsevents": "^2.1.2"
-  },
+  "resolutions": {},
   "dependencies": {},
   "version": "0.0.0"
 }

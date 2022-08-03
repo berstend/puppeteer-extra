@@ -31,9 +31,9 @@ Example:
 
 ```javascript
 const puppeteer = require('puppeteer-extra')
-puppeteer.use(require('puppeteer-extra-plugin-font-size')())
+puppeteer.use(require('puppeteer-extra-plugin-font-size').default())
 // or
-puppeteer.use(require('puppeteer-extra-plugin-font-size')({defaultFontSize: 18}))
+puppeteer.use(require('puppeteer-extra-plugin-font-size').default({defaultFontSize: 18}))
 const browser = await puppeteer.launch()
 ```
 

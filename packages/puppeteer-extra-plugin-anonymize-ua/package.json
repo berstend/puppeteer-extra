@@ -8,10 +8,12 @@
   "author": "berstend",
   "license": "MIT",
   "scripts": {
+    "clean": "rimraf index.{js,d.ts,js.map}",
+    "prebuild": "run-s clean",
     "docs": "node -e 0",
-    "lint": "eslint --ext .js .",
-    "test:js": "ava -v --serial --concurrency 1 --fail-fast",
-    "test": "run-p test:js lint",
+    "build": "tsc --module commonjs",
+    "test:js": "ava",
+    "test": "run-p test:js",
     "test-ci": "run-s test"
   },
   "engines": {
@@ -27,12 +29,39 @@
     "headless",
     "pupeteer"
   ],
+  "ava": {
+    "concurrency": 1,
+    "timeout": "60s",
+    "verbose": true,
+    "environmentVariables": {
+      "TS_NODE_COMPILER_OPTIONS": "{\"module\":\"commonjs\"}",
+      "TS_NODE_FILES": "true",
+      "TS_NODE_PROJECT": "./tsconfig.json"
+    },
+    "files": [
+      "test/*.test.js"
+    ],
+    "extensions": [
+      "js",
+      "ts",
+      "mts",
+      "cts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "failFast": true
+  },
   "devDependencies": {
-    "ava": "2.4.0",
+    "@types/chrome": "^0.0.191",
+    "ava": "3.15.0",
     "npm-run-all": "^4.1.5",
-    "puppeteer": "^2.0.0",
+    "puppeteer": "14.2.1",
     "puppeteer-extra": "^3.3.4",
-    "puppeteer-extra-plugin-devtools": "^2.4.4"
+    "puppeteer-extra-plugin-devtools": "^2.4.4",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
   },
   "dependencies": {
     "debug": "^4.1.1",

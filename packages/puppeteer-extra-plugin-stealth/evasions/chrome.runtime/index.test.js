@@ -7,13 +7,13 @@ const {
 
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
 
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
 const STATIC_DATA = require('./staticData.json')
 
 /* global chrome */
 
-test('vanilla: is chrome false', async t => {
+test.serial('vanilla: is chrome false', async t => {
   const pageFn = async page => await page.evaluate(() => window.chrome) // eslint-disable-line
   const { pageFnResult: chrome, hasChrome } = await getVanillaFingerPrint(
     pageFn
@@ -23,7 +23,7 @@ test('vanilla: is chrome false', async t => {
   t.is(chrome, undefined)
 })
 
-test('stealth: is chrome true', async t => {
+test.serial('stealth: is chrome true', async t => {
   const pageFn = async page => await page.evaluate(() => window.chrome) // eslint-disable-line
   const { pageFnResult: chrome, hasChrome } = await getStealthFingerPrint(
     Plugin,
@@ -33,7 +33,7 @@ test('stealth: is chrome true', async t => {
   t.true(chrome instanceof Object)
 })
 
-test('stealth: will add convincing chrome.runtime object', async t => {
+test.serial('stealth: will add convincing chrome.runtime object', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
     Plugin({
       runOnInsecureOrigins: true // for testing
@@ -124,7 +124,7 @@ test('stealth: will add convincing chrome.runtime object', async t => {
   })
 })
 
-test('stealth: will add convincing chrome.runtime.connect', async t => {
+test.serial('stealth: will add convincing chrome.runtime.connect', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
     Plugin({
       runOnInsecureOrigins: true // for testing
@@ -209,7 +209,7 @@ test('stealth: will add convincing chrome.runtime.connect', async t => {
   })
 })
 
-test('stealth: will add convincing chrome.runtime.connect response', async t => {
+test.serial('stealth: will add convincing chrome.runtime.connect response', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
     Plugin({
       runOnInsecureOrigins: true // for testing
@@ -251,7 +251,7 @@ test('stealth: will add convincing chrome.runtime.connect response', async t => 
   })
 })
 
-test('stealth: error stack is fine', async t => {
+test.serial('stealth: error stack is fine', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
     Plugin({
       runOnInsecureOrigins: true // for testing
@@ -275,11 +275,22 @@ test('stealth: error stack is fine', async t => {
     return catchErr(chrome.runtime.connect, '').stack
   })
 
-  /**
-   * OK:
-TypeError: Error in invocation of runtime.connect(optional string extensionId, optional object connectInfo): chrome.runtime.connect() called from a webpage must specify an Extension ID (string) for its first argument.␊
-  -       at catchErr (__puppeteer_evaluation_script__:4:19)␊
-  -       at __puppeteer_evaluation_script__:18:12
-   */
-  t.is(result.split('\n').length, 3)
+  if (result.split('\n').length === 3) {
+    /**
+     * PPTR up to 13
+     * TypeError: Error in invocation of runtime.connect(optional string extensionId, optional object connectInfo): chrome.runtime.connect() called from a webpage must specify an Extension ID (string) for its first argument.
+     *     at catchErr (__puppeteer_evaluation_script__:4:19)
+     *     at __puppeteer_evaluation_script__:18:12
+     */
+    t.is(result.split('\n').length, 3)
+  } else {
+    /**
+     * PPTR 14
+     * TypeError: Error in invocation of runtime.connect(optional string extensionId, optional object connectInfo): chrome.runtime.connect() called from a webpage must specify an Extension ID (string) for its first argument.
+     *     at newHandler.<computed> [as apply] (eval at <anonymous> (:4:65), <anonymous>:18:30)
+     *     at catchErr (__puppeteer_evaluation_script__:4:19)
+     *     at __puppeteer_evaluation_script__:18:12
+     */
+    t.is(result.split('\n').length, 4)
+  }
 })

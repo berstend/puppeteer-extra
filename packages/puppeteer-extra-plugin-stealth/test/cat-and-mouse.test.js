@@ -1,7 +1,11 @@
 const test = require('ava')
 
-const { vanillaPuppeteer, addExtra, compareLooseVersionStrings } = require('./util')
-const Plugin = require('..')
+const {
+  vanillaPuppeteer,
+  addExtra,
+  compareLooseVersionStrings
+} = require('./util')
+const { default: Plugin } = require('..')
 
 // Fix CI issues with old versions
 const isOldPuppeteerVersion = () => {
@@ -12,12 +16,15 @@ const isOldPuppeteerVersion = () => {
 
 /* global HTMLIFrameElement */
 /* global Notification */
-test('stealth: will pass Paul Irish', async t => {
+test.serial('stealth: will pass Paul Irish', async t => {
   const browser = await addExtra(vanillaPuppeteer)
     .use(Plugin())
     .launch({ headless: true })
   const page = await browser.newPage()
-  await page.exposeFunction('compareLooseVersionStrings', compareLooseVersionStrings)
+  await page.exposeFunction(
+    'compareLooseVersionStrings',
+    compareLooseVersionStrings
+  )
   const detectionResults = await page.evaluate(detectHeadless)
   await browser.close()
 
@@ -47,7 +54,9 @@ async function detectHeadless() {
   })
 
   // navigator.webdriver behavior change since release 89.0.4339.0. See also #448
-  if (await compareLooseVersionStrings(navigator.userAgent, '89.0.4339.0') >= 0) {
+  if (
+    (await compareLooseVersionStrings(navigator.userAgent, '89.0.4339.0')) >= 0
+  ) {
     await test('navigator.webdriver is not false', _ => {
       return navigator.webdriver !== false
     })

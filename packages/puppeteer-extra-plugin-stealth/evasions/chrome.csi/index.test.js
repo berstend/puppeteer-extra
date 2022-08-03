@@ -2,11 +2,11 @@ const test = require('ava')
 
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
 
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
 /* global chrome */
 
-test('stealth: will add functional chrome.csi function mock', async t => {
+test.serial('stealth: will add functional chrome.csi function mock', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
     Plugin({
       runOnInsecureOrigins: true // for testing

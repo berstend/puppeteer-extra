@@ -6,9 +6,9 @@ const {
 } = require('../../test/util')
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
 
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
-test('vanilla: doesnt support proprietary codecs', async t => {
+test.serial('vanilla: doesnt support proprietary codecs', async t => {
   const { videoCodecs, audioCodecs } = await getVanillaFingerPrint()
   t.deepEqual(videoCodecs, { ogg: 'probably', h264: '', webm: 'probably' })
   t.deepEqual(audioCodecs, {
@@ -20,7 +20,7 @@ test('vanilla: doesnt support proprietary codecs', async t => {
   })
 })
 
-test('vanilla: will not have modifications', async t => {
+test.serial('vanilla: will not have modifications', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -38,7 +38,7 @@ test('vanilla: will not have modifications', async t => {
   t.is(test2, 'canPlayType')
 })
 
-test('stealth: supports proprietary codecs', async t => {
+test.serial('stealth: supports proprietary codecs', async t => {
   const { videoCodecs, audioCodecs } = await getStealthFingerPrint(Plugin)
   t.deepEqual(videoCodecs, {
     ogg: 'probably',
@@ -54,7 +54,7 @@ test('stealth: supports proprietary codecs', async t => {
   })
 })
 
-test('stealth: will not leak modifications', async t => {
+test.serial('stealth: will not leak modifications', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
@@ -80,7 +80,7 @@ test('stealth: will not leak modifications', async t => {
   t.true(isWorkingTest)
 })
 
-test('vanilla: normal toString stuff', async t => {
+test.serial('vanilla: normal toString stuff', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
 
@@ -91,7 +91,7 @@ test('vanilla: normal toString stuff', async t => {
   t.is(test1, 'function toString() { [native code] }')
 })
 
-test('stealth: will not leak toString stuff', async t => {
+test.serial('stealth: will not leak toString stuff', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()

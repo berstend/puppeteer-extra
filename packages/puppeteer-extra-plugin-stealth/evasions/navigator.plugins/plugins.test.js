@@ -2,9 +2,9 @@ const test = require('ava')
 
 const { vanillaPuppeteer, addExtra } = require('../../test/util')
 
-const Plugin = require('.')
+const { default: Plugin } = require('.')
 
-test('stealth: will have convincing plugins', async t => {
+test.serial('stealth: will have convincing plugins', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
@@ -142,7 +142,7 @@ test('stealth: will have convincing plugins', async t => {
   })
 })
 
-test('stealth: will have convincing plugin entry', async t => {
+test.serial('stealth: will have convincing plugin entry', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(Plugin())
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()

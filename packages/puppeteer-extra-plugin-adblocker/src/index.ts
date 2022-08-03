@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs'
 import os from 'os'
 import path from 'path'
-
+import { Page } from 'puppeteer'
 import { PuppeteerBlocker } from '@cliqz/adblocker-puppeteer'
 import fetch from 'node-fetch'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
@@ -27,7 +27,7 @@ export interface PluginOptions {
 /**
  * A puppeteer-extra plugin to automatically block ads and trackers.
  */
-export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
+export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin<PluginOptions> {
   private blocker: PuppeteerBlocker | undefined
 
   constructor(opts: Partial<PluginOptions>) {
@@ -35,7 +35,7 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
     this.debug('Initialized', this.opts)
   }
 
-  get name() {
+  get name(): 'adblocker' {
     return 'adblocker'
   }
 
@@ -131,7 +131,7 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
   /**
    * Hook into this blocking event to make sure the cache is initialized before navigation.
    */
-  async beforeLaunch() {
+   async beforeLaunch(): Promise<void> {
     this.debug('beforeLaunch')
     await this.getBlocker()
   }
@@ -147,9 +147,9 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
   /**
    * Enable adblocking in `page`.
    */
-  async onPageCreated(page: any) {
+  async onPageCreated(page: Page): Promise<void> {
     this.debug('onPageCreated')
-    ;(await this.getBlocker()).enableBlockingInPage(page)
+    ;(await this.getBlocker()).enableBlockingInPage(page as any)
   }
 }
 
