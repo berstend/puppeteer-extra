@@ -5,15 +5,15 @@ import { PuppeteerNode, Browser, Page } from 'puppeteer'
  * Original Puppeteer API
  * @private
  */
-export interface VanillaPuppeteer
-    extends Pick<
-    PuppeteerNode,
-    | 'connect'
-    | 'defaultArgs'
-    | 'executablePath'
-    | 'launch'
-    | 'createBrowserFetcher'
-    > { }
+ export interface VanillaPuppeteer
+ extends Pick<
+   PuppeteerNode,
+   | 'connect'
+   | 'defaultArgs'
+   | 'executablePath'
+   | 'launch'
+   | 'createBrowserFetcher'
+ > {}
 
 export declare type PuppeteerLaunchOption = Parameters<VanillaPuppeteer['launch']>[0];
 

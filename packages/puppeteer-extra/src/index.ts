@@ -3,32 +3,6 @@ import { VanillaPuppeteer } from './deps';
 export { VanillaPuppeteer, PuppeteerLaunchOption, BrowserEventOptions, PuppeteerExtraPlugin } from './deps';
 
 import PuppeteerExtra from './PuppeteerExtra';
-// export { default as PuppeteerExtra } from './PuppeteerExtra';
-// todo MERGE me
-import merge from 'deepmerge'
-
-/**
- * Original Puppeteer API
- * @private
- */
-export interface VanillaPuppeteer
-  extends Pick<
-    PuppeteerNode,
-    | 'connect'
-    | 'defaultArgs'
-    | 'executablePath'
-    | 'launch'
-    | 'createBrowserFetcher'
-  > {}
-
-/**
- * Minimal plugin interface
- * @private
- */
-export interface PuppeteerExtraPlugin {
-  _isPuppeteerExtraPlugin: boolean
-  [propName: string]: any
-}
 
 /**
  * An **alternative way** to use `puppeteer-extra`: Augments the provided puppeteer with extra plugin functionality.
