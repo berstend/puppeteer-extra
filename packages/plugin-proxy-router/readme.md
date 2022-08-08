@@ -46,7 +46,7 @@ npm install puppeteer puppeteer-extra @extra/proxy-router
 | :------: | :-----: | :----: | :------------------------------: |
 |    ✅    |   ✅    |   ✅   | ✅ <sup><sub>(local)</sub></sup> |
 
-## Features
+### Features
 
 The plugin makes using proxies in the browser a lot more convenient:
 
@@ -58,6 +58,8 @@ The plugin makes using proxies in the browser a lot more convenient:
 - Uses native browser features, no performance loss
 
 ## Usage
+
+> Using puppeteer? Just change your [imports](#imports) to use the following playwright examples
 
 ### Simple
 
@@ -184,12 +186,15 @@ chromium.launch({ headless: true }).then(async (browser) => {
 
 Just change the import and package name:
 
-```js
-const puppeteer = require('puppeteer-extra')
+```diff
+- const { chromium } = require('playwright-extra')
++ const puppeteer = require('puppeteer-extra')
 // ...
-puppeteer.use(proxyRouter)
+- chromium.use(proxyRouter)
++ puppeteer.use(proxyRouter)
 // ...
-puppeteer.launch()
+- chromium.launch()
++ puppeteer.launch()
 // ...
 ```
 
@@ -221,6 +226,18 @@ puppeteer.use(proxyRouter)
 ```
 
 </details>
+
+### Debug logs
+
+If you'd like to see debug output just run your script like so:
+
+```bash
+# macOS/Linux (Bash)
+DEBUG=*proxy-router* node myscript.js
+
+# Windows (Powershell)
+$env:DEBUG='*proxy-router*';node myscript.js
+```
 
 ## How it works
 
