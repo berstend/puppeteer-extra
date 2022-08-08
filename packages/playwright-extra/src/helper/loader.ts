@@ -79,6 +79,6 @@ export function requirePackages<TargetModule = any>(packageNames: string[]) {
 
 /** Playwright specific module loader */
 export const playwrightLoader = new Loader<typeof pw>('playwright', [
-  'playwright-core',
-  'playwright'
+  'playwright',
+  'playwright-core'
 ])
