@@ -55,7 +55,6 @@
     "playwright-core": "^1.24.1",
     "prettier": "^2.7.1",
     "puppeteer": "^15.5.0",
-    "puppeteer-core": "^15.5.0",
     "puppeteer-extra": "^3.3.4",
     "replace-in-files-cli": "^0.3.1",
     "rimraf": "^3.0.0",
