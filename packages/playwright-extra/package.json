@@ -1,6 +1,6 @@
 {
   "name": "playwright-extra",
-  "version": "4.3.4",
+  "version": "4.3.5",
   "description": "Teach playwright new tricks through plugins.",
   "repository": "berstend/puppeteer-extra",
   "homepage": "https://github.com/berstend/puppeteer-extra/tree/master/packages/playwright-extra#readme",
