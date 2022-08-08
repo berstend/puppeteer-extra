@@ -1,7 +1,7 @@
 import { Server as ProxyServer, RequestError, redactUrl } from 'proxy-chain'
 import type * as ProxyChain from 'proxy-chain'
 
-import getPort from 'get-port'
+import getPort from './utils/port'
 
 import { ProxyRouterStats } from './stats'
 

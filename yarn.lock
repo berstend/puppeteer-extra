@@ -5209,11 +5209,6 @@ get-pkg-repo@^1.0.0:
     parse-github-repo-url "^1.3.0"
     through2 "^2.0.0"
 
-get-port-cjs@^6.1.3:
-  version "6.1.3"
-  resolved "https://registry.yarnpkg.com/get-port-cjs/-/get-port-cjs-6.1.3.tgz#935d178d4dad9fb3cfc9a39aa089bc541a8fd15e"
-  integrity sha512-kRyqT9+1ndVp7DOXc+ZU9EpmATD2i4DjOtglZZe1RIaOsd75EeEK73aEZw/B5RvYsXRfYMemPVAq68hzdKzkTA==
-
 get-port@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/get-port/-/get-port-3.2.0.tgz#dd7ce7de187c06c8bf353796ac71e099f0980ebc"
@@ -10632,6 +10627,11 @@ typescript@4.4.3:
   version "4.4.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.4.3.tgz#bdc5407caa2b109efd4f82fe130656f977a29324"
   integrity sha512-4xfscpisVgqqDfPaJo5vkd+Qd/ItkoagnHpufr+i2QCHBsNYp+G7UAoyFl8aPtx879u38wPV65rZ8qbGZijalA==
+
+typescript@^4.7.4:
+  version "4.7.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.7.4.tgz#1a88596d1cf47d59507a1bcdfb5b9dfe4d488235"
+  integrity sha512-C0WQT0gezHuw6AdY1M2jxUO83Rjf0HP7Sk1DtXj6j1EwkQNZrHAg2XPWlq62oqEhYvONq5pkC2Y9oPljWToLmQ==
 
 ua-parser-js@^0.7.18:
   version "0.7.28"
