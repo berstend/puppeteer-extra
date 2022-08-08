@@ -1,8 +1,4 @@
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
-
-import type * as Puppeteer from 'puppeteer'
-import type * as Playwright from 'playwright-core'
-
 import { ProxyRouter, ProxyRouterOpts } from './router'
 
 export type ExtraPluginProxyRouterOptions = ProxyRouterOpts & {
@@ -88,13 +84,13 @@ export class ExtraPluginProxyRouter extends PuppeteerExtraPlugin {
     }
 
     if (this.framework === 'playwright') {
-      const pwOptions = options as Playwright.LaunchOptions
+      const pwOptions = options as PlaywrightLaunchOptions
       pwOptions.proxy = {
         server: proxyUrl,
         bypass: this.proxyBypassListString,
       }
     } else if (this.framework === 'puppeteer') {
-      const pptrOptions = options as Puppeteer.BrowserLaunchArgumentOptions
+      const pptrOptions = options as PuppeteerLaunchOptions
       pptrOptions.args = pptrOptions.args || []
       pptrOptions.args.push(`--proxy-server=${proxyUrl}`)
       if (this.proxyBypassListString) {
@@ -110,5 +106,24 @@ export class ExtraPluginProxyRouter extends PuppeteerExtraPlugin {
 
   async onDisconnected(): Promise<void> {
     await this.router.close().catch(this.debug)
+  }
+}
+
+interface PuppeteerLaunchOptions {
+  args?: string[]
+}
+
+interface PlaywrightLaunchOptions {
+  proxy?: {
+    /**
+     * Proxy to be used for all requests. HTTP and SOCKS proxies are supported, for example `http://myproxy.com:3128` or
+     * `socks5://myproxy.com:3128`. Short form `myproxy.com:3128` is considered an HTTP proxy.
+     */
+    server: string
+
+    /**
+     * Optional comma-separated domains to bypass proxy, for example `".com, chromium.org, .domain.com"`.
+     */
+    bypass?: string
   }
 }
