@@ -59,7 +59,11 @@ npm install puppeteer-extra-plugin-stealth
 If you'd like to see debug output just run your script like so:
 
 ```bash
+# macOS/Linux (Bash)
 DEBUG=playwright-extra*,puppeteer-extra* node myscript.js
+
+# Windows (Powershell)
+$env:DEBUG='playwright-extra*,puppeteer-extra*';node myscript.js
 ```
 
 ### More examples
@@ -244,6 +248,11 @@ firefox.launch({ headless: false }).then(async browser => {
 ```
 
 </details>
+
+### 🆕 [`plugin-proxy-router`](/packages/plugin-proxy-router)
+
+- Use multiple proxies dynamically with flexible per-host routing and more
+- Compatible with Puppeteer & Playwright and all browsers (chromium, firefox, webkit)
 
 **Notes**
 
