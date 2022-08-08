@@ -1,6 +1,6 @@
 {
   "name": "@extra/proxy-router",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "A plugin for playwright & puppeteer to route proxies dynamically.",
   "repository": "berstend/puppeteer-extra",
   "homepage": "https://github.com/berstend/puppeteer-extra/tree/master/packages/plugin-proxy-router",
