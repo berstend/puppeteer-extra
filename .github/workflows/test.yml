@@ -71,6 +71,9 @@ jobs:
       - name: install puppeteer@${{ matrix.puppeteer_version }}
         run: yarn lerna add --dev puppeteer@${{ matrix.puppeteer_version }}
 
+      - name: npx playwright install
+        run: npx playwright install
+
       - name: lerna link
         run: yarn lerna link
 
@@ -79,7 +82,7 @@ jobs:
 
       - name: debug
         run: |
-          yarn list --pattern "puppeteer|puppeteer-extra"
+          yarn list --pattern "puppeteer|puppeteer-extra|playwright"
           file node_modules/puppeteer-extra/dist/index.cjs.js
       - uses: microsoft/playwright-github-action@v1
 
