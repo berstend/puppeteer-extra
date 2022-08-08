@@ -28,7 +28,7 @@
     "test-ci": "run-s build"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=14"
   },
   "prettier": {
     "printWidth": 80,
