@@ -1,6 +1,6 @@
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
-import type * as Puppeteer from 'puppeteer-core'
+import type * as Puppeteer from 'puppeteer'
 import type * as Playwright from 'playwright-core'
 
 import { ProxyRouter, ProxyRouterOpts } from './router'
