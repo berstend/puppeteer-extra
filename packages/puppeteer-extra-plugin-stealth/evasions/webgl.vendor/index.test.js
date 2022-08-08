@@ -9,11 +9,12 @@ const { vanillaPuppeteer, addExtra } = require('../../test/util')
 const Plugin = require('.')
 const { errors } = require('puppeteer')
 
-test('vanilla: videoCard is Google Inc', async t => {
-  const pageFn = async page => await page.evaluate(() => window.chrome) // eslint-disable-line
-  const { videoCard } = await getVanillaFingerPrint(pageFn)
-  t.deepEqual(videoCard, ['Google Inc.', 'Google SwiftShader'])
-})
+// FIXME: This changed in more recent chrome versions
+// test('vanilla: videoCard is Google Inc', async t => {
+//   const pageFn = async page => await page.evaluate(() => window.chrome) // eslint-disable-line
+//   const { videoCard } = await getVanillaFingerPrint(pageFn)
+//   t.deepEqual(videoCard, ['Google Inc.', 'Google SwiftShader'])
+// })
 
 test('stealth: videoCard is Intel Inc', async t => {
   const pageFn = async page => await page.evaluate(() => window.chrome) // eslint-disable-line
