@@ -59,7 +59,7 @@ The plugin makes using proxies in the browser a lot more convenient:
 
 ## Usage
 
-> Using puppeteer? Just change your [imports](#imports) to use the following playwright examples
+> Using puppeteer? To use the following playwright examples simply change your [imports](#imports)
 
 ### Simple
 
@@ -323,8 +323,9 @@ export interface ProxyRouterOpts {
 
 ### Proxy.pac files <sup><sub>[Reference](https://developer.mozilla.org/en-US/docs/Web/HTTP/Proxy_servers_and_tunneling/Proxy_Auto-Configuration_PAC_file)</sub></sup>
 
-- Only supported in chromium and in headful mode
-- Despite the name (`FindProxyForURL`) can only route by host
+- Only supported in chromium in headful mode
+  - Despite the name (`FindProxyForURL`) can only route by host
+- Firefox supports PAC files and including the path through a pref
 - Only loaded once at browser launch, no dynamic proxies possible
 - Does not handle authentication
 
@@ -333,8 +334,8 @@ export interface ProxyRouterOpts {
 - Advantage: Route proxies by page not host
 - They rely on a massive hack: Using Node.js to send the requests instead of the browser
   - Will change the TLS fingerprint, error prone
-- Uses CDP request interception: chromium only
-- Slow, resource overhead
+- Uses CDP request interception which is chromium only
+- Increased latency and resource overhead
 
 ## License
 
