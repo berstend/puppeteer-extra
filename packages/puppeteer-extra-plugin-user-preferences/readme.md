@@ -25,6 +25,8 @@ Launch puppeteer with arbitrary user preferences.
 The user defined preferences will be merged with preferences set by other plugins.
 Plugins can add user preferences by exposing a data entry with the name `userPreferences`.
 
+The preferences should be set as nested objects for each dot entry in the variable. For example, if the variable is webkit.webprefs.default_font_size = n, then structure the userPrefs object as a key for each section of the variable, like { webkit: { webprefs: { default_font_size: 22 } } }.
+
 Overview:
 <https://chromium.googlesource.com/chromium/src/+/master/chrome/common/pref_names.cc>
 
@@ -33,7 +35,7 @@ Type: `function (opts)`
 -   `opts` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Options (optional, default `{}`)
     -   `opts.userPrefs` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** An object containing the preferences. (optional, default `{}`)
 
-Example:
+Example - set default font size preferences:
 
 ```javascript
 const puppeteer = require('puppeteer-extra')
@@ -47,4 +49,16 @@ puppeteer.use(require('puppeteer-extra-plugin-user-preferences')({userPrefs: {
 const browser = await puppeteer.launch()
 ```
 
+Example - set default timezone
+
+```javascript
+const puppeteer = require('puppeteer-extra')
+puppeteer.use(ExtraPreferences({
+  userPrefs: {
+	  settings: {
+      timezone: `Europe/London`,
+    }
+  }
+}));
+```
 * * *
