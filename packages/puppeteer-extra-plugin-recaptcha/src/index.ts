@@ -195,7 +195,8 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
 
   async getRecaptchaSolutions(
     captchas: types.CaptchaInfo[],
-    provider?: types.SolutionProvider
+    provider?: types.SolutionProvider,
+    extraData: { [key: string]: any } = {},
   ) {
     this.debug('getRecaptchaSolutions', { captchaNum: captchas.length })
     provider = provider || this.opts.provider
@@ -222,7 +223,8 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
       this,
       captchas,
       provider.token,
-      provider.opts || {}
+      provider.opts || {},
+      extraData
     )
     response.error =
       response.error ||
@@ -276,7 +278,8 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
   }
 
   async solveRecaptchas(
-    page: Page | Frame
+    page: Page | Frame,
+    extraData: { [key: string]: any } = {},
   ): Promise<types.SolveRecaptchasResult> {
     this.debug('solveRecaptchas')
     const response: types.SolveRecaptchasResult = {
@@ -301,7 +304,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
         const {
           solutions,
           error: solutionsError
-        } = await this.getRecaptchaSolutions(response.captchas)
+        } = await this.getRecaptchaSolutions(response.captchas, undefined, extraData)
         response.solutions = solutions
 
         const {
@@ -331,7 +334,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
     prop.enterRecaptchaSolutions = async (solutions: types.CaptchaSolution[]) =>
       this.enterRecaptchaSolutions(prop, solutions)
     // Add convenience methods that wraps all others
-    prop.solveRecaptchas = async () => this.solveRecaptchas(prop)
+    prop.solveRecaptchas = async () => this.solveRecaptchas.bind(this, prop)
   }
 
   async onPageCreated(page: Page) {

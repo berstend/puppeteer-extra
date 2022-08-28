@@ -54,11 +54,12 @@ async function decodeRecaptchaAsync(
 export async function getSolutions(
   captchas: types.CaptchaInfo[] = [],
   token: string = '',
-  opts: TwoCaptchaProviderOpts = {}
+  opts: TwoCaptchaProviderOpts = {},
+  extraData: { [key: string]: any } = {},
 ): Promise<types.GetSolutionsResult> {
   opts = { ...providerOptsDefaults, ...opts }
   const solutions = await Promise.all(
-    captchas.map(c => getSolution(c, token, opts))
+    captchas.map(c => getSolution(c, token, opts, extraData))
   )
   return { solutions, error: solutions.find(s => !!s.error) }
 }
@@ -66,7 +67,8 @@ export async function getSolutions(
 async function getSolution(
   captcha: types.CaptchaInfo,
   token: string,
-  opts: TwoCaptchaProviderOpts
+  opts: TwoCaptchaProviderOpts,
+  extraData: { [key: string]: any } = {},
 ): Promise<types.CaptchaSolution> {
   const solution: types.CaptchaSolution = {
     _vendor: captcha._vendor,
@@ -79,7 +81,6 @@ async function getSolution(
     solution.id = captcha.id
     solution.requestAt = new Date()
     debug('Requesting solution..', solution)
-    const extraData = {}
     if (captcha.s) {
       extraData['data-s'] = captcha.s // google site specific property
     }
