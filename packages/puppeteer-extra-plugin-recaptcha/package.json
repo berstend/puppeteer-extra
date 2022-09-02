@@ -15,19 +15,19 @@
   "scripts": {
     "clean": "rimraf dist/*",
     "tscheck": "tsc --pretty --noEmit",
-    "prebuild": "run-s clean",
-    "build": "run-s build:tsc build:rollup ambient-dts",
+    "prebuild": "npm run clean",
+    "build": "npm run build:tsc && npm run build:rollup && npm run ambient-dts",
     "build:tsc": "tsc --project tsconfig.json --module commonjs",
     "build:rollup": "rollup -c rollup.config.ts",
     "docs": "node -e 0",
     "predocs2": "rimraf docs/*",
     "docs2": "typedoc --module commonjs --readme none --target ES6 --theme markdown --excludeNotExported --excludeExternals --excludePrivate --out docs --mode file src/index.ts",
     "test": "ava -v --config ava.config-ts.js",
-    "pretest-ci": "run-s build",
+    "pretest-ci": "npm run build",
     "test-ci": "ava --fail-fast --concurrency 2 -v",
-    "ambient-dts": "run-s ambient-dts-copy ambient-dts-fix-path",
+    "ambient-dts": "npm run ambient-dts-copy && npm run ambient-dts-fix-path",
     "ambient-dts-copy": "copyfiles -u 1 \"src/**/*.d.ts\" dist",
-    "ambient-dts-fix-path": "replace-in-files --string='/// <reference path=\"../src/' --replacement='/// <reference path=\"../dist/' 'dist/**/*.d.ts'"
+    "ambient-dts-fix-path": "replace-in-file /\\.\\.\\/src\\//g ../dist/ dist/**/*.d.ts --isRegex"
   },
   "engines": {
     "node": ">=9.11.2"
@@ -55,7 +55,7 @@
     "npm-run-all": "^4.1.5",
     "puppeteer": "9",
     "puppeteer-extra": "^3.3.4",
-    "replace-in-files-cli": "^0.3.1",
+    "replace-in-file": "^6.3.5",
     "rimraf": "^3.0.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
