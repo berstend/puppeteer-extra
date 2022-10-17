@@ -39,7 +39,7 @@
     "node": ">=12"
   },
   "devDependencies": {
-    "@playwright/test": "^1.23.1",
+    "@playwright/test": "^1.27.1",
     "@types/debug": "^4.1.7",
     "@types/node": "^18.0.0",
     "esbuild": "^0.14.47",
