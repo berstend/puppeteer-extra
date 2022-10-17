@@ -164,7 +164,7 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
     }
 
     if (this.contentScriptDebug.enabled) {
-      if ('exposeFunction' in page) {
+      if ('exposeFunction' in page && (await page.evaluate(() => window[this.debugBindingName] === undefined))) {
         await page.exposeFunction(this.debugBindingName, onDebugBindingCalled)
       }
     }
