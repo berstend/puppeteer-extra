@@ -235,7 +235,16 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
       )
     }
     if (this.opts.throwOnError && response.error) {
-      throw new Error(response.error)
+      const { error } = response
+      const { error: message } = error
+      // build custom error so consumers can evaluate its properties
+      const customError = new Error(message)
+      for (const key in error) {
+        if (Object.prototype.hasOwnProperty(key)) {
+          customError[key] = error[key]
+        }
+      }
+      throw customError
     }
     return response
   }
