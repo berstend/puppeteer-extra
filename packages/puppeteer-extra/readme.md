@@ -22,6 +22,7 @@ yarn add puppeteer@2.0.0 puppeteer-extra
 // it augments the installed puppeteer with plugin functionality.
 // Any number of plugins can be added through `puppeteer.use()`
 const puppeteer = require('puppeteer-extra')
+const { executablePath } = require('puppeteer') // puppeteer-core now requires executablePath as mandatory
 
 // Add stealth plugin and use defaults (all tricks to hide puppeteer usage)
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
@@ -32,7 +33,7 @@ const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker')
 puppeteer.use(AdblockerPlugin({ blockTrackers: true }))
 
 // That's it, the rest is puppeteer usage as normal 😊
-puppeteer.launch({ headless: true }).then(async browser => {
+puppeteer.launch({ headless: true, executablePath: executablePath() }).then(async browser => {
   const page = await browser.newPage()
   await page.setViewport({ width: 800, height: 600 })
 
