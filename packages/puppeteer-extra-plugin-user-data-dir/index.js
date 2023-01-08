@@ -66,6 +66,11 @@ class Plugin extends PuppeteerExtraPlugin {
   deleteUserDataDir() {
     debug('removeUserDataDir', this._userDataDir)
 
+    if (!this._userDataDir) {
+      console.warn('No userDataDir, not running rimraf')
+      return
+    }
+
     // We're using rimraf here because it throw errors and don't seem to freeze the process
     // If ressources busy or locked by chrome try again 4 times, then give up. overall a timout of 400ms
     rimraf(
