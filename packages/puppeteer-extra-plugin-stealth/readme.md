@@ -212,7 +212,7 @@ code mods for evasions that have been enabled, to keep things modular and effici
 
 The `stealth` plugin is a convenience wrapper that requires multiple [evasion techniques](./evasions/)
 automatically and comes with defaults. You could also bypass the main module and require
-specific evasion plugins yourself, if you whish to do so (as they're standalone `puppeteer-extra` plugins):
+specific evasion plugins yourself, if you wish to do so (as they're standalone `puppeteer-extra` plugins):
 
 ```es6
 // bypass main module and require a specific stealth plugin directly:
