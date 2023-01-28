@@ -67,18 +67,24 @@ test('will solve hCAPTCHAs', async t => {
   })
   const page = await browser.newPage()
 
-  const url = 'http://democaptcha.com/demo-form-eng/hcaptcha.html'
-  await page.goto(url, { waitUntil: 'networkidle0' })
+  const urls = [
+    'https://accounts.hcaptcha.com/demo',
+    'http://democaptcha.com/demo-form-eng/hcaptcha.html',
+  ]
 
-  const result = await (page as any).solveRecaptchas()
-  const { captchas, solutions, solved, error } = result
-  t.falsy(error)
+  for (const url of urls) {
+    await page.goto(url, { waitUntil: 'networkidle0' })
 
-  t.is(captchas.length, 1)
-  t.is(solutions.length, 1)
-  t.is(solved.length, 1)
-  t.is(solved[0]._vendor, 'hcaptcha')
-  t.is(solved[0].isSolved, true)
+    const result = await (page as any).solveRecaptchas()
+    const { captchas, solutions, solved, error } = result
+    t.falsy(error)
+
+    t.is(captchas.length, 1)
+    t.is(solutions.length, 1)
+    t.is(solved.length, 1)
+    t.is(solved[0]._vendor, 'hcaptcha')
+    t.is(solved[0].isSolved, true)
+  }
 
   await browser.close()
 })
