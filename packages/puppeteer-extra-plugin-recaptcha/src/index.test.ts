@@ -50,7 +50,7 @@ test('will detect hCAPTCHAs', async t => {
 
   const urls = [
     'https://accounts.hcaptcha.com/demo',
-    'http://democaptcha.com/demo-form-eng/hcaptcha.html',
+    'https://democaptcha.com/demo-form-eng/hcaptcha.html'
   ]
 
   for (const url of urls) {
@@ -82,7 +82,7 @@ test('will detect active hCAPTCHA challenges', async t => {
 
   const urls = [
     'https://accounts.hcaptcha.com/demo',
-    'http://democaptcha.com/demo-form-eng/hcaptcha.html',
+    'https://democaptcha.com/demo-form-eng/hcaptcha.html'
   ]
 
   for (const url of urls) {
