@@ -48,17 +48,23 @@ test('will detect hCAPTCHAs', async t => {
   })
   const page = await browser.newPage()
 
-  const url = 'https://democaptcha.com/demo-form-eng/hcaptcha.html'
-  await page.goto(url, { waitUntil: 'networkidle0' })
+  const urls = [
+    'https://accounts.hcaptcha.com/demo',
+    'http://democaptcha.com/demo-form-eng/hcaptcha.html',
+  ]
 
-  const { captchas, error } = await (page as any).findRecaptchas()
-  t.is(error, null)
-  t.is(captchas.length, 1)
+  for (const url of urls) {
+    await page.goto(url, { waitUntil: 'networkidle0' })
 
-  const c = captchas[0]
-  t.is(c._vendor, 'hcaptcha')
-  t.is(c.url, url)
-  t.true(c.sitekey && c.sitekey.length > 5)
+    const { captchas, error } = await (page as any).findRecaptchas()
+    t.is(error, null)
+    t.is(captchas.length, 1)
+
+    const c = captchas[0]
+    t.is(c._vendor, 'hcaptcha')
+    t.is(c.url, url)
+    t.true(c.sitekey && c.sitekey.length > 5)
+  }
 
   await browser.close()
 })
@@ -74,24 +80,30 @@ test('will detect active hCAPTCHA challenges', async t => {
   })
   const page = await browser.newPage()
 
-  const url = 'https://democaptcha.com/demo-form-eng/hcaptcha.html'
-  await page.goto(url, { waitUntil: 'networkidle0' })
-  await page.evaluate(() => (window as any).hcaptcha.execute()) // trigger challenge popup
-  await page.waitForTimeout(2 * 1000)
-  await page.evaluate(() =>
-    document
-      .querySelector(`[data-hcaptcha-widget-id]:not([src*='invisible'])`)
-      .remove()
-  ) // remove regular checkbox so we definitely test against the popup
+  const urls = [
+    'https://accounts.hcaptcha.com/demo',
+    'http://democaptcha.com/demo-form-eng/hcaptcha.html',
+  ]
 
-  const { captchas, error } = await (page as any).findRecaptchas()
-  t.is(error, null)
-  t.is(captchas.length, 1)
+  for (const url of urls) {
+    await page.goto(url, { waitUntil: 'networkidle0' })
+    await page.evaluate(() => (window as any).hcaptcha.execute()) // trigger challenge popup
+    await page.waitForTimeout(2 * 1000)
+    await page.evaluate(() =>
+      document
+        .querySelector(`[data-hcaptcha-widget-id]:not([src*='invisible'])`)
+        .remove()
+    ) // remove regular checkbox so we definitely test against the popup
 
-  const c = captchas[0]
-  t.is(c._vendor, 'hcaptcha')
-  t.is(c.url, url)
-  t.true(c.sitekey && c.sitekey.length > 5)
+    const { captchas, error } = await (page as any).findRecaptchas()
+    t.is(error, null)
+    t.is(captchas.length, 1)
+
+    const c = captchas[0]
+    t.is(c._vendor, 'hcaptcha')
+    t.is(c.url, url)
+    t.true(c.sitekey && c.sitekey.length > 5)
+  }
 
   await browser.close()
 })
