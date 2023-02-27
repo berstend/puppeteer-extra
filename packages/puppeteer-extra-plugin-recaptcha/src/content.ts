@@ -27,6 +27,13 @@ export class RecaptchaContentScript {
     opts = ContentScriptDefaultOpts,
     data = ContentScriptDefaultData
   ) {
+    // Workaround for https://github.com/esbuild-kit/tsx/issues/113
+    if (typeof globalThis.__name === 'undefined') {
+      globalThis.__defProp = Object.defineProperty
+      globalThis.__name = (target, value) =>
+        globalThis.__defProp(target, 'name', { value, configurable: true })
+    }
+
     this.opts = opts
     this.data = data
     this.frameSources = this._generateFrameSources()
@@ -335,13 +342,17 @@ export class RecaptchaContentScript {
       .shift() // returns first entry in array or undefined
     this.log(' - getClientById:client', { id, hasClient: !!client })
     if (!client) return
-    client = this._flattenObject(client) as any
-    client.widgetId = client.id
-    client.id = id
-    this.log(' - getClientById:client:flatten', {
-      id,
-      hasClient: !!client
-    })
+    try {
+      client = this._flattenObject(client) as any
+      client.widgetId = client.id
+      client.id = id
+      this.log(' - getClientById:client:flatten', {
+        id,
+        hasClient: !!client
+      })
+    } catch (err) {
+      this.log(' - getClientById:client ERROR', err.toString())
+    }
     return client
   }
 

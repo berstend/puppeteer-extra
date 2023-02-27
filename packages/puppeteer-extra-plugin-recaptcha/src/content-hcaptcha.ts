@@ -25,6 +25,13 @@ export class HcaptchaContentScript {
     opts = ContentScriptDefaultOpts,
     data = ContentScriptDefaultData
   ) {
+    // Workaround for https://github.com/esbuild-kit/tsx/issues/113
+    if (typeof globalThis.__name === 'undefined') {
+      globalThis.__defProp = Object.defineProperty
+      globalThis.__name = (target, value) =>
+        globalThis.__defProp(target, 'name', { value, configurable: true })
+    }
+
     this.opts = opts
     this.data = data
   }
