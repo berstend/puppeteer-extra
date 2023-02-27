@@ -1,4 +1,4 @@
-# puppeteer-extra-plugin [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test/master)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](https://extra.community) [![npm](https://img.shields.io/npm/v/puppeteer-extra-plugin.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin)
+# puppeteer-extra-plugin [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/berstend/puppeteer-extra/test.yml?branch=master&event=push)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](https://extra.community) [![npm](https://img.shields.io/npm/v/puppeteer-extra-plugin.svg)](https://www.npmjs.com/package/puppeteer-extra-plugin)
 
 ## Installation
 
@@ -34,7 +34,7 @@ const { PuppeteerExtraPlugin } = require('puppeteer-extra-plugin')
   - [Installation](#installation)
   - [Changelog](#changelog)
   - [API](#api)
-      - [Table of Contents](#table-of-contents)
+    - [Table of Contents](#table-of-contents)
     - [class: PuppeteerExtraPlugin](#class-puppeteerextraplugin)
       - [.name](#name)
       - [.defaults](#defaults)
@@ -92,7 +92,7 @@ class Plugin extends PuppeteerExtraPlugin {
   }
 }
 
-module.exports = function (pluginConfig) {
+module.exports = function(pluginConfig) {
   return new Plugin(pluginConfig)
 }
 

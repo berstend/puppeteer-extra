@@ -1,4 +1,4 @@
-# @extra/proxy-router [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/berstend/puppeteer-extra/Test/master)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](https://extra.community) [![npm](https://img.shields.io/npm/v/@extra/proxy-router.svg)](https://www.npmjs.com/package/@extra/proxy-router)
+# @extra/proxy-router [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/berstend/puppeteer-extra/test.yml?branch=master&event=push)](https://github.com/berstend/puppeteer-extra/actions) [![Discord](https://img.shields.io/discord/737009125862408274)](https://extra.community) [![npm](https://img.shields.io/npm/v/@extra/proxy-router.svg)](https://www.npmjs.com/package/@extra/proxy-router)
 
 > A plugin for [playwright-extra] and [puppeteer-extra] to route proxies dynamically.
 
@@ -339,7 +339,7 @@ export interface ProxyRouterOpts {
 
 ## License
 
-Copyright © 2018 - 2022, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](https://github.com/berstend). Released under the MIT License.
+Copyright © 2018 - 2023, [berstend̡̲̫̹̠̖͚͓̔̄̓̐̄͛̀͘](https://github.com/berstend). Released under the MIT License.
 
 <!--
   Reference links
