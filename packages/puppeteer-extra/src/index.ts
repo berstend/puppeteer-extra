@@ -527,12 +527,12 @@ export const addExtra = (puppeteer: VanillaPuppeteer): PuppeteerExtra =>
  */
 function requireVanillaPuppeteer(): [VanillaPuppeteer?, Error?] {
   try {
-    return [require('puppeteer-core'), undefined]
+    return [require('puppeteer'), undefined]
   } catch (_) {
     // noop
   }
   try {
-    return [require('puppeteer'), undefined]
+    return [require('puppeteer-core'), undefined]
   } catch (err) {
     return [undefined, err as Error]
   }
