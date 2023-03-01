@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "description": "Base class for puppeteer-extra plugins.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",

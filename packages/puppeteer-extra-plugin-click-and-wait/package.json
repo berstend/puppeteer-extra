@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-click-and-wait",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "Convenience function to wait for navigation to complete after clicking on an element.",
   "main": "index.js",
   "repository": "berstend/puppeteer-extra",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "debug": "^4.1.1",
-    "puppeteer-extra-plugin": "^3.2.2"
+    "puppeteer-extra-plugin": "^3.2.3"
   },
   "peerDependencies": {
     "playwright-extra": "*",

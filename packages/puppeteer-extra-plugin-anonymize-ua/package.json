@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-anonymize-ua",
-  "version": "2.4.4",
+  "version": "2.4.5",
   "description": "Anonymize User-Agent in puppeteer.",
   "main": "index.js",
   "types": "index.d.ts",
@@ -31,12 +31,12 @@
     "ava": "2.4.0",
     "npm-run-all": "^4.1.5",
     "puppeteer": "^2.0.0",
-    "puppeteer-extra": "^3.3.4",
-    "puppeteer-extra-plugin-devtools": "^2.4.4"
+    "puppeteer-extra": "^3.3.5",
+    "puppeteer-extra-plugin-devtools": "^2.4.5"
   },
   "dependencies": {
     "debug": "^4.1.1",
-    "puppeteer-extra-plugin": "^3.2.2"
+    "puppeteer-extra-plugin": "^3.2.3"
   },
   "peerDependencies": {
     "playwright-extra": "*",

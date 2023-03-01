@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra",
-  "version": "3.3.4",
+  "version": "3.3.5",
   "description": "Teach puppeteer new tricks through plugins.",
   "repository": "berstend/puppeteer-extra",
   "author": "berstend",
@@ -48,8 +48,8 @@
     "documentation-markdown-themes": "^12.1.5",
     "npm-run-all": "^4.1.5",
     "puppeteer": "^10.2.0",
-    "puppeteer-extra-plugin": "^3.2.2",
-    "puppeteer-extra-plugin-anonymize-ua": "^2.4.4",
+    "puppeteer-extra-plugin": "^3.2.3",
+    "puppeteer-extra-plugin-anonymize-ua": "^2.4.5",
     "rimraf": "^3.0.0",
     "rollup": "^1.27.5",
     "rollup-plugin-commonjs": "^10.1.0",

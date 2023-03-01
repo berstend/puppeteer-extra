@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-recaptcha",
-  "version": "3.6.6",
+  "version": "3.6.7",
   "description": "A puppeteer-extra plugin to solve reCAPTCHAs and hCaptchas automatically.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -54,7 +54,7 @@
     "copyfiles": "^2.1.1",
     "npm-run-all": "^4.1.5",
     "puppeteer": "9",
-    "puppeteer-extra": "^3.3.4",
+    "puppeteer-extra": "^3.3.5",
     "replace-in-files-cli": "^0.3.1",
     "rimraf": "^3.0.0",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -70,7 +70,7 @@
   "dependencies": {
     "debug": "^4.1.1",
     "merge-deep": "^3.0.2",
-    "puppeteer-extra-plugin": "^3.2.2"
+    "puppeteer-extra-plugin": "^3.2.3"
   },
   "peerDependencies": {
     "playwright-extra": "*",

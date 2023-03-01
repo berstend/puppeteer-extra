@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-repl",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "Start an interactive REPL in your puppeteer code.",
   "main": "index.js",
   "types": "index.d.ts",
@@ -39,7 +39,7 @@
     "chalk": "^3.0.0",
     "debug": "^4.1.1",
     "ow": "^0.4.0",
-    "puppeteer-extra-plugin": "^3.2.2"
+    "puppeteer-extra-plugin": "^3.2.3"
   },
   "peerDependencies": {
     "puppeteer-extra": "*"

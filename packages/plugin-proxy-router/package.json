@@ -1,6 +1,6 @@
 {
   "name": "@extra/proxy-router",
-  "version": "3.1.4",
+  "version": "3.1.5",
   "description": "A plugin for playwright & puppeteer to route proxies dynamically.",
   "repository": "berstend/puppeteer-extra",
   "homepage": "https://github.com/berstend/puppeteer-extra/tree/master/packages/plugin-proxy-router",
@@ -55,7 +55,7 @@
     "playwright-core": "1.24.2",
     "prettier": "^2.7.1",
     "puppeteer": "^15.5.0",
-    "puppeteer-extra": "^3.3.4",
+    "puppeteer-extra": "^3.3.5",
     "replace-in-files-cli": "^0.3.1",
     "rimraf": "^3.0.0",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -69,7 +69,7 @@
     "debug": "^4.1.1",
     "merge-deep": "^3.0.2",
     "proxy-chain": "^2.0.6",
-    "puppeteer-extra-plugin": "^3.2.2"
+    "puppeteer-extra-plugin": "^3.2.3"
   },
   "peerDependencies": {
     "playwright-extra": "*",

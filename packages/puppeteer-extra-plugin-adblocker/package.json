@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-extra-plugin-adblocker",
-  "version": "2.13.5",
+  "version": "2.13.6",
   "description": "A puppeteer-extra plugin to block ads and trackers.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -64,7 +64,7 @@
     "@cliqz/adblocker-puppeteer": "1.23.8",
     "debug": "^4.1.1",
     "node-fetch": "^2.6.0",
-    "puppeteer-extra-plugin": "^3.2.2"
+    "puppeteer-extra-plugin": "^3.2.3"
   },
   "peerDependencies": {
     "puppeteer": "*",
