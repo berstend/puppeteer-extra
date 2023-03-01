@@ -67,7 +67,7 @@ class Plugin extends PuppeteerExtraPlugin {
     debug('removeUserDataDir', this._userDataDir)
 
     if (!this._userDataDir) {
-      console.warn('No userDataDir, not running rimraf')
+      debug('No userDataDir, not running rimraf')
       return
     }
 
