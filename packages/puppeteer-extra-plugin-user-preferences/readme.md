@@ -47,4 +47,55 @@ puppeteer.use(require('puppeteer-extra-plugin-user-preferences')({userPrefs: {
 const browser = await puppeteer.launch()
 ```
 
+Example 2: (set custom path for downloading)
+``` js
+const downloadImageDirectoryPath = process.cwd();
+
+puppeteer.use(
+  UserPreferencesPlugin({
+    userPrefs: {
+      download: {
+        prompt_for_download: false,
+        open_pdf_in_system_reader: true,
+        default_directory: downloadImageDirectoryPath,
+      },
+      plugins: {
+        always_open_pdf_externally: true,
+      },
+    },
+  })
+);
+```
+
+Example 3: (override `allow-multiple-downloads` browser permission)
+while downloading multiple files from single website, you might be welcomed by annoying popup on second or third download action.
+if you do not click allow manually, your download will gets blocked.
+
+programmetically allow multiple downloads (avoid popup)
+``` js
+const downloadImageDirectoryPath = process.cwd();
+
+puppeteer.use(
+  UserPreferencesPlugin({
+    userPrefs: {
+      download: {
+        prompt_for_download: false,
+        open_pdf_in_system_reader: true,
+        default_directory: downloadImageDirectoryPath,
+        // automatic_downloads: 1, -> this params also does disable permission popup in some case (inconsistent behaviour)
+      },
+      plugins: {
+        always_open_pdf_externally: true,
+      },
+      // disable allow-multiple-downloads popup
+      profile: {
+        default_content_setting_values: {
+          automatic_downloads: 1,
+        },
+      },
+    },
+  })
+);
+```
+
 * * *
