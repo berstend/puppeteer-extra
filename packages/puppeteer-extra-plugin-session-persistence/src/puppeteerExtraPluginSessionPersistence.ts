@@ -3,17 +3,44 @@ import {Page, HTTPResponse} from 'puppeteer';
 import {
     Storage,
     PluginOptions,
-    LocalStorageData,
-    RedisStorageOptions,
-    FileSystemStorageOptions,
+    LocalStorageData,createStorage,
+    Cookie,
 } from './types';
-import {RedisStorage} from './storage/redisStorage';
 import {FileSystemStorage} from './storage/fileSystemStorage';
 import {Protocol} from 'devtools-protocol';
-import Cookie = Protocol.Network.Cookie;
 import CookieSourceScheme = Protocol.Network.CookieSourceScheme;
 import CookiePriority = Protocol.Network.CookiePriority;
 
+
+/**
+ * Persist sessions in puppeteer. This plugin will save/load the cookies and localStorage from different storage engines.
+ *
+ * @function
+ * @param {Object} opts - Options
+ * @param {boolean} [opts.persistCookies=true] - Allow or disallow cookies persistence.
+ * @param {boolean} [opts.persistLocalStorage=true] - Allow or disallow local storage persistence.
+ * @param {StorageConfig} [opts.storage] - Storage options. Default to filesystem storage.
+ * @param {LocalStorageData} [localStorageData={}] - Local storage data to load.
+ * @param {Cookie[]} [cookies=[]] - Cookies to load.
+ * @returns {Object} The puppeteer-extra-plugin-session-persistence instance.
+ *
+ * @example
+ * const puppeteer = require('puppeteer-extra')
+ * puppeteer.use(require('puppeteer-extra-plugin-session-persistence')())
+ * // or
+ * puppeteer.use(require('puppeteer-extra-plugin-session-persistence')({
+ *   persistCookies: true,
+ *   persistLocalStorage: true,
+ *   storage: {
+ *     name: 'redis',
+ *     options: {
+ *       host: 'localhost',
+ *       port: 6379
+ *     }
+ *   }
+ * }))
+ * const browser = await puppeteer.launch()
+ */
 export class PuppeteerExtraPluginSessionPersistence extends PuppeteerExtraPlugin {
     private localStorageData: LocalStorageData = {};
     private cookies: Cookie[] = [];
@@ -21,7 +48,7 @@ export class PuppeteerExtraPluginSessionPersistence extends PuppeteerExtraPlugin
 
     constructor(opts: Partial<PluginOptions>, localStorageData: LocalStorageData = {}, cookies: Cookie[] = []) {
         super(opts)
-        this.storage = opts.storage?.name === 'redis' ? new RedisStorage(opts.storage?.options as RedisStorageOptions) : new FileSystemStorage(opts.storage?.options as FileSystemStorageOptions);
+        this.storage = opts.storage ? createStorage(opts.storage) : new FileSystemStorage();
         this.localStorageData = localStorageData;
         this.cookies = cookies;
         this.debug('constructor', {opts: this.opts, localStorageData: this.localStorageData, cookies: this.cookies});
