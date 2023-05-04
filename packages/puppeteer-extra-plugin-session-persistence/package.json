@@ -1,0 +1,89 @@
+{
+  "name": "puppeteer-extra-plugin-session-persistence",
+  "version": "1.0.0",
+  "description": "A puppeteer-extra plugin to persist sessions.",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": "berstend/puppeteer-extra",
+  "homepage": "https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-session-persistence#readme",
+  "author": "kangoo13",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf dist/*",
+    "tscheck": "tsc --pretty --noEmit",
+    "prebuild": "run-s clean",
+    "build": "run-s build:tsc build:rollup; node build_version_check.js",
+    "build:tsc": "tsc --module commonjs",
+    "build:rollup": "rollup -c rollup.config.ts",
+    "docs": "node -e 0",
+    "test": "ava -v --config ava.config-ts.js",
+    "pretest-ci": "run-s build",
+    "test-ci-back": "ava --concurrency 1 --serial --fail-fast -v",
+    "test-ci": "exit 0"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": false,
+    "singleQuote": true
+  },
+  "keywords": [
+    "puppeteer",
+    "puppeteer-extra",
+    "puppeteer-extra-plugin",
+    "sessions",
+    "cookies",
+    "localstorage",
+    "persistence"
+  ],
+  "devDependencies": {
+    "@types/debug": "^4.1.5",
+    "@types/node-fetch": "^2.5.4",
+    "@types/puppeteer": "*",
+    "ava": "^2.4.0",
+    "npm-run-all": "^4.1.5",
+    "puppeteer": "^10.2.0",
+    "puppeteer-extra-plugin": "3.2.3",
+    "rimraf": "^3.0.0",
+    "rollup": "^1.27.5",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "rollup-plugin-typescript2": "^0.25.2",
+    "ts-node": "^8.5.4",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-config-standard": "^9.0.0",
+    "typescript": "^5.0"
+  },
+  "dependencies": {
+    "debug": "^4.1.1",
+    "devtools-protocol": "^0.0.1138159",
+    "node-fetch": "^2.6.0",
+    "puppeteer-extra-plugin": "^3.2.3",
+    "redis": "^4.6.6"
+  },
+  "peerDependencies": {
+    "puppeteer": "*",
+    "puppeteer-core": "*",
+    "puppeteer-extra": "*"
+  },
+  "peerDependenciesMeta": {
+    "puppeteer": {
+      "optional": true
+    },
+    "puppeteer-core": {
+      "optional": true
+    },
+    "puppeteer-extra": {
+      "optional": true
+    }
+  },
+  "gitHead": "72fe830c158f1e971c8499fdd5232338dd53c220"
+}
