@@ -111,10 +111,10 @@ export class PuppeteerExtraPluginSessionPersistence extends PuppeteerExtraPlugin
     // onPageCreated create all the event listeners for the page.
     async onPageCreated(page: Page)  {
         this.debug('onPageCreated adding event listeners');
+        await this.setPageCookies(page);
         await page.setBypassCSP(true);
         page.on('framenavigated', () => this.onFrameNavigated(page));
         page.on('response', this.onResponseReceived.bind(this));
-        await this.setPageCookies(page);
     }
 
     // loadLocalStorageData loads the localStorage data from the localStorageData file, if the file does not exist, it will try to create it.
@@ -152,10 +152,11 @@ export class PuppeteerExtraPluginSessionPersistence extends PuppeteerExtraPlugin
     }
 
     async setPageCookies(page: Page) {
-        this.debug('setPageCookies');
+        this.debug('setPageCookies', this.cookies);
         const pageTarget = page.target();
         const client = await pageTarget.createCDPSession();
-        await client.send('Network.setCookies', {cookies: this.cookies});
+        const rtValue = await client.send('Network.setCookies', {cookies: this.cookies});
+        this.debug('setPageCookies ended', rtValue);
     }
 
     async extractCookiesFromResponse(cookies: string, url: string): Promise<Cookie[]> {
