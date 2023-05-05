@@ -51,7 +51,7 @@ export type InMemoryStorageConfig = {
 export interface PluginOptions {
     persistCookies?: boolean;
     persistLocalStorage?: boolean;
-    storage: RedisStorageConfig | FileSystemStorageConfig;
+    storage: StorageConfig;
 }
 
 export interface LocalStorageData {
