@@ -49,9 +49,11 @@ export type InMemoryStorageConfig = {
 };
 
 export interface PluginOptions {
-    persistCookies?: boolean;
-    persistLocalStorage?: boolean;
+    persistCookiesEnabled?: boolean;
+    persistLocalStorageEnabled?: boolean;
     storage: StorageConfig;
+    cookiesPollingEnabled?: boolean;
+    cookiesPollingInterval?: number;
 }
 
 export interface LocalStorageData {

@@ -45,6 +45,7 @@
   "devDependencies": {
     "@types/debug": "^4.1.5",
     "@types/node-fetch": "^2.5.4",
+    "@types/psl": "^1.1.0",
     "@types/puppeteer": "*",
     "ava": "^2.4.0",
     "npm-run-all": "^4.1.5",
@@ -66,6 +67,7 @@
     "debug": "^4.1.1",
     "devtools-protocol": "^0.0.1138159",
     "node-fetch": "^2.6.0",
+    "psl": "^1.9.0",
     "puppeteer-extra-plugin": "^3.2.3",
     "redis": "^4.6.6"
   },

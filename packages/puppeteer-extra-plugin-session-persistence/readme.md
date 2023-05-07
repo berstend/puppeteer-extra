@@ -15,6 +15,13 @@ This TypeScript library provides a Puppeteer Extra plugin for persisting session
 npm install puppeteer-extra-plugin-session-persistence
 ```
 
+## Strategies
+
+The plugin supports different strategies for persisting session data, all activated by default:
+- A polling strategy, update very X seconds the cookies from every page (default 1000 ms), very useful for XHR requests that sets cookies by JS
+- On HTTP response, update the cookies from the response thanks to the 'set-cookie' header
+- Using onFrameNavigated event, update the cookies and localStorage data from every frame
+
 ## Usage
 
 ```javascript

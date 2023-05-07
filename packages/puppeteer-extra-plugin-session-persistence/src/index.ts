@@ -3,13 +3,15 @@ import {Page, HTTPResponse} from 'puppeteer';
 import {
     Storage,
     PluginOptions,
-    LocalStorageData,createStorage,
+    LocalStorageData, createStorage,
     Cookie,
 } from './types';
 import {FileSystemStorage} from './storage/fileSystemStorage';
 import {Protocol} from 'devtools-protocol';
 import CookieSourceScheme = Protocol.Network.CookieSourceScheme;
 import CookiePriority = Protocol.Network.CookiePriority;
+import {getBaseDomainFromUrl, getDomainFromUrl} from './helpers';
+import CookieSameSite = Protocol.Network.CookieSameSite;
 
 
 /**
@@ -45,13 +47,17 @@ export class PuppeteerExtraPluginSessionPersistence extends PuppeteerExtraPlugin
     private localStorageData: LocalStorageData = {};
     private cookies: Cookie[] = [];
     private storage: Storage;
+    private domainCookiesTrigger: string[] = [];
+    private needUpdateCookies: boolean = false;
+    private pageList: Page[] = [];
+    private pollingInterval: NodeJS.Timeout | null = null;
 
     constructor(opts: Partial<PluginOptions>, localStorageData: LocalStorageData = {}, cookies: Cookie[] = []) {
         super(opts)
         this.storage = opts.storage ? createStorage(opts.storage) : new FileSystemStorage();
         this.localStorageData = localStorageData;
         this.cookies = cookies;
-        this.debug('constructor', {opts: this.opts, localStorageData: this.localStorageData, cookies: this.cookies});
+        this.debug('constructor', {opts: this.opts, localStorageData: this.localStorageData, cookies: this.cookies.map((c) => c.name)});
     }
 
     get name() {
@@ -82,8 +88,10 @@ export class PuppeteerExtraPluginSessionPersistence extends PuppeteerExtraPlugin
 
     get defaults(): PluginOptions {
         return {
-            persistCookies: true,
-            persistLocalStorage: true,
+            persistCookiesEnabled: true,
+            persistLocalStorageEnabled: true,
+            cookiesPollingEnabled: true,
+            cookiesPollingInterval: 1000,
             storage: {
                 name: "filesystem",
                 options: {},
@@ -95,26 +103,59 @@ export class PuppeteerExtraPluginSessionPersistence extends PuppeteerExtraPlugin
         this.debug('onPluginRegistered');
         await this.loadCookies();
         await this.loadLocalStorageData();
+        if (this.opts.cookiesPollingEnabled && this.opts.persistCookiesEnabled && !this.pollingInterval) {
+            this.debug('onPluginRegistered starting cookies polling');
+            this.pollingInterval = setInterval(() => {
+                this.debug('setInterval polling cookies', {needUpdateCookies: this.needUpdateCookies});
+                if (this.needUpdateCookies) {
+                    this.pageList.forEach(async (page) => {
+                        if (!page.isClosed()) {
+                            try {
+                                this.debug("Updating cookies for page (polling strategy)", page.url());
+                                await this.mergePageCookies(page);
+                            } catch (error) {
+                                this.debug('setInterval error with cookies, removing page from the list', {error});
+                                this.pageList = this.pageList.filter((p) => p !== page);
+                            }
+                        } else {
+                            this.debug('setInterval page is closed, removing page from the list');
+                            this.pageList = this.pageList.filter((p) => p !== page);
+                        }
+                    });
+                    this.needUpdateCookies = false;
+                }
+            }, this.opts.cookiesPollingInterval || 1000);
+        } else {
+            this.debug('onPluginRegistered cookies polling disabled');
+        }
         this.debug('onPluginRegistered ended', {localStorageData: this.localStorageData});
     }
 
     async onClose() {
         this.debug('onClose', {localStorageData: this.localStorageData});
-        if (this.opts.persistCookies) {
+        if (this.opts.persistCookiesEnabled) {
             await this.saveCookies();
         }
-        if (this.opts.persistLocalStorage) {
+        if (this.opts.persistLocalStorageEnabled) {
             await this.saveLocalStorageData();
+        }
+        if (this.pollingInterval) {
+            this.debug('onClose clearing cookies polling interval');
+            clearInterval(this.pollingInterval);
         }
     }
 
     // onPageCreated create all the event listeners for the page.
-    async onPageCreated(page: Page)  {
+    async onPageCreated(page: Page) {
         this.debug('onPageCreated adding event listeners');
+        if (this.opts.cookiesPollingEnabled && this.opts.persistCookiesEnabled) {
+            this.pageList.push(page);
+        }
         await this.setPageCookies(page);
         await page.setBypassCSP(true);
         page.on('framenavigated', () => this.onFrameNavigated(page));
         page.on('response', this.onResponseReceived.bind(this));
+
     }
 
     // loadLocalStorageData loads the localStorage data from the localStorageData file, if the file does not exist, it will try to create it.
@@ -138,7 +179,7 @@ export class PuppeteerExtraPluginSessionPersistence extends PuppeteerExtraPlugin
         try {
             const cookies = await this.storage.loadCookies();
             this.mergeCookies(cookies);
-            this.debug('loadCookies loaded', {cookies: this.cookies});
+            this.debug('loadCookies loaded', {cookies: this.cookies.map((c) => c.name)});
         } catch (err) {
             this.debug('loadCookies ended with error', {err});
             await this.saveCookies();
@@ -152,7 +193,7 @@ export class PuppeteerExtraPluginSessionPersistence extends PuppeteerExtraPlugin
     }
 
     async setPageCookies(page: Page) {
-        this.debug('setPageCookies', this.cookies);
+        this.debug('setPageCookies', this.cookies.map((c) => c.name));
         const pageTarget = page.target();
         const client = await pageTarget.createCDPSession();
         const rtValue = await client.send('Network.setCookies', {cookies: this.cookies});
@@ -174,11 +215,11 @@ export class PuppeteerExtraPluginSessionPersistence extends PuppeteerExtraPlugin
             let secure = false;
             let session = false;
             let path = '/';
-            let sameSite: 'Lax' | 'Strict' | 'None' = 'Lax';
+            let sameSite: CookieSameSite = 'Lax';
             let sameParty = false;
-            let sourceScheme = 'Secure';
+            let sourceScheme: CookieSourceScheme = 'Secure';
             let sourcePort = 443;
-            let priority = 'Low';
+            let priority: CookiePriority = 'Low';
 
             cookieParts.slice(1).forEach((part) => {
                 const [key, value] = part.trim().split('=');
@@ -203,13 +244,13 @@ export class PuppeteerExtraPluginSessionPersistence extends PuppeteerExtraPlugin
                         sameParty = true;
                         break;
                     case 'sourcescheme':
-                        sourceScheme = value || 'Secure';
+                        sourceScheme = value as CookieSourceScheme || 'Secure';
                         break;
                     case 'sourceport':
                         sourcePort = parseInt(value, 10) || 443;
                         break;
                     case 'priority':
-                        priority = value || 'Low';
+                        priority = value as CookiePriority || 'Low';
                         break;
                 }
             });
@@ -242,6 +283,9 @@ export class PuppeteerExtraPluginSessionPersistence extends PuppeteerExtraPlugin
         if (cookies) {
             const parsedCookies = await this.extractCookiesFromResponse(cookies, response.url());
             await this.mergeCookies(parsedCookies);
+        }
+        if (this.domainCookiesTrigger.includes(getBaseDomainFromUrl(response.url()))) {
+            this.needUpdateCookies = true;
         }
     }
 
@@ -276,7 +320,11 @@ export class PuppeteerExtraPluginSessionPersistence extends PuppeteerExtraPlugin
 
     async onFrameNavigated(page: Page) {
         this.debug('onFrameNavigated');
-        const domainUrl = this.getDomainFromUrl(page.url());
+        const domainUrl = getDomainFromUrl(page.url());
+        const baseDomainUrl = getBaseDomainFromUrl(page.url());
+        if (!this.domainCookiesTrigger.includes(baseDomainUrl)) {
+            this.domainCookiesTrigger.push(baseDomainUrl);
+        }
 
         try {
             await this.setLocalStorageValues(page, domainUrl);
@@ -339,21 +387,10 @@ export class PuppeteerExtraPluginSessionPersistence extends PuppeteerExtraPlugin
         this.mergeCookies(cookies.cookies);
     }
 
-    getDomainFromUrl(url: string): string {
-        try {
-            const parsedUrl = new URL(url);
-            return parsedUrl.hostname;
-        } catch (error) {
-            this.debug('getDomainFromUrl error', {error});
-            return '';
-        }
-    }
-
-
 }
 
 const defaultExport = (options?: Partial<PluginOptions>, localStorageData: LocalStorageData = {}, cookies: Cookie[] = []) => {
-    return new PuppeteerExtraPluginSessionPersistence(options??{}, localStorageData, cookies)
+    return new PuppeteerExtraPluginSessionPersistence(options ?? {}, localStorageData, cookies)
 }
 
 export default defaultExport
