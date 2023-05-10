@@ -70,9 +70,9 @@ export function createStorage(opts: StorageConfig) {
             return new FileSystemStorage(opts.options as FileSystemStorageOptions);
         case InMemoryStorage.name.toLowerCase():
             return new InMemoryStorage();
+        default:
+            throw new Error(`Unknown storage name: ${opts.name}`);
     }
-
-    return new FileSystemStorage();
 }
 
 export type Cookie = NetworkCookie;

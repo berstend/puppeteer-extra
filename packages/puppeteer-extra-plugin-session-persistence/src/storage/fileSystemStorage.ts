@@ -9,7 +9,7 @@ export class FileSystemStorage implements Storage {
     private cookiesFile: string;
 
     get name() {
-        return 'file-system';
+        return 'filesystem';
     }
 
     constructor(fileSystemStorageOptions: FileSystemStorageOptions = {}) {
