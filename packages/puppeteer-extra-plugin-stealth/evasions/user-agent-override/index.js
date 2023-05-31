@@ -84,7 +84,7 @@ class Plugin extends PuppeteerExtraPlugin {
     // Get platform identifier (short or long version)
     const _getPlatform = (extended = false) => {
       if (ua.includes('Mac OS X')) {
-        return extended ? 'Mac OS X' : 'MacIntel'
+        return extended ? 'macOS' : 'MacIntel'
       } else if (ua.includes('Android')) {
         return 'Android'
       } else if (ua.includes('Linux')) {
