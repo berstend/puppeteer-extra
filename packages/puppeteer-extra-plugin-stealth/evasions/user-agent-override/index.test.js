@@ -225,7 +225,7 @@ test('stealth: test if UA hints are correctly set - macOS 11', async t => {
     t.true(secondLoad.includes('sec-ch-ua-mobile: ?0'))
     t.true(secondLoad.includes('sec-ch-ua-full-version: "99.0.9999.99"'))
     t.true(secondLoad.includes('sec-ch-ua-arch: "x86"'))
-    t.true(secondLoad.includes('sec-ch-ua-platform: "Mac OS X"'))
+    t.true(secondLoad.includes('sec-ch-ua-platform: "macOS"'))
     t.true(secondLoad.includes('sec-ch-ua-platform-version: "11_1_0"'))
     t.true(secondLoad.includes('sec-ch-ua-model: ""'))
   }
