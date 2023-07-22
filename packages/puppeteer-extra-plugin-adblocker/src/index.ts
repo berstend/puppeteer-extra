@@ -2,7 +2,7 @@ import { promises as fs } from 'fs'
 import os from 'os'
 import path from 'path'
 
-import { PuppeteerBlocker } from '@cliqz/adblocker-puppeteer'
+import { NetworkFilter, PuppeteerBlocker } from '@cliqz/adblocker-puppeteer'
 import fetch from 'node-fetch'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
@@ -11,6 +11,8 @@ const engineCacheFilename = `${pkg.name}-${pkg.version}-engine.bin`
 
 /** Available plugin options */
 export interface PluginOptions {
+  /** Optional custom list of sites to allow. Default: [] */
+  allowlist: RegExp[]
   /** Whether or not to block trackers (in addition to ads). Default: false */
   blockTrackers: boolean
   /** Whether or not to block trackers and other annoyances, including cookie
@@ -41,6 +43,7 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
 
   get defaults(): PluginOptions {
     return {
+      allowlist: [],
       blockTrackers: false,
       blockTrackersAndAnnoyances: false,
       useCache: true,
@@ -65,6 +68,18 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
     }
     this.debug('persist to cache', this.engineCacheFile)
     await fs.writeFile(this.engineCacheFile, blocker.serialize())
+  }
+
+  /**
+   * Return a list of exceptions to the blocking rules.
+   */
+  private getExceptions(): NetworkFilter[] {
+    let list: RegExp[] = this.opts.allowlist || [];
+    return list
+      // Turn the list of regexps into an array of `NetworkFilter` instances.
+      .map((regex) => NetworkFilter.parse("@@" + regex.toString()))
+      // Remove any invalid filters.
+      .filter((filter): filter is NetworkFilter => filter !== undefined)
   }
 
   /**
@@ -118,6 +133,9 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
         await this.persistToCache(this.blocker)
       }
     }
+    this.blocker.update({
+      newNetworkFilters: this.getExceptions(),
+    })
     return this.blocker
   }
 
@@ -149,7 +167,7 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
    */
   async onPageCreated(page: any) {
     this.debug('onPageCreated')
-    ;(await this.getBlocker()).enableBlockingInPage(page)
+      ; (await this.getBlocker()).enableBlockingInPage(page)
   }
 }
 
