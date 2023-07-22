@@ -38,3 +38,35 @@ test('will block ads', async t => {
 
   await browser.close()
 })
+
+test("will adhere to allowlist rules", async t => {
+  const puppeteer = require('puppeteer-extra')
+  const adblockerPlugin = AdblockerPlugin({
+    allowlist: [
+      // Allow everything
+      /(.*?)/,
+    ]
+  })
+
+  puppeteer.use(adblockerPlugin)
+
+  const browser = await puppeteer.launch({
+    args: PUPPETEER_ARGS,
+    headless: true
+  })
+
+  const blocker = await adblockerPlugin.getBlocker()
+
+  const page = await browser.newPage()
+
+  let blockedRequests = 0
+  blocker.on('request-blocked', (req) => {
+    blockedRequests += 1
+  })
+
+  await page.goto("https://www.google.com/search?q=rent%20a%20car", { waitUntil: 'networkidle0' })
+
+  t.is(blockedRequests, 0)
+
+  await browser.close();
+})
