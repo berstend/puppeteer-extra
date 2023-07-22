@@ -167,7 +167,7 @@ export class PuppeteerExtraPluginAdblocker extends PuppeteerExtraPlugin {
    */
   async onPageCreated(page: any) {
     this.debug('onPageCreated')
-      ; (await this.getBlocker()).enableBlockingInPage(page)
+    ;(await this.getBlocker()).enableBlockingInPage(page)
   }
 }
 
