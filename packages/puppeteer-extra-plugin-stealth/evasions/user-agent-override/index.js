@@ -64,9 +64,19 @@ class Plugin extends PuppeteerExtraPlugin {
 
   async onPageCreated(page) {
     // Determine the full user agent string, strip the "Headless" part
-    let ua =
+    let ua = this.opts.userAgent
+
+    const browser = await page.browser()
+
+    // "firefox" has no user agent (not sure what the exact name for chrome/ chromium is)
+    if (browser._name.includes("chrom")) {
       this.opts.userAgent ||
       (await page.browser().userAgent()).replace('HeadlessChrome/', 'Chrome/')
+    }
+
+    if (!ua) {
+      return
+    }
 
     if (
       this.opts.maskLinux &&
