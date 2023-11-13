@@ -32,7 +32,7 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 puppeteer.use(StealthPlugin())
 
 // puppeteer usage as normal
-puppeteer.launch({ headless: true }).then(async browser => {
+puppeteer.launch({ headless: "new" }).then(async browser => {
   console.log('Running tests..')
   const page = await browser.newPage()
   await page.goto('https://bot.sannysoft.com')
@@ -55,7 +55,7 @@ import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 
 puppeteer
   .use(StealthPlugin())
-  .launch({ headless: true })
+  .launch({ headless: "new" })
   .then(async browser => {
     const page = await browser.newPage()
     await page.goto('https://bot.sannysoft.com')
@@ -257,7 +257,7 @@ puppeteer.use(require('puppeteer-extra-plugin-stealth')())
   // Launch the browser in headless mode and set up a page.
   const browser = await puppeteer.launch({
     args: ['--no-sandbox'],
-    headless: true
+    headless: "new"
   })
   const page = await browser.newPage()
 
