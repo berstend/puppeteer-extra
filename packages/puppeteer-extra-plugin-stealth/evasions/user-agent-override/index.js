@@ -179,7 +179,7 @@ class Plugin extends PuppeteerExtraPlugin {
 
     const client =
       typeof page._client === 'function' ? page._client() : page._client
-    client.send('Network.setUserAgentOverride', override)
+    await client.send('Network.setUserAgentOverride', override)
   }
 
   async beforeLaunch(options) {
