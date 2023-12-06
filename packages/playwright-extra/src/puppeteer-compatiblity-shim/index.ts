@@ -133,8 +133,13 @@ export function createPageShim(page: pw.Page | pw.Frame) {
       if (prop === '_client') {
         return () => ({
           send: async (method: string, params: any) => {
-            const session = await getPageCDPSession(page)
-            return await session.send(method as any, params)
+            try {
+              const session = await getPageCDPSession(page)
+              return await session.send(method as any, params)
+            } catch (err: any) {
+              debug('page shim: error when sending:', err.message)
+              return Promise.resolve()
+            }
           },
           on: (event: string, listener: any) => {
             getPageCDPSession(page).then(session => {
