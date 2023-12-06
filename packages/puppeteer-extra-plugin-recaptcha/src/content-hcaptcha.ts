@@ -82,7 +82,7 @@ export class HcaptchaContentScript {
 
   private _extractInfoFromIframes(iframes: HTMLIFrameElement[]) {
     return iframes
-      .map(el => el.src.replace('.html#', '.html?'))
+      .map(el => el.src.replace('#', el.src.includes('?') ? '&' : '?'))
       .map(url => {
         const { searchParams } = new URL(url)
         const result: types.CaptchaInfo = {
