@@ -17,7 +17,7 @@ interface AugmentedLauncherAPIs
   extends Pick<
     PlaywrightBrowserLauncher,
     'launch' | 'launchPersistentContext' | 'connect' | 'connectOverCDP'
-  > {}
+  > { }
 
 /**
  * Modular plugin framework to teach `playwright` new tricks.
@@ -118,6 +118,14 @@ export class PlaywrightExtraClass implements AugmentedLauncherAPIs {
     // Give plugins the chance to modify the options before continuing
     options =
       (await this.plugins.dispatchBlocking('beforeLaunch', options)) || options
+
+    if ('userDataDir' in options && !userDataDir) {
+      userDataDir = (options as any).userDataDir
+      debug(
+        "A plugin defined userDataDir during .launchPersistentContext", userDataDir
+      )
+      delete (options as any).userDataDir
+    }
 
     const context = await this.launcher['launchPersistentContext'](
       userDataDir,
