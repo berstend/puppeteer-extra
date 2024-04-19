@@ -32,7 +32,7 @@ Type: `function (opts)`
     -   `opts.customFn` **[Function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function)** A custom UA replacer function. (optional, default `null`)
 
 Example:
-
+### CommonJS
 ```javascript
 const puppeteer = require('puppeteer-extra')
 puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')())
@@ -42,5 +42,15 @@ puppeteer.use(require('puppeteer-extra-plugin-anonymize-ua')({
 )
 const browser = await puppeteer.launch()
 ```
+### ES Modules (ESM)
+```javascript
+import puppeteer from 'puppeteer-extra';
+import AnonymizeUa from 'puppeteer-extra-plugin-anonymize-ua'
 
+const browser = await puppeteer
+  .use(AnonymizeUa({
+    customFn: (ua) => person.userAgent})
+  )
+  .launch({headless: false});
+```
 * * *
