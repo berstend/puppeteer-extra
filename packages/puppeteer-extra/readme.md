@@ -101,7 +101,7 @@ puppeteer
 <details>
  <summary><strong>Playwright usage</strong></summary><br/>
 
-[`playright-extra`](/packages/playwright-extra) with plugin support is available as well.
+[`playwright-extra`](/packages/playwright-extra) with plugin support is available as well.
 
 </details>
 
