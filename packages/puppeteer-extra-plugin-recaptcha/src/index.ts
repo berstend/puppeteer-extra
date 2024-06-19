@@ -170,7 +170,11 @@ export class PuppeteerExtraPluginRecaptcha extends PuppeteerExtraPlugin {
 
     if (this.contentScriptDebug.enabled) {
       if ('exposeFunction' in page) {
-        await page.exposeFunction(this.debugBindingName, onDebugBindingCalled)
+        try {
+          await page.exposeFunction(this.debugBindingName, onDebugBindingCalled);
+        } catch (err) {
+          this.debug('`debugBindingName` function is already exposed');
+        }
       }
     }
     // Even without a recaptcha script tag we're trying, just in case.
