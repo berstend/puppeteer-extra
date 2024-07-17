@@ -5,15 +5,21 @@
 # For more information, see:
 # https://github.com/actions/labeler
 
-name: 'Pull Request Labeler'
-on:
-  - pull_request_target
+'package: core':
+  - packages/automation-extra/**/*
+  - packages/playright-extra/**/*
+  - packages/puppeteer-extra/**/*
+  - packages/automation-extra-plugin/**/*
+  - packages/puppeteer-extra-plugin/**/*
 
-jobs:
-  triage:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/labeler@main
-        with:
-          repo-token: '${{ secrets.GITHUB_TOKEN }}'
-          sync-labels: true
+'plugin: automation-extra':
+  - packages/plugin-*/**/*
+
+'plugin: puppeteer-extra':
+  - packages/puppeteer-extra-plugin-*/**/*
+
+'plugin: recaptcha 🏴':
+  - packages/*recaptcha*/**/*
+
+'plugin: stealth ㊙️':
+  - packages/*stealth*/**/*
