@@ -61,7 +61,7 @@
     "typescript": "4.7.4"
   },
   "dependencies": {
-    "@cliqz/adblocker-puppeteer": "1.23.8",
+    "@ghostery/adblocker-puppeteer": "1.23.8",
     "debug": "^4.1.1",
     "node-fetch": "^2.6.0",
     "puppeteer-extra-plugin": "^3.2.3"

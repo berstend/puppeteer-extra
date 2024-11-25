@@ -2,7 +2,7 @@ import { promises as fs } from 'fs'
 import os from 'os'
 import path from 'path'
 
-import { PuppeteerBlocker } from '@cliqz/adblocker-puppeteer'
+import { PuppeteerBlocker } from '@ghostery/adblocker-puppeteer'
 import fetch from 'node-fetch'
 import { PuppeteerExtraPlugin } from 'puppeteer-extra-plugin'
 
