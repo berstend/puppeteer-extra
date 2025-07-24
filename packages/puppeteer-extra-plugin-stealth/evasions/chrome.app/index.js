@@ -77,13 +77,13 @@ class Plugin extends PuppeteerExtraPlugin {
           }
           return null
         },
-        getIsInstalled: function getDetails() {
+        getIsInstalled: function getIsInstalled() {
           if (arguments.length) {
             throw makeError.ErrorInInvocation(`getIsInstalled`)
           }
           return false
         },
-        runningState: function getDetails() {
+        runningState: function runningState() {
           if (arguments.length) {
             throw makeError.ErrorInInvocation(`runningState`)
           }
