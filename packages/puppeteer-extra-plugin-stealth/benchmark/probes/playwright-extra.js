@@ -95,8 +95,10 @@ async function main() {
 function buildBrowserArgs(input) {
   const browser = Object.assign({}, input.lane.browser, input.profileMode.browser)
   const args = {
-    headless: browser.headless !== false,
-    channel: browser.channel || 'chrome'
+    headless: browser.headless !== false
+  }
+  if (browser.channel) {
+    args.channel = browser.channel
   }
   if (input.lane.proxyServer) {
     args.proxy = { server: input.lane.proxyServer }
@@ -300,8 +302,14 @@ function getArg(name) {
   return index >= 0 ? process.argv[index + 1] : null
 }
 
-main().catch(error => {
-  process.stderr.write((error && error.stack) || String(error))
-  process.stderr.write('\n')
-  process.exitCode = 1
-})
+if (require.main === module) {
+  main().catch(error => {
+    process.stderr.write((error && error.stack) || String(error))
+    process.stderr.write('\n')
+    process.exitCode = 1
+  })
+}
+
+module.exports = {
+  buildBrowserArgs
+}
