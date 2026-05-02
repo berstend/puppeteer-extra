@@ -26,6 +26,7 @@ async function main() {
     network: { failed: [] }
   }
 
+  let browser = null
   let context = null
   let page = null
   let mainResponse = null
@@ -35,7 +36,7 @@ async function main() {
       context = await chromium.launchPersistentContext(userDataDir, browserArgs)
       page = context.pages()[0] || (await context.newPage())
     } else {
-      const browser = await chromium.launch(browserArgs)
+      browser = await chromium.launch(browserArgs)
       context = await browser.newContext()
       page = await context.newPage()
     }
@@ -88,6 +89,9 @@ async function main() {
   } finally {
     if (context) {
       await context.close().catch(() => {})
+    }
+    if (browser) {
+      await browser.close().catch(() => {})
     }
   }
 }
