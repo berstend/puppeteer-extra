@@ -155,7 +155,8 @@ export class PluginList {
       'onPageCreated',
       'onPageClose',
       'afterConnect',
-      'afterLaunch'
+      'afterLaunch',
+      'beforeContext'
     ]
     const shouldUseShim = methodWhitelist.includes(method)
     if (!canUseShim || !shouldUseShim) {
