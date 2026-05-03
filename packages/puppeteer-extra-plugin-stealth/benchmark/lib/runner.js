@@ -25,7 +25,7 @@ async function runPair(config, pair, options = {}) {
   const pairDir = path.join(config.artifacts.rootDir, 'pairs', pair.pairId)
   await fs.promises.mkdir(pairDir, { recursive: true })
   const runResults = {}
-  for (const variant of config.variants) {
+  for (const variant of orderVariantsForPair(config.variants, pair)) {
     const runSpec = createRunSpec(pairDir, pair, variant)
     await fs.promises.mkdir(runSpec.runDir, { recursive: true })
     await fs.promises.writeFile(runSpec.inputFile, JSON.stringify(runSpec.payload, null, 2))
@@ -57,6 +57,17 @@ async function runPair(config, pair, options = {}) {
     candidate,
     diff: diffPair(baseline.outcome, candidate.outcome)
   }
+}
+
+function orderVariantsForPair(variants, pair) {
+  if (!Array.isArray(variants) || variants.length < 2) {
+    return Array.isArray(variants) ? variants.slice() : []
+  }
+  const repetition = Number(pair && pair.repetition)
+  if (!Number.isFinite(repetition) || repetition % 2 === 1) {
+    return variants.slice()
+  }
+  return [variants[1], variants[0], ...variants.slice(2)]
 }
 
 function filterPairs(pairs, options) {
@@ -179,5 +190,6 @@ async function writeAggregateArtifacts(rootDir, pairResults, summary) {
 module.exports = {
   runMatrix,
   runPair,
-  createRunSpec
+  createRunSpec,
+  orderVariantsForPair
 }

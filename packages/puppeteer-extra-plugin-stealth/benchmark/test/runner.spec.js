@@ -4,7 +4,7 @@ const fs = require('fs')
 const os = require('os')
 const path = require('path')
 const { normalizeConfig } = require('../lib/config')
-const { runMatrix } = require('../lib/runner')
+const { runMatrix, orderVariantsForPair } = require('../lib/runner')
 
 function createWorkspace(root, name) {
   const workspace = path.join(root, name)
@@ -56,4 +56,21 @@ test('runMatrix executes paired mock probes and writes aggregate artifacts', asy
   assert.equal(result.pairs[0].diff.severity, 'major_improvement')
   assert.equal(fs.existsSync(path.join(artifactsRoot, 'summary.json')), true)
   assert.equal(fs.existsSync(path.join(artifactsRoot, 'pair-results.jsonl')), true)
+})
+
+test('orderVariantsForPair alternates first mover by repetition number', () => {
+  const variants = [{ id: 'baseline' }, { id: 'candidate' }]
+
+  assert.deepEqual(
+    orderVariantsForPair(variants, { repetition: 1 }).map(v => v.id),
+    ['baseline', 'candidate']
+  )
+  assert.deepEqual(
+    orderVariantsForPair(variants, { repetition: 2 }).map(v => v.id),
+    ['candidate', 'baseline']
+  )
+  assert.deepEqual(
+    orderVariantsForPair(variants, { repetition: 5 }).map(v => v.id),
+    ['baseline', 'candidate']
+  )
 })
