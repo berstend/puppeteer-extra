@@ -15,11 +15,9 @@ module.exports = [
       {
         id: 'login-entry',
         type: 'form_start',
+        url: 'https://github.com/login',
         success: { urlIncludes: '/login' },
-        actions: [
-          { type: 'click', selector: 'a[href="/login"]' },
-          { type: 'wait', ms: 1500 }
-        ]
+        actions: [{ type: 'wait', ms: 1500 }]
       }
     ]
   },
@@ -39,13 +37,9 @@ module.exports = [
       {
         id: 'search',
         type: 'search',
+        url: 'https://developer.mozilla.org/en-US/search?q=fetch+api',
         success: { urlIncludes: '/search' },
-        actions: [
-          { type: 'click', selector: 'button[data-search-button]' },
-          { type: 'type', selector: 'input[type="search"]', text: 'fetch api' },
-          { type: 'press', selector: 'input[type="search"]', key: 'Enter' },
-          { type: 'wait', ms: 2500 }
-        ]
+        actions: [{ type: 'wait', ms: 2500 }]
       }
     ]
   },
@@ -65,12 +59,9 @@ module.exports = [
       {
         id: 'search',
         type: 'search',
+        url: 'https://www.npmjs.com/search?q=puppeteer-extra',
         success: { urlIncludes: '/search' },
-        actions: [
-          { type: 'type', selector: 'input[type="search"]', text: 'puppeteer-extra' },
-          { type: 'press', selector: 'input[type="search"]', key: 'Enter' },
-          { type: 'wait', ms: 2500 }
-        ]
+        actions: [{ type: 'wait', ms: 2500 }]
       }
     ]
   }

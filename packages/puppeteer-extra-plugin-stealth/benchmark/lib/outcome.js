@@ -19,11 +19,11 @@ function classifyProbeResult(result) {
   if (result.skipped || result.dryRun) {
     return normalizeOutcome('skipped', { reason: result.reason || 'dry-run' })
   }
-  if (result.runtimeError) {
-    return normalizeOutcome('runtime_error', { reason: result.runtimeError })
-  }
   if (result.timedOut) {
     return normalizeOutcome('timeout', { reason: result.timeoutReason || 'timeout' })
+  }
+  if (result.runtimeError) {
+    return normalizeOutcome('runtime_error', { reason: result.runtimeError })
   }
   if (result.block && result.block.level === 'hard') {
     return normalizeOutcome('hard_block', { reason: result.block.reason || 'hard-block' })

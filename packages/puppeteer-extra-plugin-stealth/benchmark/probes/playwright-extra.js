@@ -43,7 +43,7 @@ async function main() {
 
     wireObservers(page, state)
 
-    mainResponse = await page.goto(input.site.url, {
+    mainResponse = await page.goto(resolveTargetUrl(input), {
       waitUntil: 'domcontentloaded',
       timeout: input.flow.timeoutMs || 30000
     })
@@ -54,7 +54,7 @@ async function main() {
     const challenge = await detectChallenge(page)
     let solver = { attempted: false, solved: false, error: null }
     if (input.pass.solverMode === '2captcha' && challenge && input.pass.solver && input.pass.solver.command) {
-      solver = await attemptSolve(page, input.site.url, input.pass.solver.command, challenge)
+      solver = await attemptSolve(page, resolveTargetUrl(input), input.pass.solver.command, challenge)
     }
 
     const success = await evaluateSuccess(page, input.flow)
@@ -147,49 +147,27 @@ function wireObservers(page, state) {
 }
 
 async function detectChallenge(page) {
-  return page.evaluate(() => {
-    const text = document.body ? document.body.innerText : ''
-    const title = document.title || ''
-    const checks = [
-      {
-        family: 'turnstile',
-        kind: 'captcha',
-        selector: 'iframe[src*="challenges.cloudflare.com"], .cf-turnstile, [name="cf-turnstile-response"]',
-        siteKeySelector: '.cf-turnstile[data-sitekey], [data-sitekey]'
-      },
-      {
-        family: 'recaptcha',
-        kind: 'captcha',
-        selector: 'iframe[src*="recaptcha"], [name="g-recaptcha-response"]',
-        siteKeySelector: '[data-sitekey]'
-      },
-      {
-        family: 'hcaptcha',
-        kind: 'captcha',
-        selector: 'iframe[src*="hcaptcha"], [name="h-captcha-response"], [data-hcaptcha-widget-id]',
-        siteKeySelector: '[data-sitekey]'
-      },
-      {
-        family: 'cloudflare_interstitial',
-        kind: 'challenge',
-        selector: 'body',
-        textMatch: ['Just a moment', 'Checking your browser before accessing', 'Verify you are human']
-      }
-    ]
-
-    for (const check of checks) {
-      const matchedSelector = check.selector && document.querySelector(check.selector)
-      const matchedText = Array.isArray(check.textMatch) && check.textMatch.some(sample => text.includes(sample) || title.includes(sample))
-      if (matchedSelector || matchedText) {
-        const siteKeyElement = check.siteKeySelector ? document.querySelector(check.siteKeySelector) : null
-        return {
-          family: check.family,
-          kind: check.kind,
-          siteKey: siteKeyElement ? siteKeyElement.getAttribute('data-sitekey') : null
-        }
-      }
+  const snapshot = await page.evaluate(() => ({
+    title: document.title || '',
+    text: document.body ? document.body.innerText : '',
+    selectors: {
+      turnstile: Boolean(document.querySelector('iframe[src*="challenges.cloudflare.com"], .cf-turnstile, [name="cf-turnstile-response"]')),
+      hcaptcha: Boolean(document.querySelector('iframe[src*="hcaptcha"], [name="h-captcha-response"], [data-hcaptcha-widget-id], .h-captcha')),
+      recaptcha: Boolean(document.querySelector('iframe[src*="recaptcha"], [name="g-recaptcha-response"], .g-recaptcha')),
+      cloudflareInterstitial: Boolean(document.querySelector('#challenge-running, #cf-challenge-running, .cf-browser-verification, .challenge-form, form#challenge-form'))
+    },
+    siteKeys: {
+      turnstile: document.querySelector('.cf-turnstile[data-sitekey]')?.getAttribute('data-sitekey') || null,
+      hcaptcha: document.querySelector('.h-captcha[data-sitekey], [data-hcaptcha-widget-id][data-sitekey]')?.getAttribute('data-sitekey') || null,
+      recaptcha: document.querySelector('.g-recaptcha[data-sitekey]')?.getAttribute('data-sitekey') || null
     }
-    return null
+  }))
+
+  return detectChallengeFromSnapshot({
+    title: snapshot.title,
+    text: snapshot.text,
+    selectors: snapshot.selectors,
+    siteKeys: snapshot.siteKeys
   })
 }
 
@@ -301,6 +279,62 @@ function classifyBlock(response, challenge) {
   return null
 }
 
+function resolveTargetUrl(input) {
+  return (input.flow && input.flow.url) || (input.site && input.site.url)
+}
+
+function detectChallengeFromSnapshot(snapshot) {
+  const checks = [
+    {
+      family: 'turnstile',
+      kind: 'captcha',
+      selectorKey: 'turnstile',
+      textMatch: ['Turnstile', 'Verify you are human'],
+      siteKeyKey: 'turnstile'
+    },
+    {
+      family: 'hcaptcha',
+      kind: 'captcha',
+      selectorKey: 'hcaptcha',
+      textMatch: ['hCaptcha'],
+      siteKeyKey: 'hcaptcha'
+    },
+    {
+      family: 'recaptcha',
+      kind: 'captcha',
+      selectorKey: 'recaptcha',
+      textMatch: ['reCAPTCHA'],
+      siteKeyKey: 'recaptcha'
+    },
+    {
+      family: 'cloudflare_interstitial',
+      kind: 'challenge',
+      selectorKey: 'cloudflareInterstitial',
+      textMatch: ['Just a moment', 'Checking your browser before accessing', 'Verify you are human']
+    }
+  ]
+
+  const title = (snapshot && snapshot.title) || ''
+  const text = (snapshot && snapshot.text) || ''
+  const selectors = (snapshot && snapshot.selectors) || {}
+  const siteKeys = (snapshot && snapshot.siteKeys) || {}
+
+  for (const check of checks) {
+    const matchedSelector = Boolean(selectors[check.selectorKey])
+    const matchedText = Array.isArray(check.textMatch) && check.textMatch.some(sample => text.includes(sample) || title.includes(sample))
+    if (!matchedSelector && !matchedText) {
+      continue
+    }
+
+    return {
+      family: check.family,
+      kind: check.kind,
+      siteKey: check.siteKeyKey ? siteKeys[check.siteKeyKey] || null : null
+    }
+  }
+  return null
+}
+
 function getArg(name) {
   const index = process.argv.indexOf(name)
   return index >= 0 ? process.argv[index + 1] : null
@@ -315,5 +349,7 @@ if (require.main === module) {
 }
 
 module.exports = {
-  buildBrowserArgs
+  buildBrowserArgs,
+  resolveTargetUrl,
+  detectChallengeFromSnapshot
 }

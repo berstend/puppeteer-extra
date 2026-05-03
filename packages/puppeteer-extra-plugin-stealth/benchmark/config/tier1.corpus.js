@@ -24,7 +24,7 @@ module.exports = [
       {
         id: 'landing',
         type: 'landing',
-        success: { text: 'CreepJS' },
+        success: { selector: '#fp-app' },
         actions: [{ type: 'wait', ms: 7000 }]
       }
     ]

@@ -9,6 +9,17 @@ test('classifyProbeResult maps challenge and success states', () => {
   assert.equal(classifyProbeResult({ block: { level: 'hard', reason: 'status-403' } }).id, 'hard_block')
 })
 
+test('classifyProbeResult treats timed out probes as timeout even when they include runtime errors', () => {
+  const outcome = classifyProbeResult({
+    success: false,
+    runtimeError: 'page.goto: Timeout 30000ms exceeded.',
+    timedOut: true
+  })
+
+  assert.equal(outcome.id, 'timeout')
+  assert.equal(outcome.score, 10)
+})
+
 test('diffPair marks directional severity', () => {
   const baseline = classifyProbeResult({ challenge: { family: 'turnstile', kind: 'captcha' } })
   const candidate = classifyProbeResult({ success: true })
