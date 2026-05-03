@@ -1,9 +1,14 @@
 const test = require('node:test')
 const assert = require('node:assert/strict')
+const fs = require('fs')
+const os = require('os')
+const path = require('path')
 const {
   buildBrowserArgs,
   resolveTargetUrl,
-  detectChallengeFromSnapshot
+  detectChallengeFromSnapshot,
+  resolvePersistentUserDataDir,
+  preparePersistentUserDataDir
 } = require('../probes/playwright-extra')
 
 test('buildBrowserArgs does not force chrome channel unless configured', () => {
@@ -72,4 +77,39 @@ test('detectChallengeFromSnapshot prefers hcaptcha over recaptcha compatibility 
     kind: 'captcha',
     siteKey: 'h-sitekey'
   })
+})
+
+test('resolvePersistentUserDataDir prefers explicit userDataDir and otherwise uses runDir seed clone', () => {
+  assert.equal(
+    resolvePersistentUserDataDir({
+      profileMode: { browser: { userDataDir: '/tmp/explicit-profile' } },
+      artifacts: { runDir: '/tmp/run-a' }
+    }),
+    '/tmp/explicit-profile'
+  )
+
+  assert.equal(
+    resolvePersistentUserDataDir({
+      profileMode: { browser: { seedUserDataDir: '/tmp/profile-seed' } },
+      artifacts: { runDir: '/tmp/run-b' }
+    }),
+    path.join('/tmp/run-b', 'user-data-dir')
+  )
+})
+
+test('preparePersistentUserDataDir clones the seed profile into a clean target directory', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'stealth-profile-'))
+  const seedDir = path.join(root, 'seed')
+  const targetDir = path.join(root, 'target')
+  fs.mkdirSync(path.join(seedDir, 'Default'), { recursive: true })
+  fs.writeFileSync(path.join(seedDir, 'Local State'), '{"profile":true}')
+  fs.writeFileSync(path.join(seedDir, 'Default', 'Preferences'), '{"seed":true}')
+  fs.mkdirSync(targetDir, { recursive: true })
+  fs.writeFileSync(path.join(targetDir, 'stale.txt'), 'stale')
+
+  await preparePersistentUserDataDir(targetDir, seedDir)
+
+  assert.equal(fs.existsSync(path.join(targetDir, 'stale.txt')), false)
+  assert.equal(fs.readFileSync(path.join(targetDir, 'Local State'), 'utf8'), '{"profile":true}')
+  assert.equal(fs.readFileSync(path.join(targetDir, 'Default', 'Preferences'), 'utf8'), '{"seed":true}')
 })

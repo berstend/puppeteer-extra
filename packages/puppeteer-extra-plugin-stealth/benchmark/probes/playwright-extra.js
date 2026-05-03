@@ -32,7 +32,8 @@ async function main() {
   let mainResponse = null
   try {
     if (input.profileMode.strategy === 'persistent') {
-      const userDataDir = input.profileMode.browser.userDataDir || path.join(os.tmpdir(), 'stealth-benchmark', input.variant.id, input.pairId)
+      const userDataDir = resolvePersistentUserDataDir(input)
+      await preparePersistentUserDataDir(userDataDir, input.profileMode.browser.seedUserDataDir)
       context = await chromium.launchPersistentContext(userDataDir, browserArgs)
       page = context.pages()[0] || (await context.newPage())
     } else {
@@ -283,6 +284,22 @@ function resolveTargetUrl(input) {
   return (input.flow && input.flow.url) || (input.site && input.site.url)
 }
 
+function resolvePersistentUserDataDir(input) {
+  if (input.profileMode && input.profileMode.browser && input.profileMode.browser.userDataDir) {
+    return input.profileMode.browser.userDataDir
+  }
+  return path.join(input.artifacts.runDir, 'user-data-dir')
+}
+
+async function preparePersistentUserDataDir(targetDir, seedUserDataDir) {
+  await fs.promises.rm(targetDir, { recursive: true, force: true })
+  if (seedUserDataDir) {
+    await fs.promises.cp(seedUserDataDir, targetDir, { recursive: true })
+    return
+  }
+  await fs.promises.mkdir(targetDir, { recursive: true })
+}
+
 function detectChallengeFromSnapshot(snapshot) {
   const checks = [
     {
@@ -351,5 +368,7 @@ if (require.main === module) {
 module.exports = {
   buildBrowserArgs,
   resolveTargetUrl,
-  detectChallengeFromSnapshot
+  detectChallengeFromSnapshot,
+  resolvePersistentUserDataDir,
+  preparePersistentUserDataDir
 }
