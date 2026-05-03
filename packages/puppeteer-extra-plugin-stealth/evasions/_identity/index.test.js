@@ -29,7 +29,7 @@ test('computeBrands emits current Chrome-style brands for Google Chrome', t => {
   ])
 })
 
-test('resolveChromiumIdentity keeps Linux native unless explicitly masked', t => {
+test('resolveChromiumIdentity masks Linux by default for desktop stealth', t => {
   const input = {
     browserVersion: 'Chrome/148.0.7778.97',
     userAgent:
@@ -40,14 +40,14 @@ test('resolveChromiumIdentity keeps Linux native unless explicitly masked', t =>
     headless: true
   }
 
-  const nativeIdentity = resolveChromiumIdentity(input)
+  const defaultIdentity = resolveChromiumIdentity(input)
+  t.true(defaultIdentity.userAgent.includes('Windows NT 10.0; Win64; x64'))
+  t.is(defaultIdentity.platform, 'Win32')
+  t.false(defaultIdentity.userAgent.includes('HeadlessChrome/'))
+
+  const nativeIdentity = resolveChromiumIdentity({ ...input, maskLinux: false })
   t.true(nativeIdentity.userAgent.includes('Linux x86_64'))
   t.is(nativeIdentity.platform, 'Linux')
-  t.false(nativeIdentity.userAgent.includes('HeadlessChrome/'))
-
-  const maskedIdentity = resolveChromiumIdentity({ ...input, maskLinux: true })
-  t.true(maskedIdentity.userAgent.includes('Windows NT 10.0; Win64; x64'))
-  t.is(maskedIdentity.platform, 'Win32')
 })
 
 test('resolveChromiumIdentity derives modern macOS UA-CH metadata', t => {

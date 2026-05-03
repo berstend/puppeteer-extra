@@ -244,7 +244,7 @@ function resolveChromiumIdentity(input = {}) {
   const locale = parseLocale(input.locale)
   let userAgent = stripHeadlessFromUserAgent(input.userAgent || '')
 
-  if (input.maskLinux && shouldMaskLinux(userAgent)) {
+  if (input.maskLinux !== false && shouldMaskLinux(userAgent)) {
     userAgent = maskLinuxUserAgent(userAgent)
   }
 

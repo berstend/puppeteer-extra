@@ -47,7 +47,7 @@ class Plugin extends PuppeteerExtraPlugin {
     return {
       userAgent: null,
       locale: 'en-US,en',
-      maskLinux: false
+      maskLinux: true
     }
   }
 
