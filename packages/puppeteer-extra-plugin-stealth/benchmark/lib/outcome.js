@@ -36,10 +36,16 @@ function classifyProbeResult(result) {
     return normalizeOutcome(outcomeId, { reason: result.challenge.family })
   }
   if (result.success && result.degraded) {
-    return normalizeOutcome('degraded_success', { reason: result.degradedReason || 'degraded' })
+    return normalizeOutcome('degraded_success', {
+      reason: result.degradedReason || 'degraded',
+      surfaceScore: scoreSurface(result.surface)
+    })
   }
   if (result.success) {
-    return normalizeOutcome('clean_success', { reason: 'success' })
+    return normalizeOutcome('clean_success', {
+      reason: 'success',
+      surfaceScore: scoreSurface(result.surface)
+    })
   }
   if (result.statusCode === 403 || result.statusCode === 429) {
     return normalizeOutcome('hard_block', { reason: `status-${result.statusCode}` })
@@ -57,22 +63,52 @@ function normalizeOutcome(id, meta = {}) {
 
 function diffPair(baselineOutcome, candidateOutcome) {
   const delta = candidateOutcome.score - baselineOutcome.score
+  const baselineSurfaceScore = Number(baselineOutcome.meta && baselineOutcome.meta.surfaceScore) || 0
+  const candidateSurfaceScore = Number(candidateOutcome.meta && candidateOutcome.meta.surfaceScore) || 0
+  const surfaceScoreDelta = candidateSurfaceScore - baselineSurfaceScore
   return {
     baseline: baselineOutcome.id,
     candidate: candidateOutcome.id,
     scoreDelta: delta,
-    severity: classifySeverity(delta)
+    surfaceScoreDelta,
+    severity: classifySeverity(delta, surfaceScoreDelta)
   }
 }
 
-function classifySeverity(delta) {
+function classifySeverity(delta, surfaceScoreDelta = 0) {
   if (delta >= 40) return 'major_improvement'
   if (delta >= 20) return 'moderate_improvement'
   if (delta >= 1) return 'minor_improvement'
   if (delta <= -40) return 'major_regression'
   if (delta <= -20) return 'moderate_regression'
   if (delta <= -1) return 'minor_regression'
+  if (surfaceScoreDelta >= 20) return 'moderate_improvement'
+  if (surfaceScoreDelta >= 5) return 'minor_improvement'
+  if (surfaceScoreDelta <= -20) return 'moderate_regression'
+  if (surfaceScoreDelta <= -5) return 'minor_regression'
   return 'no_material_change'
+}
+
+function scoreSurface(surface) {
+  if (!surface || typeof surface !== 'object') {
+    return 0
+  }
+
+  let score = 0
+  const uaData = surface.uaData || {}
+  const brands = Array.isArray(uaData.brands) ? uaData.brands : []
+  const fullVersionList = Array.isArray(uaData.fullVersionList) ? uaData.fullVersionList : []
+
+  if (surface.platform === 'Win32') score += 5
+  if (uaData.platform === 'Windows') score += 5
+  if (uaData.platformVersion) score += 5
+  if (uaData.bitness) score += 5
+  if (fullVersionList.length >= 2) score += 10
+  if (brands.some(entry => entry && entry.brand === 'Google Chrome')) score += 5
+  if (brands.some(entry => entry && entry.brand === 'Not/A)Brand')) score += 5
+  if (typeof surface.permission === 'string' && surface.permission === 'prompt') score += 5
+
+  return score
 }
 
 module.exports = {

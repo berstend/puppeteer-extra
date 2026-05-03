@@ -62,6 +62,7 @@ async function main() {
     const degraded = success && Boolean(input.flow.degradeOnMissingSelectors && input.flow.degradeOnMissingSelectors.length)
       ? !(await selectorsExist(page, input.flow.degradeOnMissingSelectors))
       : false
+    const surface = success ? await captureSurfaceSnapshot(page) : null
 
     await captureArtifacts(page, input.artifacts)
 
@@ -75,6 +76,7 @@ async function main() {
       challenge,
       solver,
       block: classifyBlock(mainResponse, challenge),
+      surface,
       console: state.console,
       network: state.network
     }
@@ -267,6 +269,44 @@ async function captureArtifacts(page, artifacts) {
   if (html) {
     await fs.promises.writeFile(artifacts.htmlFile, html)
   }
+}
+
+async function captureSurfaceSnapshot(page) {
+  return page.evaluate(async () => {
+    const permission = await navigator.permissions
+      .query({ name: 'notifications' })
+      .then(result => result.state)
+      .catch(error => `ERR:${error.message}`)
+
+    const uaData = navigator.userAgentData
+      ? await navigator.userAgentData.getHighEntropyValues([
+          'architecture',
+          'bitness',
+          'brands',
+          'fullVersionList',
+          'mobile',
+          'model',
+          'platform',
+          'platformVersion',
+          'uaFullVersion',
+          'wow64'
+        ])
+      : null
+
+    return {
+      userAgent: navigator.userAgent,
+      platform: navigator.platform,
+      vendor: navigator.vendor,
+      language: navigator.language,
+      languages: navigator.languages,
+      webdriver: navigator.webdriver,
+      hardwareConcurrency: navigator.hardwareConcurrency,
+      pluginsLength: navigator.plugins.length,
+      mimeTypesLength: navigator.mimeTypes.length,
+      permission,
+      uaData
+    }
+  }).catch(() => null)
 }
 
 function classifyBlock(response, challenge) {
