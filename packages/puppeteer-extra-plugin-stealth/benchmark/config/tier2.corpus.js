@@ -31,7 +31,7 @@ module.exports = [
       {
         id: 'landing',
         type: 'landing',
-        success: { selector: 'main' },
+        success: { selector: 'body.page-layout' },
         actions: [{ type: 'wait', ms: 2500 }]
       },
       {
