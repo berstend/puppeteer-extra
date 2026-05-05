@@ -1,0 +1,33 @@
+{
+  "name": "puppeteer-extra-plugin-ghost-cursor",
+  "version": "1.0.0",
+  "description": "A puppeteer-extra plugin that integrates ghost-cursor for human-like mouse movements",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava -v ./test.js"
+  },
+  "keywords": [
+    "puppeteer",
+    "puppeteer-extra",
+    "ghost-cursor",
+    "human",
+    "mouse",
+    "stealth",
+    "automation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "peerDependencies": {
+    "ghost-cursor": ">=1.2.0",
+    "puppeteer-extra": ">=3.0.0"
+  },
+  "dependencies": {
+    "puppeteer-extra-plugin": "^3.2.3"
+  },
+  "devDependencies": {
+    "ava": "^3.15.0",
+    "ghost-cursor": "^1.4.2",
+    "puppeteer": "*",
+    "puppeteer-extra": "*"
+  }
+}
