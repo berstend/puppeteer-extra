@@ -225,6 +225,17 @@ export class PlaywrightExtraClass implements AugmentedLauncherAPIs {
     debug('_bindBrowserContextEvents')
     this.plugins.dispatch('onContextCreated', context, contextOptions)
 
+    const bindPage = (page: pw.Page) => {
+      this.plugins.dispatch('onPageCreated', page)
+      page.on('close', () => {
+        this.plugins.dispatch('onPageClose', page)
+      })
+    }
+
+    for (const page of context.pages()) {
+      bindPage(page)
+    }
+
     // Make sure things like `addInitScript` show an effect on the very first page as well
     context.newPage = ((originalMethod, ctx) => {
       return async () => {
@@ -241,10 +252,7 @@ export class PlaywrightExtraClass implements AugmentedLauncherAPIs {
       }
     })
     context.on('page', page => {
-      this.plugins.dispatch('onPageCreated', page)
-      page.on('close', () => {
-        this.plugins.dispatch('onPageClose', page)
-      })
+      bindPage(page)
     })
   }
 

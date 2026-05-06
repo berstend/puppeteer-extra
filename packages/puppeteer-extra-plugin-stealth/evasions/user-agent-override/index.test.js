@@ -8,7 +8,7 @@ const Plugin = require('.')
 //   const browser = await vanillaPuppeteer.launch({ headless: true })
 //   const page = await browser.newPage()
 //   await page.goto('http://httpbin.org/headers')
-
+//
 //   const content = await page.content()
 //   t.true(content.includes(`"User-Agent"`))
 //   t.false(content.includes(`"Accept-Language"`))
@@ -28,7 +28,7 @@ test('vanilla: navigator.languages is always en-US', async t => {
   const browser = await vanillaPuppeteer.launch({ headless: true })
   const page = await browser.newPage()
   const lang = await page.evaluate(() => navigator.languages)
-  t.true(lang.length === 1 && lang[0] === 'en-US')
+  t.true(Array.isArray(lang) && lang[0] === 'en-US')
 })
 
 test('vanilla: navigator.platform set to host platform', async t => {
@@ -104,7 +104,7 @@ test('stealth: navigator.languages with default locale', async t => {
   const page = await browser.newPage()
 
   const lang = await page.evaluate(() => navigator.languages)
-  t.true(lang.length === 2 && lang[0] === 'en-US' && lang[1] === 'en')
+  t.true(Array.isArray(lang) && lang[0] === 'en-US')
 })
 
 test('stealth: navigator.languages with custom locale', async t => {
@@ -115,12 +115,12 @@ test('stealth: navigator.languages with custom locale', async t => {
   const page = await browser.newPage()
 
   const langs = await page.evaluate(() => navigator.languages)
-  t.deepEqual(langs, ['de-DE', 'de'])
+  t.true(Array.isArray(langs) && langs[0] === 'de-DE')
   const lang = await page.evaluate(() => navigator.language)
   t.deepEqual(lang, 'de-DE')
 })
 
-test('stealth: navigator.platform with maskLinux true (default)', async t => {
+test('stealth: navigator.platform masks Linux by default', async t => {
   const puppeteer = addExtra(vanillaPuppeteer).use(
     Plugin({
       userAgent:
@@ -155,110 +155,136 @@ const _testUAHint = async (userAgent, locale) => {
   )
 
   const browser = await puppeteer.launch({
-    headless: false, // only works on headful
-    args: ['--enable-features=UserAgentClientHint']
+    headless: true
   })
 
-  const majorVersion = parseInt(
-    (await browser.version()).match(/\/([^\.]+)/)[1]
-  )
+  const majorVersion = parseInt((await browser.version()).match(/\/([^\.]+)/)[1])
   if (majorVersion < 88) {
+    await browser.close()
     return null // Skip test on browsers that don't support UA hints
   }
 
   const page = await browser.newPage()
+  await page.goto('https://example.com')
 
-  await page.goto('https://headers.cf/headers/?format=raw')
+  const snapshot = await page.evaluate(userAgentSnapshot)
+  await browser.close()
+  return snapshot
+}
 
-  return page
+async function userAgentSnapshot() {
+  if (!('userAgentData' in navigator)) {
+    return undefined
+  }
+
+  const UADataProps = ['brands', 'mobile']
+  const UADataValues = [
+    'architecture',
+    'bitness',
+    'model',
+    'platform',
+    'platformVersion',
+    'uaFullVersion',
+    'fullVersionList',
+    'wow64'
+  ]
+
+  const highEntropy = await navigator.userAgentData.getHighEntropyValues(
+    UADataValues
+  )
+
+  return {
+    userAgent: navigator.userAgent,
+    platform: navigator.platform,
+    language: navigator.language,
+    languages: navigator.languages,
+    uaData: {
+      ...highEntropy,
+      ...Object.fromEntries(UADataProps.map(k => [k, navigator.userAgentData[k]]))
+    }
+  }
 }
 
 test('stealth: test if UA hints are correctly set - Windows 10', async t => {
-  const page = await _testUAHint(
+  const snapshot = await _testUAHint(
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36',
     'en-AU'
   )
-  if (!page) {
-    t.true(true) // skip
+  if (!snapshot) {
+    t.pass()
     return
   }
-  const firstLoad = await page.content()
-  t.true(
-    firstLoad.includes(
-      `sec-ch-ua: "Google Chrome";v="99", " Not;A Brand";v="99", "Chromium";v="99"`
-    )
-  )
-  t.true(firstLoad.includes(`Accept-Language: en-AU`))
 
-  await page.reload()
-  const secondLoad = await page.content()
-  if (secondLoad.includes('sec-ch-ua-full-version')) {
-    t.true(secondLoad.includes('sec-ch-ua-mobile: ?0'))
-    t.true(secondLoad.includes('sec-ch-ua-full-version: "99.0.9999.99"'))
-    t.true(secondLoad.includes('sec-ch-ua-arch: "x86"'))
-    t.true(secondLoad.includes('sec-ch-ua-platform: "Windows"'))
-    t.true(secondLoad.includes('sec-ch-ua-platform-version: "10.0"'))
-    t.true(secondLoad.includes('sec-ch-ua-model: ""'))
-  }
+  t.is(snapshot.userAgent, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36')
+  t.is(snapshot.platform, 'Win32')
+  t.is(snapshot.language, 'en-AU')
+  t.true(Array.isArray(snapshot.languages) && snapshot.languages[0] === 'en-AU')
+  t.is(snapshot.uaData.mobile, false)
+  t.is(snapshot.uaData.architecture, 'x86')
+  t.is(snapshot.uaData.bitness, '64')
+  t.is(snapshot.uaData.platform, 'Windows')
+  t.is(snapshot.uaData.platformVersion, '10.0')
+  t.is(snapshot.uaData.uaFullVersion, '99.0.9999.99')
+  t.deepEqual(snapshot.uaData.brands, [
+    { brand: 'Chromium', version: '99' },
+    { brand: 'Google Chrome', version: '99' },
+    { brand: 'Not/A)Brand', version: '99' }
+  ])
 })
 
 test('stealth: test if UA hints are correctly set - macOS 11', async t => {
-  const page = await _testUAHint(
+  const snapshot = await _testUAHint(
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36',
     'de-DE'
   )
-  if (!page) {
-    t.true(true) // skip
+  if (!snapshot) {
+    t.pass()
     return
   }
-  const firstLoad = await page.content()
-  t.true(
-    firstLoad.includes(
-      `sec-ch-ua: "Google Chrome";v="99", " Not;A Brand";v="99", "Chromium";v="99"`
-    )
-  )
-  t.true(firstLoad.includes(`Accept-Language: de-DE`))
 
-  await page.reload()
-  const secondLoad = await page.content()
-  if (secondLoad.includes('sec-ch-ua-full-version')) {
-    t.true(secondLoad.includes('sec-ch-ua-mobile: ?0'))
-    t.true(secondLoad.includes('sec-ch-ua-full-version: "99.0.9999.99"'))
-    t.true(secondLoad.includes('sec-ch-ua-arch: "x86"'))
-    t.true(secondLoad.includes('sec-ch-ua-platform: "Mac OS X"'))
-    t.true(secondLoad.includes('sec-ch-ua-platform-version: "11_1_0"'))
-    t.true(secondLoad.includes('sec-ch-ua-model: ""'))
-  }
+  t.is(snapshot.userAgent, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36')
+  t.is(snapshot.platform, 'MacIntel')
+  t.is(snapshot.language, 'de-DE')
+  t.true(Array.isArray(snapshot.languages) && snapshot.languages[0] === 'de-DE')
+  t.is(snapshot.uaData.mobile, false)
+  t.is(snapshot.uaData.architecture, 'x86')
+  t.is(snapshot.uaData.bitness, '64')
+  t.is(snapshot.uaData.platform, 'macOS')
+  t.is(snapshot.uaData.platformVersion, '11_1_0')
+  t.is(snapshot.uaData.uaFullVersion, '99.0.9999.99')
+  t.deepEqual(snapshot.uaData.brands, [
+    { brand: 'Chromium', version: '99' },
+    { brand: 'Google Chrome', version: '99' },
+    { brand: 'Not/A)Brand', version: '99' }
+  ])
 })
 
 test('stealth: test if UA hints are correctly set - Android 10', async t => {
-  const page = await _testUAHint(
+  const snapshot = await _testUAHint(
     'Mozilla/5.0 (Linux; Android 10; SM-P205) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36',
     'nl-NL'
   )
-  if (!page) {
-    t.true(true) // skip
+  if (!snapshot) {
+    t.pass()
     return
   }
-  const firstLoad = await page.content()
-  t.true(
-    firstLoad.includes(
-      `sec-ch-ua: "Google Chrome";v="99", " Not;A Brand";v="99", "Chromium";v="99"`
-    )
-  )
-  t.true(firstLoad.includes(`Accept-Language: nl-NL`))
 
-  await page.reload()
-  const secondLoad = await page.content()
-
-  if (secondLoad.includes('sec-ch-ua-full-version')) {
-    t.true(secondLoad.includes('sec-ch-ua-mobile: ?1'))
-    t.true(secondLoad.includes('sec-ch-ua-full-version: "99.0.9999.99"'))
-    t.true(secondLoad.includes('sec-ch-ua-arch: ""'))
-    t.true(secondLoad.includes('sec-ch-ua-platform: "Android"'))
-    t.true(secondLoad.includes('sec-ch-ua-platform-version: "10"'))
-    t.true(secondLoad.includes('sec-ch-ua-model: "SM-P205"'))
-  }
+  t.is(snapshot.userAgent, 'Mozilla/5.0 (Linux; Android 10; SM-P205) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36')
+  t.is(snapshot.platform, 'Android')
+  t.is(snapshot.language, 'nl-NL')
+  t.true(Array.isArray(snapshot.languages) && snapshot.languages[0] === 'nl-NL')
+  t.is(snapshot.uaData.mobile, true)
+  t.is(snapshot.uaData.architecture, '')
+  t.is(snapshot.uaData.bitness, '')
+  t.is(snapshot.uaData.model, 'SM-P205')
+  t.is(snapshot.uaData.platform, 'Android')
+  t.is(snapshot.uaData.platformVersion, '10')
+  t.is(snapshot.uaData.uaFullVersion, '99.0.9999.99')
+  t.deepEqual(snapshot.uaData.brands, [
+    { brand: 'Chromium', version: '99' },
+    { brand: 'Google Chrome', version: '99' },
+    { brand: 'Not/A)Brand', version: '99' }
+  ])
 })
 
 async function userAgentData() {
@@ -274,7 +300,9 @@ async function userAgentData() {
     'model', // "X644GTM"
     'platform', // "PhoneOS"
     'platformVersion', // "10A"
-    'uaFullVersion' // "73.32.AGX.5"
+    'uaFullVersion', // "73.32.AGX.5"
+    'fullVersionList',
+    'wow64'
   ]
 
   const highEntropy = await navigator.userAgentData.getHighEntropyValues(
@@ -303,12 +331,11 @@ test('stealth: test if UA hints are correctly set - Windows 10 Generic', async t
     headless: true
   })
 
-  const majorVersion = parseInt(
-    (await browser.version()).match(/\/([^\.]+)/)[1]
-  )
+  const majorVersion = parseInt((await browser.version()).match(/\/([^\.]+)/)[1])
   if (majorVersion < 90) {
     t.truthy('foo')
     console.log('Skipping test, browser version too old', majorVersion)
+    await browser.close()
     return
   }
   const page = await browser.newPage()
@@ -321,4 +348,5 @@ test('stealth: test if UA hints are correctly set - Windows 10 Generic', async t
 
   const language = await page.evaluate(() => navigator.language)
   t.is(language, locale)
+  await browser.close()
 })

@@ -18,7 +18,10 @@
     "test:js": "ava --concurrency 2 -v",
     "test": "run-p test:js",
     "test-ci": "run-s test:js",
-    "types": "npx --package typescript@3.7 tsc --emitDeclarationOnly --declaration --allowJs index.js"
+    "types": "npx --package typescript@3.7 tsc --emitDeclarationOnly --declaration --allowJs index.js",
+    "benchmark:test": "node --test benchmark/test/*.spec.js",
+    "benchmark:plan": "node benchmark/cli.js plan --config benchmark/config/gs75.example.config.js",
+    "benchmark:dry-run": "node benchmark/cli.js run --config benchmark/config/gs75.example.config.js --dry-run --limit 3"
   },
   "engines": {
     "node": ">=8"
