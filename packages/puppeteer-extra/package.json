@@ -8,14 +8,30 @@
   "typings": "dist/index.d.ts",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
+  "exports": {
+    ".": {
+      "module": "./dist/index.esm.js",
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.cjs.js"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.cjs.js"
+      }
+    },
+    "./package.json": "./package.json",
+    "./*": "./*"
+  },
   "files": [
     "dist"
   ],
   "scripts": {
     "clean": "rimraf dist/*",
     "prebuild": "run-s clean",
-    "build": "run-s build:tsc build:rollup ambient-dts",
+    "build": "run-s build:tsc build:rollup ambient-dts build:dts-mts",
     "build:tsc": "tsc --module commonjs",
+    "build:dts-mts": "node -e \"require('fs').copyFileSync('dist/index.d.ts','dist/index.d.mts')\"",
     "build:rollup": "rollup -c rollup.config.ts",
     "docs": "documentation readme --quiet --shallow --github --markdown-theme transitivebs --readme-file readme.md --section API ./src/index.ts",
     "postdocs": "npx prettier --write readme.md",
